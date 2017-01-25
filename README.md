@@ -2,9 +2,9 @@
 
 This is the working area for the Working Group internet-draft, "".
 
-* [Editor's copy](https://lp-wan.github.io/compression/)
+* [Editor's copy](https://lp-wan.github.io/coap-compression/)    [![Build Status](https://travis-ci.org/lp-wan/coap-compression.svg?branch=master)](https://travis-ci.org/lp-wan/coap-compression)
 * [Working Group Draft] (https://tools.ietf.org/html/draft-ietf-lpwan-coap-static-context-hc)
-* [Compare Working Group Draft and Editor's copy] (https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-lpwan-coap-static-context-hc.txt&url2=https://lp-wan.github.io/compression/draft-ietf-lpwan-coap-static-context-hc.txt)
+* [Compare Working Group Draft and Editor's copy] (https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ietf-lpwan-coap-static-context-hc.txt&url2=https://lp-wan.github.io/coap-compression/draft-ietf-lpwan-coap-static-context-hc.txt)
 
 
 ## Building the Draft
