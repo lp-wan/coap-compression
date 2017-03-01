@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>6LPWA Static Context Header Compression (SCHC) for CoAP</title>
+  <title>LPWAN Static Context Header Compression (SCHC) for CoAP</title>
 
   
 <style type="text/css">/*<![CDATA[*/
@@ -273,18 +273,40 @@ address {
   .github-fork-ribbon-wrapper {
     position: fixed;
   }
-/*]]>*/</style>
+  /*]]>*/</style>
 
 
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 Compressing CoAP"/>
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 CoAP usages"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 CoAP Compressing"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 CoAP behavior"/>
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 CoAP protocol analysis"/>
-<link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 CoAP Compression Decompression Function"/>
-<link href="#rfc.section.2.2.2" rel="Chapter" title="2.2.2 CoAP mandatory header"/>
-<link href="#rfc.section.2.2.3" rel="Chapter" title="2.2.3 Examples of CoAP header compression"/>
-<link href="#rfc.references" rel="Chapter" title="3 Normative References"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 SCHC rules for CoAP header compression"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Directional Rules"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Matching Operator"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Compressed field length"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Application to CoAP header fields"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 CoAP version field"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 CoAP type field"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 CoAP token length field"/>
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 CoAP code field"/>
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 CoAP Message ID field"/>
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 CoAP Token field"/>
+<link href="#rfc.section.4.7" rel="Chapter" title="4.7 CoAP option Content-format field."/>
+<link href="#rfc.section.4.8" rel="Chapter" title="4.8 CoAP option Accept field"/>
+<link href="#rfc.section.4.9" rel="Chapter" title="4.9 CoAP option Max-Age field"/>
+<link href="#rfc.section.4.10" rel="Chapter" title="4.10 CoAP option Uri-Host and Uri-Port fields"/>
+<link href="#rfc.section.4.11" rel="Chapter" title="4.11 CoAP option Uri-Path and Uri-Query fields"/>
+<link href="#rfc.section.4.12" rel="Chapter" title="4.12 CoAP option Proxy-URI and Proxy-Scheme fields"/>
+<link href="#rfc.section.4.13" rel="Chapter" title="4.13 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Other RFCs"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 fragmentation"/>
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Observe"/>
+<link href="#rfc.section.5.3" rel="Chapter" title="5.3 no-response"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Examples of CoAP header compression"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Mandatory header with CON message"/>
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Complete exchange"/>
+<link href="#rfc.references" rel="Chapter" title="7 Normative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -294,8 +316,8 @@ address {
   <meta name="dct.creator" content="Minaburo, A. and L. Toutain" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2016-12" />
-  <meta name="dct.abstract" content="This draft discusses the way SCHC can be applied to CoAP headers and extend the number of  functions (CDF) to optimize compression." />
-  <meta name="description" content="This draft discusses the way SCHC can be applied to CoAP headers and extend the number of  functions (CDF) to optimize compression." />
+  <meta name="dct.abstract" content="This draft discusses the way SCHC header compression can be applied to CoAP headers in an LPWAN flow regarding the generated traffic.  CoAP protocol differs from IPv6 and UDP protocols because the CoAP Header has a flexible header with variable options.  Another important difference is the asymmetric format in the header information used in the request and the response packets. This draft shows that the Client and the Server do not uses the same fields and how the SCHC header compression can be used." />
+  <meta name="description" content="This draft discusses the way SCHC header compression can be applied to CoAP headers in an LPWAN flow regarding the generated traffic.  CoAP protocol differs from IPv6 and UDP protocols because the CoAP Header has a flexible header with variable options.  Another important difference is the asymmetric format in the header information used in the request and the response packets. This draft shows that the Client and the Server do not uses the same fields and how the SCHC header compression can be used." />
 
 </head>
 
@@ -329,13 +351,13 @@ address {
     </tbody>
   </table>
 
-  <p class="title">6LPWA Static Context Header Compression (SCHC) for CoAP<br />
+  <p class="title">LPWAN Static Context Header Compression (SCHC) for CoAP<br />
   <span class="filename">draft-ietf-lpwan-coap-static-context-hc-latest</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>This draft discusses the way SCHC can be applied to CoAP headers and extend the number of  functions (CDF) to optimize compression.</p>
+<p>This draft discusses the way SCHC header compression can be applied to CoAP headers in an LPWAN flow regarding the generated traffic.  CoAP protocol differs from IPv6 and UDP protocols because the CoAP Header has a flexible header with variable options.  Another important difference is the asymmetric format in the header information used in the request and the response packets. This draft shows that the Client and the Server do not uses the same fields and how the SCHC header compression can be used.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -349,263 +371,367 @@ address {
 <p>Copyright (c) 2016 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#Introduction" id="Introduction">Introduction</a></h1>
-<p><a href="#I-D.toutain-lpwan-ipv6-static-context-hc">[I-D.toutain-lpwan-ipv6-static-context-hc]</a> defines a compression technique for LPWA network based on static context.  This context is said static since the element values composing the context are not learned during packet exchanges but previously installed.  The context is known by both ends.  A context is composed of a set of rules (referenced by rule ids). A rule describes the header fields with some associated Target Values (TV). A Matching Operator (MO) is associated to each field. The rule is selected if all the MO matches . A Compression Decompression Function is associated to each field to define the link between the compressed and decompressed value for a specific field.</p>
-<p id="rfc.section.1.p.2">This draft discusses the way SCHC can be applied to CoAP headers and extend the number of  functions (CDF) to optimize compression.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#compressing-coap" id="compressing-coap">Compressing CoAP</a></h1>
-<p id="rfc.section.2.p.1">CoAP <a href="#RFC7252">[RFC7252]</a> is an implementation of a the REST architecture for contrained devices. Gateway between CoAP and HTTP can be easily build since both protocol  uses the same address space (URL), caching mechanisms and methods.</p>
-<p id="rfc.section.2.p.2">Nevertheless, if limited, the size of a CoAP header may be incompatible with LPWAN constraints and some compression may be needed to reduce the header size. CoAP compression is not straightforward. Some differences between IPv6/UDP and CoAP can be enlighten. CoAP differs from IPv6 and UDP protocols:</p>
+<p><a href="#I-D.toutain-lpwan-ipv6-static-context-hc">[I-D.toutain-lpwan-ipv6-static-context-hc]</a> defines a header compression mechanism for LPWAN network based on a static context. Where the context is said static since the element values composing the context are not learned during the packet exchanges but are previously defined.  The context(s) is(are) known by both ends before transmission.</p>
+<p id="rfc.section.1.p.2">A context is composed of a set of rules (contexts) that are referenced by Rule IDs (identifiers).  A rule describes the header fields with some associated Target Values (TV). A Matching Operator (MO) is associated to each header field description.  The rule is selected if all the MOs fit the TVs.  In that case, a Compression Decompression Function (CDF) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
+<p id="rfc.section.1.p.3">This draft discusses the way SCHC can be applied to CoAP headers, how to extend MOs to match a specific element when several fields of the same type are presented in the header.  It also introduces the notion of bidirectional or unidirectional (upstream and downstream) fields.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#coap-compressing" id="coap-compressing">CoAP Compressing</a></h1>
+<p id="rfc.section.2.p.1">CoAP <a href="#RFC7252">[RFC7252]</a> is an implementation of a the REST architecture for constrained devices. Gateway between CoAP and HTTP can be easily built since both protocols uses the same address space (URL), caching mechanisms and methods.</p>
+<p id="rfc.section.2.p.2">Nevertheless, if limited, the size of a CoAP header may be incompatible with LPWAN constraints and some compression may be needed to reduce the header size.  CoAP compression is not straightforward. Some differences between IPv6/UDP and CoAP can be highlighted. CoAP differs from IPv6 and UDP protocols in the following <br/> aspects:</p>
 <p/>
 
 <ul>
-  <li>IPv6 and UDP are symmetrical protocols. The same fields are found in the request and in the answer, only location in the header may change (e.g. source and destination fields). A CoAP request is different from  an answer. For instance, the URI-path option is mandatory in the request and may not be found in the response.</li>
-  <li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from a LPWAN node or from an external device. For instance in the former case the token size may be set to one byte. In the latter case, the token size cannot be constraint and be up to 15 byte long.</li>
-  <li>In IPv6, main header and UDP fields have a fixed size. In CoAP, Token size may vary from 0 to 15 bytes, length is given by a field in the header. More systematically, the options are described using the Type-Length-Value principle.  Evenmore regarding the option size value, the coding will be different.</li>
-  <li>options type in CoAP are not defined with the same value. The Delta TLV coding makes that the type is not independant of previous option and may vary regarding the options contained in the header.</li>
+  <li>IPv6 and UDP are symmetrical protocols. The same fields are found in the request and in the response, only position in the header may change (e.g. source and destination fields). A CoAP request is different from  an response. For example, the URI-path option is mandatory in the request and is not found in the response.</li>
+  <li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from a LPWAN node or from an external device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP implementation joining the Thing (ES) will certainly use a larger token.</li>
+  <li>In IPv6 and UDP header fields have a fixed size. In CoAP, Token size may vary from 0 to 8 bytes, length is given by a field in the header. More systematically, the CoAP options are described using the Type-Length-Value.  When applying SCHC header compression, the token size is not known at the rule creation, the sender and the receiver must agree on its compressed size.</li>
+  <li>The options type in CoAP is not defined with the same value.  The Delta TLV coding makes that the type is not independent of previous option and may vary regarding the options contained in the header.</li>
 </ul>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#coap-usages" id="coap-usages">CoAP usages</a></h1>
-<p id="rfc.section.2.1.p.1">A LPWAN node can either be a client or a server and sometimes both.  In the client mode, the LPWAN node sends request to a server and expected answer or acknowledgements. Acknowledgements can be at 2 different levels:</p>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#coap-behavior" id="coap-behavior">CoAP behavior</a></h1>
+<p id="rfc.section.2.1.p.1">A LPWAN node can either be a client or a server and sometimes both.  In the client mode, the LPWAN node sends request to a server and Expects an answer or acknowledgements.  Acknowledgements can be at 2 different levels:</p>
 <p/>
 
 <ul>
-  <li>transport level, a CON message is acknowledged by an ACK message. NON confirmable messages are not acknowledged.</li>
-  <li>REST level, a REST request is acknowledged by an &#8220;error&#8221; code. <a href="#RFC7967">[RFC7967]</a> defines an option to limit the number of acknowledgements.</li>
+  <li>In the transport level, a CON message is acknowledged by an ACK message.  A NON confirmable messages are not acknowledged at all.</li>
+  <li>In REST level, a REST request is acknowledged by an &#8220;error&#8221; code.  The <a href="#RFC7967">[RFC7967]</a> defines an option to limit the number of acknowledgements.</li>
 </ul>
 <p id="rfc.section.2.1.p.3">Note that acknowledgement can be optimized and a REST level acknowledgement can be used as a transport level acknowledgement.</p>
 <h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#coap-protocol-analysis" id="coap-protocol-analysis">CoAP protocol analysis</a></h1>
-<p id="rfc.section.2.2.p.1">CoAP defines the following fields:</p>
+<p id="rfc.section.2.2.p.1">CoAP header format defines the following fields:</p>
 <p/>
 
 <ul>
-  <li>version (2 bits): this field can be elided during a compresssion</li>
-  <li>type (2 bits): defines the type of the transport messages, 4 values are defined.  Regarding the type of exchange, if only NON messages are sent or CON/ACK messages, this field can be reduced to 0 or 1 bit.</li>
-  <li>token length (4 bytes). The standard allows up to 15 bytes for a token length.  If a fix token size is chosen, then this field can be elided. If some variation in length are needed then 1 or 2 bits could be enough for most of LPWAN applications.</li>
-  <li>code (8 bits). This field codes the request and the response values. CoAP represents in a more compact way, coding used in HTTP, but the coding is not optimal.</li>
-  <li>message id (16 bits). This value is used to acknowledge CON frames. The size of this field is computed to allow the anticipation (how many frames can be sent without acknowledgement). When a value is used, <a href="#RFC7252">[RFC7252]</a> defines the time before it can be reused without ambiguities. This size may be too large for a LPWAN node sending or receiving few messages a day.</li>
-  <li>Token (0 to 15 bytes). Token identifies active flows. Regarding the usage (stability of in time and limited number), a short token (1 Byte) can be enough.</li>
-  <li>options are coded through delta-TLV. The delta-T depends of previous values, length is encoded inside the option. <a href="#RFC7252">[RFC7252]</a> distinguishes repeatable options that can appear several time in the header.  Among them we can distinguish:  <ul><li>list options which appear several time in the header but are exclusive such as the Accept option.</li><li>cumulative options which appear several time in the header but are part of a more generic value such as Uri-Path and Uri-Query.</li></ul><p> For a given flow some value options are stable through time. Observe, ETag, If-Match, If-None-Match and Size varies in each message. Options can be stored in a SCHC context and cumulative options can be stored globally.</p></li>
+  <li>version (2 bits): this field can be elided during the SCHC  compresssion</li>
+  <li>type (2 bits). It defines the type of the transport messages, 4 values are defined, regarding the type of exchange. If only NON messages are sent or CON/ACK messages, this field can be reduced to 0 or 1 bit.</li>
+  <li>token length (4 bytes).  The standard allows up to 15 bytes for a token length.  If a fixed token size is chosen, then this field can be elided.  If some variation in length are needed then 1 or 2 bits could be enough for most of LPWAN applications.</li>
+  <li>code (8 bits).  This field codes the request and the response values. In CoAP these values are represented in a more compact way then the coding used in HTTP, but the coding is not optimal.</li>
+  <li>message id (16 bits). This value of this header field is used to acknowledge CON frames. The size of this field is computed to allow the anticipation (how many frames can be sent without acknowledgement). When a value is used, the <a href="#RFC7252">[RFC7252]</a> defines the time before it can be reused without ambiguities. This size defined may be too large for a LPWAN node sending or receiving few messages a day.</li>
+  <li>Token (0 to 8 bytes). Token header field is used to identify active flows.  Regarding the usage for LPWAN (stability  in time and limited number), a short token (1 Byte or less) can be enough.</li>
+  <li>options are coded using delta-TLV. The delta-T depends on previous values, length is encoded inside the option. The <a href="#RFC7252">[RFC7252]</a> distinguishes repeatable options that can appear several times in the header.  Among them we can distinguish:  <ul><li>list options which appear several time in the header but are exclusive such as the Accept option.</li><li>cumulative options which appear several times in the header but are part of a more generic value such as Uri-Path and Uri-Query. In that case, some elements may not change during the Thing lifetime and other may change at each request.  For instance CoMi <a href="#I-D.ietf-core-comi">[I-D.ietf-core-comi]</a> defines the following path /c/X6?k=&#8221;eth0&#8221;, where the first path element &#8220;c&#8221; does not change, the second element can vary over time with a different length (it represents the base64 enconding of a SID) and the query string can also vary over time.</li></ul><p> For a given flow some value options are stable through time. Observe, ETag, If-Match, If-None-Match and Size varies in each message.</p></li>
 </ul>
-<p id="rfc.section.2.2.p.3">The CoAP protocol must not be altered by the compression/decompression phase, but if no semantic is attributed to a value, it may be changed during this phase. For instance the compression phase may reduce the size of a token but must maintain its unicity. The decompressor will not be able to restore the original value but behavior will remain the same. If no special semantic is assigned to the token, this will be transparent. If a special semantic is assigned to the token, its compression may not be possible.</p>
-<p id="rfc.section.2.2.p.4">This implies that the compressor/decompressor must be aware of the protocol state machine and do not processes request and response the same way.</p>
-<p id="rfc.section.2.2.p.5">A conservative compression leaves the field value unchanged. Non conservative compression can be used when a CoAP implementation has not been defined to work specifically with LPWAN network and uses large values for fields.</p>
-<h1 id="rfc.section.2.2.1"><a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#coap-compression-decompression-function" id="coap-compression-decompression-function">CoAP Compression Decompression Function</a></h1>
-<p id="rfc.section.2.2.1.p.1">To compress more efficiently CoAP message, several Compression/Decompression Function (CDF) must be defined.</p>
-<h1 id="rfc.section.2.2.1.1"><a href="#rfc.section.2.2.1.1">2.2.1.1.</a> <a href="#static-mapping" id="static-mapping">Static-mapping</a></h1>
-<p id="rfc.section.2.2.1.1.p.1">The goal of static-mapping is to reduce the size of a field by allocating shorter value. The mapping is known by both ends and stored in a table in both end context. The Static-mapping is conservative.</p>
-<p id="rfc.section.2.2.1.1.p.2">Static-mapping may be applied to several fields. For instance the type field may be reduced from 2 bits to 1 bit if only CON/ACK type is used, but the main benefit is  compressing the code field.</p>
-<p id="rfc.section.2.2.1.1.p.3">The CoAP code field defines a tricky way to ensure compatibility with HTTP values. Nevertheless only 21 values are defined by <a href="#RFC7252">[RFC7252]</a> compared to the 255 possible values. So it could efficiently be coded on 5 bits.  To allow flexibility and evolution if new codes are introduced, a static mapping table is associated to each instance of this function.</p>
-<p><a href="#Fig-code-mapping">Figure 1</a> gives a possible mapping, it can be changed to add new codes or reduced if some values are never used by both ends.</p>
+<p id="rfc.section.2.2.p.3">The CoAP protocol must not be altered by the compression/decompression phase, but if no semantic is attributed to a value, it may be changed during this phase. For instance, the compression phase may reduce the size of a token but must maintain its unicity. The decompressor will not be able to restore the original value but the behavior will remain the same. If no special semantic is assigned to the token, this will be transparent. If a special semantic is assigned to the token, its compression may not be possible.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#schc-rules-for-coap-header-compression" id="schc-rules-for-coap-header-compression">SCHC rules for CoAP header compression</a></h1>
+<p id="rfc.section.3.p.1">This draft refines the rules definition by adding the direction of the message, from the Thing point of view (uplink, downlink or bidirectional). It does not introduce new Machting Operator or new Compression Decompression Function, but add some possibility to check one particular element when  several of them are present at the  same time.</p>
+<p id="rfc.section.3.p.2">A rule can contain CoAP and IPv6/UDP entries. In that case, IPv6/UDP entries are tagged bidirectional.</p>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#directional-rules" id="directional-rules">Directional Rules</a></h1>
+<p id="rfc.section.3.1.p.1">By default, an entry in a rule is bidirectional which means that it can be applied either on the uplink or downlink headers. By specifying the direction, the LC will take into account  the specific  field only if the direction match.</p>
+<p id="rfc.section.3.1.p.2">If the Thing is a client, the URI-Path option is only present on request and not on the response. Therefore, the exact matching principle to select a rule cannot apply.</p>
+<p id="rfc.section.3.1.p.3">Some options are marked unidirectional, the value (uplink or downlink) depends of the scenario. A Uri-Path option will be marked uplink if the Thing acts as a client and downlink if the Thing acts as a server. If the Thing acts both as client and server, two different rules will be defined.</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#URI-Example" id="URI-Example">Matching Operator</a></h1>
+<p id="rfc.section.3.2.p.1">The Matching Operator behavior has not changed, but the value must take a position value, if the entry is repeated :</p>
 <div id="rfc.figure.1"/>
-<div id="Fig-code-mapping"/>
+<div id="Fig-MOposition"/>
 <pre>
-            +------+------------------------------+-----------+
-            | Code | Description                  | Mapping   |
-            +------+------------------------------+-----------+
-            | 0.00 |                              |  0x00     |
-            | 0.01 | GET                          |  0x01     |
-            | 0.02 | POST                         |  0x02     |
-            | 0.03 | PUT                          |  0x03     |
-            | 0.04 | DELETE                       |  0x04     |
-            | 0.05 | FETCH                        |  0x05     |
-            | 0.06 | PATCH                        |  0x06     |
-            | 0.07 | iPATCH                       |  0x07     |
-            | 2.01 | Created                      |  0x08     |
-            | 2.02 | Deleted                      |  0x09     |
-            | 2.03 | Valid                        |  0x0A     |
-            | 2.04 | Changed                      |  0x0B     |
-            | 2.05 | Content                      |  0x0C     |
-            | 4.00 | Bad Request                  |  0x0D     |
-            | 4.01 | Unauthorized                 |  0x0E     |
-            | 4.02 | Bad Option                   |  0x0F     |
-            | 4.03 | Forbidden                    |  0x10     |
-            | 4.04 | Not Found                    |  0x11     |
-            | 4.05 | Method Not Allowed           |  0x12     |
-            | 4.06 | Not Acceptable               |  0x13     |
-            | 4.12 | Precondition Failed          |  0x14     |
-            | 4.13 | Request Entity Too Large     |  0x15     |
-            | 4.15 | Unsupported Content-Format   |  0x16     |
-            | 5.00 | Internal Server Error        |  0x17     |
-            | 5.01 | Not Implemented              |  0x18     |
-            | 5.02 | Bad Gateway                  |  0x19     |
-            | 5.03 | Service Unavailable          |  0x1A     |
-            | 5.04 | Gateway Timeout              |  0x1B     |
-            | 5.05 | Proxying Not Supported       |  0x1C     |
-            +------+------------------------------+-----------+
-
-
+      FID          TV      MO             CDF
+      
+      URI-Path     foo     equal 1      not-sent
+      URI-Path     bar     equal 2      not-sent
 </pre>
-<p class="figure">Figure 1: CoAP code mapping</p>
-<p id="rfc.section.2.2.1.1.p.5">This CDF can also be applied to path to send a reference instead of the path value.</p>
-<h1 id="rfc.section.2.2.1.2"><a href="#rfc.section.2.2.1.2">2.2.1.2.</a> <a href="#remapping" id="remapping">Remapping</a></h1>
-<p id="rfc.section.2.2.1.2.p.1">With dynamic mapping, the mapping is done dynamically, which means that the other end has no way to the learn the original value. This function is not conservative. The mapping context must be stored in a reliable way on the compressor, if lost the session with LPWAN node will be lost, which can generate a traffic increase on the LPWA network.</p>
-<p id="rfc.section.2.2.1.2.p.2">This function converts a large number to a smaller one and maintain bi-directional mapping.  If the field has no semantic, such as a CoAP token or a message ID, this will reduce the size of the information sent on the link. This mapping only applies for request compression, answers must keep the value original value.</p>
-<p id="rfc.section.2.2.1.2.p.3">For instance a compression receives a CoAP request with a large token. The compressor reduces the token size by allocating a unused value in a smaller space. When the response come back, the compressor exchange the smallest token with the original one.</p>
-<p id="rfc.section.2.2.1.2.p.4">This mean that the compressor must be aware of the CoAP state machine, to identify a request and its associated response, but also determine when a token value can be reused.</p>
-<h1 id="rfc.section.2.2.1.3"><a href="#rfc.section.2.2.1.3">2.2.1.3.</a> <a href="#reduce-entropy" id="reduce-entropy">Reduce-entropy</a></h1>
-<p id="rfc.section.2.2.1.3.p.1">Reduce-entropy is a non-conservative function. the goal is to minimize the increase in a field value. It may be used for the observe option, all increase in the original sequence number will lead to an increase of 1 in the compressed value.</p>
-<p id="rfc.section.2.2.1.3.p.2">For instance a LPWAN node is a CoAP server and receives Observe responses coming from an outside client. The client uses a clock to generate Observe sequence number. If that value has non particular meaning for the CoAP server, increase of 1 will not change the protocol behavior. Reordering works the same way as for original Observe.</p>
-<h1 id="rfc.section.2.2.2"><a href="#rfc.section.2.2.2">2.2.2.</a> <a href="#coap-mandatory-header" id="coap-mandatory-header">CoAP mandatory header</a></h1>
-<p><a href="#Fig--possible-function">Figure 2</a> proposes some function assignments to the CoAP header fields.</p>
+<p class="figure">Figure 1: Position entry.</p>
+<p id="rfc.section.3.2.p.2">For instance, the  rule <a href="#Fig-MOposition">Figure 1</a> matches with /foo/bar, but not /bar/foo.</p>
+<p id="rfc.section.3.2.p.3">The position is added after the natural argument of the MO, for example MSB (4,3) indicates a most significant bit matching of 4 bits in a field located in position 3.</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#compressed-field-length" id="compressed-field-length">Compressed field length</a></h1>
+<p id="rfc.section.3.3.p.1">When the length is not clearly indicated in the rule, the value length must be sent with the field data, which means for CoAP to send directly the CoAP option where the delta-T is set to 0.</p>
+<p id="rfc.section.3.3.p.2">For the CoMi path  /c/X6?k=&#8221;eth0&#8221; the rule can be set to:</p>
 <div id="rfc.figure.2"/>
-<div id="Fig--possible-function"/>
+<div id="Fig-CoMicompress"/>
 <pre>
-/--------------------+---------------------+----------------------------------------\
-| Field              |Function             | Behavior                               |
-+--------------------+---------------------+----------------------------------------+
-|version             |not-sent             |version is always the same              |
-+--------------------+---------------------+----------------------------------------+
-|type                |value-sent           |if all the types are used               |
-|                    |static-mapping       |to reduce to one bit if 2 type are used |
-|                    |not-sent             |if only one type is used (e.g. NON)     |
-+--------------------+---------------------+----------------------------------------+
-|token length        |not-sent             |no tokens or fixed size                 |
-|                    |compute-token-length |if token size is reduced                |
-|                    |value-sent           |token is sent integrally                |
-+--------------------+---------------------+----------------------------------------+
-|code                |value-sent           |no modification                         |
-|                    |static-mapping       |code size reduction                     |
-+--------------------+---------------------+----------------------------------------+
-|message id          |value-sent           |no modification                         |
-|token               |remapping            |reduces message id size                 |
-+====================+=====================+========================================+
-|Content-Format      |value-sent           |no modification                         |
-|Accept              |not-sent             |defined in the rule                     |
-|Max-Age             |static-mapping       |map the possible value                  |
-+--------------------+---------------------+----------------------------------------+
-|Path:               |value-sent           |no modification                         |
-|Uri-Host+Uri-Port+  |not-sent             |defined in the rule                     |
-|Uri-Path*+Uri-Query*|static-mapping       |a value to define a path                |
-|                    |                     |                                        |
-|Proxy-Uri           |                     |Note: only the full path is stored in   |
-|Proxy-Scheme        |                     |context                                 |
-+--------------------+---------------------+----------------------------------------+
-|ETag                |value-sent           |Always sent                             |
-|Location-Path       |                     |                                        |
-|Location-Query      |                     |                                        |
-|If-Match            |                     |                                        |
-|If-None-Match       |                     |                                        |
-|Size1               |                     |                                        |
-+--------------------+---------------------+----------------------------------------+
+      FID          TV      MO             CDF
+      
+      URI-Path     c       equal 1      not-sent
+      URI-Path             ignore 2     value-sent
+      URI-Query    k=      MSB (16, 1)  value-sent 
+      
+</pre>
+<p class="figure">Figure 2: CoMi URI compression</p>
+<p id="rfc.section.3.3.p.3">Figure <a href="#Fig-CoMicompress">Figure 2</a> shows the parsing and the compression of the URI. where c is not sent.  The second element is sent with the length (i.e. 0x02 X 6) followed by the query option (i.e. 0x08 k=&#8221;eth0&#8221;).</p>
+<p id="rfc.section.3.3.p.4">[[NOTE we don&#8217;t process URI with a multiple number of path element ??]].</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#application-to-coap-header-fields" id="application-to-coap-header-fields">Application to CoAP header fields</a></h1>
+<p id="rfc.section.4.p.1">This section lists the different CoAP header fields and how they can be compressed.</p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#coap-version-field" id="coap-version-field">CoAP version field</a></h1>
+<p id="rfc.section.4.1.p.1">This field is bidirectional.</p>
+<p id="rfc.section.4.1.p.2">This field contains always the same value, therefore the TV may be 1, the MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;</p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#coap-type-field" id="coap-type-field">CoAP type field</a></h1>
+<p id="rfc.section.4.2.p.1">This field is bidirectional or undirectional.</p>
+<p id="rfc.section.4.2.p.2">Several strategies can be applied to this field regarding the values used:</p>
+<p/>
+
+<ul>
+  <li>if only one type is sent, for example NON message, its transmission can be avoided.  TV is set to the value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</li>
+  <li>if two values are sent, for example CON and ACK and RST is not used, this field can be reduced to one bit. TV is set to a matching value {CON: 0, ACK: 1}, MO is set to match-mapping and CDF is set to mapping-sent.</li>
+  <li>It is also possible avoid transmission of this field by marking it unidirectional.  In one direction, the TV is set to CON, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.  On the other direction, the TV is set to ACK, the MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;.</li>
+  <li>Otherwise TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent&#8221;.</li>
+</ul>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#coap-token-length-field" id="coap-token-length-field">CoAP token length field</a></h1>
+<p id="rfc.section.4.3.p.1">This field is bi-directional.</p>
+<p id="rfc.section.4.3.p.2">Several strategies can be applied to this field regarding the values:</p>
+<p/>
+
+<ul>
+  <li>no token or a wellknown length, the transmission can be avoided. TV is set to the length, the MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;</li>
+  <li>The length is variable from one message to another. TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent&#8221;. The size of the sent value  must be known by ends. The  size may be 4 bits. The receiver must take into account this value to retrieve the token. A CoAP proxy may be used before the compression to reduce the field size.</li>
+</ul>
+<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#coap-code-field" id="coap-code-field">CoAP code field</a></h1>
+<p id="rfc.section.4.4.p.1">This field is unidirectional. The client and the server do not use the same values.</p>
+<p id="rfc.section.4.4.p.2">The CoAP code field defines a tricky way to ensure compatibility with HTTP values.  Nevertheless only 21 values are defined by <a href="#RFC7252">[RFC7252]</a> compared to the 255 possible values.  So, it could efficiently be coded on 5 bits. The number of code may vary over time, some new codes may be introduced or some applications use a limited number of values.</p>
+<div id="rfc.figure.3"/>
+<div id="Fig--example-code-mapping"/>
+<pre>
+               +------+------------------------------+-----------+
+               | Code | Description                  | Mapping   |
+               +------+------------------------------+-----------+
+               | 0.00 |                              |  0x00     |
+               | 0.01 | GET                          |  0x01     |
+               | 0.02 | POST                         |  0x02     |
+               | 0.03 | PUT                          |  0x03     |
+               | 0.04 | DELETE                       |  0x04     |
+               | 0.05 | FETCH                        |  0x05     |
+               | 0.06 | PATCH                        |  0x06     |
+               | 0.07 | iPATCH                       |  0x07     |
+               | 2.01 | Created                      |  0x08     |
+               | 2.02 | Deleted                      |  0x09     |
+               | 2.03 | Valid                        |  0x0A     |
+               | 2.04 | Changed                      |  0x0B     |
+               | 2.05 | Content                      |  0x0C     |
+               | 4.00 | Bad Request                  |  0x0D     |
+               | 4.01 | Unauthorized                 |  0x0E     |
+               | 4.02 | Bad Option                   |  0x0F     |
+               | 4.03 | Forbidden                    |  0x10     |
+               | 4.04 | Not Found                    |  0x11     |
+               | 4.05 | Method Not Allowed           |  0x12     |
+               | 4.06 | Not Acceptable               |  0x13     |
+               | 4.12 | Precondition Failed          |  0x14     |
+               | 4.13 | Request Entity Too Large     |  0x15     |
+               | 4.15 | Unsupported Content-Format   |  0x16     |
+               | 5.00 | Internal Server Error        |  0x17     |
+               | 5.01 | Not Implemented              |  0x18     |
+               | 5.02 | Bad Gateway                  |  0x19     |
+               | 5.03 | Service Unavailable          |  0x1A     |
+               | 5.04 | Gateway Timeout              |  0x1B     |
+               | 5.05 | Proxying Not Supported       |  0x1C     |
+               +------+------------------------------+-----------+
 
 </pre>
-<p class="figure">Figure 2: SCHC functions' example assignment for CoAP</p>
-<h1 id="rfc.section.2.2.3"><a href="#rfc.section.2.2.3">2.2.3.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a></h1>
-<h1 id="rfc.section.2.2.3.1"><a href="#rfc.section.2.2.3.1">2.2.3.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a></h1>
-<p id="rfc.section.2.2.3.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the ES. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1">Figure 3</a></p>
-<div id="rfc.figure.3"/>
+<p class="figure">Figure 3: Example of CoAP code mapping</p>
+<p><a href="#Fig--example-code-mapping">Figure 3</a> gives a possible mapping, it can be changed to add new codes or reduced if some values are never used by both ends.</p>
+<p id="rfc.section.4.4.p.4">Since the field can be treated differently in upstream than in downstream.  If the Thing is a client an entry can be set on the uplink message with a code matching for 0.0X values and another for downlink values for Y.ZZ codes.  It is the opposite if the thing is a server.</p>
+<h1 id="rfc.section.4.5"><a href="#rfc.section.4.5">4.5.</a> <a href="#coap-message-id-field" id="coap-message-id-field">CoAP Message ID field</a></h1>
+<p id="rfc.section.4.5.p.1">This field is bidirectional.</p>
+<p id="rfc.section.4.5.p.2">Message ID is used for two purposes:</p>
+<p/>
+
+<ul>
+  <li>To acknowledge a CON message with an ACK.</li>
+  <li>To avoid duplicate messages.</li>
+</ul>
+<p id="rfc.section.4.5.p.4">In LPWAN, since a message can be received by several radio gateway, some LPWAN technologies include a sequence number in L2 to avoid duplicate frames. Therefore if the message does not need to be acknowledged (NON or RST message), the Message ID field can be avoided. In that case TV is not set, MO is set to ignore and CDF is set to &#8220;not-sent&#8221;. The decompressor can generate a number.</p>
+<p id="rfc.section.4.5.p.5">[[Note; check id this field is not used by OSCOAP .]]</p>
+<p id="rfc.section.4.5.p.6">To optimize information sent on the LPWAN, shorter values may be used during the exchange, but Message ID values generated a common CoAP implementation will not take into account this limitation. Before the compression, a proxy may be needed to reduce the size. In that case, the TV is set to 0x0000, MO is set to &#8220;MSB(l)&#8221; and CDF is set to &#8220;LSB(16-l)&#8221;, where &#8220;l&#8221; is the size of the compressed header.</p>
+<p id="rfc.section.4.5.p.7">Otherwise if no compression is needed the  TV is not set, MO is set to ignore and CDF is set to &#8220;not-sent&#8221;.</p>
+<h1 id="rfc.section.4.6"><a href="#rfc.section.4.6">4.6.</a> <a href="#coap-token-field" id="coap-token-field">CoAP Token field</a></h1>
+<p id="rfc.section.4.6.p.1">This field is bi-directional.</p>
+<p id="rfc.section.4.6.p.2">Token is used to identify transactions and varies from one transaction to another.  Therefore, it is usually necessary to send the value of the token field on the LPWAN network.  The optimization will occur by using small values.</p>
+<p id="rfc.section.4.6.p.3">Common CoAP implementations may generate large tokens, even if shorter tokens could be used regarding the LPWAN characteristics. A proxy may be needed to reduce the size of the token before compression.</p>
+<p id="rfc.section.4.6.p.4">Otherwise the TV is not set, the MO is set to ignore and CDF is set to &#8220;value-sent&#8221;.</p>
+<p id="rfc.section.4.6.p.5">The decompression may know the length of the token field from the token length field.</p>
+<h1 id="rfc.section.4.7"><a href="#rfc.section.4.7">4.7.</a> <a href="#coap-option-content-format-field" id="coap-option-content-format-field">CoAP option Content-format field.</a></h1>
+<p id="rfc.section.4.7.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform the client about of the payload type and is never found in client requests.</p>
+<p id="rfc.section.4.7.p.2">If the value is known by both sides, the TV contains that value and MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.4.7.p.3">Otherwise the TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent&#8221;</p>
+<p id="rfc.section.4.7.p.4">A mapping list can also be used to reduce the size.</p>
+<h1 id="rfc.section.4.8"><a href="#rfc.section.4.8">4.8.</a> <a href="#coap-option-accept-field" id="coap-option-accept-field">CoAP option Accept field</a></h1>
+<p id="rfc.section.4.8.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the client to inform of the possible payload type and is never found in server response.</p>
+<p id="rfc.section.4.8.p.2">The number of accept options is not limited and can vary regarding the usage. To be selected a rule must contain the exact number about accept options with their positions.</p>
+<p id="rfc.section.4.8.p.3">if the accept value must be sent, the TV contains that value, MO is set to &#8220;ignore x&#8221; where &#8220;x&#8221; is the accept option&#8217;s position and CDF is set to value-sent. Since the value length is not known, it must be sent as a CoAP TLV with delta-T set to 0.</p>
+<p id="rfc.section.4.8.p.4">Otherwise the TV is not set, MO is set to &#8220;equal x&#8221; where x is the accept option&#8217;s position and CDF is set to &#8220;not-sent&#8221;</p>
+<p id="rfc.section.4.8.p.5">[[note: it could be more liberal and do not provide the same order after decompression]]</p>
+<h1 id="rfc.section.4.9"><a href="#rfc.section.4.9">4.9.</a> <a href="#coap-option-max-age-field" id="coap-option-max-age-field">CoAP option Max-Age field</a></h1>
+<p id="rfc.section.4.9.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform of the caching duration and is never found in client requests.</p>
+<p id="rfc.section.4.9.p.2">If the duration is known by both ends, the TV is set with this duration, the MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.4.9.p.3">Otherwise the TV is not set, the MO is set to &#8220;ignore&#8221; and the CDF is set to &#8220;value-sent&#8221;.  Since the value length is not known, it must be sent as a CoAP TLV with delta-T set to 0.</p>
+<p id="rfc.section.4.9.p.4">[[note: we can reduce (or create a new option) the unit to minute, second is small for LPWAN ]]</p>
+<h1 id="rfc.section.4.10"><a href="#rfc.section.4.10">4.10.</a> <a href="#coap-option-uri-host-and-uri-port-fields" id="coap-option-uri-host-and-uri-port-fields">CoAP option Uri-Host and Uri-Port fields</a></h1>
+<p id="rfc.section.4.10.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are  used only by the client to access to a specific server and are never found in server response.</p>
+<p id="rfc.section.4.10.p.2">For each option, if the value is known by both ends, the TV is set with this value, the MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.4.10.p.3">Otherwise the TV is not set, the MO is set to &#8220;ignore&#8221; and the CDF is set to &#8220;value-sent&#8221;.  Since the value length is not known, it must be sent as a CoAP TLV with delta-T set to 0.</p>
+<h1 id="rfc.section.4.11"><a href="#rfc.section.4.11">4.11.</a> <a href="#coap-option-uri-path-and-uri-query-fields" id="coap-option-uri-path-and-uri-query-fields">CoAP option Uri-Path and Uri-Query fields</a></h1>
+<p id="rfc.section.4.11.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
+<p id="rfc.section.4.11.p.2">Path and Query option may have different formats. <a href="#URI-Example">Section 3.2</a> gives some examples.</p>
+<p id="rfc.section.4.11.p.3">If the URI path as well as the query is composed of 2 or more elements, then the position must be set in the MO parameters.</p>
+<p id="rfc.section.4.11.p.4">If a Path or Query element is stable over the time, then TV is set with its value, MO is set to &#8220;equal x&#8221; where x is the position in the Path or the Query and CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.4.11.p.5">Otherwise if the value varies over time, TV is not set, MO is set to &#8220;ignore x&#8221; where x is the position in the Path or in the Query and CDF is set to &#8220;value-sent&#8221;. Since the value length is not known, it must be sent as a CoAP TLV with deltaT set to 0.</p>
+<p id="rfc.section.4.11.p.6">A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to optimize the compression, several elements can be regrouped into a single entry.  Numbering of elements do not change, MO comparison is set with the first element of the matching.</p>
+<p id="rfc.section.4.11.p.7">For instance, the following Path /foo/bar/variable/stable can leads to the rule defined <a href="#Fig--complex-path">Figure 4</a>.</p>
+<div id="rfc.figure.4"/>
+<div id="Fig--complex-path"/>
+<pre>
+      FID        TV              MO                   CDF
+      
+      URI-Path   {"/foo/bar":1,  match-mapping 1      mapping-sent
+                  "/bar/foo":2}  
+      URI-Path                   ignore 3             value-sent
+      URI-Path     stable        equal 4              not-sent
+</pre>
+<p class="figure">Figure 4: complex path example</p>
+<h1 id="rfc.section.4.12"><a href="#rfc.section.4.12">4.12.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a></h1>
+<p id="rfc.section.4.12.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
+<p id="rfc.section.4.12.p.2">If the field value must be sent, TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent. A mapping can also be used.</p>
+<p id="rfc.section.4.12.p.3">Otherwise the TV is set to the value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;</p>
+<h1 id="rfc.section.4.13"><a href="#rfc.section.4.13">4.13.</a> <a href="#coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields" id="coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a></h1>
+<p id="rfc.section.4.13.p.1">These fields are unidirectional.</p>
+<p id="rfc.section.4.13.p.2">These fields values cannot be stored in a rule entry. They must always be sent with the request.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#other-rfcs" id="other-rfcs">Other RFCs</a></h1>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#fragmentation" id="fragmentation">fragmentation</a></h1>
+<p id="rfc.section.5.1.p.1">[[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?]]</p>
+<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#observe" id="observe">Observe</a></h1>
+<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#no-response" id="no-response">no-response</a></h1>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a></h1>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a></h1>
+<p id="rfc.section.6.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Thing. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1">Figure 5</a>.</p>
+<div id="rfc.figure.5"/>
 <div id="Fig-CoAP-header-1"/>
 <pre>
  rule id 1
-+-------------+-------+-----+---------------+----------------+
-| Field       |TV     |MO   |CDF            | Sent           |
-+=============+=======+=====+===============+================+
-|CoAP version | 01    |=    |not-sent       |                |
-|CoAP Type    |       |     |value-sent     |TT              |
-|CoAP TKL     | 0000  |=    |not-sent       |                |
-|CoAP Code    |       |     |static-map     |  CC CCC        |
-|CoAP MID     |       |     |dynamic-map    |         M-ID   |
-|CoAP Path    |/path  |     |not-sent       |                |
-+-------------+-------+-----+---------------+----------------+
++-------------+------+---------+-------------+---+----------------+
+| Field       |TV    |MO       |CDF          |dir| Sent           |
++=============+======+=========+=============+===+================+
+|CoAP version | 01   |equal    |not-sent     |bi |                |
+|CoAP Type    |      |ignore   |value-sent   |bi |TT              |
+|CoAP TKL     | 0    |equal    |not-sent     |bi |                |
+|CoAP Code    | ML1  |match-map|matching-sent|bi |  CC CCC        |
+|CoAP MID     | 0000 |MSB(7 )  |LSB(9)       |bi |         M-ID   |
+|CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
++-------------+------+---------+-------------+---+----------------+
 </pre>
-<p class="figure">Figure 3: CoAP Context to compress header without token</p>
-<p><a href="#Fig-CoAP-header-1">Figure 3</a> gives a simple compression rule for CoAP headers without tokens.</p>
-<p id="rfc.section.2.2.3.1.p.3">The version fields and Token Length are elided. Code has shrunk to 5 bits using the static-mapping function. Message-ID has shrunk to 9 bits to preserve alignment on byte boundary.</p>
-<p><a href="#Fig-CoAP-3">Figure 4</a> shows the time diagram of the exchange. A LPWAN Application Server sends a CON message. Compression reduces the header sending only the Type, a mapped code and the Message ID is change to a value on 9 bits. The receiver decompress the header. The message ID value is changed.</p>
-<p id="rfc.section.2.2.3.1.p.5">The CON message is a request, therefore the LC process to a dynamic mapping.  When the ES receives the ACK message, this will not initiate locally a the message ID mapping since it is a response. The LC receives the ACK and uncompress it to restore the original value. Dynamic Mapping context lifetime follows the same rules as message ID duration.</p>
-<div id="rfc.figure.4"/>
+<p class="figure">Figure 5: CoAP Context to compress header without token</p>
+<p id="rfc.section.6.1.p.2">The version  and Token Length fields are elided. Code has shrunk to 5 bits using the matching list (as the one given <a href="#Fig--example-code-mapping">Figure 3</a>: 0.01 is value 0x01 and 2.05 is value 0x0c) Message-ID has shrunk to 9 bits to preserve alignment on byte boundary. The most significant bit must be set to 0 through a CoAP proxy. Uri-Path contains a single element indicated in the matching operator.</p>
+<p><a href="#Fig-CoAP-3">Figure 6</a> shows the time diagram of the exchange. A LPWAN Application Server sends a CON message. Compression reduces the header sending only the Type, a mapped code and the least 9 significant bits of Message ID. The receiver decompresses the header. .</p>
+<p id="rfc.section.6.1.p.4">The CON message is a request, therefore the LC process to a dynamic mapping.  When the ES receives the ACK message, this will not initiate locally a  message ID mapping since it is a response.  The LC receives the ACK and uncompressed it to restore the original value.  Dynamic Mapping context lifetime follows the same rules as message ID duration.</p>
+<div id="rfc.figure.6"/>
 <div id="Fig-CoAP-3"/>
 <pre>
                    End System                      LPWA LC
                         |                            |
                         |        rule id=1           |&lt;----------------------
                         |&lt;---------------------------|   +-+-+--+----+--------+
-  &lt;-------------------- |  TTCC CCCM MMMM MMMM       |   |1|0| 4|0.01| 0x1234 |
- +-+-+--+----+--------+ |  0000 0010 0000 0001       |   |  0xb4   p    a   t |
- |1|0| 1|0.01| 0x0001 | |                            |   |  h   |
+  &lt;-------------------- |  TTCC CCCM MMMM MMMM       |   |1|0| 4|0.01| 0x0034 |
+ +-+-+--+----+--------+ |  0000 0010 0011 0100       |   |  0xb4   p    a   t |
+ |1|0| 1|0.01| 0x0034 | |                            |   |  h   |
  |  0xb4   p    a   t | |                            |   +------+
- |  h   |               |                            |    dynamic mapping
- +------+               |                            |    +--------+--------+
-                        |                            |    |0x1234  |  0x01  |
-                        |                            |    +--------+--------+
+ |  h   |               |                            |     
+ +------+               |                            |   
+                        |                            |    
+                        |                            |    
 -----------------------&gt;|       rule id=1            |
 +-+-+--+----+--------+  |---------------------------&gt;|
-|1|2| 0|2.05| 0x0001 |  |    TTCC CCCM MMMM MMMM     |------------------------&gt;
-+-+-+--+----+--------+  |    1000 0000 0000 0001     | +-+-+--+----+--------+
-                        |                            | |1|2| 0|2.05| 0x1234 |
+|1|2| 0|2.05| 0x0034 |  |    TTCC CCCM MMMM MMMM     |------------------------&gt;
++-+-+--+----+--------+  |    1001 1000 0011 0100     | +-+-+--+----+--------+
+                        |                            | |1|2| 0|2.05| 0x0034 |
                         v                            v +-+-+--+----+--------+
 
 </pre>
-<p class="figure">Figure 4: Compression with global addresses</p>
-<p id="rfc.section.2.2.3.1.p.6">Note that the compressor and decompressor must understand the CoAP protocol:</p>
-<p/>
-
-<ul>
-  <li>The LC compressor detects a new transport request and allocate a new dynamic mapping value.</li>
-  <li>When receiving a response the ES compressor ES detects that this is a response (type=2) therefore the message ID value in unchanged.</li>
-  <li>The upstream compressor detects that is an REST answer (code 2.05) therefore the path option is not inserted in the uncompress header</li>
-</ul>
-<h1 id="rfc.section.2.2.3.2"><a href="#rfc.section.2.2.3.2">2.2.3.2.</a> <a href="#exchange-with-token" id="exchange-with-token">Exchange with token</a></h1>
-<p id="rfc.section.2.2.3.2.p.1">The following scenario introduces tokens. The LC manages two remapping contexts.  One for Message ID and the other for token. ES manages one context for Message ID. Mapping is trigged by the reception of CON messages to compress or CoAP requests to compress. Note that the compressed message ID size has been reduced to 7 bits, compared to the previous example, to maintain byte boundary alignment.</p>
-<div id="rfc.figure.5"/>
-<div id="Fig-CoAP-header-2"/>
+<p class="figure">Figure 6: Compression with global addresses</p>
+<p id="rfc.section.6.1.p.5">The message can be further optimized by setting some fields unidirectional, as described in <a href="#Fig-CoAP-header-1-direc">Figure 7</a>. Note that Type is no more sent in the compressed format, Compressed Code size in not changed in that example (8 values are needed to code all the requests and 21 to code all the responses in the matching list <a href="#Fig--example-code-mapping">Figure 3</a>)</p>
+<div id="rfc.figure.7"/>
+<div id="Fig-CoAP-header-1-direc"/>
 <pre>
-  +----------------+------------------------+----------------+-----------------+
-  | Field          |   Function             | Ctxt Value     | Sent compressed |
-  +----------------+------------------------+----------------+-----------------+
-  |CoAP version    | not-sent               |                |                 |
-  |CoAP Type       | value-sent             |                |TT               |
-  |CoAP TKL        | compute-token-length   |                |  LL             |
-  |CoAP Code       | map-code               | mapping table  |      CCCC C     |
-  |CoAP MID        | remapping              | 7 bits         |            M-ID |
-  |CoAP Token      | remapping              | 8 bits         |            token|
-  |CoAP Path       | not-sent               |/data/humidity  |
-  +----------------+------------------------+----------------+-----------------+
+ rule id 1
++-------------+------+---------+-------------+---+----------------+
+| Field       |TV    |MO       |CDF          |dir| Sent           |
++=============+======+=========+=============+===+================+
+|CoAP version | 01   |equal    |not-sent     |bi |                |
+|CoAP Type    | CON  |equal    |not-sent     |dw |                |
+|CoAP Type    | ACK  |equal    |not-sent     |up |                |
+|CoAP TKL     | 0    |equal    |not-sent     |bi |                |
+|CoAP Code    | ML2  |match-map|matching-sent|dw |CCCC C          |
+|CoAP Code    | ML3  |match-map|matching-sent|up |CCCC C          |
+|CoAP MID     | 0000 |MSB(5)   |LSB(11)      |bi |       M-ID     |
+|CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
++-------------+------+---------+-------------+---+----------------+
 </pre>
-<p class="figure">Figure 5: CoAP Context to compress header with token</p>
-<div id="rfc.figure.6"/>
-<div id="Fig-CoAP-2"/>
+<p class="figure">Figure 7: CoAP Context to compress header without token</p>
+<h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#complete-exchange" id="complete-exchange">Complete exchange</a></h1>
+<p id="rfc.section.6.2.p.1">In that example, the Thing is using CoMi and sends queries for 2 SID.</p>
 <pre>
-                   End System                      LPWA LC
-                        |                            |
-                        |        SHIM=1              |&lt;----------------------
-                        |&lt;---------------------------|   +-+-+--+----+--------+
-  &lt;-------------------- |  TT LL CCCC  C  MMMMMMM    |   |1|0| 4|0.01| 0x1234 |
- +-+-+--+----+--------+ |  00 01 0000  1  0000001    |   |      DEADBEEF      |
- |1|0| 1|0.01| 0x0001 | |  0000  0001                |   |  0xb4   d    a   t |
- |  01   0xb4   d   a | |  Token                     |   |   a     0x08 h   u |
- |    t   a    0x08 h | |                            |   |   m     i    d   i |
- |    u   m     i   d | |                            |   |   t     y  |
- |    i   t     y  |    |                            |   +------------+
- +-----------------+    |                            | Mid mapping: 1234 -&gt; 1
-                        |                            | Tk  mapping: DEADBEEF -&gt; 1
------------------------&gt;|       SHIM=1               |
-+-+-+--+----+--------+  |---------------------------&gt;|
-|1|2| 0|0.00| 0x0001 |  |    TT LL CCCC C MMMMMMMM   |------------------------&gt;
-+-+-+--+----+--------+  |    10 01 0000 0 00000001   | +-+-+--+----+--------+
-                        |                            | |1|2| 0|0.00| 0x1234 |
-                        |                            | +-+-+--+----+--------+
------------------------&gt;|                            |
-+-+-+--+----+--------+  |---------------------------&gt;|
-|1|0| 0|2.05| 0xCAFE |  |    TT LL CCCC C MMMMMMMM   |------------------------&gt;
-| 0x01    2     5    |  |    00 01 1100 0 00000002   | +-+-+--+----+--------+
-+--------------------+  |    0000  0001              | |1|0| 4|2.05| 0x0001 |
-                        |    2 5                     | |       DEADBEEF     |
-                        |                            | |    2    5 |
-Mid mapping: CAFE -&gt; 1  |                            | +-----------+
-                        |                            |
-                        |                            |&lt;------------------------
-                        |&lt;---------------------------| +-+-+--+----+--------+
-&lt;-----------------------|     TT LL CCCC C  MMMMMMMM | |1|2| 0|0.00|0x0001  |
-+-+-+--+----+--------+  |     10 00 0000 0  00000002 | +-+-+--+----+--------+
-|1|2| 0|0.00| 0xCAFE |  |                            |
-+-+-+--+----+--------+  |                            |
-                        v                            v
-
+  CON 
+  MID=0x0012     |                         |
+  POST           |                         |   
+  Accept X       |                         | 
+  /c/k=AS        |------------------------&gt;|
+                 |                         |
+                 |                         |
+                 |&lt;------------------------|  ACK MID=0x0012
+                 |                         |  0.00
+                 |                         |
+                 |                         |
+                 |&lt;------------------------|   CON
+                 |                         |   MID=0X0034
+                 |                         |   Content-Format X
+                 |------------------------&gt;|
+           
 
 </pre>
-<p class="figure">Figure 6: Compression with token</p>
-<h1 id="rfc.references"><a href="#rfc.references">3.</a> Normative References</h1>
+<pre>
+ rule id 3
++-------------+------+---------+-------------+---+----------------+
+| Field       |TV    |MO       |CDF          |dir| Sent           |
++=============+======+=========+=============+===+================+
+|CoAP version | 01   |equal    |not-sent     |bi |                |
+|CoAP Type    | CON  |equal    |not-sent     |up |                |
+|CoAP Type    | ACK  |equal    |not-sent     |dw |                |
+|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
+|CoAP Code    | POST |equal    |not-sent     |up |                |
+|CoAP Code    | 0.00 |equal    |not-sent     |dw |                |
+|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP Token   |      |ignore   |send-value   |up |TTTTTTTT        |
+|CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
+|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |                |
+|CoAP Content | X    |equal    |not-sent     |up |                |
++-------------+------+---------+-------------+---+----------------+
+
+ rule id 4
++-------------+------+---------+-------------+---+----------------+
+| Field       |TV    |MO       |CDF          |dir| Sent           |
++=============+======+=========+=============+===+================+
+|CoAP version | 01   |equal    |not-sent     |bi |                |
+|CoAP Type    | CON  |equal    |not-sent     |dw |                |
+|CoAP Type    | ACK  |equal    |not-sent     |up |                |
+|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
+|CoAP Code    | 2.05 |equal    |not-sent     |dw |                |
+|CoAP Code    | 0.00 |equal    |not-sent     |up |                |
+|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
+|COAP Accept  | X    |equal    |not-sent     |dw |                |
++-------------+------+---------+-------------+---+----------------+
+
+
+alternative rule:
+
+ rule id 4
++-------------+------+---------+-------------+---+----------------+
+| Field       |TV    |MO       |CDF          |dir| Sent           |
++=============+======+=========+=============+===+================+
+|CoAP version | 01   |equal    |not-sent     |bi |                |
+|CoAP Type    | ML1  |equal    |match-sent(1)|bi |t               |
+|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
+|CoAP Code    | ML2  |equal    |match-sent(2)|bi | cc             |
+|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
+|COAP Accept  | x    |equal    |not-sent     |dw |                |
++-------------+------+---------+-------------+---+----------------+
+
+1 rule instead of 2 =&gt; 1 bit less
+but 3 bits more 
+
+ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
+</pre>
+<h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
 <table>
   <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-core-comi">[I-D.ietf-core-comi]</b>
+      </td>
+      <td class="top"><a>Stok, P.</a>, <a>Bierman, A.</a>, <a>Veillette, M.</a> and <a>A. Pelov</a>, "<a href="http://tools.ietf.org/html/draft-ietf-core-comi-00">CoAP Management Interface</a>", Internet-Draft draft-ietf-core-comi-00, January 2017.</td>
+    </tr>
     <tr>
       <td class="reference">
         <b id="I-D.toutain-lpwan-ipv6-static-context-hc">[I-D.toutain-lpwan-ipv6-static-context-hc]</b>
@@ -717,13 +843,35 @@ Mid mapping: CAFE -&gt; 1  |                            | +-----------+
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">Compressing CoAP</a></li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">CoAP usages</a></li>
+<li>2.   <a href="#rfc.section.2">CoAP Compressing</a></li>
+<ul><li>2.1.   <a href="#rfc.section.2.1">CoAP behavior</a></li>
 <li>2.2.   <a href="#rfc.section.2.2">CoAP protocol analysis</a></li>
-<ul><li>2.2.1.   <a href="#rfc.section.2.2.1">CoAP Compression Decompression Function</a></li>
-<li>2.2.2.   <a href="#rfc.section.2.2.2">CoAP mandatory header</a></li>
-<li>2.2.3.   <a href="#rfc.section.2.2.3">Examples of CoAP header compression</a></li>
-</ul></ul><li>3.   <a href="#rfc.references">Normative References</a></li>
+</ul><li>3.   <a href="#rfc.section.3">SCHC rules for CoAP header compression</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Directional Rules</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Matching Operator</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Compressed field length</a></li>
+</ul><li>4.   <a href="#rfc.section.4">Application to CoAP header fields</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">CoAP version field</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">CoAP type field</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">CoAP token length field</a></li>
+<li>4.4.   <a href="#rfc.section.4.4">CoAP code field</a></li>
+<li>4.5.   <a href="#rfc.section.4.5">CoAP Message ID field</a></li>
+<li>4.6.   <a href="#rfc.section.4.6">CoAP Token field</a></li>
+<li>4.7.   <a href="#rfc.section.4.7">CoAP option Content-format field.</a></li>
+<li>4.8.   <a href="#rfc.section.4.8">CoAP option Accept field</a></li>
+<li>4.9.   <a href="#rfc.section.4.9">CoAP option Max-Age field</a></li>
+<li>4.10.   <a href="#rfc.section.4.10">CoAP option Uri-Host and Uri-Port fields</a></li>
+<li>4.11.   <a href="#rfc.section.4.11">CoAP option Uri-Path and Uri-Query fields</a></li>
+<li>4.12.   <a href="#rfc.section.4.12">CoAP option Proxy-URI and Proxy-Scheme fields</a></li>
+<li>4.13.   <a href="#rfc.section.4.13">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Other RFCs</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">fragmentation</a></li>
+<li>5.2.   <a href="#rfc.section.5.2">Observe</a></li>
+<li>5.3.   <a href="#rfc.section.5.3">no-response</a></li>
+</ul><li>6.   <a href="#rfc.section.6">Examples of CoAP header compression</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Mandatory header with CON message</a></li>
+<li>6.2.   <a href="#rfc.section.6.2">Complete exchange</a></li>
+</ul><li>7.   <a href="#rfc.references">Normative References</a></li>
 <li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
@@ -731,5 +879,6 @@ Mid mapping: CAFE -&gt; 1  |                            | +-----------+
 
   
 
+  <div class="github-fork-ribbon-wrapper"><div class="github-fork-ribbon"><a href="https://github.com/lp-wan/coap-compression">Fork me on GitHub</a></div></div>
 </body>
 </html>
