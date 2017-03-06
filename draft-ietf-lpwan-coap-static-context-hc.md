@@ -38,6 +38,7 @@ normative:
   rfc7252:
   rfc7967:
   rfc1332:
+  rfc7641:
   I-D.toutain-lpwan-ipv6-static-context-hc:
   I-D.ietf-core-comi:
 
@@ -540,15 +541,35 @@ These fields are unidirectional.
 These fields values cannot be stored in a rule entry. They must always be sent with the
 request. 
 
+\[\[Can include OSCOAP Object security in that category \]\]
+
 # Other RFCs
 
-## fragmentation
+## Block
+
+Block option should be avoided in LPWAN. The minimum size of 16 bytes can be incompatible
+with some LPWAN technologies. 
 
 \[\[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?\]\]
 
 ## Observe
 
-## no-response
+{{RFC7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
+CDF is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
+To reduce the transmission size either the Thing implementation should limit the value 
+increase or a proxy can be used limit the increase.
+
+Since RST message may be sent to inform a server that the client do not require Observe
+response, a rule must allow the transmission of this message.
+
+## No-Response
+
+{{RFC7967}}  defines an No-Response option limiting the responses made by a server to 
+a request. If the value is not by both ends, then TV is set to this value, MO is 
+set to "equal" and CDF is set to "not-sent".
+
+Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
+CDF to "value-sent". A matching list can also be used to reduce the size. 
 
 
 # Examples of CoAP header compression
@@ -596,24 +617,24 @@ The CON message is a request, therefore the LC process to a dynamic
    message ID duration.
 
 ~~~~
-                   End System                      LPWA LC
-                        |                            |
-                        |        rule id=1           |<----------------------
-                        |<---------------------------|   +-+-+--+----+--------+
-  <-------------------- |  TTCC CCCM MMMM MMMM       |   |1|0| 4|0.01| 0x0034 |
- +-+-+--+----+--------+ |  0000 0010 0011 0100       |   |  0xb4   p    a   t |
- |1|0| 1|0.01| 0x0034 | |                            |   |  h   |
- |  0xb4   p    a   t | |                            |   +------+
- |  h   |               |                            |     
- +------+               |                            |   
-                        |                            |    
-                        |                            |    
------------------------>|       rule id=1            |
-+-+-+--+----+--------+  |--------------------------->|
-|1|2| 0|2.05| 0x0034 |  |    TTCC CCCM MMMM MMMM     |------------------------>
-+-+-+--+----+--------+  |    1001 1000 0011 0100     | +-+-+--+----+--------+
-                        |                            | |1|2| 0|2.05| 0x0034 |
-                        v                            v +-+-+--+----+--------+
+                   End System               LPWA LC
+                        |                     |
+                        |        rule id=1    |<----------------------
+                        |<--------------------|   +-+-+--+----+--------+
+  <-------------------- |  TTCC CCCM MMMM MMMM|   |1|0| 4|0.01| 0x0034 |
+ +-+-+--+----+--------+ |  0000 0010 0011 0100|   |  0xb4   p    a   t |
+ |1|0| 1|0.01| 0x0034 | |                     |   |  h   |
+ |  0xb4   p    a   t | |                     |   +------+
+ |  h   |               |                     |     
+ +------+               |                     |   
+                        |                     |    
+                        |                     |    
+----------------------->|       rule id=1     |
++-+-+--+----+--------+  |-------------------->|
+|1|2| 0|2.05| 0x0034 |  |  TTCC CCCM MMMM MMMM|------------------------>
++-+-+--+----+--------+  |  1001 1000 0011 0100| +-+-+--+----+--------+
+                        |                     | |1|2| 0|2.05| 0x0034 |
+                        v                     v +-+-+--+----+--------+
 
 ~~~~
 {: #Fig-CoAP-3 title='Compression with global addresses'}
@@ -638,6 +659,9 @@ are needed to code all the requests and 21 to code all the responses in the matc
 |CoAP MID     | 0000 |MSB(5)   |LSB(11)      |bi |       M-ID     |
 |CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
+
+ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
+
 ~~~~
 {: #Fig-CoAP-header-1-direc title='CoAP Context to compress header without token'}
 
@@ -663,8 +687,8 @@ In that example, the Thing is using CoMi and sends queries for 2 SID.
                  |<------------------------|   CON
                  |                         |   MID=0X0034
                  |                         |   Content-Format X
-                 |------------------------>|
-           
+ACK MID=0x0034   |------------------------>|
+0.00           
 
 ~~~~
 
@@ -682,7 +706,7 @@ In that example, the Thing is using CoMi and sends queries for 2 SID.
 |CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |up |TTTTTTTT        |
 |CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
-|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |                |
+|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
 |CoAP Content | X    |equal    |not-sent     |up |                |
 +-------------+------+---------+-------------+---+----------------+
 
@@ -711,16 +735,22 @@ alternative rule:
 |CoAP version | 01   |equal    |not-sent     |bi |                |
 |CoAP Type    | ML1  |equal    |match-sent(1)|bi |t               |
 |CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |equal    |match-sent(2)|bi | cc             |
+|CoAP Code    | ML2  |equal    |match-sent(1)|up | cc             |
+|CoAP Code    | ML3  |equal    |match-sent(2)|dw | cc             |
 |CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
+|CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
+|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
+|CoAP Content | X    |equal    |not-sent     |up |                |
 |COAP Accept  | x    |equal    |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
+
+ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
+ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 1 rule instead of 2 => 1 bit less
 but 3 bits more 
 
-ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 ~~~~
 
 
