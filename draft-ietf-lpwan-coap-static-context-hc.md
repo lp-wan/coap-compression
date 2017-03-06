@@ -748,9 +748,6 @@ alternative rule:
 ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
 ML4 {NULL:0, k=AS:1, K=AZE:2}
 
-1 rule instead of 2 => 1 bit less
-but 3 bits more 
-
 ~~~~
 
 
