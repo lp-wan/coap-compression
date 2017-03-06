@@ -898,10 +898,6 @@ Minaburo & Toutain        Expires June 4, 2017                 [Page 16]
 Internet-Draft           LPWAN CoAP compression            December 2016
 
 
-   1 rule instead of 2 => 1 bit less
-   but 3 bits more
-
-
 7.  Normative References
 
    [I-D.ietf-core-comi]
@@ -946,6 +942,10 @@ Internet-Draft           LPWAN CoAP compression            December 2016
               Datagrams over IEEE 802.15.4-Based Networks", RFC 6282,
               DOI 10.17487/RFC6282, September 2011,
               <http://www.rfc-editor.org/info/rfc6282>.
+
+
+
+
 
 
 
