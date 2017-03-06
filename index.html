@@ -300,9 +300,9 @@ address {
 <link href="#rfc.section.4.12" rel="Chapter" title="4.12 CoAP option Proxy-URI and Proxy-Scheme fields"/>
 <link href="#rfc.section.4.13" rel="Chapter" title="4.13 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Other RFCs"/>
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 fragmentation"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Block"/>
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Observe"/>
-<link href="#rfc.section.5.3" rel="Chapter" title="5.3 no-response"/>
+<link href="#rfc.section.5.3" rel="Chapter" title="5.3 No-Response"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples of CoAP header compression"/>
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Mandatory header with CON message"/>
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Complete exchange"/>
@@ -578,11 +578,17 @@ address {
 <h1 id="rfc.section.4.13"><a href="#rfc.section.4.13">4.13.</a> <a href="#coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields" id="coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a></h1>
 <p id="rfc.section.4.13.p.1">These fields are unidirectional.</p>
 <p id="rfc.section.4.13.p.2">These fields values cannot be stored in a rule entry. They must always be sent with the request.</p>
+<p id="rfc.section.4.13.p.3">[[Can include OSCOAP Object security in that category ]]</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#other-rfcs" id="other-rfcs">Other RFCs</a></h1>
-<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#fragmentation" id="fragmentation">fragmentation</a></h1>
-<p id="rfc.section.5.1.p.1">[[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?]]</p>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#block" id="block">Block</a></h1>
+<p id="rfc.section.5.1.p.1">Block option should be avoided in LPWAN. The minimum size of 16 bytes can be incompatible with some LPWAN technologies.</p>
+<p id="rfc.section.5.1.p.2">[[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?]]</p>
 <h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#observe" id="observe">Observe</a></h1>
-<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#no-response" id="no-response">no-response</a></h1>
+<p><a href="#RFC7641">[RFC7641]</a> defines the Observe option. The TV is not set, MO is set to &#8220;ignore&#8221; and the CDF is set to &#8220;value-sent&#8221;. SCHC does not limit the maximum size for this option (3 bytes).  To reduce the transmission size either the Thing implementation should limit the value increase or a proxy can be used limit the increase.</p>
+<p id="rfc.section.5.2.p.2">Since RST message may be sent to inform a server that the client do not require Observe response, a rule must allow the transmission of this message.</p>
+<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#no-response" id="no-response">No-Response</a></h1>
+<p><a href="#RFC7967">[RFC7967]</a>  defines an No-Response option limiting the responses made by a server to a request. If the value is not by both ends, then TV is set to this value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.5.3.p.2">Otherwise, if the value is changing over time, TV is not set, MO is set to &#8220;ignore&#8221; and CDF to &#8220;value-sent&#8221;. A matching list can also be used to reduce the size.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a></h1>
 <h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a></h1>
 <p id="rfc.section.6.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Thing. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1">Figure 5</a>.</p>
@@ -608,24 +614,24 @@ address {
 <div id="rfc.figure.6"/>
 <div id="Fig-CoAP-3"/>
 <pre>
-                   End System                      LPWA LC
-                        |                            |
-                        |        rule id=1           |&lt;----------------------
-                        |&lt;---------------------------|   +-+-+--+----+--------+
-  &lt;-------------------- |  TTCC CCCM MMMM MMMM       |   |1|0| 4|0.01| 0x0034 |
- +-+-+--+----+--------+ |  0000 0010 0011 0100       |   |  0xb4   p    a   t |
- |1|0| 1|0.01| 0x0034 | |                            |   |  h   |
- |  0xb4   p    a   t | |                            |   +------+
- |  h   |               |                            |     
- +------+               |                            |   
-                        |                            |    
-                        |                            |    
------------------------&gt;|       rule id=1            |
-+-+-+--+----+--------+  |---------------------------&gt;|
-|1|2| 0|2.05| 0x0034 |  |    TTCC CCCM MMMM MMMM     |------------------------&gt;
-+-+-+--+----+--------+  |    1001 1000 0011 0100     | +-+-+--+----+--------+
-                        |                            | |1|2| 0|2.05| 0x0034 |
-                        v                            v +-+-+--+----+--------+
+                   End System               LPWA LC
+                        |                     |
+                        |        rule id=1    |&lt;----------------------
+                        |&lt;--------------------|   +-+-+--+----+--------+
+  &lt;-------------------- |  TTCC CCCM MMMM MMMM|   |1|0| 4|0.01| 0x0034 |
+ +-+-+--+----+--------+ |  0000 0010 0011 0100|   |  0xb4   p    a   t |
+ |1|0| 1|0.01| 0x0034 | |                     |   |  h   |
+ |  0xb4   p    a   t | |                     |   +------+
+ |  h   |               |                     |     
+ +------+               |                     |   
+                        |                     |    
+                        |                     |    
+-----------------------&gt;|       rule id=1     |
++-+-+--+----+--------+  |--------------------&gt;|
+|1|2| 0|2.05| 0x0034 |  |  TTCC CCCM MMMM MMMM|------------------------&gt;
++-+-+--+----+--------+  |  1001 1000 0011 0100| +-+-+--+----+--------+
+                        |                     | |1|2| 0|2.05| 0x0034 |
+                        v                     v +-+-+--+----+--------+
 
 </pre>
 <p class="figure">Figure 6: Compression with global addresses</p>
@@ -646,6 +652,9 @@ address {
 |CoAP MID     | 0000 |MSB(5)   |LSB(11)      |bi |       M-ID     |
 |CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
+
+ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
+
 </pre>
 <p class="figure">Figure 7: CoAP Context to compress header without token</p>
 <h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#complete-exchange" id="complete-exchange">Complete exchange</a></h1>
@@ -665,8 +674,8 @@ address {
                  |&lt;------------------------|   CON
                  |                         |   MID=0X0034
                  |                         |   Content-Format X
-                 |------------------------&gt;|
-           
+ACK MID=0x0034   |------------------------&gt;|
+0.00           
 
 </pre>
 <pre>
@@ -683,7 +692,7 @@ address {
 |CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |up |TTTTTTTT        |
 |CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
-|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |                |
+|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
 |CoAP Content | X    |equal    |not-sent     |up |                |
 +-------------+------+---------+-------------+---+----------------+
 
@@ -712,16 +721,22 @@ alternative rule:
 |CoAP version | 01   |equal    |not-sent     |bi |                |
 |CoAP Type    | ML1  |equal    |match-sent(1)|bi |t               |
 |CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |equal    |match-sent(2)|bi | cc             |
+|CoAP Code    | ML2  |equal    |match-sent(1)|up | cc             |
+|CoAP Code    | ML3  |equal    |match-sent(2)|dw | cc             |
 |CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
+|CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
+|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
+|CoAP Content | X    |equal    |not-sent     |up |                |
 |COAP Accept  | x    |equal    |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
+
+ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
+ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 1 rule instead of 2 =&gt; 1 bit less
 but 3 bits more 
 
-ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 </pre>
 <h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
 <table>
@@ -779,6 +794,12 @@ ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
         <b id="RFC7252">[RFC7252]</b>
       </td>
       <td class="top"><a>Shelby, Z.</a>, <a>Hartke, K.</a> and <a>C. Bormann</a>, "<a href="http://tools.ietf.org/html/rfc7252">The Constrained Application Protocol (CoAP)</a>", RFC 7252, DOI 10.17487/RFC7252, June 2014.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7641">[RFC7641]</b>
+      </td>
+      <td class="top"><a>Hartke, K.</a>, "<a href="http://tools.ietf.org/html/rfc7641">Observing Resources in the Constrained Application Protocol (CoAP)</a>", RFC 7641, DOI 10.17487/RFC7641, September 2015.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -865,9 +886,9 @@ ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 <li>4.12.   <a href="#rfc.section.4.12">CoAP option Proxy-URI and Proxy-Scheme fields</a></li>
 <li>4.13.   <a href="#rfc.section.4.13">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a></li>
 </ul><li>5.   <a href="#rfc.section.5">Other RFCs</a></li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">fragmentation</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Block</a></li>
 <li>5.2.   <a href="#rfc.section.5.2">Observe</a></li>
-<li>5.3.   <a href="#rfc.section.5.3">no-response</a></li>
+<li>5.3.   <a href="#rfc.section.5.3">No-Response</a></li>
 </ul><li>6.   <a href="#rfc.section.6">Examples of CoAP header compression</a></li>
 <ul><li>6.1.   <a href="#rfc.section.6.1">Mandatory header with CON message</a></li>
 <li>6.2.   <a href="#rfc.section.6.2">Complete exchange</a></li>
