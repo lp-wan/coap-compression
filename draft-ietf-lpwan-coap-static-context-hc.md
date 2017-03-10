@@ -47,7 +47,7 @@ normative:
 This draft discusses the way SCHC header compression can be applied to CoAP 
 headers in an LPWAN flow regarding the generated traffic.
 CoAP protocol differs from IPv6 and UDP protocols because the CoAP Header 
-has a flexible header with variable options.  Another important difference is 
+has a flexible header due to variable options.  Another important difference is 
 the asymmetric format in the header information used in the request and 
 the response packets. This draft shows that the Client and the Server do not 
 uses the same fields and how the SCHC header compression can be used.
@@ -79,13 +79,13 @@ uses the same fields and how the SCHC header compression can be used.
 
 #  CoAP Compressing
 
-CoAP {{RFC7252}} is an implementation of a the REST architecture for constrained 
+CoAP {{RFC7252}} is an implementation of the REST architecture for constrained 
 devices. Gateway
 between CoAP and HTTP can be easily built since both protocols uses the same
 address space (URL), caching mechanisms and methods.
 
 Nevertheless, if limited, the size of a CoAP header may be
-   incompatible with LPWAN constraints and some compression may be
+   too large for LPWAN constraints and some compression may be
    needed to reduce the header size.  CoAP compression is not
    straightforward. Some differences between IPv6/UDP and CoAP can be
    highlighted. CoAP differs from IPv6 and UDP protocols in the following   
@@ -99,9 +99,9 @@ Nevertheless, if limited, the size of a CoAP header may be
   option is mandatory in the request and is not found in the response. 
 
 * CoAP also obeys to the client/server paradigm and the compression rate can
-  be different if the request is issued from a LPWAN node or from an external
+  be different if the request is issued from a LPWAN node or from an non LPWAN
   device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but
-  a regular CoAP implementation joining the Thing (ES) will certainly use a larger token.
+  a regular CoAP cleint will certainly send a larger token to the Thing.
 
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
@@ -120,11 +120,11 @@ Nevertheless, if limited, the size of a CoAP header may be
 
 A LPWAN node can either be a client or a server and sometimes both.
    In the client mode, the LPWAN node sends request to a server and
-   Expects an answer or acknowledgements.  Acknowledgements can be at 2
+   expects an answer or acknowledgements.  Acknowledgements can be at 2
    different levels:
 
 * In the transport level, a CON message is acknowledged by an ACK message.
-      A NON confirmable messages are not acknowledged at all.
+      A NON confirmable message is not acknowledged at all.
 
 
 * In REST level, a REST request is acknowledged by an "error" code.
@@ -149,8 +149,8 @@ CoAP header format defines the following fields:
       to 0 or 1 bit.
 
 
-* token length (4 bytes).  The standard allows up to 15 bytes for a
-      token length.  If a fixed token size is chosen, then this field can
+* token length (4 bits).  The standard allows up to 8 bytes for a
+      token.  If a fixed token size is chosen, then this field can
       be elided.  If some variation in length are needed then 1 or 2
       bits could be enough for most of LPWAN applications.
 
@@ -264,7 +264,7 @@ For the CoMi path  /c/X6?k="eth0" the rule can be set to:
 ~~~~~
 {: #Fig-CoMicompress title='CoMi URI compression'}
 
-Figure {{Fig-CoMicompress}} shows the parsing and the compression of the URI. where c is not sent.
+{{Fig-CoMicompress}} shows the parsing and the compression of the URI. where c is not sent.
 The second element is sent with the length (i.e. 0x02 X 6) followed by the query option 
 (i.e. 0x08 k="eth0").
 
@@ -372,7 +372,7 @@ may be introduced or some applications use a limited number of values.
 {{Fig--example-code-mapping}} gives a possible mapping, it can be changed 
 to add new codes or reduced if some values are never used by both ends. 
 
-Since the field can be treated differently in upstream than in downstream.
+ The field can be treated differently in upstream than in downstream.
    If the Thing is a client an entry can be set on the uplink message with a
    code matching for 0.0X values and another for downlink values for Y.ZZ
    codes.  It is the opposite if the thing is a server.
@@ -525,7 +525,7 @@ For instance, the following Path /foo/bar/variable/stable can leads to the rule 
 
 ##CoAP option Proxy-URI and Proxy-Scheme fields
 
-This fields are unidirectional and must not be set to bidirectional in a rule entry.
+These fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
 in server response.
 
@@ -583,16 +583,16 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 ~~~~
  rule id 1
-+-------------+------+---------+-------------+---+----------------+
-| Field       |TV    |MO       |CDF          |dir| Sent           |
-+=============+======+=========+=============+===+================+
-|CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    |      |ignore   |value-sent   |bi |TT              |
-|CoAP TKL     | 0    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML1  |match-map|matching-sent|bi |  CC CCC        |
-|CoAP MID     | 0000 |MSB(7 )  |LSB(9)       |bi |         M-ID   |
-|CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
-+-------------+------+---------+-------------+---+----------------+
++-------------+------+---------+-------------+-----+----------------+
+| Field       |TV    |MO       |CDF          |dir  | Sent           |
++=============+======+=========+=============+=====+================+
+|CoAP version | 01   |equal    |not-sent     |bi   |                |
+|CoAP Type    |      |ignore   |value-sent   |bi   |TT              |
+|CoAP TKL     | 0    |equal    |not-sent     |bi   |                |
+|CoAP Code    | ML1  |match-map|matching-sent|bi   |  CC CCC        |
+|CoAP MID     | 0000 |MSB(7 )  |LSB(9)       |bi   |         M-ID   |
+|CoAP Uri-Path| path |equal 1  |not-sent     |down |                |
++-------------+------+---------+-------------+-----+----------------+
 ~~~~
 {: #Fig-CoAP-header-1 title='CoAP Context to compress header without token'}
 
