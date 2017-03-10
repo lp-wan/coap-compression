@@ -11,7 +11,6 @@ pi:
 title: LPWAN Static Context Header Compression (SCHC) for CoAP
 abbrev: LPWAN CoAP compression
 wg: lpwan Working Group
-date: 2016-12
 author:
 - ins: A. Minaburo
   name: Ana Minaburo
@@ -22,13 +21,13 @@ author:
   email: ana@ackl.io
 - ins: L. Toutain
   name: Laurent Toutain
-  org: Institut MINES TELECOM ; TELECOM Bretagne
+  org: Institut MINES TELECOM ; IMT Atlantique
   street:
   - 2 rue de la Chataigneraie
   - CS 17607
   city: 35576 Cesson-Sevigne Cedex
   country: France
-  email: Laurent.Toutain@telecom-bretagne.eu
+  email: Laurent.Toutain@imt-atlantique.fr
 normative:
   rfc4944:
   rfc3095:
