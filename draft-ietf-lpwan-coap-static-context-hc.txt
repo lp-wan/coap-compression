@@ -10,7 +10,7 @@ Expires: June 4, 2017          Institut MINES TELECOM ; TELECOM Bretagne
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
-             draft-ietf-lpwan-coap-static-context-hc-latest
+               draft-ietf-lpwan-coap-static-context-hc-01
 
 Abstract
 
