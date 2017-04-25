@@ -8,6 +8,8 @@ pi:
   sortrefs: 'yes'
   strict: 'yes'
   compact: 'yes'
+  toc: 'yes'
+
 title: LPWAN Static Context Header Compression (SCHC) for CoAP
 abbrev: LPWAN CoAP compression
 wg: lpwan Working Group
@@ -43,40 +45,18 @@ normative:
 
 --- abstract
 
-This draft discusses the way SCHC header compression can be applied to CoAP 
-headers in an LPWAN flow regarding the generated traffic.
-CoAP protocol differs from IPv6 and UDP protocols because the CoAP Header 
-has a flexible header due to variable options.  Another important difference is 
-the asymmetric format in the header information used in the request and 
-the response packets. This draft shows that the Client and the Server do not 
-uses the same fields and how the SCHC header compression can be used.
-
+This draft defines the way SCHC header compression can be applied to CoAP 
+headers.
+CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header 
+is flexible header with a variable number of options themself of a variable length. 
+Another important difference is 
+the asymmetry in the header information used for request and 
+response messages. This draft takes into account the fact that a thing can play the
+role of a CoAP client, a CoAP client or both roles.
 
 --- middle
 
 # Introduction {#Introduction}
-
-{{I-D.toutain-lpwan-ipv6-static-context-hc}} defines a header compression
-   mechanism for LPWAN network based on a static context. Where the context is
-   said static since the element values composing the context are not
-   learned during the packet exchanges but are previously defined.  The
-   context(s) is(are) known by both ends before transmission. 
-  
-   A context is composed of a set of rules (contexts) that are referenced by Rule IDs 
-   (identifiers).  A rule describes the header fields
-   with some associated Target Values (TV). A Matching Operator (MO) is
-   associated to each header field description.  The rule is selected if all the MOs fit
-   the TVs.  In that case, a Compression Decompression Function (CDF)
-   associated to each field defines the link between the compressed and
-   decompressed value for each of the header fields.
-
-   This draft discusses the way SCHC can be applied to CoAP headers, how to
-   extend MOs to match a specific element when several fields of the same
-   type are presented in the header.  It also introduces the notion of
-   bidirectional or unidirectional (upstream and downstream) fields.
-
-
-#  CoAP Compressing
 
 CoAP {{RFC7252}} is an implementation of the REST architecture for constrained 
 devices. Gateway
@@ -85,37 +65,80 @@ address space (URL), caching mechanisms and methods.
 
 Nevertheless, if limited, the size of a CoAP header may be
    too large for LPWAN constraints and some compression may be
-   needed to reduce the header size.  CoAP compression is not
-   straightforward. Some differences between IPv6/UDP and CoAP can be
-   highlighted. CoAP differs from IPv6 and UDP protocols in the following   
-   aspects:
+   needed to reduce the header size. 
+   
+{{I-D.toutain-lpwan-ipv6-static-context-hc}} defines a header compression
+   mechanism for LPWAN network based on a static context. The context is
+   said static since the element values composing the context are not
+   learned during the packet exchanges but are previously defined.  The
+   context(s) is(are) known by both ends before transmission. 
+  
+   A context is composed of a set of rules (contexts) that are referenced by Rule IDs 
+   (identifiers).  A rule contains an ordered list of the header fields containing à field ID (FID) 
+   and its position when repeated, a direction indicator (DI) (upstream, downstream and bidirectional)
+   and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is
+   associated to each header field description. The rule is selected if all the MOs fit
+   the TVs.  In that case, a Compression Decompression Function (CDF)
+   associated to each field defines the link between the compressed and
+   decompressed value for each of the header fields. 
+   
+    This document describes how the rules can be applied to CoAP flows. Compression of the 
+    CoAP header may be done in conjunction with the above layers or independantly.
+    
 
+#  CoAP Compressing
 
+   CoAP differs from IPv6 and UDP protocols on the following   
+   aspects: 
+   
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
   request and in
-  the response, only position in the header may change (e.g. source and destination
+  the response, only location in the header may vary (e.g. source and destination
   fields). A CoAP request is different from  an response. For example, the URI-path
-  option is mandatory in the request and is not found in the response. 
+  option is mandatory in the request and is not found in the response, request may contain
+  an Accept option and the response a Content-format option.
+  
+  Even when a field is "symmetric" (i.e. found in both directions) the values carried are
+  different. For instance the Type field will contain a CON value in the request and a
+  ACK or RST value in the response. Exploiting the asymmetry in compression will allow to 
+  send no bit in the compressed request and a single bit in the answer. Same behavior can be 
+  applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).
 
 * CoAP also obeys to the client/server paradigm and the compression rate can
   be different if the request is issued from a LPWAN node or from an non LPWAN
   device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but
-  a regular CoAP cleint will certainly send a larger token to the Thing.
+  a regular CoAP client will certainly send a larger token to the Thing. SCHC compression
+  will not modify the values to offer a better compression rate. Nevertheless a proxy placed
+  before the compressor may change some field values to offer a better compression rate and 
+  maintain the necessary context for interoperability with existing CoAP implementations.
 
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
   systematically, the CoAP options are described using the Type-Length-Value. 
-  When applying SCHC header compression, the token size is not known at
-      the rule creation, the sender and the receiver must agree on its
-      compressed size.
+  When applying SCHC header compression.
+  
+  By sending compressed field information following the rule order, SCHC offers a 
+  serialization/deserialization mechanism. Since a field exists to indicate the token
+  length there is no ambiguity. For options, the rule indicates also the expected options
+  found the int CoAP header. Therefore only the length is needed to recognise an option. 
+  The length will be send using the same CoAP encoding (size less than 12 are directly sent, 
+  higher values uses the escape mechanisms defined by {{RFC7252}}). Delta Type is omitted, 
+  the value will
+  be recovered by the decompressor. This reduce the option length of 4, 12 or 20 bits regarding
+  the orignial size of the delta type encoding in the option.
+  
 
-* The options type in CoAP is not defined with the same value.  The
-      Delta TLV coding makes that the type is not independent of
-      previous option and may vary regarding the options contained in
-      the header.
+  
+* In CoAP headers a field can be duplicated several times, for instances, elements 
+of an URI (path or queries) or accepted 
+formats. The position
+defined in a rule, associated to a Field ID, can be used to identify the proper element.
 
 
-## CoAP behavior
+<!--
+## Exploiting CoAP asymetry
+
+Some bi-directional fields such as code or type may uses different values 
 
 A LPWAN node can either be a client or a server and sometimes both.
    In the client mode, the LPWAN node sends request to a server and
@@ -135,30 +158,39 @@ A LPWAN node can either be a client or a server and sometimes both.
 Note that acknowledgement can be optimized and a REST level acknowledgement
 can be used as a transport level acknowledgement.
 
+A rule includes also a Direction
+   Indicator (DI) which may be used to distinguish between the upstream and the downstream 
+   direction. CoAP compression may benefit of this since it is not mandatory to include
+   value that are sent in that direction. For instance the values expected in the type field
+   are different in both directions.
 
-## CoAP protocol analysis
+
+
+## CoAP header field analysis
 
 CoAP header format defines the following fields:
 
-* version (2 bits): this field can be elided during the SCHC  compresssion
+* version (2 bits): 
 
 * type (2 bits). It defines the type of the transport messages, 4
-      values are defined, regarding the type of exchange. If only NON
-      messages are sent or CON/ACK messages, this field can be reduced
-      to 0 or 1 bit.
-
+      values are defined, regarding the type of exchange. 
+      
+      For acknowledged message 
+      it can be
+      reduced to 0 or 1 bit using a matching-list if the direction is taken into account. 
+      
+      For non acknowledged
+      messages this field can be elided.
 
 * token length (4 bits).  The standard allows up to 8 bytes for a
       token.  If a fixed token size is chosen, then this field can
       be elided.  If some variation in length are needed then 1 or 2
       bits could be enough for most of LPWAN applications.
 
-
 * code (8 bits).  This field codes the request and the response
       values. In CoAP these values are represented in a more compact way 
       then the coding used in
       HTTP, but the coding is not optimal.
-
 
 * message id (16 bits). This value of this header field is used to acknowledge CON
   frames. The size of this field is computed to allow the anticipation
@@ -229,78 +261,69 @@ rules will be defined.
 
 ## Matching Operator {#URI-Example}
 
-The Matching Operator behavior has not changed, but the value must take a position value, 
-if the entry is repeated :
 
-~~~~
-      FID          TV      MO             CDF
-      
-      URI-Path     foo     equal 1      not-sent
-      URI-Path     bar     equal 2      not-sent
-~~~~
-{: #Fig-MOposition title='Position entry.'}
+-->
 
-For instance, the  rule {{Fig-MOposition}} matches with /foo/bar, but not /bar/foo.
+# Compression of CoAP header fields
 
-The position is added after the natural argument of the MO, for example MSB (4,3) 
-indicates a most significant bit matching of 4 bits in a field located in position 3. 
+This section discusses of the compression of the different CoAP header fields. These are just
+examples. The compression should take into account the nature of the traffic and not 
+only the field values. Next chapter will define some compression rules for some common 
+exchanges.
 
-##Compressed field length
+## CoAP version field (2 bits)
 
-When the length is not clearly indicated in the rule, the value length must be sent with the
-field data, which means for CoAP to send directly the CoAP option where the delta-T is
-set to 0. 
+This field is bidirectional and can be elided during the SCHC compression, since it always
+contains  the same value. It appears only in first position.
 
-For the CoMi path  /c/X6?k="eth0" the rule can be set to:
-
-~~~~~~ 
-      FID          TV      MO             CDF
-      
-      URI-Path     c       equal 1      not-sent
-      URI-Path             ignore 2     value-sent
-      URI-Query    k=      MSB (16, 1)  value-sent 
-      
-~~~~~
-{: #Fig-CoMicompress title='CoMi URI compression'}
-
-{{Fig-CoMicompress}} shows the parsing and the compression of the URI. where c is not sent.
-The second element is sent with the length (i.e. 0x02 X 6) followed by the query option 
-(i.e. 0x08 k="eth0").
-
-\[\[NOTE we don't process URI with a multiple number of path element ??\]\].  
-
-# Application to CoAP header fields
-
-   This section lists the different CoAP header fields and how they can
-   be compressed.
-
-## CoAP version field
-
-This field is bidirectional.
-
-   This field contains always the same value, therefore the TV may be 1, the MO
-   is set to "equal" and the CDF is set to "not-sent"
+~~~~~~
+FID      Pos    DI    TV              MO             CDF
+ver      1      bi    1               equal          not-sent
+~~~~~~
 
 ## CoAP type field
 
-This field is bidirectional or undirectional.
+This field can be managed bidirectionally or unidirectionally.Several strategies can be 
+applied to this field regarding the values used:
 
-Several strategies can be applied to this field regarding the values used:
+* If the ES is a client or a Server and non confirmable message are used, the transmission
+of the Type field can be avoided:
 
-* if only one type is sent, for example NON message, its transmission can be avoided. 
-  TV is set to the value, MO is set to "equal" and CDF is set to "not-sent".
+   * Pos is always 1, 
+   
+   * DI can either be "uplink" if the ES is a CoAP client or "downlink" if the ES 
+   is a CoAP server, or "bidirectional"
+   
+   * TV is set to the  value,
+   
+   * MO is set to "equal" 
+   
+   * CDF is set to "not-sent".
   
-* if two values are sent, for example CON and ACK and RST is not used, this field can 
-  be reduced to one bit. TV is set to a matching value {CON: 0, ACK: 1}, MO is set
-  to match-mapping and CDF is set to mapping-sent.
-  
-* It is also possible avoid transmission of this field by marking it unidirectional.
-  In one direction, the TV is set to CON, MO is set to "equal" and CDF is set to "not-sent".
-  On the other direction, the TV is set to ACK, the MO is set to "equal" and the CDF is 
-  set to "not-sent".
-  
-* Otherwise TV is not set, MO is set to "ignore" and CDF is set to "value-sent".
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+type    1      bi    NON             equal          not-sent
+~~~~~~
 
+  
+*  If the ES is either a client or a Server and confirmable message are used, the 
+DI can be used to elide the type on the request and compress it to 1 bit on the response. 
+The example above shows the rule for a ES acting as a client, directions need to be 
+reversed for a ES acting as a server.
+  
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+type    1      up    CON             equal          not-sent
+type    1      dw    {0:ACK, 1:RST}  match-mapping  mapping-sent
+~~~~~~
+  
+* Otherwise if the ES is acting simultaneously as a client and a server and the rule handle
+these two traffics, Type field must be sent uncompressed.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+type    1      bi                    ignore         send-value
+~~~~~~
 
 ##CoAP token length field
 
@@ -308,26 +331,41 @@ This field is bi-directional.
 
 Several strategies can be applied to this field regarding the values:
 
-* no token or a wellknown length, the transmission can be avoided. TV is set to the
-  length, the MO is set to "equal" and CDF is set to "not-sent"
+* no token or a wellknown length, the transmission can be avoided. A special care must be 
+taken, if CON messages are acknowledged with an empty ACK message. In that case the token
+is not always present.
   
-* The length is variable from one message to another. TV is not set, MO is set to 
-  "ignore" and CDF is set to "value-sent". The size of the sent value  must be known by 
-  ends. The  size may be 4 bits. The receiver must take into account this value to 
-  retrieve the token. A CoAP proxy may be used before the compression to reduce the 
-  field size.
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+TKL     1      bi    value           ignore         send-value
+~~~~~~
 
+* If the length is changing from one message to an other, the Token Length field must be 
+sent. If the Token length can be limited, then only the least significant bits have 
+to be sent. The example below allows values between 0 and 3.
+
+~~~~~~
+FID    Pos    DI    TV              MO             CDF
+TKL    1      bi    0x0             MSB(2)         LSB(2)
+~~~~~~
+
+* otherwise the field value has to be sent.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+TKL     1      bi                    ignore         value-sent
+~~~~~~
   
 ##CoAP code field
 
-This field is unidirectional. The client and the server do not use the 
-same values.
+This field is bidirectional, but compression can be enhanced using DI. 
 
-The CoAP code field defines a tricky way to ensure compatibility with
+The CoAP Code field defines a tricky way to 
+ensure compatibility with
 HTTP values.  Nevertheless only 21 values are defined by {{RFC7252}}
-compared to the 255 possible values.  So, it could efficiently be
-coded on 5 bits. The number of code may vary over time, some new codes
-may be introduced or some applications use a limited number of values. 
+compared to the 255 possible values. 
+
+
 
 ~~~~
 
@@ -370,13 +408,44 @@ may be introduced or some applications use a limited number of values.
    
 {{Fig--example-code-mapping}} gives a possible mapping, it can be changed 
 to add new codes or reduced if some values are never used by both ends. 
+It could efficiently be coded on 5 bits. 
 
- The field can be treated differently in upstream than in downstream.
-   If the Thing is a client an entry can be set on the uplink message with a
-   code matching for 0.0X values and another for downlink values for Y.ZZ
-   codes.  It is the opposite if the thing is a server.
+Even if the number of code can be increase 
+with other RFC, implementations may use a limited number of values, which can
+help to reduce the number of bits sent on the LPWAN.
 
+The number of code may vary over time, some new codes
+may be introduced or some applications use a limited number of values. 
 
+The client and the server do not use the 
+same values. This asymmetry can be exploited to reduce the size sent on 
+the LPWAN. 
+
+The field can be treated differently in upstream than in downstream.
+If the Thing is a client an entry can be set on the uplink message with a
+code matching for 0.0X values and another for downlink values for Y.ZZ
+codes.  It is the opposite if the thing is a server.
+
+If the ES always sends or receives requests with the same method, the Code
+field can be elided. The entry below shows a rule for a client sending only 
+GET request.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+code    1      up    GET             equal          not-sent
+~~~~~~
+
+If the client may send different methods, a matching-list can be applied. For
+table {{Fig--example-code-mapping}}, 3 bits are necessary, but it could be less 
+if fewer methods are used. Example below gives an example where the ES is a server
+and receives only GET and POST requests.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+code    1      dw    {0:0.01, 1:0.02}match-mapping  mapping-sent
+~~~~~~
+
+The same approach can be applied to responses. 
  
 ## CoAP Message ID field
 
@@ -391,19 +460,34 @@ Message ID is used for two purposes:
 In LPWAN, since a message can be received by several radio gateway, some 
 LPWAN technologies include a sequence number in L2 to avoid duplicate frames. Therefore
 if the message does not need to be acknowledged (NON or RST message), the Message
-ID field can be avoided. In that case TV is not set, MO is set to ignore and CDF
-is set to "not-sent". The decompressor can generate a number. 
+ID field can be avoided.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+Mid     1      bi                    ignore         not-sent
+~~~~~~
+
+The decompressor must generate a value.
 
 \[\[Note; check id this field is not used by OSCOAP .\]\]
 
 To optimize information sent on the LPWAN, shorter values may be used during the 
 exchange, but Message ID values generated a common CoAP implementation will not take 
 into account this limitation. Before the compression, a proxy may be needed to 
-reduce the size. In that case, the TV is set to 0x0000, MO is set to "MSB(l)" 
-and CDF is set to "LSB(16-l)", where "l" is the size of the compressed header.
+reduce the size. 
 
-Otherwise if no compression is needed the  TV is not set, 
-MO is set to ignore and CDF is set to "not-sent". 
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+Mid     1      bi    0x0000          MSB(12)        LSB(4)
+~~~~~~
+
+Otherwise if no compression is possible, the field has to be sent
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+Mid     1      bi                    ignore         value-sent
+~~~~~~
+
 
 ## CoAP Token field
 
@@ -419,22 +503,48 @@ Common CoAP implementations may generate large tokens, even if shorter tokens co
 be used regarding the LPWAN characteristics. A proxy may be needed to reduce 
 the size of the token before compression. 
 
-Otherwise the TV is not set, the MO is set to ignore and CDF is set to "value-sent". 
+The size of the compress token sent is known by a combination of the Token Length field
+and the rule entry. For instance, with the entry below:
 
-The decompression may know the length of the token field from the token length field.
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+tkl     1      bi    2               equal          not-sent     
+token   1      bi    0x00            MSB(12)        LSB(4)
+~~~~~~
+
+The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.
+
+# CoAP options
 
 ##CoAP option Content-format field.
 
 This field is unidirectional and must not be set to bidirectional in a rule entry.
-It is used only by the server to inform the client about of the payload type and is never found in client
-requests.
+It is used only by the server to inform the client about of the payload type and is 
+never found in client requests.
 
-If the value is known by both sides, the TV contains that value and MO is set to
-"equal" and the CDF is set to "not-sent".
+If single value is expected by the client, the TV contains that value and MO is set to
+"equal" and the CDF is set to "not-sent". The examples below describe the rules for an
+ES acting as a server.
 
-Otherwise the TV is not set, MO is set to "ignore" and CDF is set to "value-sent"
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+content 1      up    value           equal          not-sent
+~~~~~~
 
-A mapping list can also be used to reduce the size.
+If several possible value are expected by the client, a matching-list can be used.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+content 1      up    {0:50,1:41}     match-mapping  mapping-sent
+~~~~~~
+
+Otherwise the value can be sent.The value-sent CDF in the compressor do not send the 
+option type and the decompressor reconstruct it regarding the position in the rule.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+content 1      up                    ignore         value-sent
+~~~~~~
 
 ##CoAP option Accept field
 
@@ -443,83 +553,116 @@ It is used only by the client to inform of the possible payload type and is neve
 found in server response.
 
 The number of accept options is not limited and can vary regarding the usage. To
-be selected a rule must contain the exact number about accept options with their positions.
+be selected a rule must contain the exact number about accept options with their 
+positions. Since the order in which the Accept value are sent, the position order 
+can be modified. The rule below 
 
-if the accept value must be sent, the TV contains that value, MO is set to "ignore x" 
-where "x" is the accept option's position and CDF is set to value-sent. Since the value length
-is not known, it must be sent as a CoAP TLV with delta-T set to 0. 
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+accept  1      up    41              egal           not-sent
+accept  2      up    50              egal           not-sent
+~~~~~~~ 
 
-Otherwise the TV is not set, MO is set to "equal x" where x is the accept option's position
-and CDF is set to "not-sent"
+will be selected only if two accept options are in the CoAP header if this order. 
 
-\[\[note: it could be more liberal and do not provide the same order after decompression\]\]
+The rule below:
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+accept  0      up    41              egal           not-sent
+accept  0      up    50              egal           not-sent
+~~~~~~~ 
+
+will accept a-only CoAP messages with 2 accept options, but the order will not influence
+the rule selection. The decompression will reconstruct the header regarding the rule order.
+
+Otherwise a matching-list can be applied to the different values, in that case the order 
+is important to recover the appropriate value and the position must be clearly indicate.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+accept 1      up    {0:50,1:41}     match-mapping  mapping-sent
+accept 2      up    {0:50,1:61}     match-mapping  mapping-sent
+accept 3      up    {0:61,1:71}     match-mapping  mapping-sent
+~~~~~~
+
+Finally, the option  can be  explicitly sent.
+
+~~~~~~
+FID     Pos    DI    TV              MO             CDF
+accept  1      up                    ignore         value-sent
+~~~~~~
 
 
-##CoAP option Max-Age field
+##CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
 
 This field is unidirectional and must not be set to bidirectional in a rule entry.
-It is used only by the server to inform of the caching duration and is never found in client
+It is used only by the server to inform of the caching duration and is never 
+found in client
 requests.
 
-If the duration is known by both ends, the TV is set with this duration, the MO is set
-to "equal" and the CDF is set to "not-sent".
+If the duration is known by both ends, value can be elided on the LPWAN.
 
-Otherwise the TV is not set, the MO is set to "ignore" and the CDF is set to "value-sent".
-Since the value length is not known, it must be sent as a CoAP TLV with delta-T set to 0. 
+A matching list can be used if some wellknown values are defined.
+
+Otherwise the option length and value can be sent on the LPWAN. 
 
 
 \[\[note: we can reduce (or create a new option) the unit to minute, 
 second is small for LPWAN \]\]
 
-##CoAP option Uri-Host and Uri-Port fields
-
-This fields are unidirectional and must not be set to bidirectional in a rule entry.
-They are  used only by the client to access to a specific server and are never found 
-in server response.
-
-For each option, if the value is known by both ends, the TV is set with this value, 
-the MO is set
-to "equal" and the CDF is set to "not-sent".
-
-Otherwise the TV is not set, the MO is set to "ignore" and the CDF is set to "value-sent".
-Since the value length is not known, it must be sent as a CoAP TLV with delta-T set to 0. 
-
-
-##CoAP option Uri-Path and Uri-Query fields
+#CoAP option Uri-Path and Uri-Query fields
 
 This fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
 in server response.
 
-Path and Query option may have different formats. {{URI-Example}} gives some examples. 
+The Matching Operator behavior has not changed, but the value must take a position value, 
+if the entry is repeated :
 
-If the URI path as well as the query is composed of 2 or more elements, then
-the position must be set in the MO parameters. 
+~~~~
+FID       Pos    DI    TV              MO             CDF
+URI-Path  1      up    foo             equal          not-sent
+URI-Path  2      up    bar             equal          not-sent
+~~~~
+{: #Fig-MOposition title='Position entry.'}
 
-If a Path or Query element is stable over the time, then TV is set with its value, MO is
-set to "equal x" where x is the position in the Path or the Query and CDF is set to "not-sent". 
+For instance, the  rule {{Fig-MOposition}} matches with /foo/bar, but not /bar/foo.
 
-Otherwise if the value varies over time, TV is not set, MO is set to "ignore x" 
-where x is the position in the Path or in the Query and CDF is set to "value-sent". Since
-the value length is not known, it must be sent as a CoAP TLV with deltaT set to 0.
+When the length is not clearly indicated in the rule, the value length must be sent with the
+field data, which means for CoAP to send directly the CoAP option with length and value.
+
+For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
+
+~~~~~~ 
+FID       Pos    DI    TV              MO             CDF
+URI-Path  1      up    c               equal          not-sent
+URI-Path  2      up                    ignore         value-sent
+URI-Query 1      up    k=              MSB (16)       LSB 
+~~~~~
+{: #Fig-CoMicompress title='CoMi URI compression'}
+
+{{Fig-CoMicompress}} shows the parsing and the compression of the URI. where c is not sent.
+The second element is sent with the length (i.e. 0x2 X 6) followed by the query option 
+(i.e. 0x05 "eth0").
 
 A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to
 optimize the compression, several elements can be regrouped into a single entry. 
 Numbering of elements do not change, MO comparison is set with the first element 
 of the matching.
 
+~~~~~~ 
+FID       Pos    DI    TV              MO             CDF
+URI-Path  1      up    {0:"/c/c",      equal          not-sent
+                        1:"/c/d"
+URI-Path  3      up                    ignore         value-sent
+URI-Query 1      up    k=              MSB (16)       LSB 
+~~~~~
+{: #Fig--complex-path title="complex path example"}
+
 For instance, the following Path /foo/bar/variable/stable can leads to the rule defined 
 {{Fig--complex-path}}.
 
-~~~~
-      FID        TV              MO                   CDF
-      
-      URI-Path   {"/foo/bar":1,  match-mapping 1      mapping-sent
-                  "/bar/foo":2}  
-      URI-Path                   ignore 3             value-sent
-      URI-Path     stable        equal 4              not-sent
-~~~~
-{: #Fig--complex-path title="complex path example"}
  
 
 ##CoAP option Proxy-URI and Proxy-Scheme fields
@@ -570,6 +713,7 @@ set to "equal" and CDF is set to "not-sent".
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDF to "value-sent". A matching list can also be used to reduce the size. 
 
+# Protocol analysis
 
 # Examples of CoAP header compression
 
@@ -653,8 +797,8 @@ are needed to code all the requests and 21 to code all the responses in the matc
 |CoAP Type    | CON  |equal    |not-sent     |dw |                |
 |CoAP Type    | ACK  |equal    |not-sent     |up |                |
 |CoAP TKL     | 0    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |match-map|matching-sent|dw |CCCC C          |
-|CoAP Code    | ML3  |match-map|matching-sent|up |CCCC C          |
+|CoAP Code    | ML2  |match-map|mapping-sent |dw |CCCC C          |
+|CoAP Code    | ML3  |match-map|mapping-sent |up |CCCC C          |
 |CoAP MID     | 0000 |MSB(5)   |LSB(11)      |bi |       M-ID     |
 |CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
@@ -702,7 +846,7 @@ ACK MID=0x0034   |------------------------>|
 |CoAP TKL     | 1    |equal    |not-sent     |bi |                |
 |CoAP Code    | POST |equal    |not-sent     |up |                |
 |CoAP Code    | 0.00 |equal    |not-sent     |dw |                |
-|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |up |TTTTTTTT        |
 |CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
 |CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
@@ -719,7 +863,7 @@ ACK MID=0x0034   |------------------------>|
 |CoAP TKL     | 1    |equal    |not-sent     |bi |                |
 |CoAP Code    | 2.05 |equal    |not-sent     |dw |                |
 |CoAP Code    | 0.00 |equal    |not-sent     |up |                |
-|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
 |COAP Accept  | X    |equal    |not-sent     |dw |                |
 +-------------+------+---------+-------------+---+----------------+
@@ -732,11 +876,11 @@ alternative rule:
 | Field       |TV    |MO       |CDF          |dir| Sent           |
 +=============+======+=========+=============+===+================+
 |CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    | ML1  |equal    |match-sent(1)|bi |t               |
+|CoAP Type    | ML1  |match-map|match-sent   |bi |t               |
 |CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |equal    |match-sent(1)|up | cc             |
-|CoAP Code    | ML3  |equal    |match-sent(2)|dw | cc             |
-|CoAP MID     | 0000 |MSB(8)   |LSB(8)       |bi |MMMMMMMM        |
+|CoAP Code    | ML2  |match-map|match-sent   |up | cc             |
+|CoAP Code    | ML3  |match-map|match-sent   |dw | cc             |
+|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
 |CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
 |CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
 |CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
