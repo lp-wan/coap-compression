@@ -634,7 +634,7 @@ field data, which means for CoAP to send directly the CoAP option with length an
 
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
-~~~~~~ 
+~~~~~ 
 FID       Pos    DI    TV              MO             CDF
 URI-Path  1      up    c               equal          not-sent
 URI-Path  2      up                    ignore         value-sent
@@ -651,7 +651,7 @@ optimize the compression, several elements can be regrouped into a single entry.
 Numbering of elements do not change, MO comparison is set with the first element 
 of the matching.
 
-~~~~~~ 
+~~~~~ 
 FID       Pos    DI    TV              MO             CDF
 URI-Path  1      up    {0:"/c/c",      equal          not-sent
                         1:"/c/d"
