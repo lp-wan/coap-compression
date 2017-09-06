@@ -58,7 +58,7 @@ role of a CoAP client, a CoAP client or both roles.
 
 # Introduction {#Introduction}
 
-CoAP {{RFC7252}} is an implementation of the REST architecture for constrained 
+CoAP {{rfc7252}} is an implementation of the REST architecture for constrained 
 devices. Gateway
 between CoAP and HTTP can be easily built since both protocols uses the same
 address space (URL), caching mechanisms and methods.
@@ -122,7 +122,7 @@ Nevertheless, if limited, the size of a CoAP header may be
   length there is no ambiguity. For options, the rule indicates also the expected options
   found the int CoAP header. Therefore only the length is needed to recognise an option. 
   The length will be send using the same CoAP encoding (size less than 12 are directly sent, 
-  higher values uses the escape mechanisms defined by {{RFC7252}}). Delta Type is omitted, 
+  higher values uses the escape mechanisms defined by {{rfc7252}}). Delta Type is omitted, 
   the value will
   be recovered by the decompressor. This reduce the option length of 4, 12 or 20 bits regarding
   the orignial size of the delta type encoding in the option.
@@ -150,7 +150,7 @@ A LPWAN node can either be a client or a server and sometimes both.
 
 
 * In REST level, a REST request is acknowledged by an "error" code.
-      The {{RFC7967}} defines an option to limit the number of
+      The {{rfc7967}} defines an option to limit the number of
       acknowledgements.
 
 
@@ -195,7 +195,7 @@ CoAP header format defines the following fields:
 * message id (16 bits). This value of this header field is used to acknowledge CON
   frames. The size of this field is computed to allow the anticipation
   (how many frames can be sent without acknowledgement). When a value
-  is used, the {{RFC7252}} defines the time before it can be reused
+  is used, the {{rfc7252}} defines the time before it can be reused
   without ambiguities. This size defined may be too large for a LPWAN node
   sending or receiving few messages a day.
 
@@ -205,7 +205,7 @@ CoAP header format defines the following fields:
   enough.
 
 * options are coded using delta-TLV. The delta-T depends on previous values,
-  length is encoded inside the option. The {{RFC7252}} distinguishes
+  length is encoded inside the option. The {{rfc7252}} distinguishes
   repeatable options that can appear several times in the header.
   Among them we can distinguish:
 
@@ -362,7 +362,7 @@ This field is bidirectional, but compression can be enhanced using DI.
 
 The CoAP Code field defines a tricky way to 
 ensure compatibility with
-HTTP values.  Nevertheless only 21 values are defined by {{RFC7252}}
+HTTP values.  Nevertheless only 21 values are defined by {{rfc7252}}
 compared to the 255 possible values. 
 
 
@@ -696,7 +696,7 @@ with some LPWAN technologies.
 
 ## Observe
 
-{{RFC7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
+{{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
 CDF is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
 To reduce the transmission size either the Thing implementation should limit the value 
 increase or a proxy can be used limit the increase.
