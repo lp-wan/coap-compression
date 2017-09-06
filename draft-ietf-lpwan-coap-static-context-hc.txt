@@ -930,57 +930,11 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 9.  Normative References
 
-   [I-D.ietf-core-comi]
-              Veillette, M., Stok, P., Pelov, A., and A. Bierman, "CoAP
-              Management Interface", draft-ietf-core-comi-01 (work in
-              progress), July 2017.
-
    [I-D.toutain-lpwan-ipv6-static-context-hc]
               Minaburo, A. and L. Toutain, "LPWAN Static Context Header
               Compression (SCHC) for IPv6 and UDP", draft-toutain-lpwan-
               ipv6-static-context-hc-00 (work in progress), September
               2016.
-
-   [rfc1332]  McGregor, G., "The PPP Internet Protocol Control Protocol
-              (IPCP)", RFC 1332, DOI 10.17487/RFC1332, May 1992,
-              <https://www.rfc-editor.org/info/rfc1332>.
-
-
-
-
-
-Minaburo & Toutain       Expires March 10, 2018                [Page 17]
-
-Internet-Draft           LPWAN CoAP compression           September 2017
-
-
-   [rfc3095]  Bormann, C., Burmeister, C., Degermark, M., Fukushima, H.,
-              Hannu, H., Jonsson, L-E., Hakenberg, R., Koren, T., Le,
-              K., Liu, Z., Martensson, A., Miyazaki, A., Svanbro, K.,
-              Wiebke, T., Yoshimura, T., and H. Zheng, "RObust Header
-              Compression (ROHC): Framework and four profiles: RTP, UDP,
-              ESP, and uncompressed", RFC 3095, DOI 10.17487/RFC3095,
-              July 2001, <https://www.rfc-editor.org/info/rfc3095>.
-
-   [rfc4944]  Montenegro, G., Kushalnagar, N., Hui, J., and D. Culler,
-              "Transmission of IPv6 Packets over IEEE 802.15.4
-              Networks", RFC 4944, DOI 10.17487/RFC4944, September 2007,
-              <https://www.rfc-editor.org/info/rfc4944>.
-
-   [rfc4997]  Finking, R. and G. Pelletier, "Formal Notation for RObust
-              Header Compression (ROHC-FN)", RFC 4997,
-              DOI 10.17487/RFC4997, July 2007,
-              <https://www.rfc-editor.org/info/rfc4997>.
-
-   [rfc5225]  Pelletier, G. and K. Sandlund, "RObust Header Compression
-              Version 2 (ROHCv2): Profiles for RTP, UDP, IP, ESP and
-              UDP-Lite", RFC 5225, DOI 10.17487/RFC5225, April 2008,
-              <https://www.rfc-editor.org/info/rfc5225>.
-
-   [rfc6282]  Hui, J., Ed. and P. Thubert, "Compression Format for IPv6
-              Datagrams over IEEE 802.15.4-Based Networks", RFC 6282,
-              DOI 10.17487/RFC6282, September 2011,
-              <https://www.rfc-editor.org/info/rfc6282>.
 
    [rfc7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
@@ -992,23 +946,20 @@ Internet-Draft           LPWAN CoAP compression           September 2017
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/info/rfc7641>.
 
+
+
+
+Minaburo & Toutain       Expires March 10, 2018                [Page 17]
+
+Internet-Draft           LPWAN CoAP compression           September 2017
+
+
    [rfc7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
               Bose, "Constrained Application Protocol (CoAP) Option for
               No Server Response", RFC 7967, DOI 10.17487/RFC7967,
               August 2016, <https://www.rfc-editor.org/info/rfc7967>.
 
 Authors' Addresses
-
-
-
-
-
-
-
-Minaburo & Toutain       Expires March 10, 2018                [Page 18]
-
-Internet-Draft           LPWAN CoAP compression           September 2017
-
 
    Ana Minaburo
    Acklio
@@ -1054,11 +1005,4 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-
-
-
-
-
-
-
-Minaburo & Toutain       Expires March 10, 2018                [Page 19]
+Minaburo & Toutain       Expires March 10, 2018                [Page 18]
