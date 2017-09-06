@@ -31,17 +31,10 @@ author:
   country: France
   email: Laurent.Toutain@imt-atlantique.fr
 normative:
-  rfc4944:
-  rfc3095:
-  rfc4997:
-  rfc5225:
-  rfc6282:
   rfc7252:
   rfc7967:
-  rfc1332:
   rfc7641:
   I-D.toutain-lpwan-ipv6-static-context-hc:
-  I-D.ietf-core-comi:
 
 --- abstract
 
