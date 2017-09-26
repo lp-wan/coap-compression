@@ -52,7 +52,7 @@ role of a CoAP client, a CoAP client or both roles.
 # Introduction {#Introduction}
 
 CoAP {{rfc7252}} is an implementation of the REST architecture for constrained 
-devices. Gateway
+devices. A Gateway
 between CoAP and HTTP can be easily built since both protocols uses the same
 address space (URL), caching mechanisms and methods.
 
