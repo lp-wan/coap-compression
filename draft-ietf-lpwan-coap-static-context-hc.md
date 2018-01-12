@@ -270,8 +270,8 @@ This field is bidirectional and can be elided during the SCHC compression, since
 contains  the same value. It appears only in first position.
 
 ~~~~~~
-FID      Pos    DI    TV              MO             CDF
-ver      1      bi    1               equal          not-sent
+FID      FL   FP    DI    Value         MO             CDF         Sent
+ver      2    1     bi     1           equal          not-sent
 ~~~~~~
 
 ## CoAP type field
@@ -294,8 +294,8 @@ of the Type field can be avoided:
    * CDF is set to "not-sent".
   
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-type    1      bi    NON             equal          not-sent
+FID     FL   FP    DI    Value        MO             CDF            Sent
+type    2    1     bi    NON         equal          not-sent
 ~~~~~~
 
   
@@ -305,17 +305,17 @@ The example above shows the rule for a ES acting as a client, directions need to
 reversed for a ES acting as a server.
   
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-type    1      up    CON             equal          not-sent
-type    1      dw    {0:ACK, 1:RST}  match-mapping  mapping-sent
+FID     FL    FP      DI    Value              MO             CDF       Sent
+type    2      1      up    CON             equal          not-sent
+type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 ~~~~~~
   
 * Otherwise if the ES is acting simultaneously as a client and a server and the rule handle
 these two traffics, Type field must be sent uncompressed.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-type    1      bi                    ignore         send-value
+FID     FL    FP    DI    Value              MO             CDF         Sent
+type    2     1     bi                    ignore         send-value      [2]
 ~~~~~~
 
 ##CoAP token length field
@@ -329,8 +329,8 @@ taken, if CON messages are acknowledged with an empty ACK message. In that case 
 is not always present.
   
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-TKL     1      bi    value           ignore         send-value
+FID     FL    FP    DI      Value             MO             CDF         Sent
+TKL     4     1     bi      value           ignore         send-value     [4]
 ~~~~~~
 
 * If the length is changing from one message to an other, the Token Length field must be 
@@ -338,15 +338,15 @@ sent. If the Token length can be limited, then only the least significant bits h
 to be sent. The example below allows values between 0 and 3.
 
 ~~~~~~
-FID    Pos    DI    TV              MO             CDF
-TKL    1      bi    0x0             MSB(2)         LSB(2)
+FID    FL    FP     DI    Value            MO             CDF       Sent
+TKL    4     1      bi    0x0             MSB(2)         LSB(2)      [2]
 ~~~~~~
 
 * otherwise the field value has to be sent.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-TKL     1      bi                    ignore         value-sent
+FID     FL    FP   DI    Value              MO             CDF         Sent
+TKL     4     1    bi                    ignore         value-sent      [4]
 ~~~~~~
   
 ##CoAP code field
@@ -424,8 +424,8 @@ field can be elided. The entry below shows a rule for a client sending only
 GET request.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-code    1      up    GET             equal          not-sent
+FID     FL  FP    DI    Value              MO             CDF       Sent
+code    8   1     up    GET             equal          not-sent
 ~~~~~~
 
 If the client may send different methods, a matching-list can be applied. For
@@ -434,8 +434,8 @@ if fewer methods are used. Example below gives an example where the ES is a serv
 and receives only GET and POST requests.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-code    1      dw    {0:0.01, 1:0.02}match-mapping  mapping-sent
+FID    FL  FP    DI    Value              MO             CDF       Sent
+code   8   1     dw   [0.01, 0.02]  match-mapping  mapping-sent     [1]
 ~~~~~~
 
 The same approach can be applied to responses. 
@@ -456,8 +456,8 @@ if the message does not need to be acknowledged (NON or RST message), the Messag
 ID field can be avoided.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-Mid     1      bi                    ignore         not-sent
+FID     FL    FP    DI    Value             MO             CDF       Sent
+Mid     8     1     bi                    ignore         not-sent
 ~~~~~~
 
 The decompressor must generate a value.
@@ -470,15 +470,15 @@ into account this limitation. Before the compression, a proxy may be needed to
 reduce the size. 
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-Mid     1      bi    0x0000          MSB(12)        LSB(4)
+FID     FL    FP    DI    Value             MO            CDF     Sent
+Mid     8     1     bi    0x0000          MSB(12)        LSB(4)    [4]
 ~~~~~~
 
 Otherwise if no compression is possible, the field has to be sent
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-Mid     1      bi                    ignore         value-sent
+FID     FL    FP    DI    Value           MO             CDF        Sent
+Mid     8     1     bi                  ignore         value-sent    [8]
 ~~~~~~
 
 
@@ -500,9 +500,9 @@ The size of the compress token sent is known by a combination of the Token Lengt
 and the rule entry. For instance, with the entry below:
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-tkl     1      bi    2               equal          not-sent     
-token   1      bi    0x00            MSB(12)        LSB(4)
+FID     FL    FP    DI    Value           MO             CDF        Sent
+tkl     4     1      bi    2            equal          not-sent     
+token   8     1      bi    0x00         MSB(12)        LSB(4)       [4]
 ~~~~~~
 
 The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.
@@ -520,23 +520,23 @@ If single value is expected by the client, the TV contains that value and MO is 
 ES acting as a server.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-content 1      up    value           equal          not-sent
+FID       FL    FP    DI    Value           MO             CDF        Sent
+content   16      1      up    value         equal        not-sent
 ~~~~~~
 
 If several possible value are expected by the client, a matching-list can be used.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-content 1      up    {0:50,1:41}     match-mapping  mapping-sent
+FID        FL    FP    DI    Value              MO             CDF         Sent
+content    16    1    up    [50, 41]     match-mapping   mapping-sent       [1]
 ~~~~~~
 
 Otherwise the value can be sent.The value-sent CDF in the compressor do not send the 
 option type and the decompressor reconstruct it regarding the position in the rule.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-content 1      up                    ignore         value-sent
+FID       FL   FP    DI    Value            MO             CDF             Sent
+content   16   1     up                    ignore         value-sent      [0-16]
 ~~~~~~
 
 ##CoAP option Accept field
@@ -551,9 +551,9 @@ positions. Since the order in which the Accept value are sent, the position orde
 can be modified. The rule below 
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-accept  1      up    41              egal           not-sent
-accept  2      up    50              egal           not-sent
+FID       FL    FP    DI    Value           MO             CDF         Sent
+accept    16     1      up    41           egal           not-sent
+accept    16     2      up    50           egal           not-sent
 ~~~~~~~ 
 
 will be selected only if two accept options are in the CoAP header if this order. 
@@ -561,9 +561,9 @@ will be selected only if two accept options are in the CoAP header if this order
 The rule below:
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-accept  0      up    41              egal           not-sent
-accept  0      up    50              egal           not-sent
+FID       FL    FP    DI    Value              MO             CDF       Sent
+accept    16    0     up    41              egal           not-sent
+accept    16    0     up    50              egal           not-sent
 ~~~~~~~ 
 
 will accept a-only CoAP messages with 2 accept options, but the order will not influence
@@ -573,10 +573,10 @@ Otherwise a matching-list can be applied to the different values, in that case t
 is important to recover the appropriate value and the position must be clearly indicate.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-accept 1      up    {0:50,1:41}     match-mapping  mapping-sent
-accept 2      up    {0:50,1:61}     match-mapping  mapping-sent
-accept 3      up    {0:61,1:71}     match-mapping  mapping-sent
+FID     FL    FP     DI    Value              MO             CDF        Sent
+accept  16    1      up    [50,41]     match-mapping  mapping-sent      [1]
+accept  16    2      up    [50,61]     match-mapping  mapping-sent      [1]
+accept  16    3      up    [61,71]     match-mapping  mapping-sent      [1]
 ~~~~~~
 
 Finally, the option  can be  explicitly sent.
