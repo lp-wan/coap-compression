@@ -5,8 +5,8 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Informational                                L. Toutain
-Expires: March 10, 2018          Institut MINES TELECOM ; IMT Atlantique
-                                                      September 06, 2017
+Expires: September 1, 2018       Institut MINES TELECOM ; IMT Atlantique
+                                                       February 28, 2018
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -38,11 +38,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 10, 2018.
+   This Internet-Draft will expire on September 1, 2018.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 1]
+Minaburo & Toutain      Expires September 1, 2018               [Page 1]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    to this document.  Code Components extracted from this document must
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 2]
+Minaburo & Toutain      Expires September 1, 2018               [Page 2]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    [I-D.toutain-lpwan-ipv6-static-context-hc] defines a header
@@ -165,9 +165,9 @@ CoAP header may be done in conjunction with the above layers or independantly.
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 3]
+Minaburo & Toutain      Expires September 1, 2018               [Page 3]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
       compression will not modify the values to offer a better
@@ -212,8 +212,8 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    compression, since it always contains the same value.  It appears
    only in first position.
 
-   FID      Pos    DI    TV              MO             CDF
-   ver      1      bi    1               equal          not-sent
+ FID      FL   FP    DI    Value         MO             CDF         Sent
+ ver      2    1     bi     1           equal          not-sent
 
 
 
@@ -221,9 +221,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 4]
+Minaburo & Toutain      Expires September 1, 2018               [Page 4]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
 3.2.  CoAP type field
@@ -245,8 +245,8 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
       *  CDF is set to "not-sent".
 
-   FID     Pos    DI    TV              MO             CDF
-   type    1      bi    NON             equal          not-sent
+FID     FL   FP    DI    Value        MO             CDF            Sent
+type    2    1     bi    NON         equal          not-sent
 
    o  If the ES is either a client or a Server and confirmable message
       are used, the DI can be used to elide the type on the request and
@@ -254,16 +254,16 @@ Internet-Draft           LPWAN CoAP compression           September 2017
       rule for a ES acting as a client, directions need to be reversed
       for a ES acting as a server.
 
-   FID     Pos    DI    TV              MO             CDF
-   type    1      up    CON             equal          not-sent
-   type    1      dw    {0:ACK, 1:RST}  match-mapping  mapping-sent
+FID     FL    FP      DI    Value              MO             CDF       Sent
+type    2      1      up    CON             equal          not-sent
+type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 
    o  Otherwise if the ES is acting simultaneously as a client and a
       server and the rule handle these two traffics, Type field must be
       sent uncompressed.
 
-   FID     Pos    DI    TV              MO             CDF
-   type    1      bi                    ignore         send-value
+FID     FL    FP    DI    Value              MO             CDF         Sent
+type    2     1     bi                    ignore         send-value      [2]
 
 3.3.  CoAP token length field
 
@@ -277,29 +277,29 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 5]
+Minaburo & Toutain      Expires September 1, 2018               [Page 5]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
       with an empty ACK message.  In that case the token is not always
       present.
 
-   FID     Pos    DI    TV              MO             CDF
-   TKL     1      bi    value           ignore         send-value
+FID     FL    FP    DI      Value             MO             CDF         Sent
+TKL     4     1     bi      value           ignore         send-value     [4]
 
    o  If the length is changing from one message to an other, the Token
       Length field must be sent.  If the Token length can be limited,
       then only the least significant bits have to be sent.  The example
       below allows values between 0 and 3.
 
-   FID    Pos    DI    TV              MO             CDF
-   TKL    1      bi    0x0             MSB(2)         LSB(2)
+FID    FL    FP     DI    Value            MO             CDF       Sent
+TKL    4     1      bi    0x0             MSB(2)         LSB(2)      [2]
 
    o  otherwise the field value has to be sent.
 
-   FID     Pos    DI    TV              MO             CDF
-   TKL     1      bi                    ignore         value-sent
+FID     FL    FP   DI    Value              MO             CDF         Sent
+TKL     4     1    bi                    ignore         value-sent      [4]
 
 3.4.  CoAP code field
 
@@ -333,9 +333,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 6]
+Minaburo & Toutain      Expires September 1, 2018               [Page 6]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
                   +------+------------------------------+-----------+
@@ -389,9 +389,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 7]
+Minaburo & Toutain      Expires September 1, 2018               [Page 7]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    The client and the server do not use the same values.  This asymmetry
@@ -406,16 +406,16 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    Code field can be elided.  The entry below shows a rule for a client
    sending only GET request.
 
-   FID     Pos    DI    TV              MO             CDF
-   code    1      up    GET             equal          not-sent
+FID     FL  FP    DI    Value              MO             CDF       Sent
+code    8   1     up    GET             equal          not-sent
 
    If the client may send different methods, a matching-list can be
    applied.  For table Figure 1, 3 bits are necessary, but it could be
    less if fewer methods are used.  Example below gives an example where
    the ES is a server and receives only GET and POST requests.
 
-   FID     Pos    DI    TV              MO             CDF
-   code    1      dw    {0:0.01, 1:0.02}match-mapping  mapping-sent
+ FID    FL  FP    DI    Value              MO             CDF       Sent
+ code   8   1     dw   [0.01, 0.02]  match-mapping  mapping-sent     [1]
 
    The same approach can be applied to responses.
 
@@ -435,8 +435,8 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    acknowledged (NON or RST message), the Message ID field can be
    avoided.
 
-   FID     Pos    DI    TV              MO             CDF
-   Mid     1      bi                    ignore         not-sent
+FID     FL    FP    DI    Value             MO             CDF       Sent
+Mid     8     1     bi                    ignore         not-sent
 
    The decompressor must generate a value.
 
@@ -445,9 +445,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 8]
+Minaburo & Toutain      Expires September 1, 2018               [Page 8]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    To optimize information sent on the LPWAN, shorter values may be used
@@ -455,13 +455,13 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    implementation will not take into account this limitation.  Before
    the compression, a proxy may be needed to reduce the size.
 
-   FID     Pos    DI    TV              MO             CDF
-   Mid     1      bi    0x0000          MSB(12)        LSB(4)
+  FID     FL    FP    DI    Value             MO            CDF     Sent
+  Mid     8     1     bi    0x0000          MSB(12)        LSB(4)    [4]
 
    Otherwise if no compression is possible, the field has to be sent
 
-   FID     Pos    DI    TV              MO             CDF
-   Mid     1      bi                    ignore         value-sent
+FID     FL    FP    DI    Value           MO             CDF        Sent
+Mid     8     1     bi                  ignore         value-sent    [8]
 
 3.6.  CoAP Token field
 
@@ -481,9 +481,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    Token Length field and the rule entry.  For instance, with the entry
    below:
 
-   FID     Pos    DI    TV              MO             CDF
-   tkl     1      bi    2               equal          not-sent
-   token   1      bi    0x00            MSB(12)        LSB(4)
+FID     FL    FP    DI    Value           MO             CDF        Sent
+tkl     4     1      bi    2            equal          not-sent
+token   8     1      bi    0x00         MSB(12)        LSB(4)       [4]
 
    The uncompressed token is 2 bytes long, but the compressed size will
    be 4 bits.
@@ -501,30 +501,30 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                 [Page 9]
+Minaburo & Toutain      Expires September 1, 2018               [Page 9]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    If single value is expected by the client, the TV contains that value
    and MO is set to "equal" and the CDF is set to "not-sent".  The
    examples below describe the rules for an ES acting as a server.
 
-   FID     Pos    DI    TV              MO             CDF
-   content 1      up    value           equal          not-sent
+FID       FL    FP    DI    Value           MO             CDF        Sent
+content   16      1      up    value         equal        not-sent
 
    If several possible value are expected by the client, a matching-list
    can be used.
 
-   FID     Pos    DI    TV              MO             CDF
-   content 1      up    {0:50,1:41}     match-mapping  mapping-sent
+FID        FL    FP    DI    Value              MO             CDF         Sent
+content    16    1    up    [50, 41]     match-mapping   mapping-sent       [1]
 
    Otherwise the value can be sent.The value-sent CDF in the compressor
    do not send the option type and the decompressor reconstruct it
    regarding the position in the rule.
 
-   FID     Pos    DI    TV              MO             CDF
-   content 1      up                    ignore         value-sent
+FID       FL   FP    DI    Value            MO             CDF             Sent
+content   16   1     up                    ignore         value-sent      [0-16]
 
 4.2.  CoAP option Accept field
 
@@ -538,18 +538,18 @@ Internet-Draft           LPWAN CoAP compression           September 2017
    Accept value are sent, the position order can be modified.  The rule
    below
 
-   FID     Pos    DI    TV              MO             CDF
-   accept  1      up    41              egal           not-sent
-   accept  2      up    50              egal           not-sent
+FID       FL    FP    DI    Value           MO             CDF         Sent
+accept    16     1      up    41           egal           not-sent
+accept    16     2      up    50           egal           not-sent
 
    will be selected only if two accept options are in the CoAP header if
    this order.
 
    The rule below:
 
-   FID     Pos    DI    TV              MO             CDF
-   accept  0      up    41              egal           not-sent
-   accept  0      up    50              egal           not-sent
+FID       FL    FP    DI    Value              MO             CDF       Sent
+accept    16    0     up    41              egal           not-sent
+accept    16    0     up    50              egal           not-sent
 
    will accept a-only CoAP messages with 2 accept options, but the order
    will not influence the rule selection.  The decompression will
@@ -557,19 +557,19 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 10]
+Minaburo & Toutain      Expires September 1, 2018              [Page 10]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    Otherwise a matching-list can be applied to the different values, in
    that case the order is important to recover the appropriate value and
    the position must be clearly indicate.
 
-   FID     Pos    DI    TV              MO             CDF
-   accept 1      up    {0:50,1:41}     match-mapping  mapping-sent
-   accept 2      up    {0:50,1:61}     match-mapping  mapping-sent
-   accept 3      up    {0:61,1:71}     match-mapping  mapping-sent
+FID     FL    FP     DI    Value              MO             CDF        Sent
+accept  16    1      up    [50,41]     match-mapping  mapping-sent      [1]
+accept  16    2      up    [50,61]     match-mapping  mapping-sent      [1]
+accept  16    3      up    [61,71]     match-mapping  mapping-sent      [1]
 
    Finally, the option can be explicitly sent.
 
@@ -613,9 +613,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 11]
+Minaburo & Toutain      Expires September 1, 2018              [Page 11]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    When the length is not clearly indicated in the rule, the value
@@ -669,9 +669,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 12]
+Minaburo & Toutain      Expires September 1, 2018              [Page 12]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
 5.2.  CoAP option ETag, If-Match, If-None-Match, Location-Path and
@@ -725,9 +725,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 13]
+Minaburo & Toutain      Expires September 1, 2018              [Page 13]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
 8.  Examples of CoAP header compression
@@ -781,9 +781,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 14]
+Minaburo & Toutain      Expires September 1, 2018              [Page 14]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
                    End System               LPWA LC
@@ -837,9 +837,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 15]
+Minaburo & Toutain      Expires September 1, 2018              [Page 15]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
 8.2.  Complete exchange
@@ -893,9 +893,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 16]
+Minaburo & Toutain      Expires September 1, 2018              [Page 16]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    |CoAP Code    | 0.00 |equal    |not-sent     |up |                |
@@ -949,9 +949,9 @@ Internet-Draft           LPWAN CoAP compression           September 2017
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 17]
+Minaburo & Toutain      Expires September 1, 2018              [Page 17]
 
-Internet-Draft           LPWAN CoAP compression           September 2017
+Internet-Draft           LPWAN CoAP compression            February 2018
 
 
    [rfc7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Minaburo & Toutain       Expires March 10, 2018                [Page 18]
+Minaburo & Toutain      Expires September 1, 2018              [Page 18]
