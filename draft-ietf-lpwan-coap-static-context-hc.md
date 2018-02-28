@@ -81,8 +81,7 @@ Nevertheless, if limited, the size of a CoAP header may be
 
 #  CoAP Compressing
 
-   CoAP differs from IPv6 and UDP protocols on the following   
-   aspects: 
+   CoAP differs from IPv6 and UDP protocols on the following aspects: 
    
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
   request and in the response, only the location in the header may vary 
@@ -288,7 +287,7 @@ of the Type field can be avoided:
    * CDA is set to "not-sent".
   
 ~~~~~~
-FID     FL   FP    DI    Value        MO             CDA            Sent
+FID     FL   FP    DI  Target Value    MO             CDA            Sent
 type    2    1     bi    NON         equal          not-sent
 ~~~~~~
 
@@ -299,7 +298,7 @@ The example above shows the rule for a ES acting as a client, directions need to
 reversed for a ES acting as a server.
   
 ~~~~~~
-FID     FL    FP      DI    Value              MO             CDA       Sent
+FID     FL    FP      DI    Target Value      MO             CDA       Sent
 type    2      1      up    CON             equal          not-sent
 type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 ~~~~~~
@@ -308,7 +307,7 @@ type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 these two traffics, Type field must be sent uncompressed.
 
 ~~~~~~
-FID     FL    FP    DI    Value              MO             CDA         Sent
+FID     FL    FP    DI    Target Value       MO             CDA         Sent
 type    2     1     bi                    ignore         send-value      [2]
 ~~~~~~
 
