@@ -435,7 +435,7 @@ CoAP header may be done in conjunction with the above layers or independantly.
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#coap-compressing" id="coap-compressing">CoAP Compressing</a>
 </h1>
-<p id="rfc.section.2.p.1">CoAP differs from IPv6 and UDP protocols on the following <br> aspects:</p>
+<p id="rfc.section.2.p.1">CoAP differs from IPv6 and UDP protocols on the following aspects:</p>
 <p></p>
 
 <ul>
@@ -471,14 +471,14 @@ ver      2    1     bi     1           equal          not-sent
 </ul>
 </li></ul>
 <pre>
-FID     FL   FP    DI    Value        MO             CDA            Sent
+FID     FL   FP    DI  Target Value    MO             CDA            Sent
 type    2    1     bi    NON         equal          not-sent
 </pre>
 <p></p>
 
 <ul><li>If the ES is either a client or a Server and confirmable message are used, the DI can be used to elide the type on the request and compress it to 1 bit on the response.  The example above shows the rule for a ES acting as a client, directions need to be reversed for a ES acting as a server.</li></ul>
 <pre>
-FID     FL    FP      DI    Value              MO             CDA       Sent
+FID     FL    FP      DI    Target Value      MO             CDA       Sent
 type    2      1      up    CON             equal          not-sent
 type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 </pre>
@@ -486,7 +486,7 @@ type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 
 <ul><li>Otherwise if the ES is acting simultaneously as a client and a server and the rule handle these two traffics, Type field must be sent uncompressed.</li></ul>
 <pre>
-FID     FL    FP    DI    Value              MO             CDA         Sent
+FID     FL    FP    DI    Target Value       MO             CDA         Sent
 type    2     1     bi                    ignore         send-value      [2]
 </pre>
 <h1 id="rfc.section.3.3">
