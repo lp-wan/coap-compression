@@ -62,16 +62,16 @@ Nevertheless, if limited, the size of a CoAP header may be
    
 {{I-D.toutain-lpwan-ipv6-static-context-hc}} defines a header compression
    mechanism for LPWAN network based on a static context. The context is
-   said static since the element values composing the context are not
+   said static since the field description composing the Rules and the context are not
    learned during the packet exchanges but are previously defined.  The
    context(s) is(are) known by both ends before transmission. 
   
-   A context is composed of a set of rules (contexts) that are referenced by Rule IDs 
-   (identifiers).  A rule contains an ordered list of the header fields containing à field ID (FID) 
+   A context is composed of a set of rules that are referenced by Rule IDs 
+   (identifiers).  A rule contains an ordered list of the fields descriptions containing à field ID (FID) 
    and its position when repeated, a direction indicator (DI) (upstream, downstream and bidirectional)
    and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is
    associated to each header field description. The rule is selected if all the MOs fit
-   the TVs.  In that case, a Compression Decompression Function (CDF)
+   the TVs.  In that case, a Compression/Decompression Action (CDA)
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. 
    
@@ -85,11 +85,10 @@ Nevertheless, if limited, the size of a CoAP header may be
    aspects: 
    
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
-  request and in
-  the response, only location in the header may vary (e.g. source and destination
-  fields). A CoAP request is different from  an response. For example, the URI-path
-  option is mandatory in the request and is not found in the response, request may contain
-  an Accept option and the response a Content-format option.
+  request and in the response, only the location in the header may vary 
+  (e.g. source and destination fields). A CoAP request is different from a response. 
+  For example, the URI-path option is mandatory in the request and is not found in the response, 
+  a request may contain an Accept option and the response a Content-format option.
   
   Even when a field is "symmetric" (i.e. found in both directions) the values carried are
   different. For instance the Type field will contain a CON value in the request and a
@@ -98,7 +97,7 @@ Nevertheless, if limited, the size of a CoAP header may be
   applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).
 
 * CoAP also obeys to the client/server paradigm and the compression rate can
-  be different if the request is issued from a LPWAN node or from an non LPWAN
+  be different if the request is issued from an LPWAN node or from an non LPWAN
   device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but
   a regular CoAP client will certainly send a larger token to the Thing. SCHC compression
   will not modify the values to offer a better compression rate. Nevertheless a proxy placed
@@ -110,30 +109,25 @@ Nevertheless, if limited, the size of a CoAP header may be
   systematically, the CoAP options are described using the Type-Length-Value. 
   When applying SCHC header compression.
   
-  By sending compressed field information following the rule order, SCHC offers a 
-  serialization/deserialization mechanism. Since a field exists to indicate the token
-  length there is no ambiguity. For options, the rule indicates also the expected options
-  found the int CoAP header. Therefore only the length is needed to recognise an option. 
-  The length will be send using the same CoAP encoding (size less than 12 are directly sent, 
-  higher values uses the escape mechanisms defined by {{rfc7252}}). Delta Type is omitted, 
-  the value will
-  be recovered by the decompressor. This reduce the option length of 4, 12 or 20 bits regarding
-  the orignial size of the delta type encoding in the option.
+  By sending compressed field information following the rule order, 
+  SCHC offers a serialization/deserialization mechanism. 
+  Since a field exists to indicate the token length there is no ambiguity. 
+  For options, the rule indicates also the expected options found the int CoAP header. 
+  Therefore only the length is needed to recognize an option. 
+  The length will be sent using the same CoAP encoding (size less than 12 are directly sent, 
+  higher values use the escape mechanisms defined by {{rfc7252}}). 
+  Delta Type is omitted, the value will be recovered by the decompressor. 
+  This reduces the option length of 4, 12 or 20 bits regarding the original size of the delta type encoding in the option.
   
-
-  
-* In CoAP headers a field can be duplicated several times, for instances, elements 
-of an URI (path or queries) or accepted 
-formats. The position
-defined in a rule, associated to a Field ID, can be used to identify the proper element.
-
+* In CoAP headers a field can be duplicated several times, for instances, elements of an URI (path or queries) or accepted 
+formats. The position defined in a rule, associated to a Field ID, can be used to identify the proper element.
 
 <!--
 ## Exploiting CoAP asymetry
 
 Some bi-directional fields such as code or type may uses different values 
 
-A LPWAN node can either be a client or a server and sometimes both.
+An LPWAN node can either be a client or a server and sometimes both.
    In the client mode, the LPWAN node sends request to a server and
    expects an answer or acknowledgements.  Acknowledgements can be at 2
    different levels:
@@ -241,7 +235,7 @@ tagged bidirectional.
 
 By default, an entry in a rule is bidirectional which means that it can be applied
 either on the uplink or downlink headers. By specifying the direction, the LC will
-take into account  the specific  field only if the direction match. 
+take into account the specific  field only if the direction match. 
 
 If the Thing is a client, the URI-Path option is only present on request and not 
 on the response. Therefore, the exact matching principle to select a rule cannot apply.
@@ -270,7 +264,7 @@ This field is bidirectional and can be elided during the SCHC compression, since
 contains  the same value. It appears only in first position.
 
 ~~~~~~
-FID      FL   FP    DI    Value         MO             CDF         Sent
+FID      FL   FP    DI    Value         MO             CDA         Sent
 ver      2    1     bi     1           equal          not-sent
 ~~~~~~
 
@@ -291,10 +285,10 @@ of the Type field can be avoided:
    
    * MO is set to "equal" 
    
-   * CDF is set to "not-sent".
+   * CDA is set to "not-sent".
   
 ~~~~~~
-FID     FL   FP    DI    Value        MO             CDF            Sent
+FID     FL   FP    DI    Value        MO             CDA            Sent
 type    2    1     bi    NON         equal          not-sent
 ~~~~~~
 
@@ -305,7 +299,7 @@ The example above shows the rule for a ES acting as a client, directions need to
 reversed for a ES acting as a server.
   
 ~~~~~~
-FID     FL    FP      DI    Value              MO             CDF       Sent
+FID     FL    FP      DI    Value              MO             CDA       Sent
 type    2      1      up    CON             equal          not-sent
 type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 ~~~~~~
@@ -314,7 +308,7 @@ type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
 these two traffics, Type field must be sent uncompressed.
 
 ~~~~~~
-FID     FL    FP    DI    Value              MO             CDF         Sent
+FID     FL    FP    DI    Value              MO             CDA         Sent
 type    2     1     bi                    ignore         send-value      [2]
 ~~~~~~
 
@@ -329,7 +323,7 @@ taken, if CON messages are acknowledged with an empty ACK message. In that case 
 is not always present.
   
 ~~~~~~
-FID     FL    FP    DI      Value             MO             CDF         Sent
+FID     FL    FP    DI      Target Value      MO             CDA         Sent
 TKL     4     1     bi      value           ignore         send-value     [4]
 ~~~~~~
 
@@ -338,14 +332,14 @@ sent. If the Token length can be limited, then only the least significant bits h
 to be sent. The example below allows values between 0 and 3.
 
 ~~~~~~
-FID    FL    FP     DI    Value            MO             CDF       Sent
+FID    FL    FP     DI    Target Value      MO             CDA       Sent
 TKL    4     1      bi    0x0             MSB(2)         LSB(2)      [2]
 ~~~~~~
 
 * otherwise the field value has to be sent.
 
 ~~~~~~
-FID     FL    FP   DI    Value              MO             CDF         Sent
+FID     FL    FP   DI    Target Value      MO             CDA         Sent
 TKL     4     1    bi                    ignore         value-sent      [4]
 ~~~~~~
   
@@ -424,7 +418,7 @@ field can be elided. The entry below shows a rule for a client sending only
 GET request.
 
 ~~~~~~
-FID     FL  FP    DI    Value              MO             CDF       Sent
+FID     FL  FP    DI    Target Value     MO             CDA       Sent
 code    8   1     up    GET             equal          not-sent
 ~~~~~~
 
@@ -434,7 +428,7 @@ if fewer methods are used. Example below gives an example where the ES is a serv
 and receives only GET and POST requests.
 
 ~~~~~~
-FID    FL  FP    DI    Value              MO             CDF       Sent
+FID    FL  FP    DI   Target Value      MO             CDA         Sent
 code   8   1     dw   [0.01, 0.02]  match-mapping  mapping-sent     [1]
 ~~~~~~
 
@@ -456,7 +450,7 @@ if the message does not need to be acknowledged (NON or RST message), the Messag
 ID field can be avoided.
 
 ~~~~~~
-FID     FL    FP    DI    Value             MO             CDF       Sent
+FID     FL    FP    DI    Target Value      MO             CDA       Sent
 Mid     8     1     bi                    ignore         not-sent
 ~~~~~~
 
@@ -470,14 +464,14 @@ into account this limitation. Before the compression, a proxy may be needed to
 reduce the size. 
 
 ~~~~~~
-FID     FL    FP    DI    Value             MO            CDF     Sent
+FID     FL    FP    DI    Target Value      MO            CDA     Sent
 Mid     8     1     bi    0x0000          MSB(12)        LSB(4)    [4]
 ~~~~~~
 
 Otherwise if no compression is possible, the field has to be sent
 
 ~~~~~~
-FID     FL    FP    DI    Value           MO             CDF        Sent
+FID     FL    FP    DI    Target Value    MO             CDA        Sent
 Mid     8     1     bi                  ignore         value-sent    [8]
 ~~~~~~
 
@@ -500,7 +494,7 @@ The size of the compress token sent is known by a combination of the Token Lengt
 and the rule entry. For instance, with the entry below:
 
 ~~~~~~
-FID     FL    FP    DI    Value           MO             CDF        Sent
+FID     FL    FP    DI  Target Value     MO             CDA        Sent
 tkl     4     1      bi    2            equal          not-sent     
 token   8     1      bi    0x00         MSB(12)        LSB(4)       [4]
 ~~~~~~
@@ -520,14 +514,14 @@ If single value is expected by the client, the TV contains that value and MO is 
 ES acting as a server.
 
 ~~~~~~
-FID       FL    FP    DI    Value           MO             CDF        Sent
-content   16      1      up    value         equal        not-sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
+content   16      1      up    value        equal        not-sent
 ~~~~~~
 
 If several possible value are expected by the client, a matching-list can be used.
 
 ~~~~~~
-FID        FL    FP    DI    Value              MO             CDF         Sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
 content    16    1    up    [50, 41]     match-mapping   mapping-sent       [1]
 ~~~~~~
 
@@ -535,7 +529,7 @@ Otherwise the value can be sent.The value-sent CDF in the compressor do not send
 option type and the decompressor reconstruct it regarding the position in the rule.
 
 ~~~~~~
-FID       FL   FP    DI    Value            MO             CDF             Sent
+FID       FL   FP    DI   Target Value       MO             CDA           Sent
 content   16   1     up                    ignore         value-sent      [0-16]
 ~~~~~~
 
@@ -551,7 +545,7 @@ positions. Since the order in which the Accept value are sent, the position orde
 can be modified. The rule below 
 
 ~~~~~~
-FID       FL    FP    DI    Value           MO             CDF         Sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
 accept    16     1      up    41           egal           not-sent
 accept    16     2      up    50           egal           not-sent
 ~~~~~~~ 
@@ -561,7 +555,7 @@ will be selected only if two accept options are in the CoAP header if this order
 The rule below:
 
 ~~~~~~
-FID       FL    FP    DI    Value              MO             CDF       Sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
 accept    16    0     up    41              egal           not-sent
 accept    16    0     up    50              egal           not-sent
 ~~~~~~~ 
@@ -573,7 +567,7 @@ Otherwise a matching-list can be applied to the different values, in that case t
 is important to recover the appropriate value and the position must be clearly indicate.
 
 ~~~~~~
-FID     FL    FP     DI    Value              MO             CDF        Sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
 accept  16    1      up    [50,41]     match-mapping  mapping-sent      [1]
 accept  16    2      up    [50,61]     match-mapping  mapping-sent      [1]
 accept  16    3      up    [61,71]     match-mapping  mapping-sent      [1]
@@ -582,8 +576,8 @@ accept  16    3      up    [61,71]     match-mapping  mapping-sent      [1]
 Finally, the option  can be  explicitly sent.
 
 ~~~~~~
-FID     Pos    DI    TV              MO             CDF
-accept  1      up                    ignore         value-sent
+FID     FL    FP     DI  Target Value        MO             CDA        Sent
+accept        1      up                    ignore         value-sent
 ~~~~~~
 
 
@@ -614,9 +608,9 @@ The Matching Operator behavior has not changed, but the value must take a positi
 if the entry is repeated :
 
 ~~~~
-FID       Pos    DI    TV              MO             CDF
-URI-Path  1      up    foo             equal          not-sent
-URI-Path  2      up    bar             equal          not-sent
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
+URI-Path         1      up    foo             equal          not-sent
+URI-Path         2      up    bar             equal          not-sent
 ~~~~
 {: #Fig-MOposition title='Position entry.'}
 
@@ -628,10 +622,10 @@ field data, which means for CoAP to send directly the CoAP option with length an
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
 ~~~~~ 
-FID       Pos    DI    TV              MO             CDF
-URI-Path  1      up    c               equal          not-sent
-URI-Path  2      up                    ignore         value-sent
-URI-Query 1      up    k=              MSB (16)       LSB 
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
+URI-Path         1      up    c               equal          not-sent
+URI-Path         2      up                    ignore         value-sent
+URI-Query        1      up    k=              MSB (16)       LSB 
 ~~~~~
 {: #Fig-CoMicompress title='CoMi URI compression'}
 
@@ -645,11 +639,11 @@ Numbering of elements do not change, MO comparison is set with the first element
 of the matching.
 
 ~~~~~ 
-FID       Pos    DI    TV              MO             CDF
-URI-Path  1      up    {0:"/c/c",      equal          not-sent
-                        1:"/c/d"
-URI-Path  3      up                    ignore         value-sent
-URI-Query 1      up    k=              MSB (16)       LSB 
+FID        FL    FP     DI  Target Value     MO             CDA        Sent
+URI-Path         1      up    {0:"/c/c",      equal          not-sent
+                              1:"/c/d"
+URI-Path         3      up                    ignore         value-sent
+URI-Query        1      up    k=              MSB (16)       LSB 
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
 
@@ -718,17 +712,20 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
 ~~~~
- rule id 1
-+-------------+------+---------+-------------+-----+----------------+
-| Field       |TV    |MO       |CDF          |dir  | Sent           |
-+=============+======+=========+=============+=====+================+
-|CoAP version | 01   |equal    |not-sent     |bi   |                |
-|CoAP Type    |      |ignore   |value-sent   |bi   |TT              |
-|CoAP TKL     | 0    |equal    |not-sent     |bi   |                |
-|CoAP Code    | ML1  |match-map|matching-sent|bi   |  CC CCC        |
-|CoAP MID     | 0000 |MSB(7 )  |LSB(9)       |bi   |         M-ID   |
-|CoAP Uri-Path| path |equal 1  |not-sent     |down |                |
-+-------------+------+---------+-------------+-----+----------------+
+ Rule ID 1
++-------------+--+--+--+------+---------+-------------++------------+
+| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+|             |  |  |  |Value | Opera.  |             ||   [bits]   |
++-------------+--+--+--+------+---------+-------------++------------+
+|CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
+|CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
+|CoAP Type    |  |  |bi|      |ignore   |value-sent   ||TT          |
+|CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
+|CoAP Code    |  |  |bi| ML1  |match-map|matching-sent||  CC CCC    |
+|CoAP MID     |  |  |bi| 0000 |MSB(7 )  |LSB(9)       ||        M-ID|
+|CoAP Uri-Path|  |  |dw| path |equal 1  |not-sent     ||            |
++-------------+--+--+--+------+---------+-------------++------------+
+
 ~~~~
 {: #Fig-CoAP-header-1 title='CoAP Context to compress header without token'}
 
@@ -782,19 +779,20 @@ are needed to code all the requests and 21 to code all the responses in the matc
  {{Fig--example-code-mapping}})
 
 ~~~~
- rule id 1
-+-------------+------+---------+-------------+---+----------------+
-| Field       |TV    |MO       |CDF          |dir| Sent           |
-+=============+======+=========+=============+===+================+
-|CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    | CON  |equal    |not-sent     |dw |                |
-|CoAP Type    | ACK  |equal    |not-sent     |up |                |
-|CoAP TKL     | 0    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |match-map|mapping-sent |dw |CCCC C          |
-|CoAP Code    | ML3  |match-map|mapping-sent |up |CCCC C          |
-|CoAP MID     | 0000 |MSB(5)   |LSB(11)      |bi |       M-ID     |
-|CoAP Uri-Path| path |equal 1  |not-sent     |dw |                |
-+-------------+------+---------+-------------+---+----------------+
+ Rule ID 2
++-------------+--+--+--+------+---------+------------++------------+
+| Field       |FL|FP|DI|Target|    MO   |     CDA    ||    Sent    |
+|             |  |  |  |Value |         |            ||   [bits]   |
++-------------+--+--+--+------+---------+------------++------------+
+|CoAP version |  |  |bi|01    |equal    |not-sent    ||            |
+|CoAP Type    |  |  |dw|CON   |equal    |not-sent    ||            |
+|CoAP Type    |  |  |up| ACK  |equal    |not-sent    ||            |
+|CoAP TKL     |  |  |bi|0     |equal    |not-sent    ||            |
+|CoAP Code    |  |  |dw|ML2   |match-map|mapping-sent||CCCC C      |
+|CoAP Code    |  |  |up|ML3   |match-map|mapping-sent||CCCC C      |
+|CoAP MID     |  |  |bi|0000  |MSB(5)   |LSB(11)     ||      M-ID  |
+|CoAP Uri-Path|  |  |dw|path  |equal 1  |not-sent    ||            |
++-------------+--+--+--+------+---------+------------++------------+
 
 ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 
@@ -829,57 +827,59 @@ ACK MID=0x0034   |------------------------>|
 ~~~~
 
 ~~~~
- rule id 3
-+-------------+------+---------+-------------+---+----------------+
-| Field       |TV    |MO       |CDF          |dir| Sent           |
-+=============+======+=========+=============+===+================+
-|CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    | CON  |equal    |not-sent     |up |                |
-|CoAP Type    | ACK  |equal    |not-sent     |dw |                |
-|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | POST |equal    |not-sent     |up |                |
-|CoAP Code    | 0.00 |equal    |not-sent     |dw |                |
-|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
-|CoAP Token   |      |ignore   |send-value   |up |TTTTTTTT        |
-|CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
-|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
-|CoAP Content | X    |equal    |not-sent     |up |                |
-+-------------+------+---------+-------------+---+----------------+
+ Rule ID 3
++--------------+--+--+--+------+--------+-----------++------------+
+| Field        |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
+|              |  |  |  |Value |        |           ||   [bits]   |
++--------------+--+--+--+------+--------+-----------++------------+ 
+|CoAP version  |  |  |bi| 01   |equal   |not-sent   ||            |
+|CoAP Type     |  |  |up| CON  |equal   |not-sent   ||            |
+|CoAP Type     |  |  |dw| ACK  |equal   |not-sent   ||            |
+|CoAP TKL      |  |  |bi| 1    |equal   |not-sent   ||            |
+|CoAP Code     |  |  |up| POST |equal   |not-sent   ||            |
+|CoAP Code     |  |  |dw| 0.00 |equal   |not-sent   ||            |
+|CoAP MID      |  |  |bi| 0000 |MSB(8)  |LSB        ||MMMMMMMM    |
+|CoAP Token    |  |  |up|      |ignore  |send-value ||TTTTTTTT    |
+|CoAP Uri-Path |  |  |dw| /c   |equal 1 |not-sent   ||            |
+|CoAP Uri-query|  |  |dw|  ML4 |equal 1 |not-sent   ||P           |
+|CoAP Content  |  |  |up| X    |equal   |not-sent   ||            |
++--------------+--+--+--+------+--------+-----------++------------+
 
- rule id 4
-+-------------+------+---------+-------------+---+----------------+
-| Field       |TV    |MO       |CDF          |dir| Sent           |
-+=============+======+=========+=============+===+================+
-|CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    | CON  |equal    |not-sent     |dw |                |
-|CoAP Type    | ACK  |equal    |not-sent     |up |                |
-|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | 2.05 |equal    |not-sent     |dw |                |
-|CoAP Code    | 0.00 |equal    |not-sent     |up |                |
-|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
-|CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
-|COAP Accept  | X    |equal    |not-sent     |dw |                |
-+-------------+------+---------+-------------+---+----------------+
-
+ Rule ID 4
++--------------+--+--+--+------+--------+-----------++------------+
+| Field        |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
+|              |  |  |  |Value |        |           ||   [bits]   |
++--------------+--+--+--+------+--------+-----------++------------+ 
+|CoAP version  |  |  |bi| 01   |equal    |not-sent  ||            |
+|CoAP Type     |  |  |dw| CON  |equal    |not-sent  ||            |
+|CoAP Type     |  |  |up| ACK  |equal    |not-sent  ||            |
+|CoAP TKL      |  |  |bi| 1    |equal    |not-sent  ||            |
+|CoAP Code     |  |  |dw| 2.05 |equal    |not-sent  ||            |
+|CoAP Code     |  |  |up| 0.00 |equal    |not-sent  ||            |
+|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB       ||MMMMMMMM    |
+|CoAP Token    |  |  |dw|      |ignore   |send-value||TTTTTTTT    |
+|COAP Accept   |  |  |dw| X    |equal    |not-sent  ||            |
++--------------+--+--+--+------+---------+----------++------------+
 
 alternative rule:
 
- rule id 4
-+-------------+------+---------+-------------+---+----------------+
-| Field       |TV    |MO       |CDF          |dir| Sent           |
-+=============+======+=========+=============+===+================+
-|CoAP version | 01   |equal    |not-sent     |bi |                |
-|CoAP Type    | ML1  |match-map|match-sent   |bi |t               |
-|CoAP TKL     | 1    |equal    |not-sent     |bi |                |
-|CoAP Code    | ML2  |match-map|match-sent   |up | cc             |
-|CoAP Code    | ML3  |match-map|match-sent   |dw | cc             |
-|CoAP MID     | 0000 |MSB(8)   |LSB          |bi |MMMMMMMM        |
-|CoAP Token   |      |ignore   |send-value   |dw |TTTTTTTT        |
-|CoAP Uri-Path| /c   |equal 1  |not-sent     |dw |                |
-|CoAP Uri-query ML4  |equal 1  |not-sent     |dw |P               |
-|CoAP Content | X    |equal    |not-sent     |up |                |
-|COAP Accept  | x    |equal    |not-sent     |dw |                |
-+-------------+------+---------+-------------+---+----------------+
+ Rule ID 4
++--------------+--+--+--+------+---------+-----------++------------+
+| Field        |FL|FP|DI|Target|   MO    |     CDA   ||    Sent    |
+|              |  |  |  |Value |         |           ||   [bits]   |
++--------------+--+--+--+------+---------+-----------++------------+ 
+|CoAP version  |  |  |bi| 01   |equal    |not-sent   ||            |
+|CoAP Type     |  |  |bi| ML1  |match-map|match-sent ||t           |
+|CoAP TKL      |  |  |bi| 1    |equal    |not-sent   ||            |
+|CoAP Code     |  |  |up| ML2  |match-map|match-sent || cc         |
+|CoAP Code     |  |  |dw| ML3  |match-map|match-sent || cc         |
+|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB        ||MMMMMMMM    |
+|CoAP Token    |  |  |dw|      |ignore   |send-value ||TTTTTTTT    |
+|CoAP Uri-Path |  |  |dw| /c   |equal 1  |not-sent   ||            |
+|CoAP Uri-query|  |  |dw| ML4  |equal 1  |not-sent   ||P           |
+|CoAP Content  |  |  |up| X    |equal    |not-sent   ||            |
+|COAP Accept   |  |  |dw| x    |equal    |not-sent   ||            |
++--------------+--+--+--+------+---------+-----------++------------+
 
 ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
 ML4 {NULL:0, k=AS:1, K=AZE:2}
