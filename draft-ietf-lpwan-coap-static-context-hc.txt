@@ -97,7 +97,7 @@ Table of Contents
 1.  Introduction
 
    CoAP [rfc7252] is an implementation of the REST architecture for
-   constrained devices.  Gateway between CoAP and HTTP can be easily
+   constrained devices.  A Gateway between CoAP and HTTP can be easily
    built since both protocols uses the same address space (URL), caching
    mechanisms and methods.
 
