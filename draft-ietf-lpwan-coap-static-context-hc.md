@@ -75,8 +75,9 @@ Nevertheless, if limited, the size of a CoAP header may be
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. 
    
-    This document describes how the rules can be applied to CoAP flows. Compression of the 
-    CoAP header may be done in conjunction with the above layers or independantly.
+    This document describes how the rules can be applied to CoAP flows. 
+    Compression of the CoAP header may be done in conjunction with the 
+    above layers or independantly.
     
 
 #  CoAP Compressing
@@ -749,24 +750,24 @@ The CON message is a request, therefore the LC process to a dynamic
    message ID duration.
 
 ~~~~
-                   End System               LPWA LC
-                        |                     |
-                        |        rule id=1    |<----------------------
-                        |<--------------------| +-+-+--+----+--------+
-  <-------------------- |  TTCC CCCM MMMM MMMM| |1|0| 4|0.01| 0x0034 |
- +-+-+--+----+--------+ |  0000 0010 0011 0100| |  0xb4   p    a   t |
- |1|0| 1|0.01| 0x0034 | |                     | |  h   |
- |  0xb4   p    a   t | |                     | +------+
- |  h   |               |                     |     
- +------+               |                     |   
-                        |                     |    
-                        |                     |    
------------------------>|       rule id=1     |
-+-+-+--+----+--------+  |-------------------->|
-|1|2| 0|2.05| 0x0034 |  |  TTCC CCCM MMMM MMMM|------------------------>
-+-+-+--+----+--------+  |  1001 1000 0011 0100| +-+-+--+----+--------+
-                        |                     | |1|2| 0|2.05| 0x0034 |
-                        v                     v +-+-+--+----+--------+
+                  End System              LPWA LC
+                       |                    |
+                       |       rule id=1    |<--------------------
+                       |<-------------------| +-+-+--+----+------+
+  <------------------- | TTCC CCCM MMMM MMMM| |1|0| 4|0.01|0x0034|
+ +-+-+--+----+-------+ | 0000 0010 0011 0100| |  0xb4   p   a   t|
+ |1|0| 1|0.01|0x0034 | |                    | |  h   |
+ |  0xb4   p   a   t | |                    | +------+
+ |  h   |              |                    |     
+ +------+              |                    |   
+                       |                    |    
+                       |                    |    
+---------------------->|      rule id=1     |
++-+-+--+----+--------+ |------------------->|
+|1|2| 0|2.05| 0x0034 | | TTCC CCCM MMMM MMMM|--------------------->
++-+-+--+----+--------+ | 1001 1000 0011 0100| +-+-+--+----+------+
+                       |                    | |1|2| 0|2.05|0x0034|
+                       v                    v +-+-+--+----+------+
 
 ~~~~
 {: #Fig-CoAP-3 title='Compression with global addresses'}
