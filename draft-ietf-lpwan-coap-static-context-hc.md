@@ -263,8 +263,8 @@ This field is bidirectional and can be elided during the SCHC compression, since
 contains  the same value. It appears only in first position.
 
 ~~~~~~
-FID      FL   FP    DI    Value         MO             CDA         Sent
-ver      2    1     bi     1           equal          not-sent
+FID  FL FP DI Value  MO      CDA     Sent
+ver  2  1  bi  1    equal  not-sent
 ~~~~~~
 
 ## CoAP type field
@@ -287,8 +287,8 @@ of the Type field can be avoided:
    * CDA is set to "not-sent".
   
 ~~~~~~
-FID     FL   FP    DI  Target Value    MO             CDA            Sent
-type    2    1     bi    NON         equal          not-sent
+FID   FL FP DI  Target Value  MO     CDA    Sent
+type  2  1  bi    NON        equal not-sent
 ~~~~~~
 
   
@@ -298,17 +298,17 @@ The example above shows the rule for a ES acting as a client, directions need to
 reversed for a ES acting as a server.
   
 ~~~~~~
-FID     FL    FP      DI    Target Value      MO             CDA       Sent
-type    2      1      up    CON             equal          not-sent
-type    2      1      dw    [ACK,RST]   match-mapping    mapping-sent    [1]
+FID   FL FP DI    TV         MO          CDA       Sent
+type  2  1  up   CON        equal       not-sent
+type  2  1  dw [ACK,RST] match-mapping mapping-sent  [1]
 ~~~~~~
   
 * Otherwise if the ES is acting simultaneously as a client and a server and the rule handle
 these two traffics, Type field must be sent uncompressed.
 
 ~~~~~~
-FID     FL    FP    DI    Target Value       MO             CDA         Sent
-type    2     1     bi                    ignore         send-value      [2]
+FID  FL FP DI TV   MO      CDA    Sent
+type 2  1  bi    ignore send-value [2]
 ~~~~~~
 
 ##CoAP token length field
@@ -322,8 +322,8 @@ taken, if CON messages are acknowledged with an empty ACK message. In that case 
 is not always present.
   
 ~~~~~~
-FID     FL    FP    DI      Target Value      MO             CDA         Sent
-TKL     4     1     bi      value           ignore         send-value     [4]
+FID FL FP DI   TV    MO     CDA      Sent
+TKL 4  1  bi value ignore send-value [4]
 ~~~~~~
 
 * If the length is changing from one message to an other, the Token Length field must be 
@@ -331,15 +331,15 @@ sent. If the Token length can be limited, then only the least significant bits h
 to be sent. The example below allows values between 0 and 3.
 
 ~~~~~~
-FID    FL    FP     DI    Target Value      MO             CDA       Sent
-TKL    4     1      bi    0x0             MSB(2)         LSB(2)      [2]
+FID FL FP DI  TV   MO     CDA   Sent
+TKL 4  1  bi  0x0 MSB(2) LSB(2)  [2]
 ~~~~~~
 
 * otherwise the field value has to be sent.
 
 ~~~~~~
-FID     FL    FP   DI    Target Value      MO             CDA         Sent
-TKL     4     1    bi                    ignore         value-sent      [4]
+FID FL FP DI TV   MO      CDA     Sent
+TKL 4  1  bi    ignore value-sent  [4]
 ~~~~~~
   
 ##CoAP code field
@@ -355,39 +355,39 @@ compared to the 255 possible values.
 
 ~~~~
 
-               +------+------------------------------+-----------+
-               | Code | Description                  | Mapping   |
-               +------+------------------------------+-----------+
-               | 0.00 |                              |  0x00     |
-               | 0.01 | GET                          |  0x01     |
-               | 0.02 | POST                         |  0x02     |
-               | 0.03 | PUT                          |  0x03     |
-               | 0.04 | DELETE                       |  0x04     |
-               | 0.05 | FETCH                        |  0x05     |
-               | 0.06 | PATCH                        |  0x06     |
-               | 0.07 | iPATCH                       |  0x07     |
-               | 2.01 | Created                      |  0x08     |
-               | 2.02 | Deleted                      |  0x09     |
-               | 2.03 | Valid                        |  0x0A     |
-               | 2.04 | Changed                      |  0x0B     |
-               | 2.05 | Content                      |  0x0C     |
-               | 4.00 | Bad Request                  |  0x0D     |
-               | 4.01 | Unauthorized                 |  0x0E     |
-               | 4.02 | Bad Option                   |  0x0F     |
-               | 4.03 | Forbidden                    |  0x10     |
-               | 4.04 | Not Found                    |  0x11     |
-               | 4.05 | Method Not Allowed           |  0x12     |
-               | 4.06 | Not Acceptable               |  0x13     |
-               | 4.12 | Precondition Failed          |  0x14     |
-               | 4.13 | Request Entity Too Large     |  0x15     |
-               | 4.15 | Unsupported Content-Format   |  0x16     |
-               | 5.00 | Internal Server Error        |  0x17     |
-               | 5.01 | Not Implemented              |  0x18     |
-               | 5.02 | Bad Gateway                  |  0x19     |
-               | 5.03 | Service Unavailable          |  0x1A     |
-               | 5.04 | Gateway Timeout              |  0x1B     |
-               | 5.05 | Proxying Not Supported       |  0x1C     |
-               +------+------------------------------+-----------+
+     +------+------------------------------+-----------+
+     | Code | Description                  | Mapping   |
+     +------+------------------------------+-----------+
+     | 0.00 |                              |  0x00     |
+     | 0.01 | GET                          |  0x01     |
+     | 0.02 | POST                         |  0x02     |
+     | 0.03 | PUT                          |  0x03     |
+     | 0.04 | DELETE                       |  0x04     |
+     | 0.05 | FETCH                        |  0x05     |
+     | 0.06 | PATCH                        |  0x06     |
+     | 0.07 | iPATCH                       |  0x07     |
+     | 2.01 | Created                      |  0x08     |
+     | 2.02 | Deleted                      |  0x09     |
+     | 2.03 | Valid                        |  0x0A     |
+     | 2.04 | Changed                      |  0x0B     |
+     | 2.05 | Content                      |  0x0C     |
+     | 4.00 | Bad Request                  |  0x0D     |
+     | 4.01 | Unauthorized                 |  0x0E     |
+     | 4.02 | Bad Option                   |  0x0F     |
+     | 4.03 | Forbidden                    |  0x10     |
+     | 4.04 | Not Found                    |  0x11     |
+     | 4.05 | Method Not Allowed           |  0x12     |
+     | 4.06 | Not Acceptable               |  0x13     |
+     | 4.12 | Precondition Failed          |  0x14     |
+     | 4.13 | Request Entity Too Large     |  0x15     |
+     | 4.15 | Unsupported Content-Format   |  0x16     |
+     | 5.00 | Internal Server Error        |  0x17     |
+     | 5.01 | Not Implemented              |  0x18     |
+     | 5.02 | Bad Gateway                  |  0x19     |
+     | 5.03 | Service Unavailable          |  0x1A     |
+     | 5.04 | Gateway Timeout              |  0x1B     |
+     | 5.05 | Proxying Not Supported       |  0x1C     |
+     +------+------------------------------+-----------+
 
 ~~~~
 {: #Fig--example-code-mapping title="Example of CoAP code mapping"}
@@ -417,8 +417,8 @@ field can be elided. The entry below shows a rule for a client sending only
 GET request.
 
 ~~~~~~
-FID     FL  FP    DI    Target Value     MO             CDA       Sent
-code    8   1     up    GET             equal          not-sent
+FID  FL FP DI  TV  MO     CDA    Sent
+code 8  1  up GET equal not-sent
 ~~~~~~
 
 If the client may send different methods, a matching-list can be applied. For
@@ -427,8 +427,8 @@ if fewer methods are used. Example below gives an example where the ES is a serv
 and receives only GET and POST requests.
 
 ~~~~~~
-FID    FL  FP    DI   Target Value      MO             CDA         Sent
-code   8   1     dw   [0.01, 0.02]  match-mapping  mapping-sent     [1]
+FID  FL FP DI Target Value    MO            CDA       Sent
+code 8  1  dw [0.01, 0.02] match-mapping mapping-sent [1]
 ~~~~~~
 
 The same approach can be applied to responses. 
@@ -449,8 +449,8 @@ if the message does not need to be acknowledged (NON or RST message), the Messag
 ID field can be avoided.
 
 ~~~~~~
-FID     FL    FP    DI    Target Value      MO             CDA       Sent
-Mid     8     1     bi                    ignore         not-sent
+FID FL FP DI TV   MO     CDA    Sent
+Mid 8  1  bi    ignore not-sent
 ~~~~~~
 
 The decompressor must generate a value.
@@ -463,15 +463,15 @@ into account this limitation. Before the compression, a proxy may be needed to
 reduce the size. 
 
 ~~~~~~
-FID     FL    FP    DI    Target Value      MO            CDA     Sent
-Mid     8     1     bi    0x0000          MSB(12)        LSB(4)    [4]
+FID FL FP DI   TV      MO    CDA   Sent
+Mid 8  1  bi 0x0000 MSB(12) LSB(4) [4]
 ~~~~~~
 
 Otherwise if no compression is possible, the field has to be sent
 
 ~~~~~~
-FID     FL    FP    DI    Target Value    MO             CDA        Sent
-Mid     8     1     bi                  ignore         value-sent    [8]
+FID FL FP DI TV   MO       CDA    Sent
+Mid 8  1  bi    ignore value-sent [8]
 ~~~~~~
 
 
@@ -493,9 +493,9 @@ The size of the compress token sent is known by a combination of the Token Lengt
 and the rule entry. For instance, with the entry below:
 
 ~~~~~~
-FID     FL    FP    DI  Target Value     MO             CDA        Sent
-tkl     4     1      bi    2            equal          not-sent     
-token   8     1      bi    0x00         MSB(12)        LSB(4)       [4]
+FID   FL FP DI  TV   MO       CDA    Sent
+tkl   4  1  bi   2  equal   not-sent    
+token 8  1  bi 0x00 MSB(12) LSB(4)   [4]
 ~~~~~~
 
 The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.
@@ -513,23 +513,23 @@ If single value is expected by the client, the TV contains that value and MO is 
 ES acting as a server.
 
 ~~~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-content   16      1      up    value        equal        not-sent
+FID     FL FP DI  TV    MO     CDA    Sent
+content 16 1  up value equal not-sent
 ~~~~~~
 
 If several possible value are expected by the client, a matching-list can be used.
 
 ~~~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-content    16    1    up    [50, 41]     match-mapping   mapping-sent       [1]
+FID     FL FP DI   TV         MO           CDA       Sent
+content 16 1  up [50, 41] match-mapping mapping-sent [1]
 ~~~~~~
 
 Otherwise the value can be sent.The value-sent CDF in the compressor do not send the 
 option type and the decompressor reconstruct it regarding the position in the rule.
 
 ~~~~~~
-FID       FL   FP    DI   Target Value       MO             CDA           Sent
-content   16   1     up                    ignore         value-sent      [0-16]
+FID     FL FP DI   TV   MO     CDA       Sent
+content 16 1  up      ignore value-sent [0-16]
 ~~~~~~
 
 ##CoAP option Accept field
@@ -544,9 +544,9 @@ positions. Since the order in which the Accept value are sent, the position orde
 can be modified. The rule below 
 
 ~~~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-accept    16     1      up    41           egal           not-sent
-accept    16     2      up    50           egal           not-sent
+FID    FL FP DI  TV   MO    CDA    Sent
+accept 16 1  up  41  egal not-sent
+accept 16 2  up  50  egal not-sent
 ~~~~~~~ 
 
 will be selected only if two accept options are in the CoAP header if this order. 
@@ -554,9 +554,9 @@ will be selected only if two accept options are in the CoAP header if this order
 The rule below:
 
 ~~~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-accept    16    0     up    41              egal           not-sent
-accept    16    0     up    50              egal           not-sent
+FID    FL FP DI  TV  MO     CDA    Sent
+accept 16 0  up  41 egal  not-sent
+accept 16 0  up  50 egal  not-sent
 ~~~~~~~ 
 
 will accept a-only CoAP messages with 2 accept options, but the order will not influence
@@ -565,18 +565,18 @@ the rule selection. The decompression will reconstruct the header regarding the 
 Otherwise a matching-list can be applied to the different values, in that case the order 
 is important to recover the appropriate value and the position must be clearly indicate.
 
-~~~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-accept  16    1      up    [50,41]     match-mapping  mapping-sent      [1]
-accept  16    2      up    [50,61]     match-mapping  mapping-sent      [1]
-accept  16    3      up    [61,71]     match-mapping  mapping-sent      [1]
+~~~~~~ 
+FID    FL FP DI    TV       MO             CDA     Sent
+accept 16 1  up [50,41] match-mapping mapping-sent  [1]
+accept 16 2  up [50,61] match-mapping mapping-sent  [1]
+accept 16 3  up [61,71] match-mapping mapping-sent  [1]
 ~~~~~~
 
 Finally, the option  can be  explicitly sent.
 
 ~~~~~~
-FID     FL    FP     DI  Target Value        MO             CDA        Sent
-accept        1      up                    ignore         value-sent
+FID    FL FP DI  TV    MO       CDA     Sent
+accept    1  up      ignore  value-sent
 ~~~~~~
 
 
@@ -607,9 +607,9 @@ The Matching Operator behavior has not changed, but the value must take a positi
 if the entry is repeated :
 
 ~~~~
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-URI-Path         1      up    foo             equal          not-sent
-URI-Path         2      up    bar             equal          not-sent
+FID      FL FP DI  TV    MO      CDA    Sent
+URI-Path    1  up  foo  equal  not-sent
+URI-Path    2  up  bar  equal  not-sent
 ~~~~
 {: #Fig-MOposition title='Position entry.'}
 
@@ -621,10 +621,10 @@ field data, which means for CoAP to send directly the CoAP option with length an
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
 ~~~~~ 
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-URI-Path         1      up    c               equal          not-sent
-URI-Path         2      up                    ignore         value-sent
-URI-Query        1      up    k=              MSB (16)       LSB 
+FID       FL FP DI    TV     MO        CDA     Sent
+URI-Path     1  up    c     equal    not-sent
+URI-Path     2  up         ignore   value-sent 
+URI-Query    1  up    k=   MSB (16)    LSB 
 ~~~~~
 {: #Fig-CoMicompress title='CoMi URI compression'}
 
@@ -638,11 +638,11 @@ Numbering of elements do not change, MO comparison is set with the first element
 of the matching.
 
 ~~~~~ 
-FID        FL    FP     DI  Target Value     MO             CDA        Sent
-URI-Path         1      up    {0:"/c/c",      equal          not-sent
-                              1:"/c/d"
-URI-Path         3      up                    ignore         value-sent
-URI-Query        1      up    k=              MSB (16)       LSB 
+FID       FL FP DI    TV         MO        CDA    Sent
+URI-Path     1  up  {0:"/c/c",  equal   not-sent
+                     1:"/c/d"
+URI-Path     3  up             ignore   value-sent
+URI-Query    1  up   k=       MSB (16)     LSB 
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
 
