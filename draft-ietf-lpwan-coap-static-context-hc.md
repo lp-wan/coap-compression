@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-02
+docname: draft-ietf-lpwan-coap-static-context-hc-03
 cat: info
 pi:
   symrefs: 'yes'
