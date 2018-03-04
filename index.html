@@ -429,8 +429,9 @@ address {
 <p><a href="#I-D.toutain-lpwan-ipv6-static-context-hc" class="xref">[I-D.toutain-lpwan-ipv6-static-context-hc]</a> defines a header compression mechanism for LPWAN network based on a static context. The context is said static since the field description composing the Rules and the context are not learned during the packet exchanges but are previously defined.  The context(s) is(are) known by both ends before transmission.</p>
 <p id="rfc.section.1.p.4">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing &#224; field ID (FID) and its position when repeated, a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs.  In that case, a Compression/Decompression Action (CDA) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
 <pre>
-This document describes how the rules can be applied to CoAP flows. Compression of the 
-CoAP header may be done in conjunction with the above layers or independantly.
+This document describes how the rules can be applied to CoAP flows. 
+Compression of the CoAP header may be done in conjunction with the 
+above layers or independantly.
 </pre>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#coap-compressing" id="coap-compressing">CoAP Compressing</a>
@@ -779,24 +780,24 @@ URI-Query    1  up   k=       MSB (16)     LSB
 <div id="rfc.figure.6"></div>
 <div id="Fig-CoAP-3"></div>
 <pre>
-                   End System               LPWA LC
-                        |                     |
-                        |        rule id=1    |&lt;----------------------
-                        |&lt;--------------------| +-+-+--+----+--------+
-  &lt;-------------------- |  TTCC CCCM MMMM MMMM| |1|0| 4|0.01| 0x0034 |
- +-+-+--+----+--------+ |  0000 0010 0011 0100| |  0xb4   p    a   t |
- |1|0| 1|0.01| 0x0034 | |                     | |  h   |
- |  0xb4   p    a   t | |                     | +------+
- |  h   |               |                     |     
- +------+               |                     |   
-                        |                     |    
-                        |                     |    
------------------------&gt;|       rule id=1     |
-+-+-+--+----+--------+  |--------------------&gt;|
-|1|2| 0|2.05| 0x0034 |  |  TTCC CCCM MMMM MMMM|------------------------&gt;
-+-+-+--+----+--------+  |  1001 1000 0011 0100| +-+-+--+----+--------+
-                        |                     | |1|2| 0|2.05| 0x0034 |
-                        v                     v +-+-+--+----+--------+
+                  End System              LPWA LC
+                       |                    |
+                       |       rule id=1    |&lt;--------------------
+                       |&lt;-------------------| +-+-+--+----+------+
+  &lt;------------------- | TTCC CCCM MMMM MMMM| |1|0| 4|0.01|0x0034|
+ +-+-+--+----+-------+ | 0000 0010 0011 0100| |  0xb4   p   a   t|
+ |1|0| 1|0.01|0x0034 | |                    | |  h   |
+ |  0xb4   p   a   t | |                    | +------+
+ |  h   |              |                    |     
+ +------+              |                    |   
+                       |                    |    
+                       |                    |    
+----------------------&gt;|      rule id=1     |
++-+-+--+----+--------+ |-------------------&gt;|
+|1|2| 0|2.05| 0x0034 | | TTCC CCCM MMMM MMMM|---------------------&gt;
++-+-+--+----+--------+ | 1001 1000 0011 0100| +-+-+--+----+------+
+                       |                    | |1|2| 0|2.05|0x0034|
+                       v                    v +-+-+--+----+------+
 
 </pre>
 <p class="figure">Figure 6: Compression with global addresses</p>
