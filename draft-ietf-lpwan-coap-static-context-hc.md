@@ -34,7 +34,7 @@ normative:
   rfc7252:
   rfc7967:
   rfc7641:
-  I-D.toutain-lpwan-ipv6-static-context-hc:
+  I-D.ietf-lpwan-ipv6-static-context-hc:
 
 --- abstract
 
@@ -44,23 +44,20 @@ CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header
 is flexible header with a variable number of options themself of a variable length. 
 Another important difference is 
 the asymmetry in the header information used for request and 
-response messages. This draft takes into account the fact that a thing can play the
-role of a CoAP client, a CoAP client or both roles.
+response messages. Most of the compression mechanisms have been introduced in 
+{{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to use the SCHC compression
+for CoAP.
 
 --- middle
 
 # Introduction {#Introduction}
 
 CoAP {{rfc7252}} is an implementation of the REST architecture for constrained 
-devices. A Gateway
-between CoAP and HTTP can be easily built since both protocols uses the same
-address space (URL), caching mechanisms and methods.
-
-Nevertheless, if limited, the size of a CoAP header may be
+devices. Nevertheless, if limited, the size of a CoAP header may be
    too large for LPWAN constraints and some compression may be
    needed to reduce the header size. 
    
-{{I-D.toutain-lpwan-ipv6-static-context-hc}} defines a header compression
+{{I-D.ietf-lpwan-ipv6-static-context-hc}} defines a header compression
    mechanism for LPWAN network based on a static context. The context is
    said static since the field description composing the Rules and the context are not
    learned during the packet exchanges but are previously defined.  The
