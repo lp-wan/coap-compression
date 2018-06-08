@@ -124,226 +124,26 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   before the compressor may change some field values to offer a better compression rate and 
   maintain the necessary context for interoperability with existing CoAP implementations.
   
-<!--
-## Exploiting CoAP asymetry
-
-Some bi-directional fields such as code or type may uses different values 
-
-An LPWAN node can either be a client or a server and sometimes both.
-   In the client mode, the LPWAN node sends request to a server and
-   expects an answer or acknowledgements.  Acknowledgements can be at 2
-   different levels:
-
-* In the transport level, a CON message is acknowledged by an ACK message.
-      A NON confirmable message is not acknowledged at all.
-
-
-* In REST level, a REST request is acknowledged by an "error" code.
-      The {{rfc7967}} defines an option to limit the number of
-      acknowledgements.
-
-
-
-Note that acknowledgement can be optimized and a REST level acknowledgement
-can be used as a transport level acknowledgement.
-
-A rule includes also a Direction
-   Indicator (DI) which may be used to distinguish between the upstream and the downstream 
-   direction. CoAP compression may benefit of this since it is not mandatory to include
-   value that are sent in that direction. For instance the values expected in the type field
-   are different in both directions.
-
-
-
-## CoAP header field analysis
-
-CoAP header format defines the following fields:
-
-* version (2 bits): 
-
-* type (2 bits). It defines the type of the transport messages, 4
-      values are defined, regarding the type of exchange. 
-      
-      For acknowledged message 
-      it can be
-      reduced to 0 or 1 bit using a matching-list if the direction is taken into account. 
-      
-      For non acknowledged
-      messages this field can be elided.
-
-* token length (4 bits).  The standard allows up to 8 bytes for a
-      token.  If a fixed token size is chosen, then this field can
-      be elided.  If some variation in length are needed then 1 or 2
-      bits could be enough for most of LPWAN applications.
-
-* code (8 bits).  This field codes the request and the response
-      values. In CoAP these values are represented in a more compact way 
-      then the coding used in
-      HTTP, but the coding is not optimal.
-
-* message id (16 bits). This value of this header field is used to acknowledge CON
-  frames. The size of this field is computed to allow the anticipation
-  (how many frames can be sent without acknowledgement). When a value
-  is used, the {{rfc7252}} defines the time before it can be reused
-  without ambiguities. This size defined may be too large for a LPWAN node
-  sending or receiving few messages a day.
-
-* Token (0 to 8 bytes). Token header field is used to identify active flows. 
-  Regarding the usage for LPWAN 
-  (stability  in time and limited number), a short token (1 Byte or less) can be
-  enough.
-
-* options are coded using delta-TLV. The delta-T depends on previous values,
-  length is encoded inside the option. The {{rfc7252}} distinguishes
-  repeatable options that can appear several times in the header.
-  Among them we can distinguish:
-
-  * list options which appear several time in the header but are exclusive such
-    as the Accept option.
-
-  * cumulative options which appear several times in the header but are part of
-    a more generic value such as Uri-Path and Uri-Query. In that case, some elements
-    may not change during the Thing lifetime and other may change at each request. 
-    For instance CoMi {{I-D.ietf-core-comi}} defines the following path /c/X6?k="eth0", 
-    where the first path element "c" does not change, the second element can vary
-    over time with a different length (it represents the base64 enconding of a SID) and
-    the query string can also vary over time. 
-
-  For a given flow some value options are stable through time. Observe,
-  ETag, If-Match, If-None-Match and Size varies in each message. 
-
-
-The CoAP protocol must not be altered by the compression/decompression phase,
-but if no semantic is attributed to a value, it may be changed during this
-phase. For instance, the compression phase may reduce the size of a token
-but must maintain its unicity. The decompressor will not be able to restore
-the original value but the behavior will remain the same. If no special semantic
-is assigned to the token, this will be transparent. If a special semantic
-is assigned to the token, its compression may not be possible.
-
-
-#SCHC rules for CoAP header compression
-
-This draft refines the rules definition by adding the direction of the message, 
-from the Thing point of view (uplink, downlink or bidirectional). It does not 
-introduce new Machting Operator or new Compression Decompression Function, but add
-some possibility to check one particular element when  several of them are
- present at the  same time.
-
-A rule can contain CoAP and IPv6/UDP entries. In that case, IPv6/UDP entries are
-tagged bidirectional.
-
-## Directional Rules
-
-By default, an entry in a rule is bidirectional which means that it can be applied
-either on the uplink or downlink headers. By specifying the direction, the LC will
-take into account the specific  field only if the direction match. 
-
-If the Thing is a client, the URI-Path option is only present on request and not 
-on the response. Therefore, the exact matching principle to select a rule cannot apply.
-
-Some options are marked unidirectional, the value (uplink or downlink) depends of the 
-scenario. A Uri-Path option will be marked uplink if the Thing acts as a client and downlink
-if the Thing acts as a server. If the Thing acts both as client and server, two different
-rules will be defined.
-
-
-## Matching Operator {#URI-Example}
-
-
--->
 
 # Compression of CoAP header fields
 
 This section discusses of the compression of the different CoAP header fields. These are just
 examples. The compression should take into account the nature of the traffic and not 
-only the field values. Next chapter will define some compression rules for some common 
-exchanges.
+only the field values.
 
 ## CoAP version field (2 bits)
 
-This field is bidirectional and can be elided during the SCHC compression, since it always
-contains  the same value. It appears only in first position.
-
-~~~~~~
-FID  FL FP DI Value  MO      CDA     Sent
-ver  2  1  bi  1    equal  not-sent
-~~~~~~
+This field is bidirectional and must be elided during the SCHC compression, since it always
+contains  the same value. In the future, if new version of CoAP are defined, new rules will 
+have to defined leading to no ambiguities between versions. 
 
 ## CoAP type field
 
-This field can be managed bidirectionally or unidirectionally.Several strategies can be 
-applied to this field regarding the values used:
+{{rfc7252}} defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit these property with the mapping list: [CON, NON] for one direction and [ACK, RST] for the other direction. Compression residue is reduced to 1 bit. 
 
-* If the ES is a client or a Server and non confirmable message are used, the transmission
-of the Type field can be avoided:
+The field must elided if for instance the client is sending only NON or CON messages. 
 
-   * Pos is always 1, 
-   
-   * DI can either be "uplink" if the ES is a CoAP client or "downlink" if the ES 
-   is a CoAP server, or "bidirectional"
-   
-   * TV is set to the  value,
-   
-   * MO is set to "equal" 
-   
-   * CDA is set to "not-sent".
-  
-~~~~~~
-FID   FL FP DI  Target Value  MO     CDA    Sent
-type  2  1  bi    NON        equal not-sent
-~~~~~~
-
-  
-*  If the ES is either a client or a Server and confirmable message are used, the 
-DI can be used to elide the type on the request and compress it to 1 bit on the response. 
-The example above shows the rule for a ES acting as a client, directions need to be 
-reversed for a ES acting as a server.
-  
-~~~~~~
-FID   FL FP DI    TV         MO          CDA       Sent
-type  2  1  up   CON        equal       not-sent
-type  2  1  dw [ACK,RST] match-mapping mapping-sent  [1]
-~~~~~~
-  
-* Otherwise if the ES is acting simultaneously as a client and a server and the rule handle
-these two traffics, Type field must be sent uncompressed.
-
-~~~~~~
-FID  FL FP DI TV   MO      CDA    Sent
-type 2  1  bi    ignore send-value [2]
-~~~~~~
-
-##CoAP token length field
-
-This field is bi-directional.
-
-Several strategies can be applied to this field regarding the values:
-
-* no token or a wellknown length, the transmission can be avoided. A special care must be 
-taken, if CON messages are acknowledged with an empty ACK message. In that case the token
-is not always present.
-  
-~~~~~~
-FID FL FP DI   TV    MO     CDA      Sent
-TKL 4  1  bi value ignore send-value [4]
-~~~~~~
-
-* If the length is changing from one message to an other, the Token Length field must be 
-sent. If the Token length can be limited, then only the least significant bits have 
-to be sent. The example below allows values between 0 and 3.
-
-~~~~~~
-FID FL FP DI  TV   MO     CDA   Sent
-TKL 4  1  bi  0x0 MSB(2) LSB(2)  [2]
-~~~~~~
-
-* otherwise the field value has to be sent.
-
-~~~~~~
-FID FL FP DI TV   MO      CDA     Sent
-TKL 4  1  bi    ignore value-sent  [4]
-~~~~~~
+In any case, a rule must be define to carry RST to a client.
   
 ##CoAP code field
 
