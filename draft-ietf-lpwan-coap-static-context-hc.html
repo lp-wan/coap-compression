@@ -282,10 +282,9 @@ address {
 <link href="#rfc.section.3" rel="Chapter" title="3 Compression of CoAP header fields">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 CoAP version field (2 bits)">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 CoAP type field">
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 CoAP token length field">
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 CoAP code field">
-<link href="#rfc.section.3.5" rel="Chapter" title="3.5 CoAP Message ID field">
-<link href="#rfc.section.3.6" rel="Chapter" title="3.6 CoAP Token field">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 CoAP code field">
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 CoAP Message ID field">
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 CoAP Token field">
 <link href="#rfc.section.4" rel="Chapter" title="4 CoAP options">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 CoAP option Content-format field.">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 CoAP option Accept field">
@@ -375,13 +374,11 @@ address {
 </li>
 <li>3.2.   <a href="#rfc.section.3.2">CoAP type field</a>
 </li>
-<li>3.3.   <a href="#rfc.section.3.3">CoAP token length field</a>
+<li>3.3.   <a href="#rfc.section.3.3">CoAP code field</a>
 </li>
-<li>3.4.   <a href="#rfc.section.3.4">CoAP code field</a>
+<li>3.4.   <a href="#rfc.section.3.4">CoAP Message ID field</a>
 </li>
-<li>3.5.   <a href="#rfc.section.3.5">CoAP Message ID field</a>
-</li>
-<li>3.6.   <a href="#rfc.section.3.6">CoAP Token field</a>
+<li>3.5.   <a href="#rfc.section.3.5">CoAP Token field</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">CoAP options</a>
 </li>
@@ -444,79 +441,22 @@ address {
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#compression-of-coap-header-fields" id="compression-of-coap-header-fields">Compression of CoAP header fields</a>
 </h1>
-<p id="rfc.section.3.p.1">This section discusses of the compression of the different CoAP header fields. These are just examples. The compression should take into account the nature of the traffic and not only the field values. Next chapter will define some compression rules for some common exchanges.</p>
+<p id="rfc.section.3.p.1">This section discusses of the compression of the different CoAP header fields. These are just examples. The compression should take into account the nature of the traffic and not only the field values.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#coap-version-field-2-bits" id="coap-version-field-2-bits">CoAP version field (2 bits)</a>
 </h1>
-<p id="rfc.section.3.1.p.1">This field is bidirectional and can be elided during the SCHC compression, since it always contains  the same value. It appears only in first position.</p>
-<pre>
-FID  FL FP DI Value  MO      CDA     Sent
-ver  2  1  bi  1    equal  not-sent
-</pre>
+<p id="rfc.section.3.1.p.1">This field is bidirectional and must be elided during the SCHC compression, since it always contains  the same value. In the future, if new version of CoAP are defined, new rules will have to defined leading to no ambiguities between versions.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#coap-type-field" id="coap-type-field">CoAP type field</a>
 </h1>
-<p id="rfc.section.3.2.p.1">This field can be managed bidirectionally or unidirectionally.Several strategies can be applied to this field regarding the values used:</p>
-<p></p>
-
-<ul><li>If the ES is a client or a Server and non confirmable message are used, the transmission of the Type field can be avoided:  <ul>
-<li>Pos is always 1,</li>
-<li>DI can either be &#8220;uplink&#8221; if the ES is a CoAP client or &#8220;downlink&#8221; if the ES is a CoAP server, or &#8220;bidirectional&#8221;</li>
-<li>TV is set to the  value,</li>
-<li>MO is set to &#8220;equal&#8221;</li>
-<li>CDA is set to &#8220;not-sent&#8221;.</li>
-</ul>
-</li></ul>
-<pre>
-FID   FL FP DI  Target Value  MO     CDA    Sent
-type  2  1  bi    NON        equal not-sent
-</pre>
-<p></p>
-
-<ul><li>If the ES is either a client or a Server and confirmable message are used, the DI can be used to elide the type on the request and compress it to 1 bit on the response.  The example above shows the rule for a ES acting as a client, directions need to be reversed for a ES acting as a server.</li></ul>
-<pre>
-FID   FL FP DI    TV         MO          CDA       Sent
-type  2  1  up   CON        equal       not-sent
-type  2  1  dw [ACK,RST] match-mapping mapping-sent  [1]
-</pre>
-<p></p>
-
-<ul><li>Otherwise if the ES is acting simultaneously as a client and a server and the rule handle these two traffics, Type field must be sent uncompressed.</li></ul>
-<pre>
-FID  FL FP DI TV   MO      CDA    Sent
-type 2  1  bi    ignore send-value [2]
-</pre>
+<p><a href="#rfc7252" class="xref">[rfc7252]</a> defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit these property with the mapping list: [CON, NON] for one direction and [ACK, RST] for the other direction. Compression residue is reduced to 1 bit.</p>
+<p id="rfc.section.3.2.p.2">The field must elided if for instance the client is sending only NON or CON messages.</p>
+<p id="rfc.section.3.2.p.3">In any case, a rule must be define to carry RST to a client.</p>
 <h1 id="rfc.section.3.3">
-<a href="#rfc.section.3.3">3.3.</a> <a href="#coap-token-length-field" id="coap-token-length-field">CoAP token length field</a>
+<a href="#rfc.section.3.3">3.3.</a> <a href="#coap-code-field" id="coap-code-field">CoAP code field</a>
 </h1>
-<p id="rfc.section.3.3.p.1">This field is bi-directional.</p>
-<p id="rfc.section.3.3.p.2">Several strategies can be applied to this field regarding the values:</p>
-<p></p>
-
-<ul><li>no token or a wellknown length, the transmission can be avoided. A special care must be taken, if CON messages are acknowledged with an empty ACK message. In that case the token is not always present.</li></ul>
-<pre>
-FID FL FP DI   TV    MO     CDA      Sent
-TKL 4  1  bi value ignore send-value [4]
-</pre>
-<p></p>
-
-<ul><li>If the length is changing from one message to an other, the Token Length field must be sent. If the Token length can be limited, then only the least significant bits have to be sent. The example below allows values between 0 and 3.</li></ul>
-<pre>
-FID FL FP DI  TV   MO     CDA   Sent
-TKL 4  1  bi  0x0 MSB(2) LSB(2)  [2]
-</pre>
-<p></p>
-
-<ul><li>otherwise the field value has to be sent.</li></ul>
-<pre>
-FID FL FP DI TV   MO      CDA     Sent
-TKL 4  1  bi    ignore value-sent  [4]
-</pre>
-<h1 id="rfc.section.3.4">
-<a href="#rfc.section.3.4">3.4.</a> <a href="#coap-code-field" id="coap-code-field">CoAP code field</a>
-</h1>
-<p id="rfc.section.3.4.p.1">This field is bidirectional, but compression can be enhanced using DI.</p>
-<p id="rfc.section.3.4.p.2">The CoAP Code field defines a tricky way to ensure compatibility with HTTP values.  Nevertheless only 21 values are defined by <a href="#rfc7252" class="xref">[rfc7252]</a> compared to the 255 possible values.</p>
+<p id="rfc.section.3.3.p.1">This field is bidirectional, but compression can be enhanced using DI.</p>
+<p id="rfc.section.3.3.p.2">The CoAP Code field defines a tricky way to ensure compatibility with HTTP values.  Nevertheless only 21 values are defined by <a href="#rfc7252" class="xref">[rfc7252]</a> compared to the 255 possible values.</p>
 <div id="rfc.figure.1"></div>
 <div id="Fig--example-code-mapping"></div>
 <pre>
@@ -557,62 +497,62 @@ TKL 4  1  bi    ignore value-sent  [4]
 </pre>
 <p class="figure">Figure 1: Example of CoAP code mapping</p>
 <p><a href="#Fig--example-code-mapping" class="xref">Figure 1</a> gives a possible mapping, it can be changed to add new codes or reduced if some values are never used by both ends.  It could efficiently be coded on 5 bits.</p>
-<p id="rfc.section.3.4.p.4">Even if the number of code can be increase with other RFC, implementations may use a limited number of values, which can help to reduce the number of bits sent on the LPWAN.</p>
-<p id="rfc.section.3.4.p.5">The number of code may vary over time, some new codes may be introduced or some applications use a limited number of values.</p>
-<p id="rfc.section.3.4.p.6">The client and the server do not use the same values. This asymmetry can be exploited to reduce the size sent on the LPWAN.</p>
-<p id="rfc.section.3.4.p.7">The field can be treated differently in upstream than in downstream.  If the Thing is a client an entry can be set on the uplink message with a code matching for 0.0X values and another for downlink values for Y.ZZ codes.  It is the opposite if the thing is a server.</p>
-<p id="rfc.section.3.4.p.8">If the ES always sends or receives requests with the same method, the Code field can be elided. The entry below shows a rule for a client sending only GET request.</p>
+<p id="rfc.section.3.3.p.4">Even if the number of code can be increase with other RFC, implementations may use a limited number of values, which can help to reduce the number of bits sent on the LPWAN.</p>
+<p id="rfc.section.3.3.p.5">The number of code may vary over time, some new codes may be introduced or some applications use a limited number of values.</p>
+<p id="rfc.section.3.3.p.6">The client and the server do not use the same values. This asymmetry can be exploited to reduce the size sent on the LPWAN.</p>
+<p id="rfc.section.3.3.p.7">The field can be treated differently in upstream than in downstream.  If the Thing is a client an entry can be set on the uplink message with a code matching for 0.0X values and another for downlink values for Y.ZZ codes.  It is the opposite if the thing is a server.</p>
+<p id="rfc.section.3.3.p.8">If the ES always sends or receives requests with the same method, the Code field can be elided. The entry below shows a rule for a client sending only GET request.</p>
 <pre>
 FID  FL FP DI  TV  MO     CDA    Sent
 code 8  1  up GET equal not-sent
 </pre>
-<p id="rfc.section.3.4.p.9">If the client may send different methods, a matching-list can be applied. For table <a href="#Fig--example-code-mapping" class="xref">Figure 1</a>, 3 bits are necessary, but it could be less if fewer methods are used. Example below gives an example where the ES is a server and receives only GET and POST requests.</p>
+<p id="rfc.section.3.3.p.9">If the client may send different methods, a matching-list can be applied. For table <a href="#Fig--example-code-mapping" class="xref">Figure 1</a>, 3 bits are necessary, but it could be less if fewer methods are used. Example below gives an example where the ES is a server and receives only GET and POST requests.</p>
 <pre>
 FID  FL FP DI Target Value    MO            CDA       Sent
 code 8  1  dw [0.01, 0.02] match-mapping mapping-sent [1]
 </pre>
-<p id="rfc.section.3.4.p.10">The same approach can be applied to responses.</p>
-<h1 id="rfc.section.3.5">
-<a href="#rfc.section.3.5">3.5.</a> <a href="#coap-message-id-field" id="coap-message-id-field">CoAP Message ID field</a>
+<p id="rfc.section.3.3.p.10">The same approach can be applied to responses.</p>
+<h1 id="rfc.section.3.4">
+<a href="#rfc.section.3.4">3.4.</a> <a href="#coap-message-id-field" id="coap-message-id-field">CoAP Message ID field</a>
 </h1>
-<p id="rfc.section.3.5.p.1">This field is bidirectional.</p>
-<p id="rfc.section.3.5.p.2">Message ID is used for two purposes:</p>
+<p id="rfc.section.3.4.p.1">This field is bidirectional.</p>
+<p id="rfc.section.3.4.p.2">Message ID is used for two purposes:</p>
 <p></p>
 
 <ul>
 <li>To acknowledge a CON message with an ACK.</li>
 <li>To avoid duplicate messages.</li>
 </ul>
-<p id="rfc.section.3.5.p.4">In LPWAN, since a message can be received by several radio gateway, some LPWAN technologies include a sequence number in L2 to avoid duplicate frames. Therefore if the message does not need to be acknowledged (NON or RST message), the Message ID field can be avoided.</p>
+<p id="rfc.section.3.4.p.4">In LPWAN, since a message can be received by several radio gateway, some LPWAN technologies include a sequence number in L2 to avoid duplicate frames. Therefore if the message does not need to be acknowledged (NON or RST message), the Message ID field can be avoided.</p>
 <pre>
 FID FL FP DI TV   MO     CDA    Sent
 Mid 8  1  bi    ignore not-sent
 </pre>
-<p id="rfc.section.3.5.p.5">The decompressor must generate a value.</p>
-<p id="rfc.section.3.5.p.6">[[Note; check id this field is not used by OSCOAP .]]</p>
-<p id="rfc.section.3.5.p.7">To optimize information sent on the LPWAN, shorter values may be used during the exchange, but Message ID values generated a common CoAP implementation will not take into account this limitation. Before the compression, a proxy may be needed to reduce the size.</p>
+<p id="rfc.section.3.4.p.5">The decompressor must generate a value.</p>
+<p id="rfc.section.3.4.p.6">[[Note; check id this field is not used by OSCOAP .]]</p>
+<p id="rfc.section.3.4.p.7">To optimize information sent on the LPWAN, shorter values may be used during the exchange, but Message ID values generated a common CoAP implementation will not take into account this limitation. Before the compression, a proxy may be needed to reduce the size.</p>
 <pre>
 FID FL FP DI   TV      MO    CDA   Sent
 Mid 8  1  bi 0x0000 MSB(12) LSB(4) [4]
 </pre>
-<p id="rfc.section.3.5.p.8">Otherwise if no compression is possible, the field has to be sent</p>
+<p id="rfc.section.3.4.p.8">Otherwise if no compression is possible, the field has to be sent</p>
 <pre>
 FID FL FP DI TV   MO       CDA    Sent
 Mid 8  1  bi    ignore value-sent [8]
 </pre>
-<h1 id="rfc.section.3.6">
-<a href="#rfc.section.3.6">3.6.</a> <a href="#coap-token-field" id="coap-token-field">CoAP Token field</a>
+<h1 id="rfc.section.3.5">
+<a href="#rfc.section.3.5">3.5.</a> <a href="#coap-token-field" id="coap-token-field">CoAP Token field</a>
 </h1>
-<p id="rfc.section.3.6.p.1">This field is bi-directional.</p>
-<p id="rfc.section.3.6.p.2">Token is used to identify transactions and varies from one transaction to another.  Therefore, it is usually necessary to send the value of the token field on the LPWAN network.  The optimization will occur by using small values.</p>
-<p id="rfc.section.3.6.p.3">Common CoAP implementations may generate large tokens, even if shorter tokens could be used regarding the LPWAN characteristics. A proxy may be needed to reduce the size of the token before compression.</p>
-<p id="rfc.section.3.6.p.4">The size of the compress token sent is known by a combination of the Token Length field and the rule entry. For instance, with the entry below:</p>
+<p id="rfc.section.3.5.p.1">This field is bi-directional.</p>
+<p id="rfc.section.3.5.p.2">Token is used to identify transactions and varies from one transaction to another.  Therefore, it is usually necessary to send the value of the token field on the LPWAN network.  The optimization will occur by using small values.</p>
+<p id="rfc.section.3.5.p.3">Common CoAP implementations may generate large tokens, even if shorter tokens could be used regarding the LPWAN characteristics. A proxy may be needed to reduce the size of the token before compression.</p>
+<p id="rfc.section.3.5.p.4">The size of the compress token sent is known by a combination of the Token Length field and the rule entry. For instance, with the entry below:</p>
 <pre>
 FID   FL FP DI  TV   MO       CDA    Sent
 tkl   4  1  bi   2  equal   not-sent    
 token 8  1  bi 0x00 MSB(12) LSB(4)   [4]
 </pre>
-<p id="rfc.section.3.6.p.5">The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.</p>
+<p id="rfc.section.3.5.p.5">The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#coap-options" id="coap-options">CoAP options</a>
 </h1>
