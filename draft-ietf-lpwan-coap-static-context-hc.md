@@ -35,6 +35,7 @@ normative:
   rfc7967:
   rfc7641:
   I-D.ietf-lpwan-ipv6-static-context-hc:
+  I-D.toutain-core-time-scale:
 
 --- abstract
 
@@ -145,137 +146,22 @@ The field must elided if for instance the client is sending only NON or CON mess
 
 In any case, a rule must be define to carry RST to a client.
   
-##CoAP code field
+## CoAP code field
 
-This field is bidirectional, but compression can be enhanced using DI. 
+The compression of the CoAP code field follows the same principle ad for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes starting with the 0 class and the response values. 
 
-The CoAP Code field defines a tricky way to 
-ensure compatibility with
-HTTP values.  Nevertheless only 21 values are defined by {{rfc7252}}
-compared to the 255 possible values. 
+If the device implement only a CoAP client, the request code can be reduced to the set of request the client is able to process. 
 
+All the response codes should be compressed with a SCHC rule. 
 
-
-~~~~
-
-     +------+------------------------------+-----------+
-     | Code | Description                  | Mapping   |
-     +------+------------------------------+-----------+
-     | 0.00 |                              |  0x00     |
-     | 0.01 | GET                          |  0x01     |
-     | 0.02 | POST                         |  0x02     |
-     | 0.03 | PUT                          |  0x03     |
-     | 0.04 | DELETE                       |  0x04     |
-     | 0.05 | FETCH                        |  0x05     |
-     | 0.06 | PATCH                        |  0x06     |
-     | 0.07 | iPATCH                       |  0x07     |
-     | 2.01 | Created                      |  0x08     |
-     | 2.02 | Deleted                      |  0x09     |
-     | 2.03 | Valid                        |  0x0A     |
-     | 2.04 | Changed                      |  0x0B     |
-     | 2.05 | Content                      |  0x0C     |
-     | 4.00 | Bad Request                  |  0x0D     |
-     | 4.01 | Unauthorized                 |  0x0E     |
-     | 4.02 | Bad Option                   |  0x0F     |
-     | 4.03 | Forbidden                    |  0x10     |
-     | 4.04 | Not Found                    |  0x11     |
-     | 4.05 | Method Not Allowed           |  0x12     |
-     | 4.06 | Not Acceptable               |  0x13     |
-     | 4.12 | Precondition Failed          |  0x14     |
-     | 4.13 | Request Entity Too Large     |  0x15     |
-     | 4.15 | Unsupported Content-Format   |  0x16     |
-     | 5.00 | Internal Server Error        |  0x17     |
-     | 5.01 | Not Implemented              |  0x18     |
-     | 5.02 | Bad Gateway                  |  0x19     |
-     | 5.03 | Service Unavailable          |  0x1A     |
-     | 5.04 | Gateway Timeout              |  0x1B     |
-     | 5.05 | Proxying Not Supported       |  0x1C     |
-     +------+------------------------------+-----------+
-
-~~~~
-{: #Fig--example-code-mapping title="Example of CoAP code mapping"}
-   
-{{Fig--example-code-mapping}} gives a possible mapping, it can be changed 
-to add new codes or reduced if some values are never used by both ends. 
-It could efficiently be coded on 5 bits. 
-
-Even if the number of code can be increase 
-with other RFC, implementations may use a limited number of values, which can
-help to reduce the number of bits sent on the LPWAN.
-
-The number of code may vary over time, some new codes
-may be introduced or some applications use a limited number of values. 
-
-The client and the server do not use the 
-same values. This asymmetry can be exploited to reduce the size sent on 
-the LPWAN. 
-
-The field can be treated differently in upstream than in downstream.
-If the Thing is a client an entry can be set on the uplink message with a
-code matching for 0.0X values and another for downlink values for Y.ZZ
-codes.  It is the opposite if the thing is a server.
-
-If the ES always sends or receives requests with the same method, the Code
-field can be elided. The entry below shows a rule for a client sending only 
-GET request.
-
-~~~~~~
-FID  FL FP DI  TV  MO     CDA    Sent
-code 8  1  up GET equal not-sent
-~~~~~~
-
-If the client may send different methods, a matching-list can be applied. For
-table {{Fig--example-code-mapping}}, 3 bits are necessary, but it could be less 
-if fewer methods are used. Example below gives an example where the ES is a server
-and receives only GET and POST requests.
-
-~~~~~~
-FID  FL FP DI Target Value    MO            CDA       Sent
-code 8  1  dw [0.01, 0.02] match-mapping mapping-sent [1]
-~~~~~~
-
-The same approach can be applied to responses. 
  
 ## CoAP Message ID field
 
-This field is bidirectional.
+This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message has a retransmission. After this period, it will be processed as a new messages.
 
-Message ID is used for two purposes:
+In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. The client may also inform the server that the default value 
 
-* To acknowledge a CON message with an ACK.
-
-* To avoid duplicate messages. 
-
-In LPWAN, since a message can be received by several radio gateway, some 
-LPWAN technologies include a sequence number in L2 to avoid duplicate frames. Therefore
-if the message does not need to be acknowledged (NON or RST message), the Message
-ID field can be avoided.
-
-~~~~~~
-FID FL FP DI TV   MO     CDA    Sent
-Mid 8  1  bi    ignore not-sent
-~~~~~~
-
-The decompressor must generate a value.
-
-\[\[Note; check id this field is not used by OSCOAP .\]\]
-
-To optimize information sent on the LPWAN, shorter values may be used during the 
-exchange, but Message ID values generated a common CoAP implementation will not take 
-into account this limitation. Before the compression, a proxy may be needed to 
-reduce the size. 
-
-~~~~~~
-FID FL FP DI   TV      MO    CDA   Sent
-Mid 8  1  bi 0x0000 MSB(12) LSB(4) [4]
-~~~~~~
-
-Otherwise if no compression is possible, the field has to be sent
-
-~~~~~~
-FID FL FP DI TV   MO       CDA    Sent
-Mid 8  1  bi    ignore value-sent [8]
-~~~~~~
+In case the Device is a server, client may be located outside of the LPWAN 
 
 
 ## CoAP Token field
