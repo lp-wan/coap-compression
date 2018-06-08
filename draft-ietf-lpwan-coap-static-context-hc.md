@@ -467,7 +467,7 @@ described in {{Fig-CoAP-header-1-direc}}. Note that Type is no more sent in the
 compressed format, Compressed Code size in not changed in that example (8 values 
 are needed to code all the requests and 21 to code all the responses in the matching list 
 
-# <!--{{Fig--example-code-mapping}}-->)
+
 
 ~~~~
  Rule ID 2
