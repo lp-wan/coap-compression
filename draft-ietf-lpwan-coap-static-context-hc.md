@@ -35,7 +35,7 @@ normative:
   rfc7967:
   rfc7641:
   I-D.ietf-lpwan-ipv6-static-context-hc:
-  <!--I-D.toutain-core-time-scale:-->
+#  <!--I-D.toutain-core-time-scale:-->
 
 --- abstract
 
