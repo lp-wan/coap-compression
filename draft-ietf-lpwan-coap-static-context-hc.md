@@ -159,7 +159,7 @@ All the response codes should be compressed with a SCHC rule.
 
 This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message has a retransmission. After this period, it will be processed as a new messages.
 
-In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. The client may also inform the server that the default value 
+In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. The client may also inform the server that the default value <!--{{I-D.toutain-core-time-scale:}}-->
 
 In case the Device is a server, client may be located outside of the LPWAN 
 
@@ -419,7 +419,7 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
 The version  and Token Length fields are elided. Code has shrunk to 5 bits
-using the matching list (as the one given {{Fig--example-code-mapping}}: 0.01 
+using the matching list (as the one given <!--{{Fig--example-code-mapping}}-->: 0.01 
 is value 0x01 and 2.05 is value 0x0c) 
 Message-ID has shrunk to 9 bits to preserve alignment on byte boundary. The
 most significant bit must be set to 0 through a CoAP proxy. Uri-Path contains
@@ -464,7 +464,7 @@ The message can be further optimized by setting some fields unidirectional, as
 described in {{Fig-CoAP-header-1-direc}}. Note that Type is no more sent in the
 compressed format, Compressed Code size in not changed in that example (8 values 
 are needed to code all the requests and 21 to code all the responses in the matching list 
- {{Fig--example-code-mapping}})
+ <!--{{Fig--example-code-mapping}}-->)
 
 ~~~~
  Rule ID 2
