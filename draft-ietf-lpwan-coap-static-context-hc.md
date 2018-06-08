@@ -419,7 +419,9 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
 The version  and Token Length fields are elided. Code has shrunk to 5 bits
-using the matching list (as the one given <!--{{Fig--example-code-mapping}}-->: 0.01 
+using the matching list (as the one given 
+#<!--{{Fig--example-code-mapping}}-->
+: 0.01 
 is value 0x01 and 2.05 is value 0x0c) 
 Message-ID has shrunk to 9 bits to preserve alignment on byte boundary. The
 most significant bit must be set to 0 through a CoAP proxy. Uri-Path contains
@@ -464,7 +466,8 @@ The message can be further optimized by setting some fields unidirectional, as
 described in {{Fig-CoAP-header-1-direc}}. Note that Type is no more sent in the
 compressed format, Compressed Code size in not changed in that example (8 values 
 are needed to code all the requests and 21 to code all the responses in the matching list 
- <!--{{Fig--example-code-mapping}}-->)
+
+# <!--{{Fig--example-code-mapping}}-->)
 
 ~~~~
  Rule ID 2
