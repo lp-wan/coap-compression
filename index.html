@@ -426,12 +426,8 @@ address {
 </h1>
 <p id="rfc.section.1.p.1">CoAP <a href="#rfc7252" class="xref">[rfc7252]</a> is an implementation of the REST architecture for constrained devices. Nevertheless, if limited, the size of a CoAP header may be too large for LPWAN constraints and some compression may be needed to reduce the header size.</p>
 <p><a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> defines a header compression mechanism for LPWAN network based on a static context. The context is said static since the field description composing the Rules and the context are not learned during the packet exchanges but are previously defined.  The context(s) is(are) known by both ends before transmission.</p>
-<p id="rfc.section.1.p.3">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing &#224; field ID (FID) and its position when repeated, a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs.  In that case, a Compression/Decompression Action (CDA) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
-<pre>
-This document describes how the rules can be applied to CoAP flows. 
-Compression of the CoAP header may be done in conjunction with the 
-above layers or independantly.
-</pre>
+<p id="rfc.section.1.p.3">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing &#224; field ID (FID), its length (FL) and its position (FP) when repeated differs from 1, a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs.  In that case, a Compression/Decompression Action (CDA) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
+<p id="rfc.section.1.p.4">This document describes how the rules can be applied to CoAP flows.  Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#coap-compressing" id="coap-compressing">CoAP Compressing</a>
 </h1>
