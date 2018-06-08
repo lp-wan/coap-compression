@@ -165,35 +165,20 @@ Note taht the client may also inform the server that the EXCHANGE_LIFETIME it is
 
 In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA. 
 
+TODO: add a reference to Time Scale
 
 ## CoAP Token field
 
-This field is bi-directional.
+Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.
 
-Token is used to identify transactions and varies from one
-   transaction to another.  Therefore, it is usually necessary to send
-   the value of the token field on the LPWAN network.  The optimization will occur 
-   by using small
-   values.
+Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwize it will have to the send as a compression residue.
 
-Common CoAP implementations may generate large tokens, even if shorter tokens could 
-be used regarding the LPWAN characteristics. A proxy may be needed to reduce 
-the size of the token before compression. 
+Token Value size should not be defined directly in the rule if the Field Length (FL). Instead a specific function designed as "TKL" must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field. 
 
-The size of the compress token sent is known by a combination of the Token Length field
-and the rule entry. For instance, with the entry below:
-
-~~~~~~
-FID   FL FP DI  TV   MO       CDA    Sent
-tkl   4  1  bi   2  equal   not-sent    
-token 8  1  bi 0x00 MSB(12) LSB(4)   [4]
-~~~~~~
-
-The uncompressed token is 2 bytes long, but the compressed size will be 4 bits.
 
 # CoAP options
 
-##CoAP option Content-format field.
+## CoAP option Content-format field.
 
 This field is unidirectional and must not be set to bidirectional in a rule entry.
 It is used only by the server to inform the client about of the payload type and is 
