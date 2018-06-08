@@ -178,82 +178,11 @@ Token Value size should not be defined directly in the rule if the Field Length 
 
 # CoAP options
 
-## CoAP option Content-format field.
+## CoAP Content and Accept options.
 
-This field is unidirectional and must not be set to bidirectional in a rule entry.
-It is used only by the server to inform the client about of the payload type and is 
-never found in client requests.
+These field are both unidirectional and must not be set to bidirectional in a rule entry.
 
-If single value is expected by the client, the TV contains that value and MO is set to
-"equal" and the CDF is set to "not-sent". The examples below describe the rules for an
-ES acting as a server.
-
-~~~~~~
-FID     FL FP DI  TV    MO     CDA    Sent
-content 16 1  up value equal not-sent
-~~~~~~
-
-If several possible value are expected by the client, a matching-list can be used.
-
-~~~~~~
-FID     FL FP DI   TV         MO           CDA       Sent
-content 16 1  up [50, 41] match-mapping mapping-sent [1]
-~~~~~~
-
-Otherwise the value can be sent.The value-sent CDF in the compressor do not send the 
-option type and the decompressor reconstruct it regarding the position in the rule.
-
-~~~~~~
-FID     FL FP DI   TV   MO     CDA       Sent
-content 16 1  up      ignore value-sent [0-16]
-~~~~~~
-
-##CoAP option Accept field
-
-This field is unidirectional and must not be set to bidirectional in a rule entry.
-It is used only by the client to inform of the possible payload type and is never 
-found in server response.
-
-The number of accept options is not limited and can vary regarding the usage. To
-be selected a rule must contain the exact number about accept options with their 
-positions. Since the order in which the Accept value are sent, the position order 
-can be modified. The rule below 
-
-~~~~~~
-FID    FL FP DI  TV   MO    CDA    Sent
-accept 16 1  up  41  egal not-sent
-accept 16 2  up  50  egal not-sent
-~~~~~~~ 
-
-will be selected only if two accept options are in the CoAP header if this order. 
-
-The rule below:
-
-~~~~~~
-FID    FL FP DI  TV  MO     CDA    Sent
-accept 16 0  up  41 egal  not-sent
-accept 16 0  up  50 egal  not-sent
-~~~~~~~ 
-
-will accept a-only CoAP messages with 2 accept options, but the order will not influence
-the rule selection. The decompression will reconstruct the header regarding the rule order.
-
-Otherwise a matching-list can be applied to the different values, in that case the order 
-is important to recover the appropriate value and the position must be clearly indicate.
-
-~~~~~~ 
-FID    FL FP DI    TV       MO             CDA     Sent
-accept 16 1  up [50,41] match-mapping mapping-sent  [1]
-accept 16 2  up [50,61] match-mapping mapping-sent  [1]
-accept 16 3  up [61,71] match-mapping mapping-sent  [1]
-~~~~~~
-
-Finally, the option  can be  explicitly sent.
-
-~~~~~~
-FID    FL FP DI  TV    MO       CDA     Sent
-accept    1  up      ignore  value-sent
-~~~~~~
+If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise if several possible value are expected by the client, a matching-list should be used to limit the size of the residue. If not, the possible, the value as to be sent as a variable length residue. 
 
 
 ##CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
@@ -267,7 +196,7 @@ If the duration is known by both ends, value can be elided on the LPWAN.
 
 A matching list can be used if some wellknown values are defined.
 
-Otherwise the option length and value can be sent on the LPWAN. 
+Otherwise these options should be compressed as variable length residue.
 
 
 \[\[note: we can reduce (or create a new option) the unit to minute, 
@@ -374,6 +303,8 @@ set to "equal" and CDF is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDF to "value-sent". A matching list can also be used to reduce the size. 
+
+## Time Scale
 
 # Protocol analysis
 
