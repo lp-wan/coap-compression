@@ -286,9 +286,8 @@ address {
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 CoAP Message ID field">
 <link href="#rfc.section.3.5" rel="Chapter" title="3.5 CoAP Token field">
 <link href="#rfc.section.4" rel="Chapter" title="4 CoAP options">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 CoAP option Content-format field.">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 CoAP option Accept field">
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 CoAP Content and Accept options.">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
 <link href="#rfc.section.5" rel="Chapter" title="5 CoAP option Uri-Path and Uri-Query fields">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 CoAP option Proxy-URI and Proxy-Scheme fields">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields">
@@ -296,6 +295,7 @@ address {
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Block">
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Observe">
 <link href="#rfc.section.6.3" rel="Chapter" title="6.3 No-Response">
+<link href="#rfc.section.6.4" rel="Chapter" title="6.4 Time Scale">
 <link href="#rfc.section.7" rel="Chapter" title="7 Protocol analysis">
 <link href="#rfc.section.8" rel="Chapter" title="8 Examples of CoAP header compression">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Mandatory header with CON message">
@@ -382,11 +382,9 @@ address {
 </li>
 </ul><li>4.   <a href="#rfc.section.4">CoAP options</a>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">CoAP option Content-format field.</a>
+<ul><li>4.1.   <a href="#rfc.section.4.1">CoAP Content and Accept options.</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">CoAP option Accept field</a>
-</li>
-<li>4.3.   <a href="#rfc.section.4.3">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
+<li>4.2.   <a href="#rfc.section.4.2">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">CoAP option Uri-Path and Uri-Query fields</a>
 </li>
@@ -401,6 +399,8 @@ address {
 <li>6.2.   <a href="#rfc.section.6.2">Observe</a>
 </li>
 <li>6.3.   <a href="#rfc.section.6.3">No-Response</a>
+</li>
+<li>6.4.   <a href="#rfc.section.6.4">Time Scale</a>
 </li>
 </ul><li>7.   <a href="#rfc.section.7">Protocol analysis</a>
 </li>
@@ -476,62 +476,18 @@ address {
 <a href="#rfc.section.4">4.</a> <a href="#coap-options" id="coap-options">CoAP options</a>
 </h1>
 <h1 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#coap-option-content-format-field" id="coap-option-content-format-field">CoAP option Content-format field.</a>
+<a href="#rfc.section.4.1">4.1.</a> <a href="#coap-content-and-accept-options" id="coap-content-and-accept-options">CoAP Content and Accept options.</a>
 </h1>
-<p id="rfc.section.4.1.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform the client about of the payload type and is never found in client requests.</p>
-<p id="rfc.section.4.1.p.2">If single value is expected by the client, the TV contains that value and MO is set to &#8220;equal&#8221; and the CDF is set to &#8220;not-sent&#8221;. The examples below describe the rules for an ES acting as a server.</p>
-<pre>
-FID     FL FP DI  TV    MO     CDA    Sent
-content 16 1  up value equal not-sent
-</pre>
-<p id="rfc.section.4.1.p.3">If several possible value are expected by the client, a matching-list can be used.</p>
-<pre>
-FID     FL FP DI   TV         MO           CDA       Sent
-content 16 1  up [50, 41] match-mapping mapping-sent [1]
-</pre>
-<p id="rfc.section.4.1.p.4">Otherwise the value can be sent.The value-sent CDF in the compressor do not send the option type and the decompressor reconstruct it regarding the position in the rule.</p>
-<pre>
-FID     FL FP DI   TV   MO     CDA       Sent
-content 16 1  up      ignore value-sent [0-16]
-</pre>
+<p id="rfc.section.4.1.p.1">These field are both unidirectional and must not be set to bidirectional in a rule entry.</p>
+<p id="rfc.section.4.1.p.2">If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise if several possible value are expected by the client, a matching-list should be used to limit the size of the residue. If not, the possible, the value as to be sent as a variable length residue.</p>
 <h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#coap-option-accept-field" id="coap-option-accept-field">CoAP option Accept field</a>
+<a href="#rfc.section.4.2">4.2.</a> <a href="#coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields" id="coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
 </h1>
-<p id="rfc.section.4.2.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the client to inform of the possible payload type and is never found in server response.</p>
-<p id="rfc.section.4.2.p.2">The number of accept options is not limited and can vary regarding the usage. To be selected a rule must contain the exact number about accept options with their positions. Since the order in which the Accept value are sent, the position order can be modified. The rule below</p>
-<pre>
-FID    FL FP DI  TV   MO    CDA    Sent
-accept 16 1  up  41  egal not-sent
-accept 16 2  up  50  egal not-sent
-</pre>
-<p id="rfc.section.4.2.p.3">will be selected only if two accept options are in the CoAP header if this order.</p>
-<p id="rfc.section.4.2.p.4">The rule below:</p>
-<pre>
-FID    FL FP DI  TV  MO     CDA    Sent
-accept 16 0  up  41 egal  not-sent
-accept 16 0  up  50 egal  not-sent
-</pre>
-<p id="rfc.section.4.2.p.5">will accept a-only CoAP messages with 2 accept options, but the order will not influence the rule selection. The decompression will reconstruct the header regarding the rule order.</p>
-<p id="rfc.section.4.2.p.6">Otherwise a matching-list can be applied to the different values, in that case the order is important to recover the appropriate value and the position must be clearly indicate.</p>
-<pre>
-FID    FL FP DI    TV       MO             CDA     Sent
-accept 16 1  up [50,41] match-mapping mapping-sent  [1]
-accept 16 2  up [50,61] match-mapping mapping-sent  [1]
-accept 16 3  up [61,71] match-mapping mapping-sent  [1]
-</pre>
-<p id="rfc.section.4.2.p.7">Finally, the option  can be  explicitly sent.</p>
-<pre>
-FID    FL FP DI  TV    MO       CDA     Sent
-accept    1  up      ignore  value-sent
-</pre>
-<h1 id="rfc.section.4.3">
-<a href="#rfc.section.4.3">4.3.</a> <a href="#coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields" id="coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
-</h1>
-<p id="rfc.section.4.3.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform of the caching duration and is never found in client requests.</p>
-<p id="rfc.section.4.3.p.2">If the duration is known by both ends, value can be elided on the LPWAN.</p>
-<p id="rfc.section.4.3.p.3">A matching list can be used if some wellknown values are defined.</p>
-<p id="rfc.section.4.3.p.4">Otherwise the option length and value can be sent on the LPWAN.</p>
-<p id="rfc.section.4.3.p.5">[[note: we can reduce (or create a new option) the unit to minute, second is small for LPWAN ]]</p>
+<p id="rfc.section.4.2.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform of the caching duration and is never found in client requests.</p>
+<p id="rfc.section.4.2.p.2">If the duration is known by both ends, value can be elided on the LPWAN.</p>
+<p id="rfc.section.4.2.p.3">A matching list can be used if some wellknown values are defined.</p>
+<p id="rfc.section.4.2.p.4">Otherwise these options should be compressed as variable length residue.</p>
+<p id="rfc.section.4.2.p.5">[[note: we can reduce (or create a new option) the unit to minute, second is small for LPWAN ]]</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#coap-option-uri-path-and-uri-query-fields" id="coap-option-uri-path-and-uri-query-fields">CoAP option Uri-Path and Uri-Query fields</a>
 </h1>
@@ -600,6 +556,9 @@ URI-Query    1  up   k=       MSB (16)     LSB
 </h1>
 <p><a href="#rfc7967" class="xref">[rfc7967]</a>  defines an No-Response option limiting the responses made by a server to a request. If the value is not by both ends, then TV is set to this value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</p>
 <p id="rfc.section.6.3.p.2">Otherwise, if the value is changing over time, TV is not set, MO is set to &#8220;ignore&#8221; and CDF to &#8220;value-sent&#8221;. A matching list can also be used to reduce the size.</p>
+<h1 id="rfc.section.6.4">
+<a href="#rfc.section.6.4">6.4.</a> <a href="#time-scale" id="time-scale">Time Scale</a>
+</h1>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#protocol-analysis" id="protocol-analysis">Protocol analysis</a>
 </h1>
