@@ -77,48 +77,53 @@ This document describes how the rules can be applied to CoAP flows.
    above layers (IPv6/UDP) or independantly.
     
 
-#  CoAP Compressing
+#  CoAP Compression with SCHC
 
-   CoAP differs from IPv6 and UDP protocols on the following aspects: 
+CoAP differs from IPv6 and UDP protocols on the following aspects: 
    
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
   request and in the response, only the location in the header may vary 
   (e.g. source and destination fields). A CoAP request is different from a response. 
   For example, the URI-path option is mandatory in the request and is not found in the response, 
-  a request may contain an Accept option and the response a Content-format option.
+  a request may contain an Accept option and the response a Content option.
   
-  Even when a field is "symmetric" (i.e. found in both directions) the values carried are
+  {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows to use a message direction (DI) when
+  processing the rule. 
+  
+* Even when a field is "symmetric" (i.e. found in both directions) the values carried are
   different. For instance the Type field will contain a CON value in the request and a
   ACK or RST value in the response. Exploiting the asymmetry in compression will allow to 
   send no bit in the compressed request and a single bit in the answer. Same behavior can be 
   applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).
-
-* CoAP also obeys to the client/server paradigm and the compression rate can
-  be different if the request is issued from an LPWAN node or from an non LPWAN
-  device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but
-  a regular CoAP client will certainly send a larger token to the Thing. SCHC compression
-  will not modify the values to offer a better compression rate. Nevertheless a proxy placed
-  before the compressor may change some field values to offer a better compression rate and 
-  maintain the necessary context for interoperability with existing CoAP implementations.
+  The direction allows to split in two parts the possible values for each direction. 
+  
+  In combination
+  with the mapping list, the size of the compression residu can be reduced.
 
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
   systematically, the CoAP options are described using the Type-Length-Value. 
-  When applying SCHC header compression.
+  When applying SCHC header compression. 
   
-  By sending compressed field information following the rule order, 
-  SCHC offers a serialization/deserialization mechanism. 
-  Since a field exists to indicate the token length there is no ambiguity. 
-  For options, the rule indicates also the expected options found the int CoAP header. 
-  Therefore only the length is needed to recognize an option. 
-  The length will be sent using the same CoAP encoding (size less than 12 are directly sent, 
-  higher values use the escape mechanisms defined by {{rfc7252}}). 
-  Delta Type is omitted, the value will be recovered by the decompressor. 
-  This reduces the option length of 4, 12 or 20 bits regarding the original size of the delta type encoding in the option.
+  {{I-D.ietf-lpwan-ipv6-static-context-hc}}
+  offers the possibility to define a function for the Field Length in the Field Description.
   
-* In CoAP headers a field can be duplicated several times, for instances, elements of an URI (path or queries) or accepted 
-formats. The position defined in a rule, associated to a Field ID, can be used to identify the proper element.
+* In CoAP headers a field can be duplicated several times, for instances, elements of an URI 
+  (path or queries). The position defined in a rule, associated to a Field ID, can be used to 
+  identify the proper element.
 
+  {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field id to appears several times in the
+  rule, the Field Position (FP) removes ambiguities for the matching operation. 
+
+
+* CoAP also obeys to the client/server paradigm and the compression rate can
+  be different if the request is issued from an LPWAN node or from an non LPWAN
+  device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but
+  a regular CoAP client will certainly send a larger token to the Thing. SCHC compression
+  will not modify the values to offer a better compression rate. Nevertheless a proxy placed
+  before the compressor may change some field values to offer a better compression rate and 
+  maintain the necessary context for interoperability with existing CoAP implementations.
+  
 <!--
 ## Exploiting CoAP asymetry
 
