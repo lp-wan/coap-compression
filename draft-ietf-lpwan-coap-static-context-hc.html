@@ -278,7 +278,7 @@ address {
 
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
-<link href="#rfc.section.2" rel="Chapter" title="2 CoAP Compressing">
+<link href="#rfc.section.2" rel="Chapter" title="2 CoAP Compression with SCHC">
 <link href="#rfc.section.3" rel="Chapter" title="3 Compression of CoAP header fields">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 CoAP version field (2 bits)">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 CoAP type field">
@@ -367,7 +367,7 @@ address {
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a>
 </li>
-<li>2.   <a href="#rfc.section.2">CoAP Compressing</a>
+<li>2.   <a href="#rfc.section.2">CoAP Compression with SCHC</a>
 </li>
 <li>3.   <a href="#rfc.section.3">Compression of CoAP header fields</a>
 </li>
@@ -429,16 +429,17 @@ address {
 <p id="rfc.section.1.p.3">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing &#224; field ID (FID), its length (FL) and its position (FP) when repeated differs from 1, a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs.  In that case, a Compression/Decompression Action (CDA) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
 <p id="rfc.section.1.p.4">This document describes how the rules can be applied to CoAP flows.  Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#coap-compressing" id="coap-compressing">CoAP Compressing</a>
+<a href="#rfc.section.2">2.</a> <a href="#coap-compression-with-schc" id="coap-compression-with-schc">CoAP Compression with SCHC</a>
 </h1>
 <p id="rfc.section.2.p.1">CoAP differs from IPv6 and UDP protocols on the following aspects:</p>
 <p></p>
 
 <ul>
-<li>IPv6 and UDP are symmetrical protocols. The same fields are found in the request and in the response, only the location in the header may vary (e.g. source and destination fields). A CoAP request is different from a response.  For example, the URI-path option is mandatory in the request and is not found in the response, a request may contain an Accept option and the response a Content-format option.  <br><br> Even when a field is &#8220;symmetric&#8221; (i.e. found in both directions) the values carried are different. For instance the Type field will contain a CON value in the request and a ACK or RST value in the response. Exploiting the asymmetry in compression will allow to send no bit in the compressed request and a single bit in the answer. Same behavior can be applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).</li>
-<li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from an LPWAN node or from an non LPWAN device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP client will certainly send a larger token to the Thing. SCHC compression will not modify the values to offer a better compression rate. Nevertheless a proxy placed before the compressor may change some field values to offer a better compression rate and maintain the necessary context for interoperability with existing CoAP implementations.</li>
-<li>In IPv6 and UDP header fields have a fixed size. In CoAP, Token size may vary from 0 to 8 bytes, length is given by a field in the header. More systematically, the CoAP options are described using the Type-Length-Value.  When applying SCHC header compression.  <br><br> By sending compressed field information following the rule order, SCHC offers a serialization/deserialization mechanism.  Since a field exists to indicate the token length there is no ambiguity.  For options, the rule indicates also the expected options found the int CoAP header.  Therefore only the length is needed to recognize an option.  The length will be sent using the same CoAP encoding (size less than 12 are directly sent, higher values use the escape mechanisms defined by <a href="#rfc7252" class="xref">[rfc7252]</a>).  Delta Type is omitted, the value will be recovered by the decompressor.  This reduces the option length of 4, 12 or 20 bits regarding the original size of the delta type encoding in the option.</li>
-<li>In CoAP headers a field can be duplicated several times, for instances, elements of an URI (path or queries) or accepted formats. The position defined in a rule, associated to a Field ID, can be used to identify the proper element.</li>
+<li>IPv6 and UDP are symmetrical protocols. The same fields are found in the request and in the response, only the location in the header may vary (e.g. source and destination fields). A CoAP request is different from a response.  For example, the URI-path option is mandatory in the request and is not found in the response, a request may contain an Accept option and the response a Content option.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows to use a message direction (DI) when processing the rule.</li>
+<li>Even when a field is &#8220;symmetric&#8221; (i.e. found in both directions) the values carried are different. For instance the Type field will contain a CON value in the request and a ACK or RST value in the response. Exploiting the asymmetry in compression will allow to send no bit in the compressed request and a single bit in the answer. Same behavior can be applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).  The direction allows to split in two parts the possible values for each direction.  <br><br> In combination with the mapping list, the size of the compression residu can be reduced.</li>
+<li>In IPv6 and UDP header fields have a fixed size. In CoAP, Token size may vary from 0 to 8 bytes, length is given by a field in the header. More systematically, the CoAP options are described using the Type-Length-Value.  When applying SCHC header compression.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> offers the possibility to define a function for the Field Length in the Field Description.</li>
+<li>In CoAP headers a field can be duplicated several times, for instances, elements of an URI (path or queries). The position defined in a rule, associated to a Field ID, can be used to identify the proper element.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows a Field id to appears several times in the rule, the Field Position (FP) removes ambiguities for the matching operation.</li>
+<li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from an LPWAN node or from an non LPWAN device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP client will certainly send a larger token to the Thing. SCHC compression will not modify the values to offer a better compression rate. Nevertheless a proxy placed before the compressor may change some field values to offer a better compression rate and maintain the necessary context for interoperability with existing CoAP implementations.</li>
 </ul>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#compression-of-coap-header-fields" id="compression-of-coap-header-fields">Compression of CoAP header fields</a>

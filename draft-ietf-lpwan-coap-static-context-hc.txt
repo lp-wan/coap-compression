@@ -66,10 +66,10 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  CoAP Compressing  . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   3
    3.  Compression of CoAP header fields . . . . . . . . . . . . . .   4
      3.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   4
-     3.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   4
+     3.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   5
      3.3.  CoAP token length field . . . . . . . . . . . . . . . . .   5
      3.4.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   6
      3.5.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   8
@@ -133,7 +133,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    Compression of the CoAP header may be done in conjunction with the
    above layers (IPv6/UDP) or independantly.
 
-2.  CoAP Compressing
+2.  CoAP Compression with SCHC
 
    CoAP differs from IPv6 and UDP protocols on the following aspects:
 
@@ -143,24 +143,24 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       request is different from a response.  For example, the URI-path
       option is mandatory in the request and is not found in the
       response, a request may contain an Accept option and the response
-      a Content-format option.
+      a Content option.
 
-      Even when a field is "symmetric" (i.e. found in both directions)
+      [I-D.ietf-lpwan-ipv6-static-context-hc] allows to use a message
+      direction (DI) when processing the rule.
+
+   o  Even when a field is "symmetric" (i.e. found in both directions)
       the values carried are different.  For instance the Type field
       will contain a CON value in the request and a ACK or RST value in
       the response.  Exploiting the asymmetry in compression will allow
       to send no bit in the compressed request and a single bit in the
       answer.  Same behavior can be applied to the CoAP Code field (O.OX
-      code are present in the request and Y.ZZ in the answer).
+      code are present in the request and Y.ZZ in the answer).  The
+      direction allows to split in two parts the possible values for
+      each direction.
 
-   o  CoAP also obeys to the client/server paradigm and the compression
-      rate can be different if the request is issued from an LPWAN node
-      or from an non LPWAN device.  For instance a Thing (ES) aware of
-      LPWAN constraints can generate a 1 byte token, but a regular CoAP
-      client will certainly send a larger token to the Thing.  SCHC
-      compression will not modify the values to offer a better
-      compression rate.  Nevertheless a proxy placed before the
-      compressor may change some field values to offer a better
+      In combination with the mapping list, the size of the compression
+      residu can be reduced.
+
 
 
 
@@ -170,30 +170,33 @@ Minaburo & Toutain      Expires December 10, 2018               [Page 3]
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
-      compression rate and maintain the necessary context for
-      interoperability with existing CoAP implementations.
-
    o  In IPv6 and UDP header fields have a fixed size.  In CoAP, Token
       size may vary from 0 to 8 bytes, length is given by a field in the
       header.  More systematically, the CoAP options are described using
       the Type-Length-Value.  When applying SCHC header compression.
 
-      By sending compressed field information following the rule order,
-      SCHC offers a serialization/deserialization mechanism.  Since a
-      field exists to indicate the token length there is no ambiguity.
-      For options, the rule indicates also the expected options found
-      the int CoAP header.  Therefore only the length is needed to
-      recognize an option.  The length will be sent using the same CoAP
-      encoding (size less than 12 are directly sent, higher values use
-      the escape mechanisms defined by [rfc7252]).  Delta Type is
-      omitted, the value will be recovered by the decompressor.  This
-      reduces the option length of 4, 12 or 20 bits regarding the
-      original size of the delta type encoding in the option.
+      [I-D.ietf-lpwan-ipv6-static-context-hc] offers the possibility to
+      define a function for the Field Length in the Field Description.
 
    o  In CoAP headers a field can be duplicated several times, for
-      instances, elements of an URI (path or queries) or accepted
-      formats.  The position defined in a rule, associated to a Field
-      ID, can be used to identify the proper element.
+      instances, elements of an URI (path or queries).  The position
+      defined in a rule, associated to a Field ID, can be used to
+      identify the proper element.
+
+      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
+      appears several times in the rule, the Field Position (FP) removes
+      ambiguities for the matching operation.
+
+   o  CoAP also obeys to the client/server paradigm and the compression
+      rate can be different if the request is issued from an LPWAN node
+      or from an non LPWAN device.  For instance a Device (Dev) aware of
+      LPWAN constraints can generate a 1 byte token, but a regular CoAP
+      client will certainly send a larger token to the Thing.  SCHC
+      compression will not modify the values to offer a better
+      compression rate.  Nevertheless a proxy placed before the
+      compressor may change some field values to offer a better
+      compression rate and maintain the necessary context for
+      interoperability with existing CoAP implementations.
 
 3.  Compression of CoAP header fields
 
@@ -212,10 +215,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    FID  FL FP DI Value  MO      CDA     Sent
    ver  2  1  bi  1    equal  not-sent
 
-3.2.  CoAP type field
 
-   This field can be managed bidirectionally or unidirectionally.Several
-   strategies can be applied to this field regarding the values used:
 
 
 
@@ -225,6 +225,11 @@ Minaburo & Toutain      Expires December 10, 2018               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+3.2.  CoAP type field
+
+   This field can be managed bidirectionally or unidirectionally.Several
+   strategies can be applied to this field regarding the values used:
 
    o  If the ES is a client or a Server and non confirmable message are
       used, the transmission of the Type field can be avoided:
@@ -268,11 +273,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    o  no token or a wellknown length, the transmission can be avoided.
       A special care must be taken, if CON messages are acknowledged
-      with an empty ACK message.  In that case the token is not always
-      present.
-
-   FID FL FP DI   TV    MO     CDA      Sent
-   TKL 4  1  bi value ignore send-value [4]
 
 
 
@@ -281,6 +281,12 @@ Minaburo & Toutain      Expires December 10, 2018               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+      with an empty ACK message.  In that case the token is not always
+      present.
+
+   FID FL FP DI   TV    MO     CDA      Sent
+   TKL 4  1  bi value ignore send-value [4]
 
    o  If the length is changing from one message to an other, the Token
       Length field must be sent.  If the Token length can be limited,
@@ -303,12 +309,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    The CoAP Code field defines a tricky way to ensure compatibility with
    HTTP values.  Nevertheless only 21 values are defined by [rfc7252]
    compared to the 255 possible values.
-
-
-
-
-
-
 
 
 
