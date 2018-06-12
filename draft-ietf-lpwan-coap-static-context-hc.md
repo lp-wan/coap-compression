@@ -72,11 +72,40 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    the TVs.  In that case, a Compression/Decompression Action (CDA)
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. 
-   
-This document describes how the rules can be applied to CoAP flows. 
-   Compression of the CoAP header may be done in conjunction with the 
-   above layers (IPv6/UDP) or independantly.
     
+# Use of SCHC Compression 
+
+The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
+
+~~~~
++------------------+                                +----------------+
+|       CoAP       |                                |      CoAP      |                                
++------------------+                                +----------------+
+| SCHC Compression |                                |       UDP      |
++------------------+                                +----------------+
+|       DTLS       |                                |      IPv6      |
++------------------+                             +- +----------------+
+|       UDP        |         OR                  |  |   Compression  |
++------------------+                       SCHC <   +----------------+
+|       IPv6       |                             |  | Fragmentation  |
++------------------+                             +- +----------------+
+| SCHC Compression |                                |LPWAN technology|   
++------------------+                                +----------------+
+|SCHC Fragmentation|
++------------------+
+| LPWAN technology |
++------------------+
+
+
+~~~~
+{: #Fig-SCHCCOAP title='SCHC Adaptation Layers for CoAP flows'}  
+
+
+In the First figure two different SCHC Rules are used to compressed the different header,
+one for CoAP and the other for IP/UDP, in the second figure one Rule will be used to
+compressed the complete stack.
+The use of one possibility of the other depends on the architecture or the use of a security
+protocol
 
 #  CoAP Compression with SCHC
 
