@@ -237,20 +237,32 @@ This fields are unidirectional and must not be set to bidirectional in a rule en
 They are used only by the client to access to a specific resource and are never found 
 in server response.
 
-The Matching Operator behavior has not changed, but the value must take a position value, 
-if the entry is repeated :
+Uri-Path and Uri-Query are a repeatable options, the Field Position (FP) gives the 
+position in the path. 
 
-~~~~
-FID      FL FP DI  TV    MO      CDA    Sent
-URI-Path    1  up  foo  equal  not-sent
-URI-Path    2  up  bar  equal  not-sent
-~~~~
-{: #Fig-MOposition title='Position entry.'}
+A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to
+optimize the compression, several elements can be regrouped into a single entry. 
+Numbering of elements do not change, MO comparison is set with the first element 
+of the matching.
 
-For instance, the  rule {{Fig-MOposition}} matches with /foo/bar, but not /bar/foo.
+~~~~~ 
+FID       FL FP DI    TV         MO        CDA    Sent
+URI-Path     1  up  {0:"/c/c",  equal   not-sent
+                     1:"/c/d"
+URI-Path     3  up             ignore   value-sent
+~~~~~
+{: #Fig--complex-path title="complex path example"}
 
-When the length is not clearly indicated in the rule, the value length must be sent with the
-field data, which means for CoAP to send directly the CoAP option with length and value.
+
+### Variable length Uri-Path and Uri-Query
+
+When the length is known at the rule creation, the Field Length must be set to variable, 
+and the unit is set to bytes. 
+
+The MSB MO can be apply to a Uri-Path or Uri-Query element. Since MSB value is given in bit,
+the size must always be a multiple of 8 bits and the LSB CDA must not carry any value.
+
+The length sent at the begining of a variable length residue indicates the size of the LSB in bytes. 
 
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
@@ -266,22 +278,17 @@ URI-Query    1  up    k=   MSB (16)    LSB
 The second element is sent with the length (i.e. 0x2 X 6) followed by the query option 
 (i.e. 0x05 "eth0").
 
-A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to
-optimize the compression, several elements can be regrouped into a single entry. 
-Numbering of elements do not change, MO comparison is set with the first element 
-of the matching.
 
-~~~~~ 
-FID       FL FP DI    TV         MO        CDA    Sent
-URI-Path     1  up  {0:"/c/c",  equal   not-sent
-                     1:"/c/d"
-URI-Path     3  up             ignore   value-sent
-URI-Query    1  up   k=       MSB (16)     LSB 
-~~~~~
-{: #Fig--complex-path title="complex path example"}
+### Variable number of path or query elements
 
-For instance, the following Path /foo/bar/variable/stable can leads to the rule defined 
-{{Fig--complex-path}}.
+The number of Uri-path or Uri-Query in a rule is fixed at the rule creation time. If the number
+varies, several rules should be created to cover all the possibilities. Another possibilities is
+to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
+indicate that this Uri-Path is empty. This add 4 bits to the compression residue.
+
+
+
+<!--
 
 ### MSB MO and LSB CDA arguments
 MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used
@@ -308,6 +315,7 @@ fields could be:
 ~~~~
 {: #Fig--MSBLSB title="Use of MSB and LSB MO and CDA"}
  
+-->
 
 ## CoAP option Proxy-URI and Proxy-Scheme fields
 
