@@ -78,19 +78,19 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
 
 ~~~~
-+------------------+                             +----------------+
-|       CoAP       |                             |      CoAP      |                                
-+------------------+                             +----------------+
-| SCHC Compression |                             |       UDP      |
-+------------------+                             +----------------+
-|       DTLS       |                             |      IPv6      |
-+------------------+                          +- +----------------+
-|       UDP        |         OR               |  |   Compression  |
-+------------------+                    SCHC <   +----------------+
-|       IPv6       |                          |  | Fragmentation  |
-+------------------+                          +- +----------------+
-| SCHC Compression |                             |LPWAN technology|   
-+------------------+                             +----------------+
++------------------+                 +--------------------+
+|       CoAP       |                 |        CoAP        |                                
++------------------+                 +--------------------+
+| SCHC Compression |                 |         UDP        |
++------------------+                 +--------------------+
+|       DTLS       |                 |        IPv6        |
++------------------+                 +--------------------+
+|       UDP        |       OR        |  SCHC Compression  |
++------------------+                 +--------------------+
+|       IPv6       |                 | SCHC Fragmentation |
++------------------+                 +--------------------+
+| SCHC Compression |                 |  LPWAN technology  |   
++------------------+                 +--------------------+
 |SCHC Fragmentation|
 +------------------+
 | LPWAN technology |
@@ -283,19 +283,6 @@ URI-Query    1  up   k=       MSB (16)     LSB
 For instance, the following Path /foo/bar/variable/stable can leads to the rule defined 
 {{Fig--complex-path}}.
 
- 
-
-## CoAP option Proxy-URI and Proxy-Scheme fields
-
-These fields are unidirectional and must not be set to bidirectional in a rule entry.
-They are used only by the client to access to a specific resource and are never found 
-in server response.
-
-If the field value must be sent, TV is not set, MO is set to "ignore" and CDF is set
-to "value-sent. A mapping can also be used.
-
-Otherwise the TV is set to the value, MO is set to "equal" and CDF is set to "not-sent"
-
 ### MSB MO and LSB CDA arguments
 MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used
 for fixed and variable lengths field headers, in each case, the behavior is different based on the Field
@@ -320,6 +307,19 @@ fields could be:
 
 ~~~~
 {: #Fig--MSBLSB title="Use of MSB and LSB MO and CDA"}
+ 
+
+## CoAP option Proxy-URI and Proxy-Scheme fields
+
+These fields are unidirectional and must not be set to bidirectional in a rule entry.
+They are used only by the client to access to a specific resource and are never found 
+in server response.
+
+If the field value must be sent, TV is not set, MO is set to "ignore" and CDF is set
+to "value-sent. A mapping can also be used.
+
+Otherwise the TV is set to the value, MO is set to "equal" and CDF is set to "not-sent"
+
 
 ## CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields
 
