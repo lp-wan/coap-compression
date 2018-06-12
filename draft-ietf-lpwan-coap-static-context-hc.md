@@ -95,7 +95,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   different. For instance the Type field will contain a CON value in the request and a
   ACK or RST value in the response. Exploiting the asymmetry in compression will allow to 
   send no bit in the compressed request and a single bit in the answer. Same behavior can be 
-  applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).
+  applied to the CoAP Code field (0.0X code are present in the request and Y.ZZ in the answer).
   The direction allows to split in two parts the possible values for each direction. 
   
   In combination
