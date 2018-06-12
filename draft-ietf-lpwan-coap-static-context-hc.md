@@ -301,20 +301,23 @@ MSB and LSB are used to choose the number of bits to be matched against and to b
 for fixed and variable lengths field headers, in each case, the behavior is different based on the Field
 Description definition, the MO, and the TV defined in the Rule.
 The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be
-sent where &#39;x&#39; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives
+sent where 'x'; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives
 the size of this field.
 This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of
 fields could be:
+
 ~~~
-+-----------------------+---------------------+--------------+---------------------------------+
-|          MO           |         CDA         |        TV    |       Compression Residue       |
-+=======================+=====================+==============+=================================+
-|        Ignore         |       Value-Sent    |              |         Length + Residue        |
-+-----------------------+---------------------+--------------+---------------------------------+
-|        MSB(x)         |          LSB        |              |         Length + Residue        |
-+-----------------------+---------------------+--------------+---------------------------------+
-|     Match-mapping     |    Mapping Sent     |       List    |          Residue(index)        |
-+-----------------------+---------------------+---------------+--------------------------------+
++---------------+--------------+----------+---------------------+
+|     MO        |     CDA      |    TV    | Compression Residue |
++===============+==============+==========+=====================+
+|    Ignore     |  Value-Sent  |          | Length + Residue    |
++---------------+--------------+----------+---------------------+
+|    MSB(x)     |     LSB      |          | Length + Residue    |
++---------------+--------------+----------+---------------------+
+| Match-mapping | Mapping Sent |   List   |  Residue(index)     |
++---------------+--------------+----------+---------------------+
+
+
 ~~~~
 {: #Fig--MSBLSB title="Use of MSB and LSB MO and CDA"}
 
