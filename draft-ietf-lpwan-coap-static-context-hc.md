@@ -73,7 +73,7 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. 
     
-# Use of SCHC Compression 
+# SCHC Compression Process
 
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
 
