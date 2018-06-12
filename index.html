@@ -278,7 +278,7 @@ address {
 
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
-<link href="#rfc.section.2" rel="Chapter" title="2 Use of SCHC Compression">
+<link href="#rfc.section.2" rel="Chapter" title="2 SCHC Compression Process">
 <link href="#rfc.section.3" rel="Chapter" title="3 CoAP Compression with SCHC">
 <link href="#rfc.section.4" rel="Chapter" title="4 Compression of CoAP header fields">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 CoAP version field (2 bits)">
@@ -368,7 +368,7 @@ address {
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a>
 </li>
-<li>2.   <a href="#rfc.section.2">Use of SCHC Compression</a>
+<li>2.   <a href="#rfc.section.2">SCHC Compression Process</a>
 </li>
 <li>3.   <a href="#rfc.section.3">CoAP Compression with SCHC</a>
 </li>
@@ -431,7 +431,7 @@ address {
 <p><a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> defines a header compression mechanism for LPWAN network based on a static context. The context is said static since the field description composing the Rules and the context are not learned during the packet exchanges but are previously defined.  The context(s) is(are) known by both ends before transmission.</p>
 <p id="rfc.section.1.p.3">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing &#224; field ID (FID), its length (FL) and its position (FP) when repeated differs from 1, a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs.  In that case, a Compression/Decompression Action (CDA) associated to each field defines the link between the compressed and decompressed value for each of the header fields.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#use-of-schc-compression" id="use-of-schc-compression">Use of SCHC Compression</a>
+<a href="#rfc.section.2">2.</a> <a href="#schc-compression-process" id="schc-compression-process">SCHC Compression Process</a>
 </h1>
 <p id="rfc.section.2.p.1">The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> may be used as as shown in the <a href="#Fig-SCHCCOAP" class="xref">Figure 1</a>.</p>
 <div id="rfc.figure.1"></div>

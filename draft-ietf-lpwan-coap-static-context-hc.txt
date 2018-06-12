@@ -66,7 +66,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Use of SCHC Compression . . . . . . . . . . . . . . . . . . .   3
+   2.  SCHC Compression Process  . . . . . . . . . . . . . . . . . .   3
    3.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   4
    4.  Compression of CoAP header fields . . . . . . . . . . . . . .   5
      4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   5
@@ -129,7 +129,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    each field defines the link between the compressed and decompressed
    value for each of the header fields.
 
-2.  Use of SCHC Compression
+2.  SCHC Compression Process
 
    The SCHC Compression rules can be applied to CoAP flows.  SCHC
    Compression of the CoAP header may be done in conjunction with the
