@@ -137,23 +137,23 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    as described in [I-D.ietf-lpwan-ipv6-static-context-hc] may be used
    as as shown in the Figure 1.
 
-  +------------------+                                +----------------+
-  |       CoAP       |                                |      CoAP      |
-  +------------------+                                +----------------+
-  | SCHC Compression |                                |       UDP      |
-  +------------------+                                +----------------+
-  |       DTLS       |                                |      IPv6      |
-  +------------------+                             +- +----------------+
-  |       UDP        |         OR                  |  |   Compression  |
-  +------------------+                       SCHC <   +----------------+
-  |       IPv6       |                             |  | Fragmentation  |
-  +------------------+                             +- +----------------+
-  | SCHC Compression |                                |LPWAN technology|
-  +------------------+                                +----------------+
-  |SCHC Fragmentation|
-  +------------------+
-  | LPWAN technology |
-  +------------------+
+   +------------------+                             +----------------+
+   |       CoAP       |                             |      CoAP      |
+   +------------------+                             +----------------+
+   | SCHC Compression |                             |       UDP      |
+   +------------------+                             +----------------+
+   |       DTLS       |                             |      IPv6      |
+   +------------------+                          +- +----------------+
+   |       UDP        |         OR               |  |   Compression  |
+   +------------------+                    SCHC <   +----------------+
+   |       IPv6       |                          |  | Fragmentation  |
+   +------------------+                          +- +----------------+
+   | SCHC Compression |                             |LPWAN technology|
+   +------------------+                             +----------------+
+   |SCHC Fragmentation|
+   +------------------+
+   | LPWAN technology |
+   +------------------+
 
 
 
