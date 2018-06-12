@@ -78,19 +78,19 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
 
 ~~~~
-+------------------+                                +----------------+
-|       CoAP       |                                |      CoAP      |                                
-+------------------+                                +----------------+
-| SCHC Compression |                                |       UDP      |
-+------------------+                                +----------------+
-|       DTLS       |                                |      IPv6      |
-+------------------+                             +- +----------------+
-|       UDP        |         OR                  |  |   Compression  |
-+------------------+                       SCHC <   +----------------+
-|       IPv6       |                             |  | Fragmentation  |
-+------------------+                             +- +----------------+
-| SCHC Compression |                                |LPWAN technology|   
-+------------------+                                +----------------+
++------------------+                             +----------------+
+|       CoAP       |                             |      CoAP      |                                
++------------------+                             +----------------+
+| SCHC Compression |                             |       UDP      |
++------------------+                             +----------------+
+|       DTLS       |                             |      IPv6      |
++------------------+                          +- +----------------+
+|       UDP        |         OR               |  |   Compression  |
++------------------+                    SCHC <   +----------------+
+|       IPv6       |                          |  | Fragmentation  |
++------------------+                          +- +----------------+
+| SCHC Compression |                             |LPWAN technology|   
++------------------+                             +----------------+
 |SCHC Fragmentation|
 +------------------+
 | LPWAN technology |
