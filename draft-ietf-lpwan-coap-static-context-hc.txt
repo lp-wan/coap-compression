@@ -66,32 +66,33 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   3
-   3.  Compression of CoAP header fields . . . . . . . . . . . . . .   4
-     3.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   4
-     3.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   4
-     3.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   5
-     3.4.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   5
-     3.5.  CoAP Token field  . . . . . . . . . . . . . . . . . . . .   5
-   4.  CoAP options  . . . . . . . . . . . . . . . . . . . . . . . .   6
-     4.1.  CoAP Content and Accept options.  . . . . . . . . . . . .   6
-     4.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
-           Port fields . . . . . . . . . . . . . . . . . . . . . . .   6
-   5.  CoAP option Uri-Path and Uri-Query fields . . . . . . . . . .   6
-     5.1.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   7
-     5.2.  CoAP option ETag, If-Match, If-None-Match, Location-Path
-           and Location-Query fields . . . . . . . . . . . . . . . .   8
-   6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .   8
-     6.4.  Time Scale  . . . . . . . . . . . . . . . . . . . . . . .   9
-   7.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .   9
-   8.  Examples of CoAP header compression . . . . . . . . . . . . .   9
-     8.1.  Mandatory header with CON message . . . . . . . . . . . .   9
-     8.2.  Complete exchange . . . . . . . . . . . . . . . . . . . .  11
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  13
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
+   2.  Use of SCHC Compression . . . . . . . . . . . . . . . . . . .   3
+   3.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   4
+   4.  Compression of CoAP header fields . . . . . . . . . . . . . .   5
+     4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   5
+     4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   5
+     4.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   5
+     4.4.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   6
+     4.5.  CoAP Token field  . . . . . . . . . . . . . . . . . . . .   6
+   5.  CoAP options  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     5.1.  CoAP Content and Accept options.  . . . . . . . . . . . .   7
+     5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
+           Port fields . . . . . . . . . . . . . . . . . . . . . . .   7
+   6.  CoAP option Uri-Path and Uri-Query fields . . . . . . . . . .   7
+     6.1.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   8
+     6.2.  CoAP option ETag, If-Match, If-None-Match, Location-Path
+           and Location-Query fields . . . . . . . . . . . . . . . .   9
+   7.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.4.  Time Scale  . . . . . . . . . . . . . . . . . . . . . . .   9
+   8.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .  10
+   9.  Examples of CoAP header compression . . . . . . . . . . . . .  10
+     9.1.  Mandatory header with CON message . . . . . . . . . . . .  10
+     9.2.  Complete exchange . . . . . . . . . . . . . . . . . . . .  12
+   10. Normative References  . . . . . . . . . . . . . . . . . . . .  14
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -104,8 +105,7 @@ Table of Contents
    mechanism for LPWAN network based on a static context.  The context
    is said static since the field description composing the Rules and
    the context are not learned during the packet exchanges but are
-   previously defined.  The context(s) is(are) known by both ends before
-   transmission.
+
 
 
 
@@ -113,6 +113,9 @@ Minaburo & Toutain      Expires December 14, 2018               [Page 2]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   previously defined.  The context(s) is(are) known by both ends before
+   transmission.
 
    A context is composed of a set of rules that are referenced by Rule
    IDs (identifiers).  A rule contains an ordered list of the fields
@@ -126,11 +129,51 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    each field defines the link between the compressed and decompressed
    value for each of the header fields.
 
-   This document describes how the rules can be applied to CoAP flows.
-   Compression of the CoAP header may be done in conjunction with the
-   above layers (IPv6/UDP) or independantly.
+2.  Use of SCHC Compression
 
-2.  CoAP Compression with SCHC
+   The SCHC Compression rules can be applied to CoAP flows.  SCHC
+   Compression of the CoAP header may be done in conjunction with the
+   above layers (IPv6/UDP) or independantly.  The SCHC adaptation layers
+   as described in [I-D.ietf-lpwan-ipv6-static-context-hc] may be used
+   as as shown in the Figure 1.
+
+  +------------------+                                +----------------+
+  |       CoAP       |                                |      CoAP      |
+  +------------------+                                +----------------+
+  | SCHC Compression |                                |       UDP      |
+  +------------------+                                +----------------+
+  |       DTLS       |                                |      IPv6      |
+  +------------------+                             +- +----------------+
+  |       UDP        |         OR                  |  |   Compression  |
+  +------------------+                       SCHC <   +----------------+
+  |       IPv6       |                             |  | Fragmentation  |
+  +------------------+                             +- +----------------+
+  | SCHC Compression |                                |LPWAN technology|
+  +------------------+                                +----------------+
+  |SCHC Fragmentation|
+  +------------------+
+  | LPWAN technology |
+  +------------------+
+
+
+
+              Figure 1: SCHC Adaptation Layers for CoAP flows
+
+   In the First figure two different SCHC Rules are used to compressed
+   the different header, one for CoAP and the other for IP/UDP, in the
+   second figure one Rule will be used to compressed the complete stack.
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 3]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+   The use of one possibility of the other depends on the architecture
+   or the use of a security protocol
+
+3.  CoAP Compression with SCHC
 
    CoAP differs from IPv6 and UDP protocols on the following aspects:
 
@@ -163,13 +206,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       header.  More systematically, the CoAP options are described using
       the Type-Length-Value.  When applying SCHC header compression.
 
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 3]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
       [I-D.ietf-lpwan-ipv6-static-context-hc] offers the possibility to
       define a function for the Field Length in the Field Description.
 
@@ -182,6 +218,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       appears several times in the rule, the Field Position (FP) removes
       ambiguities for the matching operation.
 
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 4]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    o  CoAP also obeys to the client/server paradigm and the compression
       rate can be different if the request is issued from an LPWAN node
       or from an non LPWAN device.  For instance a Device (Dev) aware of
@@ -193,20 +237,20 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       compression rate and maintain the necessary context for
       interoperability with existing CoAP implementations.
 
-3.  Compression of CoAP header fields
+4.  Compression of CoAP header fields
 
    This section discusses of the compression of the different CoAP
    header fields.  These are just examples.  The compression should take
    into account the nature of the traffic and not only the field values.
 
-3.1.  CoAP version field (2 bits)
+4.1.  CoAP version field (2 bits)
 
    This field is bidirectional and must be elided during the SCHC
    compression, since it always contains the same value.  In the future,
    if new version of CoAP are defined, new rules will have to defined
    leading to no ambiguities between versions.
 
-3.2.  CoAP type field
+4.2.  CoAP type field
 
    [rfc7252] defines 4 types of messages: CON, NON, ACK and RST.  The
    latter two ones are a response of the two first ones.  If the device
@@ -219,14 +263,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    In any case, a rule must be define to carry RST to a client.
 
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 4]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
-3.3.  CoAP code field
+4.3.  CoAP code field
 
    The compression of the CoAP code field follows the same principle ad
    for the CoAP type field.  If the device plays a specific role, the
@@ -238,7 +275,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    All the response codes should be compressed with a SCHC rule.
 
-3.4.  CoAP Message ID field
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 5]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+4.4.  CoAP Message ID field
 
    This field is bidirectional and is used to manage acknowledgments.
    Server memorizes the value for a EXCHANGE_LIFETIME period (by default
@@ -266,7 +310,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    TODO: add a reference to Time Scale
 
-3.5.  CoAP Token field
+4.5.  CoAP Token field
 
    Token is defined through two CoAP fields, Token Length in the
    mandatory header and Token Value directly following the mandatory
@@ -274,14 +318,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    Token Length is processed as a tradition protocol field.  If the
    value remains the same during all the transaction, the size can be
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 5]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
    stored in the context and elided during the transmission.  Otherwize
    it will have to the send as a compression residue.
 
@@ -290,9 +326,21 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    must be used.  This function informs the SCHC C/D that the length of
    this field has to be read from the Token Length field.
 
-4.  CoAP options
 
-4.1.  CoAP Content and Accept options.
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 6]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+5.  CoAP options
+
+5.1.  CoAP Content and Accept options.
 
    These field are both unidirectional and must not be set to
    bidirectional in a rule entry.
@@ -303,7 +351,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    limit the size of the residue.  If not, the possible, the value as to
    be sent as a variable length residue.
 
-4.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
+5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
       fields
 
    This field is unidirectional and must not be set to bidirectional in
@@ -321,7 +369,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    [[note: we can reduce (or create a new option) the unit to minute,
    second is small for LPWAN ]]
 
-5.  CoAP option Uri-Path and Uri-Query fields
+6.  CoAP option Uri-Path and Uri-Query fields
 
    This fields are unidirectional and must not be set to bidirectional
    in a rule entry.  They are used only by the client to access to a
@@ -330,22 +378,21 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    The Matching Operator behavior has not changed, but the value must
    take a position value, if the entry is repeated :
 
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 6]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
    FID      FL FP DI  TV    MO      CDA    Sent
    URI-Path    1  up  foo  equal  not-sent
    URI-Path    2  up  bar  equal  not-sent
 
-                         Figure 1: Position entry.
+                         Figure 2: Position entry.
 
-   For instance, the rule Figure 1 matches with /foo/bar, but not /bar/
+   For instance, the rule Figure 2 matches with /foo/bar, but not /bar/
    foo.
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 7]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
    When the length is not clearly indicated in the rule, the value
    length must be sent with the field data, which means for CoAP to send
@@ -358,9 +405,9 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    URI-Path     2  up         ignore   value-sent
    URI-Query    1  up    k=   MSB (16)    LSB
 
-                      Figure 2: CoMi URI compression
+                      Figure 3: CoMi URI compression
 
-   Figure 2 shows the parsing and the compression of the URI. where c is
+   Figure 3 shows the parsing and the compression of the URI. where c is
    not sent.  The second element is sent with the length (i.e. 0x2 X 6)
    followed by the query option (i.e. 0x05 "eth0").
 
@@ -375,24 +422,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    URI-Path     3  up             ignore   value-sent
    URI-Query    1  up   k=       MSB (16)     LSB
 
-                      Figure 3: complex path example
+                      Figure 4: complex path example
 
    For instance, the following Path /foo/bar/variable/stable can leads
-   to the rule defined Figure 3.
+   to the rule defined Figure 4.
 
-5.1.  CoAP option Proxy-URI and Proxy-Scheme fields
+6.1.  CoAP option Proxy-URI and Proxy-Scheme fields
 
    These fields are unidirectional and must not be set to bidirectional
    in a rule entry.  They are used only by the client to access to a
    specific resource and are never found in server response.
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 7]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    If the field value must be sent, TV is not set, MO is set to "ignore"
    and CDF is set to "value-sent.  A mapping can also be used.
@@ -400,7 +439,18 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    Otherwise the TV is set to the value, MO is set to "equal" and CDF is
    set to "not-sent"
 
-5.2.  CoAP option ETag, If-Match, If-None-Match, Location-Path and
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 8]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+6.2.  CoAP option ETag, If-Match, If-None-Match, Location-Path and
       Location-Query fields
 
    These fields are unidirectional.
@@ -410,9 +460,9 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    [[Can include OSCOAP Object security in that category ]]
 
-6.  Other RFCs
+7.  Other RFCs
 
-6.1.  Block
+7.1.  Block
 
    Block option should be avoided in LPWAN.  The minimum size of 16
    bytes can be incompatible with some LPWAN technologies.
@@ -420,7 +470,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    [[Note: do we recommand LPWAN fragmentation since the smallest value
    of 16 is too big?]]
 
-6.2.  Observe
+7.2.  Observe
 
    [rfc7641] defines the Observe option.  The TV is not set, MO is set
    to "ignore" and the CDF is set to "value-sent".  SCHC does not limit
@@ -432,7 +482,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    not require Observe response, a rule must allow the transmission of
    this message.
 
-6.3.  No-Response
+7.3.  No-Response
 
    [rfc7967]  defines an No-Response option limiting the responses made
    by a server to a request.  If the value is not by both ends, then TV
@@ -443,24 +493,28 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    set to "ignore" and CDF to "value-sent".  A matching list can also be
    used to reduce the size.
 
+7.4.  Time Scale
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 8]
+
+
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 9]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
-6.4.  Time Scale
+8.  Protocol analysis
 
-7.  Protocol analysis
+9.  Examples of CoAP header compression
 
-8.  Examples of CoAP header compression
-
-8.1.  Mandatory header with CON message
+9.1.  Mandatory header with CON message
 
    In this first scenario, the LPWAN compressor receives from outside
    client a POST message, which is immediately acknowledged by the
-   Thing.  For this simple scenario, the rules are described Figure 4.
+   Thing.  For this simple scenario, the rules are described Figure 5.
 
     Rule ID 1
    +-------------+--+--+--+------+---------+-------------++------------+
@@ -477,7 +531,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    +-------------+--+--+--+------+---------+-------------++------------+
 
 
-          Figure 4: CoAP Context to compress header without token
+          Figure 5: CoAP Context to compress header without token
 
    The version  and Token Length fields are elided.  Code has shrunk to
    5 bits
@@ -490,7 +544,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       through a CoAP proxy.  Uri-Path contains a single element
       indicated in the matching operator.
 
-   Figure 5 shows the time diagram of the exchange.  A LPWAN Application
+   Figure 6 shows the time diagram of the exchange.  A LPWAN Application
    Server sends a CON message.  Compression reduces the header sending
    only the Type, a mapped code and the least 9 significant bits of
    Message ID.  The receiver decompresses the header. .
@@ -498,15 +552,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    The CON message is a request, therefore the LC process to a dynamic
    mapping.  When the ES receives the ACK message, this will not
    initiate locally a message ID mapping since it is a response.  The LC
+   receives the ACK and uncompressed it to restore the original value.
 
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 9]
+
+Minaburo & Toutain      Expires December 14, 2018              [Page 10]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
-   receives the ACK and uncompressed it to restore the original value.
    Dynamic Mapping context lifetime follows the same rules as message ID
    duration.
 
@@ -530,10 +585,10 @@ Internet-Draft           LPWAN CoAP compression                June 2018
                           v                    v +-+-+--+----+------+
 
 
-                Figure 5: Compression with global addresses
+                Figure 6: Compression with global addresses
 
    The message can be further optimized by setting some fields
-   unidirectional, as described in Figure 6.  Note that Type is no more
+   unidirectional, as described in Figure 7.  Note that Type is no more
    sent in the compressed format, Compressed Code size in not changed in
    that example (8 values are needed to code all the requests and 21 to
    code all the responses in the matching list
@@ -557,7 +612,8 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
 
-Minaburo & Toutain      Expires December 14, 2018              [Page 10]
+
+Minaburo & Toutain      Expires December 14, 2018              [Page 11]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
@@ -580,9 +636,9 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 
 
-          Figure 6: CoAP Context to compress header without token
+          Figure 7: CoAP Context to compress header without token
 
-8.2.  Complete exchange
+9.2.  Complete exchange
 
    In that example, the Thing is using CoMi and sends queries for 2 SID.
 
@@ -613,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
 
-Minaburo & Toutain      Expires December 14, 2018              [Page 11]
+Minaburo & Toutain      Expires December 14, 2018              [Page 12]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
@@ -669,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
 
-Minaburo & Toutain      Expires December 14, 2018              [Page 12]
+Minaburo & Toutain      Expires December 14, 2018              [Page 13]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
@@ -678,7 +734,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 
-9.  Normative References
+10.  Normative References
 
    [I-D.ietf-lpwan-ipv6-static-context-hc]
               Minaburo, A., Toutain, L., and C. Gomez, "LPWAN Static
@@ -725,4 +781,4 @@ Authors' Addresses
 
 
 
-Minaburo & Toutain      Expires December 14, 2018              [Page 13]
+Minaburo & Toutain      Expires December 14, 2018              [Page 14]
