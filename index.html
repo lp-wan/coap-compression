@@ -290,8 +290,8 @@ address {
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 CoAP Content and Accept options.">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 CoAP option Uri-Path and Uri-Query fields">
+<link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 MSB MO and LSB CDA arguments">
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 CoAP option Proxy-URI and Proxy-Scheme fields">
-<link href="#rfc.section.5.4.1" rel="Chapter" title="5.4.1 MSB MO and LSB CDA arguments">
 <link href="#rfc.section.5.5" rel="Chapter" title="5.5 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields">
 <link href="#rfc.section.6" rel="Chapter" title="6 Other RFCs">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Block">
@@ -392,11 +392,11 @@ address {
 </li>
 <li>5.3.   <a href="#rfc.section.5.3">CoAP option Uri-Path and Uri-Query fields</a>
 </li>
-<li>5.4.   <a href="#rfc.section.5.4">CoAP option Proxy-URI and Proxy-Scheme fields</a>
+<ul><li>5.3.1.   <a href="#rfc.section.5.3.1">MSB MO and LSB CDA arguments</a>
 </li>
-<ul><li>5.4.1.   <a href="#rfc.section.5.4.1">MSB MO and LSB CDA arguments</a>
+</ul><li>5.4.   <a href="#rfc.section.5.4">CoAP option Proxy-URI and Proxy-Scheme fields</a>
 </li>
-</ul><li>5.5.   <a href="#rfc.section.5.5">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
+<li>5.5.   <a href="#rfc.section.5.5">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
 </li>
 </ul><li>6.   <a href="#rfc.section.6">Other RFCs</a>
 </li>
@@ -437,19 +437,19 @@ address {
 <div id="rfc.figure.1"></div>
 <div id="Fig-SCHCCOAP"></div>
 <pre>
-+------------------+                             +----------------+
-|       CoAP       |                             |      CoAP      |                                
-+------------------+                             +----------------+
-| SCHC Compression |                             |       UDP      |
-+------------------+                             +----------------+
-|       DTLS       |                             |      IPv6      |
-+------------------+                          +- +----------------+
-|       UDP        |         OR               |  |   Compression  |
-+------------------+                    SCHC &lt;   +----------------+
-|       IPv6       |                          |  | Fragmentation  |
-+------------------+                          +- +----------------+
-| SCHC Compression |                             |LPWAN technology|   
-+------------------+                             +----------------+
++------------------+                 +--------------------+
+|       CoAP       |                 |        CoAP        |                                
++------------------+                 +--------------------+
+| SCHC Compression |                 |         UDP        |
++------------------+                 +--------------------+
+|       DTLS       |                 |        IPv6        |
++------------------+                 +--------------------+
+|       UDP        |       OR        |  SCHC Compression  |
++------------------+                 +--------------------+
+|       IPv6       |                 | SCHC Fragmentation |
++------------------+                 +--------------------+
+| SCHC Compression |                 |  LPWAN technology  |   
++------------------+                 +--------------------+
 |SCHC Fragmentation|
 +------------------+
 | LPWAN technology |
@@ -560,16 +560,10 @@ URI-Query    1  up   k=       MSB (16)     LSB
 </pre>
 <p class="figure">Figure 4: complex path example</p>
 <p id="rfc.section.5.3.p.8">For instance, the following Path /foo/bar/variable/stable can leads to the rule defined <a href="#Fig--complex-path" class="xref">Figure 4</a>.</p>
-<h1 id="rfc.section.5.4">
-<a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a>
+<h1 id="rfc.section.5.3.1">
+<a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#msb-mo-and-lsb-cda-arguments" id="msb-mo-and-lsb-cda-arguments">MSB MO and LSB CDA arguments</a>
 </h1>
-<p id="rfc.section.5.4.p.1">These fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
-<p id="rfc.section.5.4.p.2">If the field value must be sent, TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent. A mapping can also be used.</p>
-<p id="rfc.section.5.4.p.3">Otherwise the TV is set to the value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;</p>
-<h1 id="rfc.section.5.4.1">
-<a href="#rfc.section.5.4.1">5.4.1.</a> <a href="#msb-mo-and-lsb-cda-arguments" id="msb-mo-and-lsb-cda-arguments">MSB MO and LSB CDA arguments</a>
-</h1>
-<p id="rfc.section.5.4.1.p.1">MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used for fixed and variable lengths field headers, in each case, the behavior is different based on the Field Description definition, the MO, and the TV defined in the Rule.  The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be sent where &#8216;x&#8217;; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives the size of this field.  This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of fields could be:</p>
+<p id="rfc.section.5.3.1.p.1">MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used for fixed and variable lengths field headers, in each case, the behavior is different based on the Field Description definition, the MO, and the TV defined in the Rule.  The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be sent where &#8216;x&#8217;; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives the size of this field.  This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of fields could be:</p>
 <div id="rfc.figure.5"></div>
 <div id="Fig--MSBLSB"></div>
 <pre>
@@ -586,6 +580,12 @@ URI-Query    1  up   k=       MSB (16)     LSB
 
 </pre>
 <p class="figure">Figure 5: Use of MSB and LSB MO and CDA</p>
+<h1 id="rfc.section.5.4">
+<a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a>
+</h1>
+<p id="rfc.section.5.4.p.1">These fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
+<p id="rfc.section.5.4.p.2">If the field value must be sent, TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent. A mapping can also be used.</p>
+<p id="rfc.section.5.4.p.3">Otherwise the TV is set to the value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;</p>
 <h1 id="rfc.section.5.5">
 <a href="#rfc.section.5.5">5.5.</a> <a href="#coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields" id="coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
 </h1>

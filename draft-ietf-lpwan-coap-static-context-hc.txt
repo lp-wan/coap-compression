@@ -79,8 +79,8 @@ Table of Contents
      5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
            Port fields . . . . . . . . . . . . . . . . . . . . . . .   7
      5.3.  CoAP option Uri-Path and Uri-Query fields . . . . . . . .   7
-     5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   8
-       5.4.1.  MSB MO and LSB CDA arguments  . . . . . . . . . . . .   9
+       5.3.1.  MSB MO and LSB CDA arguments  . . . . . . . . . . . .   8
+     5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   9
      5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path
            and Location-Query fields . . . . . . . . . . . . . . . .   9
    6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -137,19 +137,19 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    as described in [I-D.ietf-lpwan-ipv6-static-context-hc] may be used
    as as shown in the Figure 1.
 
-   +------------------+                             +----------------+
-   |       CoAP       |                             |      CoAP      |
-   +------------------+                             +----------------+
-   | SCHC Compression |                             |       UDP      |
-   +------------------+                             +----------------+
-   |       DTLS       |                             |      IPv6      |
-   +------------------+                          +- +----------------+
-   |       UDP        |         OR               |  |   Compression  |
-   +------------------+                    SCHC <   +----------------+
-   |       IPv6       |                          |  | Fragmentation  |
-   +------------------+                          +- +----------------+
-   | SCHC Compression |                             |LPWAN technology|
-   +------------------+                             +----------------+
+   +------------------+                 +--------------------+
+   |       CoAP       |                 |        CoAP        |
+   +------------------+                 +--------------------+
+   | SCHC Compression |                 |         UDP        |
+   +------------------+                 +--------------------+
+   |       DTLS       |                 |        IPv6        |
+   +------------------+                 +--------------------+
+   |       UDP        |       OR        |  SCHC Compression  |
+   +------------------+                 +--------------------+
+   |       IPv6       |                 | SCHC Fragmentation |
+   +------------------+                 +--------------------+
+   | SCHC Compression |                 |  LPWAN technology  |
+   +------------------+                 +--------------------+
    |SCHC Fragmentation|
    +------------------+
    | LPWAN technology |
@@ -427,30 +427,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    For instance, the following Path /foo/bar/variable/stable can leads
    to the rule defined Figure 4.
 
-5.4.  CoAP option Proxy-URI and Proxy-Scheme fields
-
-   These fields are unidirectional and must not be set to bidirectional
-   in a rule entry.  They are used only by the client to access to a
-   specific resource and are never found in server response.
-
-   If the field value must be sent, TV is not set, MO is set to "ignore"
-   and CDF is set to "value-sent.  A mapping can also be used.
-
-   Otherwise the TV is set to the value, MO is set to "equal" and CDF is
-   set to "not-sent"
-
-
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 8]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
-5.4.1.  MSB MO and LSB CDA arguments
+5.3.1.  MSB MO and LSB CDA arguments
 
    MSB and LSB are used to choose the number of bits to be matched
    against and to be sent.  They are used for fixed and variable lengths
@@ -462,6 +439,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    gives the size of this field.  This MO was created for variable
    length fields as the CoAP URIs, the definition of MO/CDA for this
    kind of fields could be:
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 14, 2018               [Page 8]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
    +---------------+--------------+----------+---------------------+
    |     MO        |     CDA      |    TV    | Compression Residue |
@@ -476,6 +463,18 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
                   Figure 5: Use of MSB and LSB MO and CDA
+
+5.4.  CoAP option Proxy-URI and Proxy-Scheme fields
+
+   These fields are unidirectional and must not be set to bidirectional
+   in a rule entry.  They are used only by the client to access to a
+   specific resource and are never found in server response.
+
+   If the field value must be sent, TV is not set, MO is set to "ignore"
+   and CDF is set to "value-sent.  A mapping can also be used.
+
+   Otherwise the TV is set to the value, MO is set to "equal" and CDF is
+   set to "not-sent"
 
 5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path and
       Location-Query fields
@@ -496,6 +495,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    [[Note: do we recommand LPWAN fragmentation since the smallest value
    of 16 is too big?]]
+
 
 
 
