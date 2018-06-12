@@ -309,7 +309,7 @@ address {
 
   <meta name="dct.creator" content="Minaburo, A. and L. Toutain" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-03" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-12" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header is flexible header with a variable number of options themself of a variable length.  Another important difference is the asymmetry in the header information used for request and response messages. Most of the compression mechanisms have been introduced in " />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header is flexible header with a variable number of options themself of a variable length.  Another important difference is the asymmetry in the header information used for request and response messages. Most of the compression mechanisms have been introduced in " />
 
@@ -333,12 +333,12 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: December 10, 2018</td>
+<td class="left">Expires: December 14, 2018</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 08, 2018</td>
+<td class="right">June 12, 2018</td>
 </tr>
 
     	
@@ -354,7 +354,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 10, 2018.</p>
+<p>This Internet-Draft will expire on December 14, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -433,7 +433,7 @@ address {
 
 <ul>
 <li>IPv6 and UDP are symmetrical protocols. The same fields are found in the request and in the response, only the location in the header may vary (e.g. source and destination fields). A CoAP request is different from a response.  For example, the URI-path option is mandatory in the request and is not found in the response, a request may contain an Accept option and the response a Content option.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows to use a message direction (DI) when processing the rule.</li>
-<li>Even when a field is &#8220;symmetric&#8221; (i.e. found in both directions) the values carried are different. For instance the Type field will contain a CON value in the request and a ACK or RST value in the response. Exploiting the asymmetry in compression will allow to send no bit in the compressed request and a single bit in the answer. Same behavior can be applied to the CoAP Code field (O.OX code are present in the request and Y.ZZ in the answer).  The direction allows to split in two parts the possible values for each direction.  <br><br> In combination with the mapping list, the size of the compression residu can be reduced.</li>
+<li>Even when a field is &#8220;symmetric&#8221; (i.e. found in both directions) the values carried are different. For instance the Type field will contain a CON value in the request and a ACK or RST value in the response. Exploiting the asymmetry in compression will allow to send no bit in the compressed request and a single bit in the answer. Same behavior can be applied to the CoAP Code field (0.0X code are present in the request and Y.ZZ in the answer).  The direction allows to split in two parts the possible values for each direction.  <br><br> In combination with the mapping list, the size of the compression residu can be reduced.</li>
 <li>In IPv6 and UDP header fields have a fixed size. In CoAP, Token size may vary from 0 to 8 bytes, length is given by a field in the header. More systematically, the CoAP options are described using the Type-Length-Value.  When applying SCHC header compression.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> offers the possibility to define a function for the Field Length in the Field Description.</li>
 <li>In CoAP headers a field can be duplicated several times, for instances, elements of an URI (path or queries). The position defined in a rule, associated to a Field ID, can be used to identify the proper element.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows a Field id to appears several times in the rule, the Field Position (FP) removes ambiguities for the matching operation.</li>
 <li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from an LPWAN node or from an non LPWAN device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP client will certainly send a larger token to the Thing. SCHC compression will not modify the values to offer a better compression rate. Nevertheless a proxy placed before the compressor may change some field values to offer a better compression rate and maintain the necessary context for interoperability with existing CoAP implementations.</li>
