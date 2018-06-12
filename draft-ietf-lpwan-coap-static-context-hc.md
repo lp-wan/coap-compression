@@ -214,7 +214,7 @@ These field are both unidirectional and must not be set to bidirectional in a ru
 If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise if several possible value are expected by the client, a matching-list should be used to limit the size of the residue. If not, the possible, the value as to be sent as a variable length residue. 
 
 
-##CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
+## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
 
 This field is unidirectional and must not be set to bidirectional in a rule entry.
 It is used only by the server to inform of the caching duration and is never 
@@ -231,7 +231,7 @@ Otherwise these options should be compressed as variable length residue.
 \[\[note: we can reduce (or create a new option) the unit to minute, 
 second is small for LPWAN \]\]
 
-#CoAP option Uri-Path and Uri-Query fields
+## CoAP option Uri-Path and Uri-Query fields
 
 This fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
@@ -285,7 +285,7 @@ For instance, the following Path /foo/bar/variable/stable can leads to the rule 
 
  
 
-##CoAP option Proxy-URI and Proxy-Scheme fields
+## CoAP option Proxy-URI and Proxy-Scheme fields
 
 These fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
@@ -295,6 +295,28 @@ If the field value must be sent, TV is not set, MO is set to "ignore" and CDF is
 to "value-sent. A mapping can also be used.
 
 Otherwise the TV is set to the value, MO is set to "equal" and CDF is set to "not-sent"
+
+### MSB MO and LSB CDA arguments
+MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used
+for fixed and variable lengths field headers, in each case, the behavior is different based on the Field
+Description definition, the MO, and the TV defined in the Rule.
+The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be
+sent where &#39;x&#39; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives
+the size of this field.
+This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of
+fields could be:
+~~~
++-----------------------+---------------------+--------------+---------------------------------+
+|          MO           |         CDA         |        TV    |       Compression Residue       |
++=======================+=====================+==============+=================================+
+|        Ignore         |       Value-Sent    |              |         Length + Residue        |
++-----------------------+---------------------+--------------+---------------------------------+
+|        MSB(x)         |          LSB        |              |         Length + Residue        |
++-----------------------+---------------------+--------------+---------------------------------+
+|     Match-mapping     |    Mapping Sent     |       List    |          Residue(index)        |
++-----------------------+---------------------+---------------+--------------------------------+
+~~~~
+{: #Fig--MSBLSB title="Use of MSB and LSB MO and CDA"}
 
 ## CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields
 
