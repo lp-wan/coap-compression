@@ -290,7 +290,8 @@ address {
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 CoAP Content and Accept options.">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 CoAP option Uri-Path and Uri-Query fields">
-<link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 MSB MO and LSB CDA arguments">
+<link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 Variable length Uri-Path and Uri-Query">
+<link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 Variable number of path or query elements">
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 CoAP option Proxy-URI and Proxy-Scheme fields">
 <link href="#rfc.section.5.5" rel="Chapter" title="5.5 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields">
 <link href="#rfc.section.6" rel="Chapter" title="6 Other RFCs">
@@ -298,20 +299,22 @@ address {
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Observe">
 <link href="#rfc.section.6.3" rel="Chapter" title="6.3 No-Response">
 <link href="#rfc.section.6.4" rel="Chapter" title="6.4 Time Scale">
+<link href="#rfc.section.6.5" rel="Chapter" title="6.5 OSCORE">
 <link href="#rfc.section.7" rel="Chapter" title="7 Protocol analysis">
 <link href="#rfc.section.8" rel="Chapter" title="8 Examples of CoAP header compression">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Mandatory header with CON message">
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Complete exchange">
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 OSCORE Compression">
 <link href="#rfc.references" rel="Chapter" title="9 Normative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Minaburo, A. and L. Toutain" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-03" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-12" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-28" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header is flexible header with a variable number of options themself of a variable length.  Another important difference is the asymmetry in the header information used for request and response messages. Most of the compression mechanisms have been introduced in " />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header is flexible header with a variable number of options themself of a variable length.  Another important difference is the asymmetry in the header information used for request and response messages. Most of the compression mechanisms have been introduced in " />
 
@@ -335,12 +338,12 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: December 14, 2018</td>
+<td class="left">Expires: December 30, 2018</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 12, 2018</td>
+<td class="right">June 28, 2018</td>
 </tr>
 
     	
@@ -356,7 +359,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 14, 2018.</p>
+<p>This Internet-Draft will expire on December 30, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -392,7 +395,9 @@ address {
 </li>
 <li>5.3.   <a href="#rfc.section.5.3">CoAP option Uri-Path and Uri-Query fields</a>
 </li>
-<ul><li>5.3.1.   <a href="#rfc.section.5.3.1">MSB MO and LSB CDA arguments</a>
+<ul><li>5.3.1.   <a href="#rfc.section.5.3.1">Variable length Uri-Path and Uri-Query</a>
+</li>
+<li>5.3.2.   <a href="#rfc.section.5.3.2">Variable number of path or query elements</a>
 </li>
 </ul><li>5.4.   <a href="#rfc.section.5.4">CoAP option Proxy-URI and Proxy-Scheme fields</a>
 </li>
@@ -408,6 +413,8 @@ address {
 </li>
 <li>6.4.   <a href="#rfc.section.6.4">Time Scale</a>
 </li>
+<li>6.5.   <a href="#rfc.section.6.5">OSCORE</a>
+</li>
 </ul><li>7.   <a href="#rfc.section.7">Protocol analysis</a>
 </li>
 <li>8.   <a href="#rfc.section.8">Examples of CoAP header compression</a>
@@ -415,6 +422,8 @@ address {
 <ul><li>8.1.   <a href="#rfc.section.8.1">Mandatory header with CON message</a>
 </li>
 <li>8.2.   <a href="#rfc.section.8.2">Complete exchange</a>
+</li>
+<li>8.3.   <a href="#rfc.section.8.3">OSCORE Compression</a>
 </li>
 </ul><li>9.   <a href="#rfc.references">Normative References</a>
 </li>
@@ -526,18 +535,24 @@ address {
 <a href="#rfc.section.5.3">5.3.</a> <a href="#coap-option-uri-path-and-uri-query-fields" id="coap-option-uri-path-and-uri-query-fields">CoAP option Uri-Path and Uri-Query fields</a>
 </h1>
 <p id="rfc.section.5.3.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
-<p id="rfc.section.5.3.p.2">The Matching Operator behavior has not changed, but the value must take a position value, if the entry is repeated :</p>
+<p id="rfc.section.5.3.p.2">Uri-Path and Uri-Query are a repeatable options, the Field Position (FP) gives the position in the path.</p>
+<p id="rfc.section.5.3.p.3">A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to optimize the compression, several elements can be regrouped into a single entry.  Numbering of elements do not change, MO comparison is set with the first element of the matching.</p>
 <div id="rfc.figure.2"></div>
-<div id="Fig-MOposition"></div>
+<div id="Fig--complex-path"></div>
 <pre>
-FID      FL FP DI  TV    MO      CDA    Sent
-URI-Path    1  up  foo  equal  not-sent
-URI-Path    2  up  bar  equal  not-sent
+FID       FL FP DI    TV         MO        CDA    Sent
+URI-Path     1  up  {0:"/c/c",  equal   not-sent
+                     1:"/c/d"
+URI-Path     3  up             ignore   value-sent
 </pre>
-<p class="figure">Figure 2: Position entry.</p>
-<p id="rfc.section.5.3.p.3">For instance, the  rule <a href="#Fig-MOposition" class="xref">Figure 2</a> matches with /foo/bar, but not /bar/foo.</p>
-<p id="rfc.section.5.3.p.4">When the length is not clearly indicated in the rule, the value length must be sent with the field data, which means for CoAP to send directly the CoAP option with length and value.</p>
-<p id="rfc.section.5.3.p.5">For instance for a CoMi path /c/X6?k=&#8221;eth0&#8221; the rule can be set to:</p>
+<p class="figure">Figure 2: complex path example</p>
+<h1 id="rfc.section.5.3.1">
+<a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#variable-length-uri-path-and-uri-query" id="variable-length-uri-path-and-uri-query">Variable length Uri-Path and Uri-Query</a>
+</h1>
+<p id="rfc.section.5.3.1.p.1">When the length is known at the rule creation, the Field Length must be set to variable, and the unit is set to bytes.</p>
+<p id="rfc.section.5.3.1.p.2">The MSB MO can be apply to a Uri-Path or Uri-Query element. Since MSB value is given in bit, the size must always be a multiple of 8 bits and the LSB CDA must not carry any value.</p>
+<p id="rfc.section.5.3.1.p.3">The length sent at the begining of a variable length residue indicates the size of the LSB in bytes.</p>
+<p id="rfc.section.5.3.1.p.4">For instance for a CoMi path /c/X6?k=&#8221;eth0&#8221; the rule can be set to:</p>
 <div id="rfc.figure.3"></div>
 <div id="Fig-CoMicompress"></div>
 <pre>
@@ -548,38 +563,10 @@ URI-Query    1  up    k=   MSB (16)    LSB
 </pre>
 <p class="figure">Figure 3: CoMi URI compression</p>
 <p><a href="#Fig-CoMicompress" class="xref">Figure 3</a> shows the parsing and the compression of the URI. where c is not sent.  The second element is sent with the length (i.e. 0x2 X 6) followed by the query option (i.e. 0x05 &#8220;eth0&#8221;).</p>
-<p id="rfc.section.5.3.p.7">A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to optimize the compression, several elements can be regrouped into a single entry.  Numbering of elements do not change, MO comparison is set with the first element of the matching.</p>
-<div id="rfc.figure.4"></div>
-<div id="Fig--complex-path"></div>
-<pre>
-FID       FL FP DI    TV         MO        CDA    Sent
-URI-Path     1  up  {0:"/c/c",  equal   not-sent
-                     1:"/c/d"
-URI-Path     3  up             ignore   value-sent
-URI-Query    1  up   k=       MSB (16)     LSB 
-</pre>
-<p class="figure">Figure 4: complex path example</p>
-<p id="rfc.section.5.3.p.8">For instance, the following Path /foo/bar/variable/stable can leads to the rule defined <a href="#Fig--complex-path" class="xref">Figure 4</a>.</p>
-<h1 id="rfc.section.5.3.1">
-<a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#msb-mo-and-lsb-cda-arguments" id="msb-mo-and-lsb-cda-arguments">MSB MO and LSB CDA arguments</a>
+<h1 id="rfc.section.5.3.2">
+<a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#variable-number-of-path-or-query-elements" id="variable-number-of-path-or-query-elements">Variable number of path or query elements</a>
 </h1>
-<p id="rfc.section.5.3.1.p.1">MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used for fixed and variable lengths field headers, in each case, the behavior is different based on the Field Description definition, the MO, and the TV defined in the Rule.  The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be sent where &#8216;x&#8217;; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives the size of this field.  This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of fields could be:</p>
-<div id="rfc.figure.5"></div>
-<div id="Fig--MSBLSB"></div>
-<pre>
-+---------------+--------------+----------+---------------------+
-|     MO        |     CDA      |    TV    | Compression Residue |
-+===============+==============+==========+=====================+
-|    Ignore     |  Value-Sent  |          | Length + Residue    |
-+---------------+--------------+----------+---------------------+
-|    MSB(x)     |     LSB      |          | Length + Residue    |
-+---------------+--------------+----------+---------------------+
-| Match-mapping | Mapping Sent |   List   |  Residue(index)     |
-+---------------+--------------+----------+---------------------+
-
-
-</pre>
-<p class="figure">Figure 5: Use of MSB and LSB MO and CDA</p>
+<p id="rfc.section.5.3.2.p.1">The number of Uri-path or Uri-Query in a rule is fixed at the rule creation time. If the number varies, several rules should be created to cover all the possibilities. Another possibilities is to define the length of Uri-Path to variable and send a compression residue with a length of 0 to indicate that this Uri-Path is empty. This add 4 bits to the compression residue.</p>
 <h1 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a>
 </h1>
@@ -613,6 +600,31 @@ URI-Query    1  up   k=       MSB (16)     LSB
 <h1 id="rfc.section.6.4">
 <a href="#rfc.section.6.4">6.4.</a> <a href="#time-scale" id="time-scale">Time Scale</a>
 </h1>
+<h1 id="rfc.section.6.5">
+<a href="#rfc.section.6.5">6.5.</a> <a href="#Sec-OSCORE" id="Sec-OSCORE">OSCORE</a>
+</h1>
+<p id="rfc.section.6.5.p.1">OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> defines end-to-end protection for CoAP messages.  This section describes how SCHC rules can be applied to compress OSCORE-protected messages.</p>
+<div id="rfc.figure.4"></div>
+<div id="Fig-OSCORE-Option"></div>
+<pre>
+          0 1 2 3 4 5 6 7 &lt;--------- n bytes -------------&gt;
+         +-+-+-+-+-+-+-+-+---------------------------------
+         |0 0 0|h|k|  n  |      Partial IV (if any) ...
+         +-+-+-+-+-+-+-+-+---------------------------------
+
+          &lt;- 1 byte -&gt; &lt;------ s bytes -----&gt;
+         +------------+----------------------+------------------+
+         | s (if any) | kid context (if any) | kid (if any) ... |
+         +------------+----------------------+------------------+
+
+</pre>
+<p class="figure">Figure 4: OSCORE Option</p>
+<p id="rfc.section.6.5.p.2">The encoding of the OSCORE Option Value defined in Section 6.1 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> is repeated in <a href="#Fig-OSCORE-Option" class="xref">Figure 4</a>.</p>
+<p id="rfc.section.6.5.p.3">The first 3 bits are set to 0.  The next bit h when set on 1 tells that a key identifier context is present in the OSCORE option, the k indicates that a kid is also present.</p>
+<p id="rfc.section.6.5.p.4">The 3 n bits give the size of the partial IV stored in the OSCORE option. If h bit is set, then a length and the kid context value are stored after the PIV and finally the kid can be sent.</p>
+<p id="rfc.section.6.5.p.5">This draft recommends to implement a parser that is able to identify the OSCORE Option and the fields it contains - this makes it possible to do a preliminary processing of the message in preparation for regular SCHC compression.</p>
+<p id="rfc.section.6.5.p.6">In case the OSCORE Option is found, the implementation is recommended to split it into up to 3 fields, according to the presence of the Partial IV, kid context and kid within the option. The split fields may be formatted as additional CoAP options with the delta encoding defined in Section 3.1 of <a href="#rfc7252" class="xref">[rfc7252]</a>. A possible implementation of this scheme is presented in <a href="#Sec-OSCORE-Examples" class="xref">Section 8.3</a>.</p>
+<p id="rfc.section.6.5.p.7">Alternatively, the OSCORE Option could be left as is, but this limits the flexibility in the compression.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#protocol-analysis" id="protocol-analysis">Protocol analysis</a>
 </h1>
@@ -622,8 +634,8 @@ URI-Query    1  up   k=       MSB (16)     LSB
 <h1 id="rfc.section.8.1">
 <a href="#rfc.section.8.1">8.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a>
 </h1>
-<p id="rfc.section.8.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Thing. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 6</a>.</p>
-<div id="rfc.figure.6"></div>
+<p id="rfc.section.8.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Thing. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 5</a>.</p>
+<div id="rfc.figure.5"></div>
 <div id="Fig-CoAP-header-1"></div>
 <pre>
  Rule ID 1
@@ -641,7 +653,7 @@ URI-Query    1  up   k=       MSB (16)     LSB
 +-------------+--+--+--+------+---------+-------------++------------+
 
 </pre>
-<p class="figure">Figure 6: CoAP Context to compress header without token</p>
+<p class="figure">Figure 5: CoAP Context to compress header without token</p>
 <p></p>
 
 <dl>
@@ -652,9 +664,9 @@ URI-Query    1  up   k=       MSB (16)     LSB
 <dt>#&lt;!--{{Fig--example-code-mapping}}--&gt;</dt>
 <dd style="margin-left: 8">0.01 is value 0x01 and 2.05 is value 0x0c) Message-ID has shrunk to 9 bits to preserve alignment on byte boundary. The most significant bit must be set to 0 through a CoAP proxy. Uri-Path contains a single element indicated in the matching operator.</dd>
 </dl>
-<p><a href="#Fig-CoAP-3" class="xref">Figure 7</a> shows the time diagram of the exchange. A LPWAN Application Server sends a CON message. Compression reduces the header sending only the Type, a mapped code and the least 9 significant bits of Message ID. The receiver decompresses the header. .</p>
+<p><a href="#Fig-CoAP-3" class="xref">Figure 6</a> shows the time diagram of the exchange. A LPWAN Application Server sends a CON message. Compression reduces the header sending only the Type, a mapped code and the least 9 significant bits of Message ID. The receiver decompresses the header. .</p>
 <p id="rfc.section.8.1.p.4">The CON message is a request, therefore the LC process to a dynamic mapping.  When the ES receives the ACK message, this will not initiate locally a  message ID mapping since it is a response.  The LC receives the ACK and uncompressed it to restore the original value.  Dynamic Mapping context lifetime follows the same rules as message ID duration.</p>
-<div id="rfc.figure.7"></div>
+<div id="rfc.figure.6"></div>
 <div id="Fig-CoAP-3"></div>
 <pre>
                   End System              LPWA LC
@@ -677,9 +689,9 @@ URI-Query    1  up   k=       MSB (16)     LSB
                        v                    v +-+-+--+----+------+
 
 </pre>
-<p class="figure">Figure 7: Compression with global addresses</p>
-<p id="rfc.section.8.1.p.5">The message can be further optimized by setting some fields unidirectional, as described in <a href="#Fig-CoAP-header-1-direc" class="xref">Figure 8</a>. Note that Type is no more sent in the compressed format, Compressed Code size in not changed in that example (8 values are needed to code all the requests and 21 to code all the responses in the matching list</p>
-<div id="rfc.figure.8"></div>
+<p class="figure">Figure 6: Compression with global addresses</p>
+<p id="rfc.section.8.1.p.5">The message can be further optimized by setting some fields unidirectional, as described in <a href="#Fig-CoAP-header-1-direc" class="xref">Figure 7</a>. Note that Type is no more sent in the compressed format, Compressed Code size in not changed in that example (8 values are needed to code all the requests and 21 to code all the responses in the matching list</p>
+<div id="rfc.figure.7"></div>
 <div id="Fig-CoAP-header-1-direc"></div>
 <pre>
  Rule ID 2
@@ -700,7 +712,7 @@ URI-Query    1  up   k=       MSB (16)     LSB
 ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 
 </pre>
-<p class="figure">Figure 8: CoAP Context to compress header without token</p>
+<p class="figure">Figure 7: CoAP Context to compress header without token</p>
 <h1 id="rfc.section.8.2">
 <a href="#rfc.section.8.2">8.2.</a> <a href="#complete-exchange" id="complete-exchange">Complete exchange</a>
 </h1>
@@ -783,9 +795,89 @@ ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
 ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 </pre>
+<h1 id="rfc.section.8.3">
+<a href="#rfc.section.8.3">8.3.</a> <a href="#Sec-OSCORE-Examples" id="Sec-OSCORE-Examples">OSCORE Compression</a>
+</h1>
+<p id="rfc.section.8.3.p.1">As described in Section 4 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>, OSCORE divides CoAP message fields into either Outer or Inner fields. The Inner fields are encoded into a Plaintext defined in Section 5.3 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>, which closely mirrors the format of a regular CoAP message. This makes it easy to apply regular SCHC rules to compress the OSCORE Plaintext without need for an additional mechanism. The Outer fields are re-encoded as summarized in Section 4.2 of <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a>, resulting in a regular CoAP message which includes the OSCORE Option. A pre-processing of the OSCORE Option is recommended in <a href="#Sec-OSCORE" class="xref">Section 6.5</a> of this document, allowing for more efficient compression of the Security Context parameters. The resulting message can then be SCHC compressed like any other CoAP message, providing the corresponding rules for the supplementary options produced by the pre-processor. Alternatively the pre-processing can be omitted and a single SCHC rule provided for the whole OSCORE option, but this does not provide flexibility in the compression. In what remains of this Section, we assume the OSCORE-protected message is pre-processed in the following manner:</p>
+<p id="rfc.section.8.3.p.2">The single OSCORE Option is replaced by 3 separate options with implementation-specific option numbers. These new options are:</p>
+<p></p>
+
+<ul>
+<li>OSCORE_1: If a piv is present in the OSCORE Option (n &gt; 0), the OSCORE_1 option contains the piv. Otherwise it is empty (Option length = 0),</li>
+<li>OSCORE_2: If a kid context is present in the OSCORE Option (h = 1), the OSCORE_2 option contains the kid context. Otherwise it is empty (Option length = 0),</li>
+<li>OSCORE_3: If a kid is present in the OSCORE option, the OSCORE_3 option contains the kid. Otherwise it is empty (Option length = 0).</li>
+</ul>
+<p id="rfc.section.8.3.p.4">SCHC is applied separately to the Plaintext before encryption and to the Outer Message fields in the protected message - this process is illustrated in <a href="#Fig-OSCORE-Compression" class="xref">Figure 8</a>.</p>
+<div id="rfc.figure.8"></div>
+<div id="Fig-OSCORE-Compression"></div>
+<pre>
+                      Orignal CoAP Message
+                   +-+-+---+-------+---------------+
+                   |v|t|tkl| code  |  Msg Id.      |
+                   +-+-+---+-------+---------------+....+
+                   | Token                              |
+                   +-------------------------------.....+
+                   | Options (IEU)            |
+                   .                          .
+                   .                          .
+                   +------+-------------------+ 
+                   | 0xFF |
+                   +------+------------------------+
+                   |     Payload                   |
+                   |                               |
+                   +-------------------------------+      
+                        /                    \
+                       /                      \
+     Outer Message    v                        v  OSCORE Plaintext
+  +-+-+---+--------+---------------+          +-------+
+  |v|t|tkl|new code|  Msg Id.      |          | code  |
+  +-+-+---+--------+---------------+....+     +-------+-----......+
+  | Token                               |     | Options (E)       |
+  +--------------------------------.....+     +-------+------.....+
+  | Options (IU)             |                | OxFF  |
+  .                          .                +-------+-----------+
+  . OSCORE Option            .                |                   |
+  +------+-------------------+                | Payload           |
+  | 0xFF |                                    |                   |
+  +------+------------+                       +-------------------+
+  |  Ciphertext       |&lt;---------\                      |
+  |                   |          |                      v
+  +-------------------+          |             +-----------------+
+          |                      |             |   Inner SCHC    |
+          v                      |             |   Compression   |
+    +-----------------+          |             +-----------------+
+    |   Outer SCHC    |          |                      |
+    |   Compression   |          |                      v
+    +-----------------+          |              +-------+
+          |                      |              |Rule ID|
+          v                      |              +-------+--+
+      +--------+           +------------+       | Residue  |
+      |Rule ID'|           | Encryption | &lt;---  +----------+--------+
+      +--------+--+        +------------+       |                   |
+      | Residue'  |                             | Payload           |
+      +-----------+-------+                     |                   |
+      |  Ciphertext       |                     +-------------------+
+      |                   |     
+      +-------------------+
+      
+      
+      
+      
+      
+      
+      
+
+
+</pre>
+<p class="figure">Figure 8: OSCORE Compression Diagram</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> Normative References</h1>
 <table><tbody>
+<tr>
+<td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
+<td class="top">
+<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-13">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-13, June 2018.</td>
+</tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-lpwan-ipv6-static-context-hc">[I-D.ietf-lpwan-ipv6-static-context-hc]</b></td>
 <td class="top">

@@ -5,8 +5,8 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Informational                                L. Toutain
-Expires: December 14, 2018        Institut MINES TELECOM; IMT Atlantique
-                                                           June 12, 2018
+Expires: December 30, 2018        Institut MINES TELECOM; IMT Atlantique
+                                                           June 28, 2018
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 14, 2018.
+   This Internet-Draft will expire on December 30, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 1]
+Minaburo & Toutain      Expires December 30, 2018               [Page 1]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
@@ -79,21 +79,24 @@ Table of Contents
      5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
            Port fields . . . . . . . . . . . . . . . . . . . . . . .   7
      5.3.  CoAP option Uri-Path and Uri-Query fields . . . . . . . .   7
-       5.3.1.  MSB MO and LSB CDA arguments  . . . . . . . . . . . .   8
-     5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   9
+       5.3.1.  Variable length Uri-Path and Uri-Query  . . . . . . .   8
+       5.3.2.  Variable number of path or query elements . . . . . .   8
+     5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   8
      5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path
            and Location-Query fields . . . . . . . . . . . . . . . .   9
    6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .  10
+     6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .   9
      6.4.  Time Scale  . . . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .  10
-   8.  Examples of CoAP header compression . . . . . . . . . . . . .  10
-     8.1.  Mandatory header with CON message . . . . . . . . . . . .  10
+     6.5.  OSCORE  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+   7.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .  11
+   8.  Examples of CoAP header compression . . . . . . . . . . . . .  11
+     8.1.  Mandatory header with CON message . . . . . . . . . . . .  11
      8.2.  Complete exchange . . . . . . . . . . . . . . . . . . . .  13
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+     8.3.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  15
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -102,18 +105,19 @@ Table of Contents
    header may be too large for LPWAN constraints and some compression
    may be needed to reduce the header size.
 
-   [I-D.ietf-lpwan-ipv6-static-context-hc] defines a header compression
-   mechanism for LPWAN network based on a static context.  The context
-   is said static since the field description composing the Rules and
-   the context are not learned during the packet exchanges but are
 
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 2]
+
+Minaburo & Toutain      Expires December 30, 2018               [Page 2]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
+   [I-D.ietf-lpwan-ipv6-static-context-hc] defines a header compression
+   mechanism for LPWAN network based on a static context.  The context
+   is said static since the field description composing the Rules and
+   the context are not learned during the packet exchanges but are
    previously defined.  The context(s) is(are) known by both ends before
    transmission.
 
@@ -159,17 +163,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
               Figure 1: SCHC Adaptation Layers for CoAP flows
 
-   In the First figure two different SCHC Rules are used to compressed
-   the different header, one for CoAP and the other for IP/UDP, in the
-   second figure one Rule will be used to compressed the complete stack.
 
 
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 3]
+Minaburo & Toutain      Expires December 30, 2018               [Page 3]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
+   In the First figure two different SCHC Rules are used to compressed
+   the different header, one for CoAP and the other for IP/UDP, in the
+   second figure one Rule will be used to compressed the complete stack.
    The use of one possibility of the other depends on the architecture
    or the use of a security protocol
 
@@ -214,17 +217,18 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       defined in a rule, associated to a Field ID, can be used to
       identify the proper element.
 
-      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
-      appears several times in the rule, the Field Position (FP) removes
-      ambiguities for the matching operation.
 
 
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 4]
+Minaburo & Toutain      Expires December 30, 2018               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
+      appears several times in the rule, the Field Position (FP) removes
+      ambiguities for the matching operation.
 
    o  CoAP also obeys to the client/server paradigm and the compression
       rate can be different if the request is issued from an LPWAN node
@@ -270,17 +274,18 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    set of code values can be splitted in two parts, the resquest codes
    starting with the 0 class and the response values.
 
+
+
+
+Minaburo & Toutain      Expires December 30, 2018               [Page 5]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    If the device implement only a CoAP client, the request code can be
    reduced to the set of request the client is able to process.
 
    All the response codes should be compressed with a SCHC rule.
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 5]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
 4.4.  CoAP Message ID field
 
@@ -328,12 +333,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
 
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 6]
+Minaburo & Toutain      Expires December 30, 2018               [Page 6]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
@@ -375,28 +375,43 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    in a rule entry.  They are used only by the client to access to a
    specific resource and are never found in server response.
 
-   The Matching Operator behavior has not changed, but the value must
-   take a position value, if the entry is repeated :
+   Uri-Path and Uri-Query are a repeatable options, the Field Position
+   (FP) gives the position in the path.
 
-   FID      FL FP DI  TV    MO      CDA    Sent
-   URI-Path    1  up  foo  equal  not-sent
-   URI-Path    2  up  bar  equal  not-sent
-
-                         Figure 2: Position entry.
-
-   For instance, the rule Figure 2 matches with /foo/bar, but not /bar/
-   foo.
+   A Mapping list can be used to reduce size of variable Paths or
+   Queries.  In that case, to optimize the compression, several elements
+   can be regrouped into a single entry.  Numbering of elements do not
+   change, MO comparison is set with the first element of the matching.
 
 
 
-Minaburo & Toutain      Expires December 14, 2018               [Page 7]
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018               [Page 7]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
-   When the length is not clearly indicated in the rule, the value
-   length must be sent with the field data, which means for CoAP to send
-   directly the CoAP option with length and value.
+   FID       FL FP DI    TV         MO        CDA    Sent
+   URI-Path     1  up  {0:"/c/c",  equal   not-sent
+                        1:"/c/d"
+   URI-Path     3  up             ignore   value-sent
+
+                      Figure 2: complex path example
+
+5.3.1.  Variable length Uri-Path and Uri-Query
+
+   When the length is known at the rule creation, the Field Length must
+   be set to variable, and the unit is set to bytes.
+
+   The MSB MO can be apply to a Uri-Path or Uri-Query element.  Since
+   MSB value is given in bit, the size must always be a multiple of 8
+   bits and the LSB CDA must not carry any value.
+
+   The length sent at the begining of a variable length residue
+   indicates the size of the LSB in bytes.
 
    For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
@@ -411,64 +426,29 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    not sent.  The second element is sent with the length (i.e. 0x2 X 6)
    followed by the query option (i.e. 0x05 "eth0").
 
-   A Mapping list can be used to reduce size of variable Paths or
-   Queries.  In that case, to optimize the compression, several elements
-   can be regrouped into a single entry.  Numbering of elements do not
-   change, MO comparison is set with the first element of the matching.
+5.3.2.  Variable number of path or query elements
 
-   FID       FL FP DI    TV         MO        CDA    Sent
-   URI-Path     1  up  {0:"/c/c",  equal   not-sent
-                        1:"/c/d"
-   URI-Path     3  up             ignore   value-sent
-   URI-Query    1  up   k=       MSB (16)     LSB
-
-                      Figure 4: complex path example
-
-   For instance, the following Path /foo/bar/variable/stable can leads
-   to the rule defined Figure 4.
-
-5.3.1.  MSB MO and LSB CDA arguments
-
-   MSB and LSB are used to choose the number of bits to be matched
-   against and to be sent.  They are used for fixed and variable lengths
-   field headers, in each case, the behavior is different based on the
-   Field Description definition, the MO, and the TV defined in the Rule.
-   The variable length fields meant for CoAP URIs, MSB argument is used
-   to choose the number of bits to be sent where 'x'; is a number of
-   bits, the LSB CDA does not have argument computing the size(Field)-x
-   gives the size of this field.  This MO was created for variable
-   length fields as the CoAP URIs, the definition of MO/CDA for this
-   kind of fields could be:
-
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 8]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
-   +---------------+--------------+----------+---------------------+
-   |     MO        |     CDA      |    TV    | Compression Residue |
-   +===============+==============+==========+=====================+
-   |    Ignore     |  Value-Sent  |          | Length + Residue    |
-   +---------------+--------------+----------+---------------------+
-   |    MSB(x)     |     LSB      |          | Length + Residue    |
-   +---------------+--------------+----------+---------------------+
-   | Match-mapping | Mapping Sent |   List   |  Residue(index)     |
-   +---------------+--------------+----------+---------------------+
-
-
-
-                  Figure 5: Use of MSB and LSB MO and CDA
+   The number of Uri-path or Uri-Query in a rule is fixed at the rule
+   creation time.  If the number varies, several rules should be created
+   to cover all the possibilities.  Another possibilities is to define
+   the length of Uri-Path to variable and send a compression residue
+   with a length of 0 to indicate that this Uri-Path is empty.  This add
+   4 bits to the compression residue.
 
 5.4.  CoAP option Proxy-URI and Proxy-Scheme fields
 
    These fields are unidirectional and must not be set to bidirectional
    in a rule entry.  They are used only by the client to access to a
    specific resource and are never found in server response.
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018               [Page 8]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
    If the field value must be sent, TV is not set, MO is set to "ignore"
    and CDF is set to "value-sent.  A mapping can also be used.
@@ -496,16 +476,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    [[Note: do we recommand LPWAN fragmentation since the smallest value
    of 16 is too big?]]
 
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018               [Page 9]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
 6.2.  Observe
 
    [rfc7641] defines the Observe option.  The TV is not set, MO is set
@@ -529,7 +499,68 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    set to "ignore" and CDF to "value-sent".  A matching list can also be
    used to reduce the size.
 
+
+
+Minaburo & Toutain      Expires December 30, 2018               [Page 9]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
 6.4.  Time Scale
+
+6.5.  OSCORE
+
+   OSCORE [I-D.ietf-core-object-security] defines end-to-end protection
+   for CoAP messages.  This section describes how SCHC rules can be
+   applied to compress OSCORE-protected messages.
+
+             0 1 2 3 4 5 6 7 <--------- n bytes ------------->
+            +-+-+-+-+-+-+-+-+---------------------------------
+            |0 0 0|h|k|  n  |      Partial IV (if any) ...
+            +-+-+-+-+-+-+-+-+---------------------------------
+
+             <- 1 byte -> <------ s bytes ----->
+            +------------+----------------------+------------------+
+            | s (if any) | kid context (if any) | kid (if any) ... |
+            +------------+----------------------+------------------+
+
+
+                          Figure 4: OSCORE Option
+
+   The encoding of the OSCORE Option Value defined in Section 6.1 of
+   [I-D.ietf-core-object-security] is repeated in Figure 4.
+
+   The first 3 bits are set to 0.  The next bit h when set on 1 tells
+   that a key identifier context is present in the OSCORE option, the k
+   indicates that a kid is also present.
+
+   The 3 n bits give the size of the partial IV stored in the OSCORE
+   option.  If h bit is set, then a length and the kid context value are
+   stored after the PIV and finally the kid can be sent.
+
+   This draft recommends to implement a parser that is able to identify
+   the OSCORE Option and the fields it contains - this makes it possible
+   to do a preliminary processing of the message in preparation for
+   regular SCHC compression.
+
+   In case the OSCORE Option is found, the implementation is recommended
+   to split it into up to 3 fields, according to the presence of the
+   Partial IV, kid context and kid within the option.  The split fields
+   may be formatted as additional CoAP options with the delta encoding
+   defined in Section 3.1 of [rfc7252].  A possible implementation of
+   this scheme is presented in Section 8.3.
+
+   Alternatively, the OSCORE Option could be left as is, but this limits
+   the flexibility in the compression.
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 10]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
 7.  Protocol analysis
 
@@ -539,28 +570,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    In this first scenario, the LPWAN compressor receives from outside
    client a POST message, which is immediately acknowledged by the
-   Thing.  For this simple scenario, the rules are described Figure 6.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018              [Page 10]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
+   Thing.  For this simple scenario, the rules are described Figure 5.
 
     Rule ID 1
    +-------------+--+--+--+------+---------+-------------++------------+
@@ -577,7 +587,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    +-------------+--+--+--+------+---------+-------------++------------+
 
 
-          Figure 6: CoAP Context to compress header without token
+          Figure 5: CoAP Context to compress header without token
 
    The version  and Token Length fields are elided.  Code has shrunk to
    5 bits
@@ -590,7 +600,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       through a CoAP proxy.  Uri-Path contains a single element
       indicated in the matching operator.
 
-   Figure 7 shows the time diagram of the exchange.  A LPWAN Application
+   Figure 6 shows the time diagram of the exchange.  A LPWAN Application
    Server sends a CON message.  Compression reduces the header sending
    only the Type, a mapped code and the least 9 significant bits of
    Message ID.  The receiver decompresses the header. .
@@ -599,24 +609,17 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    mapping.  When the ES receives the ACK message, this will not
    initiate locally a message ID mapping since it is a response.  The LC
    receives the ACK and uncompressed it to restore the original value.
-   Dynamic Mapping context lifetime follows the same rules as message ID
-   duration.
 
 
 
 
-
-
-
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018              [Page 11]
+Minaburo & Toutain      Expires December 30, 2018              [Page 11]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   Dynamic Mapping context lifetime follows the same rules as message ID
+   duration.
 
                      End System              LPWA LC
                           |                    |
@@ -638,13 +641,38 @@ Internet-Draft           LPWAN CoAP compression                June 2018
                           v                    v +-+-+--+----+------+
 
 
-                Figure 7: Compression with global addresses
+                Figure 6: Compression with global addresses
 
    The message can be further optimized by setting some fields
-   unidirectional, as described in Figure 8.  Note that Type is no more
+   unidirectional, as described in Figure 7.  Note that Type is no more
    sent in the compressed format, Compressed Code size in not changed in
    that example (8 values are needed to code all the requests and 21 to
    code all the responses in the matching list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 12]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
     Rule ID 2
    +-------------+--+--+--+------+---------+------------++------------+
@@ -664,15 +692,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
 
 
-          Figure 8: CoAP Context to compress header without token
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018              [Page 12]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
+          Figure 7: CoAP Context to compress header without token
 
 8.2.  Complete exchange
 
@@ -702,6 +722,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |              |  |  |  |Value |        |           ||   [bits]   |
    +--------------+--+--+--+------+--------+-----------++------------+
    |CoAP version  |  |  |bi| 01   |equal   |not-sent   ||            |
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 13]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    |CoAP Type     |  |  |up| CON  |equal   |not-sent   ||            |
    |CoAP Type     |  |  |dw| ACK  |equal   |not-sent   ||            |
    |CoAP TKL      |  |  |bi| 1    |equal   |not-sent   ||            |
@@ -722,14 +750,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |CoAP version  |  |  |bi| 01   |equal    |not-sent  ||            |
    |CoAP Type     |  |  |dw| CON  |equal    |not-sent  ||            |
    |CoAP Type     |  |  |up| ACK  |equal    |not-sent  ||            |
-
-
-
-Minaburo & Toutain      Expires December 14, 2018              [Page 13]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
    |CoAP TKL      |  |  |bi| 1    |equal    |not-sent  ||            |
    |CoAP Code     |  |  |dw| 2.05 |equal    |not-sent  ||            |
    |CoAP Code     |  |  |up| 0.00 |equal    |not-sent  ||            |
@@ -758,11 +778,135 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |COAP Accept   |  |  |dw| x    |equal    |not-sent   ||            |
    +--------------+--+--+--+------+---------+-----------++------------+
 
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 14]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
    ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 
+8.3.  OSCORE Compression
+
+   As described in Section 4 of [I-D.ietf-core-object-security], OSCORE
+   divides CoAP message fields into either Outer or Inner fields.  The
+   Inner fields are encoded into a Plaintext defined in Section 5.3 of
+   [I-D.ietf-core-object-security], which closely mirrors the format of
+   a regular CoAP message.  This makes it easy to apply regular SCHC
+   rules to compress the OSCORE Plaintext without need for an additional
+   mechanism.  The Outer fields are re-encoded as summarized in
+   Section 4.2 of [I-D.ietf-core-object-security], resulting in a
+   regular CoAP message which includes the OSCORE Option.  A pre-
+   processing of the OSCORE Option is recommended in Section 6.5 of this
+   document, allowing for more efficient compression of the Security
+   Context parameters.  The resulting message can then be SCHC
+   compressed like any other CoAP message, providing the corresponding
+   rules for the supplementary options produced by the pre-processor.
+   Alternatively the pre-processing can be omitted and a single SCHC
+   rule provided for the whole OSCORE option, but this does not provide
+   flexibility in the compression.  In what remains of this Section, we
+   assume the OSCORE-protected message is pre-processed in the following
+   manner:
+
+   The single OSCORE Option is replaced by 3 separate options with
+   implementation-specific option numbers.  These new options are:
+
+   o  OSCORE_1: If a piv is present in the OSCORE Option (n > 0), the
+      OSCORE_1 option contains the piv.  Otherwise it is empty (Option
+      length = 0),
+
+   o  OSCORE_2: If a kid context is present in the OSCORE Option (h =
+      1), the OSCORE_2 option contains the kid context.  Otherwise it is
+      empty (Option length = 0),
+
+   o  OSCORE_3: If a kid is present in the OSCORE option, the OSCORE_3
+      option contains the kid.  Otherwise it is empty (Option length =
+      0).
+
+   SCHC is applied separately to the Plaintext before encryption and to
+   the Outer Message fields in the protected message - this process is
+   illustrated in Figure 8.
+
+                         Orignal CoAP Message
+                      +-+-+---+-------+---------------+
+                      |v|t|tkl| code  |  Msg Id.      |
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 15]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+                      +-+-+---+-------+---------------+....+
+                      | Token                              |
+                      +-------------------------------.....+
+                      | Options (IEU)            |
+                      .                          .
+                      .                          .
+                      +------+-------------------+
+                      | 0xFF |
+                      +------+------------------------+
+                      |     Payload                   |
+                      |                               |
+                      +-------------------------------+
+                           /                    \
+                          /                      \
+        Outer Message    v                        v  OSCORE Plaintext
+     +-+-+---+--------+---------------+          +-------+
+     |v|t|tkl|new code|  Msg Id.      |          | code  |
+     +-+-+---+--------+---------------+....+     +-------+-----......+
+     | Token                               |     | Options (E)       |
+     +--------------------------------.....+     +-------+------.....+
+     | Options (IU)             |                | OxFF  |
+     .                          .                +-------+-----------+
+     . OSCORE Option            .                |                   |
+     +------+-------------------+                | Payload           |
+     | 0xFF |                                    |                   |
+     +------+------------+                       +-------------------+
+     |  Ciphertext       |<---------\                      |
+     |                   |          |                      v
+     +-------------------+          |             +-----------------+
+             |                      |             |   Inner SCHC    |
+             v                      |             |   Compression   |
+       +-----------------+          |             +-----------------+
+       |   Outer SCHC    |          |                      |
+       |   Compression   |          |                      v
+       +-----------------+          |              +-------+
+             |                      |              |Rule ID|
+             v                      |              +-------+--+
+         +--------+           +------------+       | Residue  |
+         |Rule ID'|           | Encryption | <---  +----------+--------+
+         +--------+--+        +------------+       |                   |
+         | Residue'  |                             | Payload           |
+         +-----------+-------+                     |                   |
+         |  Ciphertext       |                     +-------------------+
+         |                   |
+         +-------------------+
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 16]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+                   Figure 8: OSCORE Compression Diagram
+
 9.  Normative References
+
+   [I-D.ietf-core-object-security]
+              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security for Constrained RESTful Environments
+              (OSCORE)", draft-ietf-core-object-security-13 (work in
+              progress), June 2018.
 
    [I-D.ietf-lpwan-ipv6-static-context-hc]
               Minaburo, A., Toutain, L., and C. Gomez, "LPWAN Static
@@ -774,17 +918,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/info/rfc7252>.
-
-
-
-
-
-
-
-Minaburo & Toutain      Expires December 14, 2018              [Page 14]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    [rfc7641]  Hartke, K., "Observing Resources in the Constrained
               Application Protocol (CoAP)", RFC 7641,
@@ -805,6 +938,20 @@ Authors' Addresses
    France
 
    Email: ana@ackl.io
+
+
+
+
+
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 17]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
 
 
    Laurent Toutain
@@ -837,4 +984,25 @@ Authors' Addresses
 
 
 
-Minaburo & Toutain      Expires December 14, 2018              [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo & Toutain      Expires December 30, 2018              [Page 18]
