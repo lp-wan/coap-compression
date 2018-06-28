@@ -74,7 +74,7 @@ Table of Contents
      4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   5
      4.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   5
      4.4.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   6
-     4.5.  CoAP Token field  . . . . . . . . . . . . . . . . . . . .   6
+     4.5.  CoAP Token fields . . . . . . . . . . . . . . . . . . . .   6
    5.  CoAP options  . . . . . . . . . . . . . . . . . . . . . . . .   7
      5.1.  CoAP Content and Accept options.  . . . . . . . . . . . .   7
      5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
@@ -244,15 +244,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 4.  Compression of CoAP header fields
 
    This section discusses of the compression of the different CoAP
-   header fields.  These are just examples.  The compression should take
-   into account the nature of the traffic and not only the field values.
+   header fields.
 
 4.1.  CoAP version field (2 bits)
 
    This field is bidirectional and must be elided during the SCHC
    compression, since it always contains the same value.  In the future,
-   if new version of CoAP are defined, new rules will have to defined
-   leading to no ambiguities between versions.
+   if new version of CoAP are defined, new rules ID will be defined
+   avoiding ambiguities between versions.
 
 4.2.  CoAP type field
 
@@ -262,17 +261,18 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    mapping list: [CON, NON] for one direction and [ACK, RST] for the
    other direction.  Compression residue is reduced to 1 bit.
 
-   The field must elided if for instance the client is sending only NON
+   The field must be elided if for instance a client is sending only NON
    or CON messages.
 
-   In any case, a rule must be define to carry RST to a client.
+   In any case, a rule must be defined to carry RST to a client.
 
 4.3.  CoAP code field
 
-   The compression of the CoAP code field follows the same principle ad
+   The compression of the CoAP code field follows the same principle as
    for the CoAP type field.  If the device plays a specific role, the
    set of code values can be splitted in two parts, the resquest codes
-   starting with the 0 class and the response values.
+   with the 0 class and the response values.
+
 
 
 
@@ -302,7 +302,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    only small message ID values, for instance 4 bit long.  Therefore a
    MSB can be used to limit the size of the compression residue.
 
-   Note taht the client may also inform the server that the
+   Note that the client may also inform the server that the
    EXCHANGE_LIFETIME it is execpting from the server using the Time
    Scale option.
 
@@ -315,7 +315,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    TODO: add a reference to Time Scale
 
-4.5.  CoAP Token field
+4.5.  CoAP Token fields
 
    Token is defined through two CoAP fields, Token Length in the
    mandatory header and Token Value directly following the mandatory
@@ -326,7 +326,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    stored in the context and elided during the transmission.  Otherwize
    it will have to the send as a compression residue.
 
-   Token Value size should not be defined directly in the rule if the
+   Token Value size should not be defined directly in the rule in the
    Field Length (FL).  Instead a specific function designed as "TKL"
    must be used.  This function informs the SCHC C/D that the length of
    this field has to be read from the Token Length field.

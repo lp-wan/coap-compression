@@ -285,7 +285,7 @@ address {
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 CoAP type field">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 CoAP code field">
 <link href="#rfc.section.4.4" rel="Chapter" title="4.4 CoAP Message ID field">
-<link href="#rfc.section.4.5" rel="Chapter" title="4.5 CoAP Token field">
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 CoAP Token fields">
 <link href="#rfc.section.5" rel="Chapter" title="5 CoAP options">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 CoAP Content and Accept options.">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
@@ -385,7 +385,7 @@ address {
 </li>
 <li>4.4.   <a href="#rfc.section.4.4">CoAP Message ID field</a>
 </li>
-<li>4.5.   <a href="#rfc.section.4.5">CoAP Token field</a>
+<li>4.5.   <a href="#rfc.section.4.5">CoAP Token fields</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">CoAP options</a>
 </li>
@@ -476,21 +476,21 @@ address {
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#compression-of-coap-header-fields" id="compression-of-coap-header-fields">Compression of CoAP header fields</a>
 </h1>
-<p id="rfc.section.4.p.1">This section discusses of the compression of the different CoAP header fields. These are just examples. The compression should take into account the nature of the traffic and not only the field values.</p>
+<p id="rfc.section.4.p.1">This section discusses of the compression of the different CoAP header fields.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#coap-version-field-2-bits" id="coap-version-field-2-bits">CoAP version field (2 bits)</a>
 </h1>
-<p id="rfc.section.4.1.p.1">This field is bidirectional and must be elided during the SCHC compression, since it always contains  the same value. In the future, if new version of CoAP are defined, new rules will have to defined leading to no ambiguities between versions.</p>
+<p id="rfc.section.4.1.p.1">This field is bidirectional and must be elided during the SCHC compression, since it always contains  the same value. In the future, if new version of CoAP are defined, new rules ID will be defined avoiding ambiguities between versions.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#coap-type-field" id="coap-type-field">CoAP type field</a>
 </h1>
 <p><a href="#rfc7252" class="xref">[rfc7252]</a> defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit these property with the mapping list: [CON, NON] for one direction and [ACK, RST] for the other direction. Compression residue is reduced to 1 bit.</p>
-<p id="rfc.section.4.2.p.2">The field must elided if for instance the client is sending only NON or CON messages.</p>
-<p id="rfc.section.4.2.p.3">In any case, a rule must be define to carry RST to a client.</p>
+<p id="rfc.section.4.2.p.2">The field must be elided if for instance a client is sending only NON or CON messages.</p>
+<p id="rfc.section.4.2.p.3">In any case, a rule must be defined to carry RST to a client.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#coap-code-field" id="coap-code-field">CoAP code field</a>
 </h1>
-<p id="rfc.section.4.3.p.1">The compression of the CoAP code field follows the same principle ad for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes starting with the 0 class and the response values.</p>
+<p id="rfc.section.4.3.p.1">The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes with the 0 class and the response values.</p>
 <p id="rfc.section.4.3.p.2">If the device implement only a CoAP client, the request code can be reduced to the set of request the client is able to process.</p>
 <p id="rfc.section.4.3.p.3">All the response codes should be compressed with a SCHC rule.</p>
 <h1 id="rfc.section.4.4">
@@ -498,15 +498,15 @@ address {
 </h1>
 <p id="rfc.section.4.4.p.1">This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message has a retransmission. After this period, it will be processed as a new messages.</p>
 <p id="rfc.section.4.4.p.2">In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue.</p>
-<p id="rfc.section.4.4.p.3">Note taht the client may also inform the server that the EXCHANGE_LIFETIME it is execpting from the server using the Time Scale option.</p>
+<p id="rfc.section.4.4.p.3">Note that the client may also inform the server that the EXCHANGE_LIFETIME it is execpting from the server using the Time Scale option.</p>
 <p id="rfc.section.4.4.p.4">In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA.</p>
 <p id="rfc.section.4.4.p.5">TODO: add a reference to Time Scale</p>
 <h1 id="rfc.section.4.5">
-<a href="#rfc.section.4.5">4.5.</a> <a href="#coap-token-field" id="coap-token-field">CoAP Token field</a>
+<a href="#rfc.section.4.5">4.5.</a> <a href="#coap-token-fields" id="coap-token-fields">CoAP Token fields</a>
 </h1>
 <p id="rfc.section.4.5.p.1">Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.</p>
 <p id="rfc.section.4.5.p.2">Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwize it will have to the send as a compression residue.</p>
-<p id="rfc.section.4.5.p.3">Token Value size should not be defined directly in the rule if the Field Length (FL). Instead a specific function designed as &#8220;TKL&#8221; must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field.</p>
+<p id="rfc.section.4.5.p.3">Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as &#8220;TKL&#8221; must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#coap-options" id="coap-options">CoAP options</a>
 </h1>
