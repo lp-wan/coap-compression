@@ -208,7 +208,7 @@ Token Value size should not be defined directly in the rule in the Field Length 
 
 These field are both unidirectional and must not be set to bidirectional in a rule entry.
 
-If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise if several possible value are expected by the client, a matching-list should be used to limit the size of the residue. If not, the possible, the value as to be sent as a variable length residue. 
+If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If not the possible, the value as to be sent as a residue (fixed or variable length). 
 
 
 ## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
@@ -222,19 +222,15 @@ If the duration is known by both ends, value can be elided on the LPWAN.
 
 A matching list can be used if some wellknown values are defined.
 
-Otherwise these options should be compressed as variable length residue.
-
-
-\[\[note: we can reduce (or create a new option) the unit to minute, 
-second is small for LPWAN \]\]
+Otherwise these options should be sent as a residue (fixed or variable length).
 
 ## CoAP option Uri-Path and Uri-Query fields
 
 This fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
-in server response.
+in server responses.
 
-Uri-Path and Uri-Query are a repeatable options, the Field Position (FP) gives the 
+Uri-Path and Uri-Query elements are a repeatable options, the Field Position (FP) gives the 
 position in the path. 
 
 A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to
@@ -243,12 +239,14 @@ Numbering of elements do not change, MO comparison is set with the first element
 of the matching.
 
 ~~~~~ 
-FID       FL FP DI    TV         MO        CDA    Sent
-URI-Path     1  up  {0:"/c/c",  equal   not-sent
-                     1:"/c/d"
+FID       FL FP DI    TV         MO        CDA    
+URI-Path     1  up  ["/a/b",   equal    not-sent   
+                     "/c/d"]
 URI-Path     3  up             ignore   value-sent
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
+
+In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping was not allowed, a 2 bits residue whould have been needed.
 
 
 ### Variable length Uri-Path and Uri-Query
@@ -264,10 +262,10 @@ The length sent at the begining of a variable length residue indicates the size 
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
 ~~~~~ 
-FID       FL FP DI    TV     MO        CDA     Sent
-URI-Path     1  up    c     equal    not-sent
-URI-Path     2  up         ignore   value-sent 
-URI-Query    1  up    k=   MSB (16)    LSB 
+FID       FL FP DI    TV       MO        CDA     
+URI-Path     1  up    "c"     equal     not-sent
+URI-Path     2  up            ignore    value-sent 
+URI-Query    1  up    "k="    MSB (16)  LSB 
 ~~~~~
 {: #Fig-CoMicompress title='CoMi URI compression'}
 
@@ -278,7 +276,7 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
 
 ### Variable number of path or query elements
 
-The number of Uri-path or Uri-Query in a rule is fixed at the rule creation time. If the number
+The number of Uri-path or Uri-Query element in a rule is fixed at the rule creation time. If the number
 varies, several rules should be created to cover all the possibilities. Another possibilities is
 to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
 indicate that this Uri-Path is empty. This add 4 bits to the compression residue.
@@ -300,25 +298,22 @@ Otherwise the TV is set to the value, MO is set to "equal" and CDF is set to "no
 These fields are unidirectional.
 
 These fields values cannot be stored in a rule entry. They must always be sent with the
-request. 
+compression residues. 
 
-\[\[Can include OSCOAP Object security in that category \]\]
 
 # Other RFCs
 
 ## Block
 
-Block option should be avoided in LPWAN. The minimum size of 16 bytes can be incompatible
-with some LPWAN technologies. 
-
-\[\[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?\]\]
+Block allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.
+They are compatible. If a block option is used, its content must be sent as a compression residue. 
 
 ## Observe
 
 {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
 CDF is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
-To reduce the transmission size either the Thing implementation should limit the value 
-increase or a proxy can be used limit the increase.
+To reduce the transmission size either the device implementation should limit the value 
+increase or a proxy canmodify the incrementation.
 
 Since RST message may be sent to inform a server that the client do not require Observe
 response, a rule must allow the transmission of this message.
