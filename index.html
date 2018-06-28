@@ -514,30 +514,30 @@ address {
 <a href="#rfc.section.5.1">5.1.</a> <a href="#coap-content-and-accept-options" id="coap-content-and-accept-options">CoAP Content and Accept options.</a>
 </h1>
 <p id="rfc.section.5.1.p.1">These field are both unidirectional and must not be set to bidirectional in a rule entry.</p>
-<p id="rfc.section.5.1.p.2">If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise if several possible value are expected by the client, a matching-list should be used to limit the size of the residue. If not, the possible, the value as to be sent as a variable length residue.</p>
+<p id="rfc.section.5.1.p.2">If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If not the possible, the value as to be sent as a residue (fixed or variable length).</p>
 <h1 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields" id="coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
 </h1>
 <p id="rfc.section.5.2.p.1">This field is unidirectional and must not be set to bidirectional in a rule entry.  It is used only by the server to inform of the caching duration and is never found in client requests.</p>
 <p id="rfc.section.5.2.p.2">If the duration is known by both ends, value can be elided on the LPWAN.</p>
 <p id="rfc.section.5.2.p.3">A matching list can be used if some wellknown values are defined.</p>
-<p id="rfc.section.5.2.p.4">Otherwise these options should be compressed as variable length residue.</p>
-<p id="rfc.section.5.2.p.5">[[note: we can reduce (or create a new option) the unit to minute, second is small for LPWAN ]]</p>
+<p id="rfc.section.5.2.p.4">Otherwise these options should be sent as a residue (fixed or variable length).</p>
 <h1 id="rfc.section.5.3">
 <a href="#rfc.section.5.3">5.3.</a> <a href="#coap-option-uri-path-and-uri-query-fields" id="coap-option-uri-path-and-uri-query-fields">CoAP option Uri-Path and Uri-Query fields</a>
 </h1>
-<p id="rfc.section.5.3.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
-<p id="rfc.section.5.3.p.2">Uri-Path and Uri-Query are a repeatable options, the Field Position (FP) gives the position in the path.</p>
+<p id="rfc.section.5.3.p.1">This fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server responses.</p>
+<p id="rfc.section.5.3.p.2">Uri-Path and Uri-Query elements are a repeatable options, the Field Position (FP) gives the position in the path.</p>
 <p id="rfc.section.5.3.p.3">A Mapping list can be used to reduce size of variable Paths or Queries. In that case, to optimize the compression, several elements can be regrouped into a single entry.  Numbering of elements do not change, MO comparison is set with the first element of the matching.</p>
 <div id="rfc.figure.2"></div>
 <div id="Fig--complex-path"></div>
 <pre>
-FID       FL FP DI    TV         MO        CDA    Sent
-URI-Path     1  up  {0:"/c/c",  equal   not-sent
-                     1:"/c/d"
+FID       FL FP DI    TV         MO        CDA    
+URI-Path     1  up  ["/a/b",   equal    not-sent   
+                     "/c/d"]
 URI-Path     3  up             ignore   value-sent
 </pre>
 <p class="figure">Figure 2: complex path example</p>
+<p id="rfc.section.5.3.p.4">In <a href="#Fig--complex-path" class="xref">Figure 2</a> a single bit residue can be used to code one of the 2 paths. If regrouping was not allowed, a 2 bits residue whould have been needed.</p>
 <h1 id="rfc.section.5.3.1">
 <a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#variable-length-uri-path-and-uri-query" id="variable-length-uri-path-and-uri-query">Variable length Uri-Path and Uri-Query</a>
 </h1>
@@ -548,17 +548,17 @@ URI-Path     3  up             ignore   value-sent
 <div id="rfc.figure.3"></div>
 <div id="Fig-CoMicompress"></div>
 <pre>
-FID       FL FP DI    TV     MO        CDA     Sent
-URI-Path     1  up    c     equal    not-sent
-URI-Path     2  up         ignore   value-sent 
-URI-Query    1  up    k=   MSB (16)    LSB 
+FID       FL FP DI    TV       MO        CDA     
+URI-Path     1  up    "c"     equal     not-sent
+URI-Path     2  up            ignore    value-sent 
+URI-Query    1  up    "k="    MSB (16)  LSB 
 </pre>
 <p class="figure">Figure 3: CoMi URI compression</p>
 <p><a href="#Fig-CoMicompress" class="xref">Figure 3</a> shows the parsing and the compression of the URI. where c is not sent.  The second element is sent with the length (i.e. 0x2 X 6) followed by the query option (i.e. 0x05 &#8220;eth0&#8221;).</p>
 <h1 id="rfc.section.5.3.2">
 <a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#variable-number-of-path-or-query-elements" id="variable-number-of-path-or-query-elements">Variable number of path or query elements</a>
 </h1>
-<p id="rfc.section.5.3.2.p.1">The number of Uri-path or Uri-Query in a rule is fixed at the rule creation time. If the number varies, several rules should be created to cover all the possibilities. Another possibilities is to define the length of Uri-Path to variable and send a compression residue with a length of 0 to indicate that this Uri-Path is empty. This add 4 bits to the compression residue.</p>
+<p id="rfc.section.5.3.2.p.1">The number of Uri-path or Uri-Query element in a rule is fixed at the rule creation time. If the number varies, several rules should be created to cover all the possibilities. Another possibilities is to define the length of Uri-Path to variable and send a compression residue with a length of 0 to indicate that this Uri-Path is empty. This add 4 bits to the compression residue.</p>
 <h1 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a>
 </h1>
@@ -569,20 +569,18 @@ URI-Query    1  up    k=   MSB (16)    LSB
 <a href="#rfc.section.5.5">5.5.</a> <a href="#coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields" id="coap-option-etag-if-match-if-none-match-location-path-and-location-query-fields">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
 </h1>
 <p id="rfc.section.5.5.p.1">These fields are unidirectional.</p>
-<p id="rfc.section.5.5.p.2">These fields values cannot be stored in a rule entry. They must always be sent with the request.</p>
-<p id="rfc.section.5.5.p.3">[[Can include OSCOAP Object security in that category ]]</p>
+<p id="rfc.section.5.5.p.2">These fields values cannot be stored in a rule entry. They must always be sent with the compression residues.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#other-rfcs" id="other-rfcs">Other RFCs</a>
 </h1>
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#block" id="block">Block</a>
 </h1>
-<p id="rfc.section.6.1.p.1">Block option should be avoided in LPWAN. The minimum size of 16 bytes can be incompatible with some LPWAN technologies.</p>
-<p id="rfc.section.6.1.p.2">[[Note: do we recommand LPWAN fragmentation since the smallest value of 16 is too big?]]</p>
+<p id="rfc.section.6.1.p.1">Block allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.  They are compatible. If a block option is used, its content must be sent as a compression residue.</p>
 <h1 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#observe" id="observe">Observe</a>
 </h1>
-<p><a href="#rfc7641" class="xref">[rfc7641]</a> defines the Observe option. The TV is not set, MO is set to &#8220;ignore&#8221; and the CDF is set to &#8220;value-sent&#8221;. SCHC does not limit the maximum size for this option (3 bytes).  To reduce the transmission size either the Thing implementation should limit the value increase or a proxy can be used limit the increase.</p>
+<p><a href="#rfc7641" class="xref">[rfc7641]</a> defines the Observe option. The TV is not set, MO is set to &#8220;ignore&#8221; and the CDF is set to &#8220;value-sent&#8221;. SCHC does not limit the maximum size for this option (3 bytes).  To reduce the transmission size either the device implementation should limit the value increase or a proxy canmodify the incrementation.</p>
 <p id="rfc.section.6.2.p.2">Since RST message may be sent to inform a server that the client do not require Observe response, a rule must allow the transmission of this message.</p>
 <h1 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#no-response" id="no-response">No-Response</a>
