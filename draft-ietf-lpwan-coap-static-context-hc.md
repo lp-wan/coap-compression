@@ -34,7 +34,9 @@ normative:
   rfc7252:
   rfc7967:
   rfc7641:
+  I-D.ietf-core-object-security:
   I-D.ietf-lpwan-ipv6-static-context-hc:
+
 #  <!--I-D.toutain-core-time-scale:-->
 
 --- abstract
@@ -286,37 +288,6 @@ varies, several rules should be created to cover all the possibilities. Another 
 to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
 indicate that this Uri-Path is empty. This add 4 bits to the compression residue.
 
-
-
-<!--
-
-### MSB MO and LSB CDA arguments
-MSB and LSB are used to choose the number of bits to be matched against and to be sent. They are used
-for fixed and variable lengths field headers, in each case, the behavior is different based on the Field
-Description definition, the MO, and the TV defined in the Rule.
-The variable length fields meant for CoAP URIs, MSB argument is used to choose the number of bits to be
-sent where 'x'; is a number of bits, the LSB CDA does not have argument computing the size(Field)-x gives
-the size of this field.
-This MO was created for variable length fields as the CoAP URIs, the definition of MO/CDA for this kind of
-fields could be:
-
-~~~
-+---------------+--------------+----------+---------------------+
-|     MO        |     CDA      |    TV    | Compression Residue |
-+===============+==============+==========+=====================+
-|    Ignore     |  Value-Sent  |          | Length + Residue    |
-+---------------+--------------+----------+---------------------+
-|    MSB(x)     |     LSB      |          | Length + Residue    |
-+---------------+--------------+----------+---------------------+
-| Match-mapping | Mapping Sent |   List   |  Residue(index)     |
-+---------------+--------------+----------+---------------------+
-
-
-~~~~
-{: #Fig--MSBLSB title="Use of MSB and LSB MO and CDA"}
- 
--->
-
 ## CoAP option Proxy-URI and Proxy-Scheme fields
 
 These fields are unidirectional and must not be set to bidirectional in a rule entry.
@@ -367,6 +338,49 @@ Otherwise, if the value is changing over time, TV is not set, MO is set to "igno
 CDF to "value-sent". A matching list can also be used to reduce the size. 
 
 ## Time Scale
+
+## OSCORE
+{: #Sec-OSCORE}
+
+OSCORE {{I-D.ietf-core-object-security}} defines end-to-end protection for CoAP messages. 
+This section describes how SCHC rules can be applied to compress OSCORE-protected messages.
+
+~~~~
+
+          0 1 2 3 4 5 6 7 <--------- n bytes ------------->
+         +-+-+-+-+-+-+-+-+---------------------------------
+         |0 0 0|h|k|  n  |      Partial IV (if any) ...
+         +-+-+-+-+-+-+-+-+---------------------------------
+
+          <- 1 byte -> <------ s bytes ----->
+         +------------+----------------------+------------------+
+         | s (if any) | kid context (if any) | kid (if any) ... |
+         +------------+----------------------+------------------+
+
+~~~~
+{: #Fig-OSCORE-Option title='OSCORE Option'} 
+
+The encoding of the OSCORE Option Value defined in Section 6.1 of {{I-D.ietf-core-object-security}}
+is repeated in {{Fig-OSCORE-Option}}.
+
+The first 3 bits are set to 0.  The next bit h when set on 1 tells that a key identifier context is 
+present in the OSCORE option, the k indicates that a kid is also present.
+
+The 3 n bits give the size of the partial IV stored in the OSCORE option. If h bit is set, then a 
+length and the kid context value are stored after the PIV and finally the kid can be sent.
+
+This draft recommends to implement a parser that is able to identify the OSCORE
+Option and the fields it contains - this makes it possible to do a preliminary processing
+of the message in preparation for regular SCHC compression.
+
+In case the OSCORE Option is found, the implementation is recommended to split it into up
+to 3 fields, according to the presence of the Partial IV, kid context and kid within the 
+option. The split fields may be formatted as additional CoAP options with the delta 
+encoding defined in Section 3.1 of {{rfc7252}}. A possible implementation of this scheme is presented in
+{{Sec-OSCORE-Examples}}.
+
+Alternatively, the OSCORE Option could be left as is, but this limits the flexibility
+in the compression.
 
 # Protocol analysis
 
@@ -557,8 +571,102 @@ ML4 {NULL:0, k=AS:1, K=AZE:2}
 
 ~~~~
 
+## OSCORE Compression
+{: #Sec-OSCORE-Examples}
+
+As described in Section 4 of {{I-D.ietf-core-object-security}}, OSCORE divides CoAP
+message fields into either Outer or Inner fields. The Inner fields are encoded
+into a Plaintext defined in Section 5.3 of {{I-D.ietf-core-object-security}}, 
+which closely mirrors the format of a regular CoAP message. This makes it easy
+to apply regular SCHC rules to compress the OSCORE Plaintext without need for
+an additional mechanism. The Outer fields are re-encoded as summarized in
+Section 4.2 of {{I-D.ietf-core-object-security}}, resulting in a regular CoAP
+message which includes the OSCORE Option. A pre-processing of the OSCORE Option
+is recommended in {{Sec-OSCORE}} of this document, allowing for more
+efficient compression of the Security Context parameters. The resulting message
+can then be SCHC compressed like any other CoAP message, providing the
+corresponding rules for the supplementary options produced by the
+pre-processor. Alternatively the pre-processing can be omitted and a single
+SCHC rule provided for the whole OSCORE option, but this does not provide 
+flexibility in the compression. In what remains of this Section, we assume the
+OSCORE-protected message is pre-processed in the following manner:
+
+The single OSCORE Option is replaced by 3 separate options with
+implementation-specific option numbers. These new options are:
+
+ * OSCORE_1: If a piv is present in the OSCORE Option (n > 0), the OSCORE_1
+ option contains the piv. Otherwise it is empty (Option length = 0),
+ * OSCORE_2: If a kid context is present in the OSCORE Option (h = 1), the 
+ OSCORE_2 option contains the kid context. Otherwise it is empty (Option length
+ = 0),
+ * OSCORE_3: If a kid is present in the OSCORE option, the OSCORE_3 option
+ contains the kid. Otherwise it is empty (Option length = 0). 
+
+SCHC is applied separately to the Plaintext before encryption and to the Outer Message fields
+in the protected message - this process is illustrated in {{Fig-OSCORE-Compression}}.
 
 
+~~~~
+
+                      Orignal CoAP Message
+                   +-+-+---+-------+---------------+
+                   |v|t|tkl| code  |  Msg Id.      |
+                   +-+-+---+-------+---------------+....+
+                   | Token                              |
+                   +-------------------------------.....+
+                   | Options (IEU)            |
+                   .                          .
+                   .                          .
+                   +------+-------------------+ 
+                   | 0xFF |
+                   +------+------------------------+
+                   |     Payload                   |
+                   |                               |
+                   +-------------------------------+      
+                        /                    \
+                       /                      \
+     Outer Message    v                        v  OSCORE Plaintext
+  +-+-+---+--------+---------------+          +-------+
+  |v|t|tkl|new code|  Msg Id.      |          | code  |
+  +-+-+---+--------+---------------+....+     +-------+-----......+
+  | Token                               |     | Options (E)       |
+  +--------------------------------.....+     +-------+------.....+
+  | Options (IU)             |                | OxFF  |
+  .                          .                +-------+-----------+
+  . OSCORE Option            .                |                   |
+  +------+-------------------+                | Payload           |
+  | 0xFF |                                    |                   |
+  +------+------------+                       +-------------------+
+  |  Ciphertext       |<---------\                      |
+  |                   |          |                      v
+  +-------------------+          |             +-----------------+
+          |                      |             |   Inner SCHC    |
+          v                      |             |   Compression   |
+    +-----------------+          |             +-----------------+
+    |   Outer SCHC    |          |                      |
+    |   Compression   |          |                      v
+    +-----------------+          |              +-------+
+          |                      |              |Rule ID|
+          v                      |              +-------+--+
+      +--------+           +------------+       | Residue  |
+      |Rule ID'|           | Encryption | <---  +----------+--------+
+      +--------+--+        +------------+       |                   |
+      | Residue'  |                             | Payload           |
+      +-----------+-------+                     |                   |
+      |  Ciphertext       |                     +-------------------+
+      |                   |     
+      +-------------------+
+      
+      
+      
+      
+      
+      
+      
+
+
+~~~~
+{: #Fig-OSCORE-Compression title='OSCORE Compression Diagram'}
 
 
 
