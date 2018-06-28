@@ -156,27 +156,25 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
 
 # Compression of CoAP header fields
 
-This section discusses of the compression of the different CoAP header fields. These are just
-examples. The compression should take into account the nature of the traffic and not 
-only the field values.
+This section discusses of the compression of the different CoAP header fields. 
 
 ## CoAP version field (2 bits)
 
 This field is bidirectional and must be elided during the SCHC compression, since it always
-contains  the same value. In the future, if new version of CoAP are defined, new rules will 
-have to defined leading to no ambiguities between versions. 
+contains  the same value. In the future, if new version of CoAP are defined, new rules ID will 
+be defined avoiding ambiguities between versions. 
 
 ## CoAP type field
 
 {{rfc7252}} defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit these property with the mapping list: \[CON, NON\] for one direction and \[ACK, RST\] for the other direction. Compression residue is reduced to 1 bit. 
 
-The field must elided if for instance the client is sending only NON or CON messages. 
+The field must be elided if for instance a client is sending only NON or CON messages. 
 
-In any case, a rule must be define to carry RST to a client.
+In any case, a rule must be defined to carry RST to a client.
   
 ## CoAP code field
 
-The compression of the CoAP code field follows the same principle ad for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes starting with the 0 class and the response values. 
+The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes with the 0 class and the response values. 
 
 If the device implement only a CoAP client, the request code can be reduced to the set of request the client is able to process. 
 
@@ -189,19 +187,19 @@ This field is bidirectional and is used to manage acknowledgments. Server memori
 
 In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. 
 
-Note taht the client may also inform the server that the EXCHANGE_LIFETIME it is execpting from the server using the Time Scale option.  
+Note that the client may also inform the server that the EXCHANGE_LIFETIME it is execpting from the server using the Time Scale option.  
 
 In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA. 
 
 TODO: add a reference to Time Scale
 
-## CoAP Token field
+## CoAP Token fields
 
 Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.
 
 Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwize it will have to the send as a compression residue.
 
-Token Value size should not be defined directly in the rule if the Field Length (FL). Instead a specific function designed as "TKL" must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field. 
+Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as "TKL" must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field. 
 
 
 # CoAP options
