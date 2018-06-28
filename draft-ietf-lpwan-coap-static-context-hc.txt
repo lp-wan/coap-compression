@@ -186,18 +186,21 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       response, a request may contain an Accept option and the response
       a Content option.
 
-      [I-D.ietf-lpwan-ipv6-static-context-hc] allows to use a message
-      direction (DI) when processing the rule.
+      [I-D.ietf-lpwan-ipv6-static-context-hc] defines the use of a
+      message direction (DI) when processing the rule which allows the
+      description of message header format in baoth directions.
 
    o  Even when a field is "symmetric" (i.e. found in both directions)
       the values carried are different.  For instance the Type field
       will contain a CON value in the request and a ACK or RST value in
       the response.  Exploiting the asymmetry in compression will allow
       to send no bit in the compressed request and a single bit in the
-      answer.  Same behavior can be applied to the CoAP Code field (0.0X
-      code are present in the request and Y.ZZ in the answer).  The
-      direction allows to split in two parts the possible values for
-      each direction.
+      answer.  For instance, if a client sends only CON resquest, the
+      type can be elided by compression and the answer may use one bit
+      to carry the ACK or RST type.  Same behavior can be applied to the
+      CoAP Code field (0.0X code are present in the request and Y.ZZ in
+      the answer).  The direction allows to split in two parts the
+      possible values for each direction.
 
       In combination with the mapping list, the size of the compression
       residu can be reduced.
@@ -205,19 +208,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    o  In IPv6 and UDP header fields have a fixed size.  In CoAP, Token
       size may vary from 0 to 8 bytes, length is given by a field in the
       header.  More systematically, the CoAP options are described using
-      the Type-Length-Value.  When applying SCHC header compression.
+      the Type-Length-Value.
 
       [I-D.ietf-lpwan-ipv6-static-context-hc] offers the possibility to
       define a function for the Field Length in the Field Description.
 
-   o  In CoAP headers a field can be duplicated several times, for
+   o  In CoAP headers, a field can be duplicated several times, for
       instances, elements of an URI (path or queries).  The position
       defined in a rule, associated to a Field ID, can be used to
       identify the proper element.
 
-      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
-      appears several times in the rule, the Field Position (FP) removes
-      ambiguities for the matching operation.
 
 
 
@@ -225,6 +225,10 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
+      appears several times in the rule, the Field Position (FP) removes
+      ambiguities for the matching operation.
 
    o  CoAP also obeys to the client/server paradigm and the compression
       rate can be different if the request is issued from an LPWAN node
@@ -270,10 +274,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    set of code values can be splitted in two parts, the resquest codes
    starting with the 0 class and the response values.
 
-   If the device implement only a CoAP client, the request code can be
-   reduced to the set of request the client is able to process.
-
-   All the response codes should be compressed with a SCHC rule.
 
 
 
@@ -281,6 +281,11 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   If the device implement only a CoAP client, the request code can be
+   reduced to the set of request the client is able to process.
+
+   All the response codes should be compressed with a SCHC rule.
 
 4.4.  CoAP Message ID field
 
@@ -325,11 +330,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    Field Length (FL).  Instead a specific function designed as "TKL"
    must be used.  This function informs the SCHC C/D that the length of
    this field has to be read from the Token Length field.
-
-
-
-
-
 
 
 
