@@ -115,13 +115,15 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   For example, the URI-path option is mandatory in the request and is not found in the response, 
   a request may contain an Accept option and the response a Content option.
   
-  {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows to use a message direction (DI) when
-  processing the rule. 
+  {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines the use of  a message direction (DI) when
+  processing the rule which allows the description of message header format in baoth directions.
   
 * Even when a field is "symmetric" (i.e. found in both directions) the values carried are
   different. For instance the Type field will contain a CON value in the request and a
   ACK or RST value in the response. Exploiting the asymmetry in compression will allow to 
-  send no bit in the compressed request and a single bit in the answer. Same behavior can be 
+  send no bit in the compressed request and a single bit in the answer. For instance,
+  if a client sends only CON resquest, the type can be elided by compression and the answer
+  may use one bit to carry the ACK or RST type. Same behavior can be 
   applied to the CoAP Code field (0.0X code are present in the request and Y.ZZ in the answer).
   The direction allows to split in two parts the possible values for each direction. 
   
@@ -131,12 +133,11 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
   systematically, the CoAP options are described using the Type-Length-Value. 
-  When applying SCHC header compression. 
   
   {{I-D.ietf-lpwan-ipv6-static-context-hc}}
   offers the possibility to define a function for the Field Length in the Field Description.
   
-* In CoAP headers a field can be duplicated several times, for instances, elements of an URI 
+* In CoAP headers, a field can be duplicated several times, for instances, elements of an URI 
   (path or queries). The position defined in a rule, associated to a Field ID, can be used to 
   identify the proper element.
 
