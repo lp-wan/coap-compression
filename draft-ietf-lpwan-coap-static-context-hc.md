@@ -43,10 +43,10 @@ normative:
 
 This draft defines the way SCHC header compression can be applied to CoAP 
 headers.
-CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header 
-is flexible header with a variable number of options themself of a variable length. 
+CoAP header structure differs from IPv6 and UDP protocols since the CoAP  
+use a flexible header with a variable number of options themself of a variable length. 
 Another important difference is 
-the asymmetry in the header information used for request and 
+the asymmetry in the header format used in request and 
 response messages. Most of the compression mechanisms have been introduced in 
 {{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to use the SCHC compression
 for CoAP.
@@ -71,7 +71,7 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    and its position (FP) when repeated differs from 1, a direction indicator (DI) (upstream, downstream and bidirectional)
    and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is
    associated to each header field description. The rule is selected if all the MOs fit
-   the TVs.  In that case, a Compression/Decompression Action (CDA)
+   the TVs for all fields.  In that case, a Compression/Decompression Action (CDA)
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. 
     
@@ -80,34 +80,30 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
 
 ~~~~
-+------------------+                 +--------------------+
-|       CoAP       |                 |        CoAP        |                                
-+------------------+                 +--------------------+
-| SCHC Compression |                 |         UDP        |
-+------------------+                 +--------------------+
-|       DTLS       |                 |        IPv6        |
-+------------------+                 +--------------------+
-|       UDP        |       OR        |  SCHC Compression  |
-+------------------+                 +--------------------+
-|       IPv6       |                 | SCHC Fragmentation |
-+------------------+                 +--------------------+
-| SCHC Compression |                 |  LPWAN technology  |   
-+------------------+                 +--------------------+
-|SCHC Fragmentation|
-+------------------+
-| LPWAN technology |
-+------------------+
 
-
+ ^   +--------------------+    ^  +------------------+        ^  +------------------+                
+ |   |        CoAP        |    |  |       CoAP       |        |  |       CoAP       |                                           
+ |   +--------------------+    v  +------------------+        x  |      OSCORE      |          
+ |   |         UDP        |       |       DTLS       |        |  +------------------+       
+ |   +--------------------+       +------------------+        |  |       UDP        |        
+ |   |        IPv6        |       |       UDP        |        |  +------------------+                
+ v   +--------------------+       +------------------+        |  |       IPv6       |            
+                                  |       IPv6       |        v  +------------------+                
+                                  +------------------+                 
+                                                  
+                                                  
 ~~~~
 {: #Fig-SCHCCOAP title='SCHC Adaptation Layers for CoAP flows'}  
 
 
-In the First figure two different SCHC Rules are used to compressed the different header,
-one for CoAP and the other for IP/UDP, in the second figure one Rule will be used to
-compressed the complete stack.
-The use of one possibility of the other depends on the architecture or the use of a security
-protocol
+{{Fig-SCHCCOAP}} shows some examples for CoAP compression. A rule can covers all headers from
+IPv6 to CoAP. If an end-to-end encryption mechanisms is used between the device and the application.
+CoAP must be compressed independently of the other layers. The rule ID and the compression residue
+are encrypted using a mechanism such as DTLS. Only the destimation can decypher the information. Above 
+layers may also be compressed using other SCHC rules. OSCORE can also define 2 rules to compress the
+CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
+the outer header and the layer above.
+
 
 #  CoAP Compression with SCHC
 
