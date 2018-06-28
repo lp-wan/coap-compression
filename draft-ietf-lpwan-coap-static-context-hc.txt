@@ -16,12 +16,13 @@ Abstract
 
    This draft defines the way SCHC header compression can be applied to
    CoAP headers.  CoAP header structure differs from IPv6 and UDP
-   protocols since the CoAP Header is flexible header with a variable
-   number of options themself of a variable length.  Another important
-   difference is the asymmetry in the header information used for
-   request and response messages.  Most of the compression mechanisms
-   have been introduced in [I-D.ietf-lpwan-ipv6-static-context-hc], this
-   document explains how to use the SCHC compression for CoAP.
+   protocols since the CoAP
+   use a flexible header with a variable number of options themself of a
+   variable length.  Another important difference is the asymmetry in
+   the header format used in request and response messages.  Most of the
+   compression mechanisms have been introduced in
+   [I-D.ietf-lpwan-ipv6-static-context-hc], this document explains how
+   to use the SCHC compression for CoAP.
 
 Status of This Memo
 
@@ -49,7 +50,6 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
 
 
 
@@ -58,6 +58,7 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 1]
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
+   carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -108,7 +109,6 @@ Table of Contents
 
 
 
-
 Minaburo & Toutain      Expires December 30, 2018               [Page 2]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
@@ -128,10 +128,10 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    (DI) (upstream, downstream and bidirectional) and some associated
    Target Values (TV) which are expected in the message header.  A
    Matching Operator (MO) is associated to each header field
-   description.  The rule is selected if all the MOs fit the TVs.  In
-   that case, a Compression/Decompression Action (CDA) associated to
-   each field defines the link between the compressed and decompressed
-   value for each of the header fields.
+   description.  The rule is selected if all the MOs fit the TVs for all
+   fields.  In that case, a Compression/Decompression Action (CDA)
+   associated to each field defines the link between the compressed and
+   decompressed value for each of the header fields.
 
 2.  SCHC Compression Process
 
@@ -141,27 +141,27 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    as described in [I-D.ietf-lpwan-ipv6-static-context-hc] may be used
    as as shown in the Figure 1.
 
-   +------------------+                 +--------------------+
-   |       CoAP       |                 |        CoAP        |
-   +------------------+                 +--------------------+
-   | SCHC Compression |                 |         UDP        |
-   +------------------+                 +--------------------+
-   |       DTLS       |                 |        IPv6        |
-   +------------------+                 +--------------------+
-   |       UDP        |       OR        |  SCHC Compression  |
-   +------------------+                 +--------------------+
-   |       IPv6       |                 | SCHC Fragmentation |
-   +------------------+                 +--------------------+
-   | SCHC Compression |                 |  LPWAN technology  |
-   +------------------+                 +--------------------+
-   |SCHC Fragmentation|
-   +------------------+
-   | LPWAN technology |
-   +------------------+
+ ^   +--------------------+    ^  +------------------+        ^  +------------------+
+ |   |        CoAP        |    |  |       CoAP       |        |  |       CoAP       |
+ |   +--------------------+    v  +------------------+        x  |      OSCORE      |
+ |   |         UDP        |       |       DTLS       |        |  +------------------+
+ |   +--------------------+       +------------------+        |  |       UDP        |
+ |   |        IPv6        |       |       UDP        |        |  +------------------+
+ v   +--------------------+       +------------------+        |  |       IPv6       |
+                                  |       IPv6       |        v  +------------------+
+                                  +------------------+
 
 
 
               Figure 1: SCHC Adaptation Layers for CoAP flows
+
+   Figure 1 shows some examples for CoAP compression.  A rule can covers
+   all headers from IPv6 to CoAP.  If an end-to-end encryption
+   mechanisms is used between the device and the application.  CoAP must
+   be compressed independently of the other layers.  The rule ID and the
+   compression residue are encrypted using a mechanism such as DTLS.
+   Only the destimation can decypher the information.  Above layers may
+   also be compressed using other SCHC rules.  OSCORE can also define 2
 
 
 
@@ -170,11 +170,9 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 3]
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
-   In the First figure two different SCHC Rules are used to compressed
-   the different header, one for CoAP and the other for IP/UDP, in the
-   second figure one Rule will be used to compressed the complete stack.
-   The use of one possibility of the other depends on the architecture
-   or the use of a security protocol
+   rules to compress the CoAP message.  A first rule focuses on the
+   inner header and is end to end, a second rule may compress the outer
+   header and the layer above.
 
 3.  CoAP Compression with SCHC
 
@@ -217,7 +215,9 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       defined in a rule, associated to a Field ID, can be used to
       identify the proper element.
 
-
+      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
+      appears several times in the rule, the Field Position (FP) removes
+      ambiguities for the matching operation.
 
 
 
@@ -225,10 +225,6 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
-
-      [I-D.ietf-lpwan-ipv6-static-context-hc] allows a Field id to
-      appears several times in the rule, the Field Position (FP) removes
-      ambiguities for the matching operation.
 
    o  CoAP also obeys to the client/server paradigm and the compression
       rate can be different if the request is issued from an LPWAN node
@@ -274,6 +270,10 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    set of code values can be splitted in two parts, the resquest codes
    starting with the 0 class and the response values.
 
+   If the device implement only a CoAP client, the request code can be
+   reduced to the set of request the client is able to process.
+
+   All the response codes should be compressed with a SCHC rule.
 
 
 
@@ -281,11 +281,6 @@ Minaburo & Toutain      Expires December 30, 2018               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
-
-   If the device implement only a CoAP client, the request code can be
-   reduced to the set of request the client is able to process.
-
-   All the response codes should be compressed with a SCHC rule.
 
 4.4.  CoAP Message ID field
 
@@ -330,6 +325,11 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    Field Length (FL).  Instead a specific function designed as "TKL"
    must be used.  This function informs the SCHC C/D that the length of
    this field has to be read from the Token Length field.
+
+
+
+
+
 
 
 
