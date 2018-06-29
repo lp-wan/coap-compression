@@ -72,8 +72,8 @@ Table of Contents
    2.  SCHC Compression Process  . . . . . . . . . . . . . . . . . .   3
    3.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   4
    4.  Compression of CoAP header fields . . . . . . . . . . . . . .   5
-     4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   5
-     4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   6
+     4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   6
      4.4.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   6
      4.5.  CoAP Token fields . . . . . . . . . . . . . . . . . . . .   7
@@ -89,7 +89,7 @@ Table of Contents
            and Location-Query fields . . . . . . . . . . . . . . . .   9
    6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .  10
      6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .  10
      6.4.  Time Scale  . . . . . . . . . . . . . . . . . . . . . . .  10
      6.5.  OSCORE  . . . . . . . . . . . . . . . . . . . . . . . . .  10
@@ -132,12 +132,15 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    IDs (identifiers).  A rule contains an ordered list of the fields
    descriptions containing a field ID (FID), its length (FL) and its
    position (FP), a direction indicator (DI) (upstream, downstream and
-   bidirectional) and some associated Target Values (TV).  A Matching
-   Operator (MO) is associated to each header field description.  The
-   rule is selected if all the MOs fit the TVs for all fields.  In that
-   case, a Compression/Decompression Action (CDA) associated to each
-   field defines the link between the compressed and decompressed value
-   for each of the header fields.
+   bidirectional) and some associated Target Values (TV).  Target Value
+   indicates the value that can be expected.  TV can also be a list of
+   values.  A Matching Operator (MO) is associated to each header field
+   description.  The rule is selected if all the MOs fit the TVs for all
+   fields.  In that case, a Compression/Decompression Action (CDA)
+   associated to each field defines the link between the compressed and
+   decompressed value for each of the header fields.  Compression
+   results mainly in 4 actions: send the field value, send nothing, send
+   less significant bits of a field, send an index.
 
 2.  SCHC Compression Process
 
@@ -146,6 +149,26 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    above layers (IPv6/UDP) or independantly.  The SCHC adaptation layers
    as described in [I-D.ietf-lpwan-ipv6-static-context-hc] may be used
    as as shown in the Figure 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.        Expires December 31, 2018               [Page 3]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
 
     ^   +------------+    ^  +------------+        ^  +------------+
     |   |    CoAP    |    |  |    CoAP    |  inner |  |    CoAP    |
@@ -160,15 +183,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
                        Figure 1: rule scope for CoAP
-
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018               [Page 3]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    Figure 1 shows some examples for CoAP architecture and the SCHC
    rule's scope.  A rule can covers all headers from IPv6 to CoAP, SCHC
@@ -203,6 +217,15 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       message direction (DI) when processing the rule which allows the
       description of message header format in baoth directions.
 
+
+
+
+
+Minaburo, et al.        Expires December 31, 2018               [Page 4]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    o  Even when a field is "symmetric" (i.e. found in both directions)
       the values carried are different.  For instance the Type field
       will contain a CON value in the request and a ACK or RST value in
@@ -217,14 +240,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
       In combination with the mapping list, the size of the compression
       residu can be reduced.
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018               [Page 4]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    o  In IPv6 and UDP header fields have a fixed size.  In CoAP, Token
       size may vary from 0 to 8 bytes, length is given by a field in the
@@ -259,6 +274,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    This section discusses of the compression of the different CoAP
    header fields.
 
+
+
+
+Minaburo, et al.        Expires December 31, 2018               [Page 5]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
 4.1.  CoAP version field (2 bits)
 
    This field is bidirectional and must be elided during the SCHC
@@ -273,14 +296,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    plays a specific role, a rule can exploit these property with the
    mapping list: [CON, NON] for one direction and [ACK, RST] for the
    other direction.  Compression residue is reduced to 1 bit.
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018               [Page 5]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    The field must be elided if for instance a client is sending only NON
    or CON messages.
@@ -314,6 +329,15 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    only small message ID values, for instance 4 bit long.  Therefore a
    MSB can be used to limit the size of the compression residue.
 
+
+
+
+
+Minaburo, et al.        Expires December 31, 2018               [Page 6]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    Note that the client may also inform the server that the
    EXCHANGE_LIFETIME it is execpting from the server using the Time
    Scale option.
@@ -326,17 +350,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    with the MSB matching operator and LSB CDA.
 
    TODO: add a reference to Time Scale
-
-
-
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018               [Page 6]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
 4.5.  CoAP Token fields
 
@@ -374,6 +387,13 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    a rule entry.  It is used only by the server to inform of the caching
    duration and is never found in client requests.
 
+
+
+Minaburo, et al.        Expires December 31, 2018               [Page 7]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    If the duration is known by both ends, value can be elided on the
    LPWAN.
 
@@ -381,18 +401,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    Otherwise these options should be sent as a residue (fixed or
    variable length).
-
-
-
-
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018               [Page 7]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
 5.3.  CoAP option Uri-Path and Uri-Query fields
 
@@ -433,14 +441,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
-   FID       FL FP DI    TV       MO        CDA
-   URI-Path     1  up    "c"     equal     not-sent
-   URI-Path     2  up            ignore    value-sent
-   URI-Query    1  up    "k="    MSB (16)  LSB
-
-                      Figure 3: CoMi URI compression
-
-
 
 
 
@@ -449,6 +449,13 @@ Minaburo, et al.        Expires December 31, 2018               [Page 8]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   FID       FL FP DI    TV       MO        CDA
+   URI-Path     1  up    "c"     equal     not-sent
+   URI-Path     2  up            ignore    value-sent
+   URI-Query    1  up    "k="    MSB (16)  LSB
+
+                      Figure 3: CoMi URI compression
 
    Figure 3 shows the parsing and the compression of the URI. where c is
    not sent.  The second element is sent with the length (i.e. 0x2 X 6)
@@ -491,13 +498,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    fragmentation protocol.  They are compatible.  If a block option is
    used, its content must be sent as a compression residue.
 
-6.2.  Observe
-
-   [rfc7641] defines the Observe option.  The TV is not set, MO is set
-   to "ignore" and the CDF is set to "value-sent".  SCHC does not limit
-   the maximum size for this option (3 bytes).  To reduce the
-   transmission size either the device implementation should limit the
-   value increase or a proxy canmodify the incrementation.
 
 
 
@@ -505,6 +505,14 @@ Minaburo, et al.        Expires December 31, 2018               [Page 9]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+6.2.  Observe
+
+   [rfc7641] defines the Observe option.  The TV is not set, MO is set
+   to "ignore" and the CDF is set to "value-sent".  SCHC does not limit
+   the maximum size for this option (3 bytes).  To reduce the
+   transmission size either the device implementation should limit the
+   value increase or a proxy canmodify the incrementation.
 
    Since RST message may be sent to inform a server that the client do
    not require Observe response, a rule must allow the transmission of
@@ -546,14 +554,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
                           Figure 4: OSCORE Option
 
-   The encoding of the OSCORE Option Value defined in Section 6.1 of
-   [I-D.ietf-core-object-security] is repeated in Figure 4.
-
-   The first byte is used for flags that specify the contents of the
-   OSCORE option.  The 3 most significant bits are reserved and always
-   set to 0.  Bit h, when set, indicates the presence of the kid context
-   field in the option.  Bit k, when set, indicates the presence of a
-
 
 
 
@@ -562,6 +562,13 @@ Minaburo, et al.        Expires December 31, 2018              [Page 10]
 Internet-Draft           LPWAN CoAP compression                June 2018
 
 
+   The encoding of the OSCORE Option Value defined in Section 6.1 of
+   [I-D.ietf-core-object-security] is repeated in Figure 4.
+
+   The first byte is used for flags that specify the contents of the
+   OSCORE option.  The 3 most significant bits are reserved and always
+   set to 0.  Bit h, when set, indicates the presence of the kid context
+   field in the option.  Bit k, when set, indicates the presence of a
    kid field.  The 3 least significant bits n indicate to length of the
    piv field in bytes, n = 0 taken to mean that no piv is present.
 
@@ -600,13 +607,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    In this first scenario, the LPWAN compressor receives from outside
    client a POST message, which is immediately acknowledged by the
    Thing.  For this simple scenario, the rules are described Figure 5.
-
-
-
-
-
-
-
 
 
 
