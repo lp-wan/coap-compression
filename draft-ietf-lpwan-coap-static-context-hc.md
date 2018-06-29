@@ -75,11 +75,13 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    A context is composed of a set of rules that are referenced by Rule IDs 
    (identifiers).  A rule contains an ordered list of the fields descriptions containing à field ID (FID), its length (FL)
    and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional)
-   and some associated Target Values (TV). A Matching Operator (MO) is
+   and some associated Target Values (TV). Target Value indicates the value that can be expected. 
+   TV can also be a list of values. A Matching Operator (MO) is
    associated to each header field description. The rule is selected if all the MOs fit
    the TVs for all fields.  In that case, a Compression/Decompression Action (CDA)
    associated to each field defines the link between the compressed and
-   decompressed value for each of the header fields. 
+   decompressed value for each of the header fields. Compression results mainly in 4 actions: 
+   send the field value, send nothing, send less significant bits of a field, send an index. 
     
 # SCHC Compression Process
 
