@@ -168,7 +168,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
 
 This section discusses of the compression of the different CoAP header fields. 
 
-## CoAP version field (2 bits)
+## CoAP version field
 
 This field is bidirectional and must be elided during the SCHC compression, since it always
 contains  the same value. In the future, if new version of CoAP are defined, new rules ID will 
