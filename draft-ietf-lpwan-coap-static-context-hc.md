@@ -75,8 +75,8 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
   
    A context is composed of a set of rules that are referenced by Rule IDs 
    (identifiers).  A rule contains an ordered list of the fields descriptions containing à field ID (FID), its length (FL)
-   and its position (FP) when repeated differs from 1, a direction indicator (DI) (upstream, downstream and bidirectional)
-   and some associated Target Values (TV) which are expected in the message header. A Matching Operator (MO) is
+   and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional)
+   and some associated Target Values (TV). A Matching Operator (MO) is
    associated to each header field description. The rule is selected if all the MOs fit
    the TVs for all fields.  In that case, a Compression/Decompression Action (CDA)
    associated to each field defines the link between the compressed and
@@ -88,19 +88,19 @@ The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the
 
 ~~~~
 
- ^   +--------------------+    ^  +------------------+        ^  +------------------+                
- |   |        CoAP        |    |  |       CoAP       |        |  |       CoAP       |                                           
- |   +--------------------+    v  +------------------+        x  |      OSCORE      |          
- |   |         UDP        |       |       DTLS       |        |  +------------------+       
- |   +--------------------+       +------------------+        |  |       UDP        |        
- |   |        IPv6        |       |       UDP        |        |  +------------------+                
- v   +--------------------+       +------------------+        |  |       IPv6       |            
-                                  |       IPv6       |        v  +------------------+                
-                                  +------------------+                 
+ ^   +------------+    ^  +------------+        ^  +------------+                
+ |   |    CoAP    |    |  |    CoAP    |  inner |  |    CoAP    |                                           
+ |   +------------+    v  +------------+        x  |    OSCORE  |          
+ |   |    UDP     |       |    DTLS    |  outer |  +------------+       
+ |   +------------+       +------------+        |  |    UDP     |        
+ |   |    IPv6    |       |    UDP     |        |  +------------+                
+ v   +------------+       +------------+        |  |    IPv6    |            
+                          |    IPv6    |        v  +------------+                
+                          +------------+                 
                                                   
                                                   
 ~~~~
-{: #Fig-SCHCCOAP title='SCHC Adaptation Layers for CoAP flows'}  
+{: #Fig-SCHCCOAP title='rule scope for CoAP'}  
 
 
 {{Fig-SCHCCOAP}} shows some examples for CoAP compression. A rule can covers all headers from
