@@ -197,11 +197,7 @@ This field is bidirectional and is used to manage acknowledgments. Server memori
 
 In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. 
 
-Note that the client may also inform the server that the EXCHANGE_LIFETIME it is execpting from the server using the Time Scale option.  
-
 In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA. 
-
-TODO: add a reference to Time Scale
 
 ## CoAP Token fields
 
