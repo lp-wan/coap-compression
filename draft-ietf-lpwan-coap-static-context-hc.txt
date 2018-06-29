@@ -179,12 +179,13 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    a mechanism such as DTLS.  Only the other end can decypher the
    information.
    Layers belows may also be compressed using other SCHC rules (this is
-   out of the scope of this document).  OSCORE can also define 2 rules
-   to compress the CoAP message.  A first rule focuses on the inner
-   header and is end to end, a second rule may compress the outer header
-   and the layer above.  SCHC C/D for inner header is done by both ends,
-   SCHC C/D for outer header and other headers is done between the
-   device and the LPWAN boundary.
+   out of the scope of this document).  OSCORE
+   [I-D.ietf-core-object-security] can also define 2 rules to compress
+   the CoAP message.  A first rule focuses on the inner header and is
+   end to end, a second rule may compress the outer header and the layer
+   above.  SCHC C/D for inner header is done by both ends, SCHC C/D for
+   outer header and other headers is done between the device and the
+   LPWAN boundary.
 
 3.  CoAP Compression with SCHC
 
@@ -216,7 +217,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
       In combination with the mapping list, the size of the compression
       residu can be reduced.
-
 
 
 
@@ -1307,6 +1307,11 @@ Internet-Draft           LPWAN CoAP compression                June 2018
               IPv6 and UDP", draft-ietf-lpwan-ipv6-static-context-hc-13
               (work in progress), May 2018.
 
+   [I-D.toutain-core-time-scale]
+              Minaburo, A. and L. Toutain, "CoAP Time Scale Option",
+              draft-toutain-core-time-scale-00 (work in progress),
+              October 2017.
+
    [rfc7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
@@ -1331,11 +1336,6 @@ Authors' Addresses
    France
 
    Email: ana@ackl.io
-
-
-
-
-
 
 
 
