@@ -88,7 +88,7 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
     
 # SCHC Compression Process
 
-The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independantly. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
+The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independently. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
 
 ~~~~
 
@@ -110,8 +110,8 @@ The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the
 {{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can covers all headers from
 IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end encryption mechanisms is used between the device and the application.
 CoAP must be compressed independently of the other layers. The rule ID and the compression residue
-are encrypted using a mechanism such as DTLS. Only the other end can decypher the information.  
-Layers belows may also be compressed using other SCHC rules (this is out of the scope of this document). 
+are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.  
+Layers below may also be compressed using other SCHC rules (this is out of the scope of this document). 
 OSCORE {{I-D.ietf-core-object-security}} can also define 2 rules to compress the
 CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
 the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
@@ -128,13 +128,13 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   a request may contain an Accept option and the response a Content option.
   
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines the use of  a message direction (DI) when
-  processing the rule which allows the description of message header format in baoth directions.
+  processing the rule which allows the description of message header format in both directions.
   
 * Even when a field is "symmetric" (i.e. found in both directions) the values carried in each direction are
   different.  Combined with a matching list in the TV, this will allow to reduce the range of 
   expected values in a particular direction and therefore reduce the size of a compression residue.
   For instance,
-  if a client sends only CON resquest, the type can be elided by compression and the answer
+  if a client sends only CON request, the type can be elided by compression and the answer
   may use one bit to carry either the ACK or RST type. Same behavior can be 
   applied to the CoAP Code field (0.0X code are present in the request and Y.ZZ in the answer).
   The direction allows to split in two parts the possible values for each direction. 
@@ -185,7 +185,7 @@ In any case, a rule must be defined to carry RST to a client.
   
 ## CoAP code field
 
-The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be splitted in two parts, the resquest codes with the 0 class and the response values. 
+The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values. 
 
 If the device implement only a CoAP client, the request code can be reduced to the set of request the client is able to process. 
 
@@ -204,7 +204,7 @@ In case the Device is a server, client may be located outside of the LPWAN area 
 
 Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.
 
-Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwize it will have to the send as a compression residue.
+Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwise it will have to the send as a compression residue.
 
 Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as "TKL" must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field. 
 
@@ -227,7 +227,7 @@ requests.
 
 If the duration is known by both ends, value can be elided on the LPWAN.
 
-A matching list can be used if some wellknown values are defined.
+A matching list can be used if some well-known values are defined.
 
 Otherwise these options should be sent as a residue (fixed or variable length).
 
@@ -264,7 +264,7 @@ and the unit is set to bytes.
 The MSB MO can be apply to a Uri-Path or Uri-Query element. Since MSB value is given in bit,
 the size must always be a multiple of 8 bits and the LSB CDA must not carry any value.
 
-The length sent at the begining of a variable length residue indicates the size of the LSB in bytes. 
+The length sent at the beginning of a variable length residue indicates the size of the LSB in bytes. 
 
 For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
@@ -320,7 +320,7 @@ They are compatible. If a block option is used, its content must be sent as a co
 {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
 CDF is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
 To reduce the transmission size either the device implementation should limit the value 
-increase or a proxy canmodify the incrementation.
+increase or a proxy can modify the incrementation.
 
 Since RST message may be sent to inform a server that the client do not require Observe
 response, a rule must allow the transmission of this message.
