@@ -41,6 +41,7 @@ normative:
   rfc7252:
   rfc7967:
   rfc7641:
+  rfc7959:
   I-D.ietf-core-object-security:
   I-D.ietf-lpwan-ipv6-static-context-hc:
   I-D.toutain-core-time-scale:
@@ -287,7 +288,7 @@ varies, several rules should be created to cover all the possibilities. Another 
 to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
 indicate that this Uri-Path is empty. This add 4 bits to the compression residue.
 
-## CoAP option Proxy-URI and Proxy-Scheme fields
+## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
 These fields are unidirectional and must not be set to bidirectional in a rule entry.
 They are used only by the client to access to a specific resource and are never found 
@@ -311,7 +312,7 @@ compression residues.
 
 ## Block
 
-Block allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.
+Block {{rfc7959}} allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.
 They are compatible. If a block option is used, its content must be sent as a compression residue. 
 
 ## Observe
