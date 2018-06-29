@@ -129,17 +129,14 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines the use of  a message direction (DI) when
   processing the rule which allows the description of message header format in baoth directions.
   
-* Even when a field is "symmetric" (i.e. found in both directions) the values carried are
-  different.  Exploiting this asymmetry in compression will allow to reduce the range of 
+* Even when a field is "symmetric" (i.e. found in both directions) the values carried in each direction are
+  different.  Combined with a matching list in the TV, this will allow to reduce the range of 
   expected values in a particular direction and therefore reduce the size of a compression residue.
-  send no bit in the compressed request and a single bit in the answer. For instance,
+  For instance,
   if a client sends only CON resquest, the type can be elided by compression and the answer
-  may use one bit to carry the ACK or RST type. Same behavior can be 
+  may use one bit to carry either the ACK or RST type. Same behavior can be 
   applied to the CoAP Code field (0.0X code are present in the request and Y.ZZ in the answer).
   The direction allows to split in two parts the possible values for each direction. 
-  
-  In combination
-  with the mapping list, the size of the compression residu can be reduced.
 
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
@@ -155,7 +152,10 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field id to appears several times in the
   rule, the Field Position (FP) removes ambiguities for the matching operation. 
 
-
+* Field size defined in the CoAP protocol can be to large regarding LPWAN traffic constraints. 
+  This is particularly true for the message ID field or Token field. The use of MSB MO can be 
+  used to reduce the information carried on LPWANs.
+  
 * CoAP also obeys to the client/server paradigm and the compression rate can
   be different if the request is issued from an LPWAN node or from an non LPWAN
   device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but
@@ -163,7 +163,6 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   will not modify the values to offer a better compression rate. Nevertheless a proxy placed
   before the compressor may change some field values to offer a better compression rate and 
   maintain the necessary context for interoperability with existing CoAP implementations.
-  
 
 # Compression of CoAP header fields
 
