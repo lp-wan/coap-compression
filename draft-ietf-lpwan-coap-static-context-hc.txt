@@ -72,7 +72,7 @@ Table of Contents
    2.  SCHC Compression Process  . . . . . . . . . . . . . . . . . .   3
    3.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   4
    4.  Compression of CoAP header fields . . . . . . . . . . . . . .   6
-     4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   6
+     4.1.  CoAP version field  . . . . . . . . . . . . . . . . . . .   6
      4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   6
      4.4.  CoAP Message ID field . . . . . . . . . . . . . . . . . .   6
@@ -287,7 +287,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    This section discusses of the compression of the different CoAP
    header fields.
 
-4.1.  CoAP version field (2 bits)
+4.1.  CoAP version field
 
    This field is bidirectional and must be elided during the SCHC
    compression, since it always contains the same value.  In the future,
