@@ -82,6 +82,8 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    associated to each field defines the link between the compressed and
    decompressed value for each of the header fields. Compression results mainly in 4 actions: 
    send the field value, send nothing, send less significant bits of a field, send an index. 
+   Values sent are called Compression Residues and follows the rule ID. 
+   
     
 # SCHC Compression Process
 
@@ -128,8 +130,8 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   processing the rule which allows the description of message header format in baoth directions.
   
 * Even when a field is "symmetric" (i.e. found in both directions) the values carried are
-  different. For instance the Type field will contain a CON value in the request and a
-  ACK or RST value in the response. Exploiting the asymmetry in compression will allow to 
+  different.  Exploiting this asymmetry in compression will allow to reduce the range of 
+  expected values in a particular direction and therefore reduce the size of a compression residue.
   send no bit in the compressed request and a single bit in the answer. For instance,
   if a client sends only CON resquest, the type can be elided by compression and the answer
   may use one bit to carry the ACK or RST type. Same behavior can be 
