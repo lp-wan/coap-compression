@@ -71,7 +71,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  SCHC Compression Process  . . . . . . . . . . . . . . . . . .   3
    3.  CoAP Compression with SCHC  . . . . . . . . . . . . . . . . .   4
-   4.  Compression of CoAP header fields . . . . . . . . . . . . . .   5
+   4.  Compression of CoAP header fields . . . . . . . . . . . . . .   6
      4.1.  CoAP version field (2 bits) . . . . . . . . . . . . . . .   6
      4.2.  CoAP type field . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  CoAP code field . . . . . . . . . . . . . . . . . . . . .   6
@@ -80,24 +80,24 @@ Table of Contents
    5.  CoAP options  . . . . . . . . . . . . . . . . . . . . . . . .   7
      5.1.  CoAP Content and Accept options.  . . . . . . . . . . . .   7
      5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
-           Port fields . . . . . . . . . . . . . . . . . . . . . . .   7
+           Port fields . . . . . . . . . . . . . . . . . . . . . . .   8
      5.3.  CoAP option Uri-Path and Uri-Query fields . . . . . . . .   8
        5.3.1.  Variable length Uri-Path and Uri-Query  . . . . . . .   8
        5.3.2.  Variable number of path or query elements . . . . . .   9
      5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   9
      5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path
            and Location-Query fields . . . . . . . . . . . . . . . .   9
-   6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .  10
      6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .  10
      6.4.  Time Scale  . . . . . . . . . . . . . . . . . . . . . . .  10
      6.5.  OSCORE  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .  11
-   8.  Examples of CoAP header compression . . . . . . . . . . . . .  11
-     8.1.  Mandatory header with CON message . . . . . . . . . . . .  11
+   7.  Protocol analysis . . . . . . . . . . . . . . . . . . . . . .  12
+   8.  Examples of CoAP header compression . . . . . . . . . . . . .  12
+     8.1.  Mandatory header with CON message . . . . . . . . . . . .  12
      8.2.  Complete exchange . . . . . . . . . . . . . . . . . . . .  14
-     8.3.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  15
+     8.3.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  16
      8.4.  Example OSCORE Compression  . . . . . . . . . . . . . . .  19
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .  24
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
@@ -227,19 +227,16 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
    o  Even when a field is "symmetric" (i.e. found in both directions)
-      the values carried are different.  Exploiting this asymmetry in
-      compression will allow to reduce the range of expected values in a
-      particular direction and therefore reduce the size of a
-      compression residue.  send no bit in the compressed request and a
-      single bit in the answer.  For instance, if a client sends only
-      CON resquest, the type can be elided by compression and the answer
-      may use one bit to carry the ACK or RST type.  Same behavior can
-      be applied to the CoAP Code field (0.0X code are present in the
-      request and Y.ZZ in the answer).  The direction allows to split in
-      two parts the possible values for each direction.
-
-      In combination with the mapping list, the size of the compression
-      residu can be reduced.
+      the values carried in each direction are different.  Combined with
+      a matching list in the TV, this will allow to reduce the range of
+      expected values in a particular direction and therefore reduce the
+      size of a compression residue.  For instance, if a client sends
+      only CON resquest, the type can be elided by compression and the
+      answer may use one bit to carry either the ACK or RST type.  Same
+      behavior can be applied to the CoAP Code field (0.0X code are
+      present in the request and Y.ZZ in the answer).  The direction
+      allows to split in two parts the possible values for each
+      direction.
 
    o  In IPv6 and UDP header fields have a fixed size.  In CoAP, Token
       size may vary from 0 to 8 bytes, length is given by a field in the
@@ -258,6 +255,11 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       appears several times in the rule, the Field Position (FP) removes
       ambiguities for the matching operation.
 
+   o  Field size defined in the CoAP protocol can be to large regarding
+      LPWAN traffic constraints.  This is particularly true for the
+      message ID field or Token field.  The use of MSB MO can be used to
+      reduce the information carried on LPWANs.
+
    o  CoAP also obeys to the client/server paradigm and the compression
       rate can be different if the request is issued from an LPWAN node
       or from an non LPWAN device.  For instance a Device (Dev) aware of
@@ -269,10 +271,8 @@ Internet-Draft           LPWAN CoAP compression                June 2018
       compression rate and maintain the necessary context for
       interoperability with existing CoAP implementations.
 
-4.  Compression of CoAP header fields
 
-   This section discusses of the compression of the different CoAP
-   header fields.
+
 
 
 
@@ -281,6 +281,11 @@ Minaburo, et al.        Expires December 31, 2018               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+4.  Compression of CoAP header fields
+
+   This section discusses of the compression of the different CoAP
+   header fields.
 
 4.1.  CoAP version field (2 bits)
 
@@ -324,11 +329,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    retransmission.  After this period, it will be processed as a new
    messages.
 
-   In case the Device is a client, the size of the message ID field may
-   the too large regarding the number of messages sent.  Client may use
-   only small message ID values, for instance 4 bit long.  Therefore a
-   MSB can be used to limit the size of the compression residue.
-
 
 
 
@@ -337,6 +337,11 @@ Minaburo, et al.        Expires December 31, 2018               [Page 6]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   In case the Device is a client, the size of the message ID field may
+   the too large regarding the number of messages sent.  Client may use
+   only small message ID values, for instance 4 bit long.  Therefore a
+   MSB can be used to limit the size of the compression residue.
 
    Note that the client may also inform the server that the
    EXCHANGE_LIFETIME it is execpting from the server using the Time
@@ -380,12 +385,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    limit the size of the residue.  If not the possible, the value as to
    be sent as a residue (fixed or variable length).
 
-5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
-      fields
 
-   This field is unidirectional and must not be set to bidirectional in
-   a rule entry.  It is used only by the server to inform of the caching
-   duration and is never found in client requests.
 
 
 
@@ -393,6 +393,13 @@ Minaburo, et al.        Expires December 31, 2018               [Page 7]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
+      fields
+
+   This field is unidirectional and must not be set to bidirectional in
+   a rule entry.  It is used only by the server to inform of the caching
+   duration and is never found in client requests.
 
    If the duration is known by both ends, value can be elided on the
    LPWAN.
@@ -436,19 +443,17 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    MSB value is given in bit, the size must always be a multiple of 8
    bits and the LSB CDA must not carry any value.
 
-   The length sent at the begining of a variable length residue
-   indicates the size of the LSB in bytes.
-
-   For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
-
-
-
 
 
 Minaburo, et al.        Expires December 31, 2018               [Page 8]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   The length sent at the begining of a variable length residue
+   indicates the size of the LSB in bytes.
+
+   For instance for a CoMi path /c/X6?k="eth0" the rule can be set to:
 
    FID       FL FP DI    TV       MO        CDA
    URI-Path     1  up    "c"     equal     not-sent
@@ -490,13 +495,8 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    These fields values cannot be stored in a rule entry.  They must
    always be sent with the compression residues.
 
-6.  Other RFCs
 
-6.1.  Block
 
-   Block allows a fragmentation at the CoAP level.  SCHC includes also a
-   fragmentation protocol.  They are compatible.  If a block option is
-   used, its content must be sent as a compression residue.
 
 
 
@@ -505,6 +505,14 @@ Minaburo, et al.        Expires December 31, 2018               [Page 9]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+6.  Other RFCs
+
+6.1.  Block
+
+   Block allows a fragmentation at the CoAP level.  SCHC includes also a
+   fragmentation protocol.  They are compatible.  If a block option is
+   used, its content must be sent as a compression residue.
 
 6.2.  Observe
 
@@ -537,6 +545,23 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    for CoAP messages.  This section describes how SCHC rules can be
    applied to compress OSCORE-protected messages.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.        Expires December 31, 2018              [Page 10]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
          0 1 2 3 4 5 6 7 <--------- n bytes ------------->
         +-+-+-+-+-+-+-+-+---------------------------------
         |0 0 0|h|k|  n  |      Partial IV (if any) ...
@@ -553,14 +578,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
                           Figure 4: OSCORE Option
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018              [Page 10]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
    The encoding of the OSCORE Option Value defined in Section 6.1 of
    [I-D.ietf-core-object-security] is repeated in Figure 4.
@@ -593,6 +610,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
    o  CoAP OSCORE_kid.
 
+
+
+
+Minaburo, et al.        Expires December 31, 2018              [Page 11]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    These fields are superposed on the OSCORE Option format in Figure 4,
    and include the corresponding flag and size bits for each part of the
    option.  Both the flag and size bits can be omitted by use of the MSB
@@ -607,16 +632,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    In this first scenario, the LPWAN compressor receives from outside
    client a POST message, which is immediately acknowledged by the
    Thing.  For this simple scenario, the rules are described Figure 5.
-
-
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018              [Page 11]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
     Rule ID 1
    +-------------+--+--+--+------+---------+-------------++------------+
@@ -651,21 +666,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    only the Type, a mapped code and the least 9 significant bits of
    Message ID.  The receiver decompresses the header. .
 
-   The CON message is a request, therefore the LC process to a dynamic
-   mapping.  When the ES receives the ACK message, this will not
-   initiate locally a message ID mapping since it is a response.  The LC
-   receives the ACK and uncompressed it to restore the original value.
-   Dynamic Mapping context lifetime follows the same rules as message ID
-   duration.
-
-
-
-
-
-
-
-
-
 
 
 
@@ -673,6 +673,13 @@ Minaburo, et al.        Expires December 31, 2018              [Page 12]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
 
+
+   The CON message is a request, therefore the LC process to a dynamic
+   mapping.  When the ES receives the ACK message, this will not
+   initiate locally a message ID mapping since it is a response.  The LC
+   receives the ACK and uncompressed it to restore the original value.
+   Dynamic Mapping context lifetime follows the same rules as message ID
+   duration.
 
                      End System              LPWA LC
                           |                    |
@@ -702,6 +709,27 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    that example (8 values are needed to code all the requests and 21 to
    code all the responses in the matching list
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.        Expires December 31, 2018              [Page 13]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
     Rule ID 2
    +-------------+--+--+--+------+---------+------------++------------+
    | Field       |FL|FP|DI|Target|    MO   |     CDA    ||    Sent    |
@@ -721,14 +749,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 
           Figure 7: CoAP Context to compress header without token
-
-
-
-
-Minaburo, et al.        Expires December 31, 2018              [Page 13]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
 
 8.2.  Complete exchange
 
@@ -758,6 +778,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |              |  |  |  |Value |        |           ||   [bits]   |
    +--------------+--+--+--+------+--------+-----------++------------+
    |CoAP version  |  |  |bi| 01   |equal   |not-sent   ||            |
+
+
+
+Minaburo, et al.        Expires December 31, 2018              [Page 14]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    |CoAP Type     |  |  |up| CON  |equal   |not-sent   ||            |
    |CoAP Type     |  |  |dw| ACK  |equal   |not-sent   ||            |
    |CoAP TKL      |  |  |bi| 1    |equal   |not-sent   ||            |
@@ -778,14 +806,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |CoAP version  |  |  |bi| 01   |equal    |not-sent  ||            |
    |CoAP Type     |  |  |dw| CON  |equal    |not-sent  ||            |
    |CoAP Type     |  |  |up| ACK  |equal    |not-sent  ||            |
-
-
-
-Minaburo, et al.        Expires December 31, 2018              [Page 14]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
    |CoAP TKL      |  |  |bi| 1    |equal    |not-sent  ||            |
    |CoAP Code     |  |  |dw| 2.05 |equal    |not-sent  ||            |
    |CoAP Code     |  |  |up| 0.00 |equal    |not-sent  ||            |
@@ -814,6 +834,14 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    |COAP Accept   |  |  |dw| x    |equal    |not-sent   ||            |
    +--------------+--+--+--+------+---------+-----------++------------+
 
+
+
+
+Minaburo, et al.        Expires December 31, 2018              [Page 15]
+
+Internet-Draft           LPWAN CoAP compression                June 2018
+
+
    ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
    ML4 {NULL:0, k=AS:1, K=AZE:2}
 
@@ -834,14 +862,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    operation.  This, in turn, is the part of the message which can be
    encrypted and need not be decrypted until it reaches its end
    destination.  The Outer Message acts as a shell matching the format
-
-
-
-Minaburo, et al.        Expires December 31, 2018              [Page 15]
-
-Internet-Draft           LPWAN CoAP compression                June 2018
-
-
    of a regular CoAP message, and includes all Options and information
    needed for proxy operation and caching.  This decomposition is
    illustrated in Figure 8.
@@ -862,26 +882,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    the information necessary to retrieve the Security Context with which
    the message was encrypted so that it may be correctly decrypted at
    the other end-point.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
