@@ -328,13 +328,22 @@ response, a rule must allow the transmission of this message.
 ## No-Response
 
 {{rfc7967}}  defines an No-Response option limiting the responses made by a server to 
-a request. If the value is not by both ends, then TV is set to this value, MO is 
+a request. If the value is not known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDF is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
-CDF to "value-sent". A matching list can also be used to reduce the size. 
+CDA to "value-sent". A matching list can also be used to reduce the size. 
 
 ## Time Scale
+
+Time scale {{I-D.toutain-core-time-scale}} option allows a client to inform the server that 
+it is in a slow network and that message ID should be kept for a duration given by the option.
+
+If the value is not known by both ends, then TV is set to this value, MO is 
+set to "equal" and CDF is set to "not-sent".
+
+Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
+CDA to "value-sent". A matching list can also be used to reduce the size. 
 
 ## OSCORE
 {: #Sec-OSCORE}
