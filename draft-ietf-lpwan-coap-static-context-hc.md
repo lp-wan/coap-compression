@@ -43,8 +43,7 @@ normative:
   rfc7641:
   I-D.ietf-core-object-security:
   I-D.ietf-lpwan-ipv6-static-context-hc:
-
-#  <!--I-D.toutain-core-time-scale:-->
+  I-D.toutain-core-time-scale:
 
 --- abstract
 
@@ -108,7 +107,7 @@ IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an en
 CoAP must be compressed independently of the other layers. The rule ID and the compression residue
 are encrypted using a mechanism such as DTLS. Only the other end can decypher the information.  
 Layers belows may also be compressed using other SCHC rules (this is out of the scope of this document). 
-OSCORE can also define 2 rules to compress the
+OSCORE {{I-D.ietf-core-object-security}} can also define 2 rules to compress the
 CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
 the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
 
