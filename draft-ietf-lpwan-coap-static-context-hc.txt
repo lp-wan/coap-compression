@@ -84,7 +84,8 @@ Table of Contents
      5.3.  CoAP option Uri-Path and Uri-Query fields . . . . . . . .   8
        5.3.1.  Variable length Uri-Path and Uri-Query  . . . . . . .   8
        5.3.2.  Variable number of path or query elements . . . . . .   9
-     5.4.  CoAP option Proxy-URI and Proxy-Scheme fields . . . . . .   9
+     5.4.  CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme
+           fields  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path
            and Location-Query fields . . . . . . . . . . . . . . . .   9
    6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -101,7 +102,6 @@ Table of Contents
      8.4.  Example OSCORE Compression  . . . . . . . . . . . . . . .  19
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .  24
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
-
 
 
 
@@ -470,7 +470,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    residue with a length of 0 to indicate that this Uri-Path is empty.
    This add 4 bits to the compression residue.
 
-5.4.  CoAP option Proxy-URI and Proxy-Scheme fields
+5.4.  CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
    These fields are unidirectional and must not be set to bidirectional
    in a rule entry.  They are used only by the client to access to a
@@ -494,10 +494,10 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 6.1.  Block
 
-   Block allows a fragmentation at the CoAP level.  SCHC includes also a
-   fragmentation protocol.  They are compatible.  If a block option is
-   used, its content must be sent as a compression residue.
-
+   Block [rfc7959] allows a fragmentation at the CoAP level.  SCHC
+   includes also a fragmentation protocol.  They are compatible.  If a
+   block option is used, its content must be sent as a compression
+   residue.
 
 
 
@@ -1322,6 +1322,11 @@ Internet-Draft           LPWAN CoAP compression                June 2018
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/info/rfc7641>.
 
+   [rfc7959]  Bormann, C. and Z. Shelby, Ed., "Block-Wise Transfers in
+              the Constrained Application Protocol (CoAP)", RFC 7959,
+              DOI 10.17487/RFC7959, August 2016,
+              <https://www.rfc-editor.org/info/rfc7959>.
+
    [rfc7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
               Bose, "Constrained Application Protocol (CoAP) Option for
               No Server Response", RFC 7967, DOI 10.17487/RFC7967,
@@ -1329,13 +1334,8 @@ Internet-Draft           LPWAN CoAP compression                June 2018
 
 Authors' Addresses
 
-   Ana Minaburo
-   Acklio
-   1137A avenue des Champs Blancs
-   35510 Cesson-Sevigne Cedex
-   France
 
-   Email: ana@ackl.io
+
 
 
 
@@ -1344,6 +1344,15 @@ Authors' Addresses
 Minaburo, et al.        Expires December 31, 2018              [Page 24]
 
 Internet-Draft           LPWAN CoAP compression                June 2018
+
+
+   Ana Minaburo
+   Acklio
+   1137A avenue des Champs Blancs
+   35510 Cesson-Sevigne Cedex
+   France
+
+   Email: ana@ackl.io
 
 
    Laurent Toutain
@@ -1363,15 +1372,6 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    Argentina
 
    Email: randreasen@fi.uba.ar
-
-
-
-
-
-
-
-
-
 
 
 

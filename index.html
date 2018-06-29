@@ -292,7 +292,7 @@ address {
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 CoAP option Uri-Path and Uri-Query fields">
 <link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 Variable length Uri-Path and Uri-Query">
 <link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 Variable number of path or query elements">
-<link href="#rfc.section.5.4" rel="Chapter" title="5.4 CoAP option Proxy-URI and Proxy-Scheme fields">
+<link href="#rfc.section.5.4" rel="Chapter" title="5.4 CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields">
 <link href="#rfc.section.5.5" rel="Chapter" title="5.5 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields">
 <link href="#rfc.section.6" rel="Chapter" title="6 Other RFCs">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Block">
@@ -408,7 +408,7 @@ address {
 </li>
 <li>5.3.2.   <a href="#rfc.section.5.3.2">Variable number of path or query elements</a>
 </li>
-</ul><li>5.4.   <a href="#rfc.section.5.4">CoAP option Proxy-URI and Proxy-Scheme fields</a>
+</ul><li>5.4.   <a href="#rfc.section.5.4">CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields</a>
 </li>
 <li>5.5.   <a href="#rfc.section.5.5">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
 </li>
@@ -570,7 +570,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 </h1>
 <p id="rfc.section.5.3.2.p.1">The number of Uri-path or Uri-Query element in a rule is fixed at the rule creation time. If the number varies, several rules should be created to cover all the possibilities. Another possibilities is to define the length of Uri-Path to variable and send a compression residue with a length of 0 to indicate that this Uri-Path is empty. This add 4 bits to the compression residue.</p>
 <h1 id="rfc.section.5.4">
-<a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-proxy-uri-and-proxy-scheme-fields" id="coap-option-proxy-uri-and-proxy-scheme-fields">CoAP option Proxy-URI and Proxy-Scheme fields</a>
+<a href="#rfc.section.5.4">5.4.</a> <a href="#coap-option-size1-size2-proxy-uri-and-proxy-scheme-fields" id="coap-option-size1-size2-proxy-uri-and-proxy-scheme-fields">CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields</a>
 </h1>
 <p id="rfc.section.5.4.p.1">These fields are unidirectional and must not be set to bidirectional in a rule entry.  They are used only by the client to access to a specific resource and are never found in server response.</p>
 <p id="rfc.section.5.4.p.2">If the field value must be sent, TV is not set, MO is set to &#8220;ignore&#8221; and CDF is set to &#8220;value-sent. A mapping can also be used.</p>
@@ -586,7 +586,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#block" id="block">Block</a>
 </h1>
-<p id="rfc.section.6.1.p.1">Block allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.  They are compatible. If a block option is used, its content must be sent as a compression residue.</p>
+<p id="rfc.section.6.1.p.1">Block <a href="#rfc7959" class="xref">[rfc7959]</a> allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.  They are compatible. If a block option is used, its content must be sent as a compression residue.</p>
 <h1 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#observe" id="observe">Observe</a>
 </h1>
@@ -1140,6 +1140,11 @@ Compressed msg length: 6
 <td class="reference"><b id="rfc7641">[rfc7641]</b></td>
 <td class="top">
 <a>Hartke, K.</a>, "<a href="https://tools.ietf.org/html/rfc7641">Observing Resources in the Constrained Application Protocol (CoAP)</a>", RFC 7641, DOI 10.17487/RFC7641, September 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="rfc7959">[rfc7959]</b></td>
+<td class="top">
+<a>Bormann, C.</a> and <a>Z. Shelby</a>, "<a href="https://tools.ietf.org/html/rfc7959">Block-Wise Transfers in the Constrained Application Protocol (CoAP)</a>", RFC 7959, DOI 10.17487/RFC7959, August 2016.</td>
 </tr>
 <tr>
 <td class="reference"><b id="rfc7967">[rfc7967]</b></td>
