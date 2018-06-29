@@ -536,7 +536,7 @@ Internet-Draft           LPWAN CoAP compression                June 2018
    should be kept for a duration given by the option.
 
    If the value is not known by both ends, then TV is set to this value,
-   MO is set to "equal" and CDF is set to "not-sent".
+   MO is set to "equal" and CDA is set to "not-sent".
 
    Otherwise, if the value is changing over time, TV is not set, MO is
    set to "ignore" and CDA to "value-sent".  A matching list can also be
