@@ -103,13 +103,14 @@ The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the
 {: #Fig-SCHCCOAP title='rule scope for CoAP'}  
 
 
-{{Fig-SCHCCOAP}} shows some examples for CoAP compression. A rule can covers all headers from
-IPv6 to CoAP. If an end-to-end encryption mechanisms is used between the device and the application.
+{{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can covers all headers from
+IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end encryption mechanisms is used between the device and the application.
 CoAP must be compressed independently of the other layers. The rule ID and the compression residue
-are encrypted using a mechanism such as DTLS. Only the destimation can decypher the information. Above 
-layers may also be compressed using other SCHC rules. OSCORE can also define 2 rules to compress the
+are encrypted using a mechanism such as DTLS. Only the other end can decypher the information.  
+Layers belows may also be compressed using other SCHC rules (this is out of the scope of this document). 
+OSCORE can also define 2 rules to compress the
 CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
-the outer header and the layer above.
+the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
 
 
 #  CoAP Compression with SCHC
