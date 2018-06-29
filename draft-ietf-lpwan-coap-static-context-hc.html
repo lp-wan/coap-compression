@@ -595,11 +595,14 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <h1 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#no-response" id="no-response">No-Response</a>
 </h1>
-<p><a href="#rfc7967" class="xref">[rfc7967]</a>  defines an No-Response option limiting the responses made by a server to a request. If the value is not by both ends, then TV is set to this value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</p>
-<p id="rfc.section.6.3.p.2">Otherwise, if the value is changing over time, TV is not set, MO is set to &#8220;ignore&#8221; and CDF to &#8220;value-sent&#8221;. A matching list can also be used to reduce the size.</p>
+<p><a href="#rfc7967" class="xref">[rfc7967]</a>  defines an No-Response option limiting the responses made by a server to a request. If the value is not known by both ends, then TV is set to this value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.6.3.p.2">Otherwise, if the value is changing over time, TV is not set, MO is set to &#8220;ignore&#8221; and CDA to &#8220;value-sent&#8221;. A matching list can also be used to reduce the size.</p>
 <h1 id="rfc.section.6.4">
 <a href="#rfc.section.6.4">6.4.</a> <a href="#time-scale" id="time-scale">Time Scale</a>
 </h1>
+<p id="rfc.section.6.4.p.1">Time scale <a href="#I-D.toutain-core-time-scale" class="xref">[I-D.toutain-core-time-scale]</a> option allows a client to inform the server that it is in a slow network and that message ID should be kept for a duration given by the option.</p>
+<p id="rfc.section.6.4.p.2">If the value is not known by both ends, then TV is set to this value, MO is set to &#8220;equal&#8221; and CDF is set to &#8220;not-sent&#8221;.</p>
+<p id="rfc.section.6.4.p.3">Otherwise, if the value is changing over time, TV is not set, MO is set to &#8220;ignore&#8221; and CDA to &#8220;value-sent&#8221;. A matching list can also be used to reduce the size.</p>
 <h1 id="rfc.section.6.5">
 <a href="#rfc.section.6.5">6.5.</a> <a href="#Sec-OSCORE" id="Sec-OSCORE">OSCORE</a>
 </h1>
@@ -1124,7 +1127,7 @@ Compressed msg length: 6
 <tr>
 <td class="reference"><b id="I-D.ietf-lpwan-ipv6-static-context-hc">[I-D.ietf-lpwan-ipv6-static-context-hc]</b></td>
 <td class="top">
-<a>Minaburo, A.</a>, <a>Toutain, L.</a> and <a>C. Gomez</a>, "<a href="https://tools.ietf.org/html/draft-ietf-lpwan-ipv6-static-context-hc-13">LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP</a>", Internet-Draft draft-ietf-lpwan-ipv6-static-context-hc-13, May 2018.</td>
+<a>Minaburo, A.</a>, <a>Toutain, L.</a>, <a>Gomez, C.</a> and <a>D. Barthel</a>, "<a href="https://tools.ietf.org/html/draft-ietf-lpwan-ipv6-static-context-hc-15">LPWAN Static Context Header Compression (SCHC) and fragmentation for IPv6 and UDP</a>", Internet-Draft draft-ietf-lpwan-ipv6-static-context-hc-15, June 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.toutain-core-time-scale">[I-D.toutain-core-time-scale]</b></td>
