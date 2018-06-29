@@ -74,7 +74,8 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
    context(s) is(are) known by both ends before transmission. 
   
    A context is composed of a set of rules that are referenced by Rule IDs 
-   (identifiers).  A rule contains an ordered list of the fields descriptions containing à field ID (FID), its length (FL)
+   (identifiers).  A rule contains an ordered list of the fields descriptions containing a 
+   field ID (FID), its length (FL)
    and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional)
    and some associated Target Values (TV). Target Value indicates the value that can be expected. 
    TV can also be a list of values. A Matching Operator (MO) is
@@ -88,7 +89,10 @@ devices. Nevertheless, if limited, the size of a CoAP header may be
     
 # SCHC Compression Process
 
-The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independently. The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} may be used as as shown in the {{Fig-SCHCCOAP}}.
+The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP 
+header may be done in conjunction with the above layers (IPv6/UDP) or independently. 
+The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} 
+may be used as as shown in the {{Fig-SCHCCOAP}}.
 
 ~~~~
 
@@ -108,13 +112,15 @@ The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the
 
 
 {{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can covers all headers from
-IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end encryption mechanisms is used between the device and the application.
+IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end 
+encryption mechanisms is used between the device and the application.
 CoAP must be compressed independently of the other layers. The rule ID and the compression residue
 are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.  
 Layers below may also be compressed using other SCHC rules (this is out of the scope of this document). 
 OSCORE {{I-D.ietf-core-object-security}} can also define 2 rules to compress the
 CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
-the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
+the outer header and the layer above. SCHC C/D for inner header is done by both ends, 
+SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
 
 
 #  CoAP Compression with SCHC
@@ -340,7 +346,7 @@ Time scale {{I-D.toutain-core-time-scale}} option allows a client to inform the 
 it is in a slow network and that message ID should be kept for a duration given by the option.
 
 If the value is not known by both ends, then TV is set to this value, MO is 
-set to "equal" and CDF is set to "not-sent".
+set to "equal" and CDA is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDA to "value-sent". A matching list can also be used to reduce the size. 
