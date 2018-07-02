@@ -300,13 +300,12 @@ address {
 <link href="#rfc.section.6.3" rel="Chapter" title="6.3 No-Response">
 <link href="#rfc.section.6.4" rel="Chapter" title="6.4 Time Scale">
 <link href="#rfc.section.6.5" rel="Chapter" title="6.5 OSCORE">
-<link href="#rfc.section.7" rel="Chapter" title="7 Protocol analysis">
-<link href="#rfc.section.8" rel="Chapter" title="8 Examples of CoAP header compression">
-<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Mandatory header with CON message">
-<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Complete exchange">
-<link href="#rfc.section.8.3" rel="Chapter" title="8.3 OSCORE Compression">
-<link href="#rfc.section.8.4" rel="Chapter" title="8.4 Example OSCORE Compression">
-<link href="#rfc.references" rel="Chapter" title="9 Normative References">
+<link href="#rfc.section.7" rel="Chapter" title="7 Examples of CoAP header compression">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Mandatory header with CON message">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Complete exchange">
+<link href="#rfc.section.7.3" rel="Chapter" title="7.3 OSCORE Compression">
+<link href="#rfc.section.7.4" rel="Chapter" title="7.4 Example OSCORE Compression">
+<link href="#rfc.references" rel="Chapter" title="8 Normative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -314,7 +313,7 @@ address {
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-03" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-04" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-07-02" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP" />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP" />
@@ -360,7 +359,7 @@ address {
   </table>
 
   <p class="title">LPWAN Static Context Header Compression (SCHC) for CoAP<br />
-  <span class="filename">draft-ietf-lpwan-coap-static-context-hc-03</span></p>
+  <span class="filename">draft-ietf-lpwan-coap-static-context-hc-04</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP<br> use a flexible header with a variable number of options themself of a variable length.  Another important difference is the asymmetry in the header format used in request and response messages. Most of the compression mechanisms have been introduced in <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a>, this document explains how to use the SCHC compression for CoAP.</p>
@@ -424,19 +423,17 @@ address {
 </li>
 <li>6.5.   <a href="#rfc.section.6.5">OSCORE</a>
 </li>
-</ul><li>7.   <a href="#rfc.section.7">Protocol analysis</a>
+</ul><li>7.   <a href="#rfc.section.7">Examples of CoAP header compression</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Examples of CoAP header compression</a>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Mandatory header with CON message</a>
 </li>
-<ul><li>8.1.   <a href="#rfc.section.8.1">Mandatory header with CON message</a>
+<li>7.2.   <a href="#rfc.section.7.2">Complete exchange</a>
 </li>
-<li>8.2.   <a href="#rfc.section.8.2">Complete exchange</a>
+<li>7.3.   <a href="#rfc.section.7.3">OSCORE Compression</a>
 </li>
-<li>8.3.   <a href="#rfc.section.8.3">OSCORE Compression</a>
+<li>7.4.   <a href="#rfc.section.7.4">Example OSCORE Compression</a>
 </li>
-<li>8.4.   <a href="#rfc.section.8.4">Example OSCORE Compression</a>
-</li>
-</ul><li>9.   <a href="#rfc.references">Normative References</a>
+</ul><li>8.   <a href="#rfc.references">Normative References</a>
 </li>
 <li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -640,15 +637,12 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 </ul>
 <p id="rfc.section.6.5.p.8">These fields are superposed on the OSCORE Option format in <a href="#Fig-OSCORE-Option" class="xref">Figure 4</a>, and include the corresponding flag and size bits for each part of the option. Both the flag and size bits can be omitted by use of the MSB matching operator on each field.</p>
 <h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#protocol-analysis" id="protocol-analysis">Protocol analysis</a>
+<a href="#rfc.section.7">7.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a>
 </h1>
-<h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a>
 </h1>
-<h1 id="rfc.section.8.1">
-<a href="#rfc.section.8.1">8.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a>
-</h1>
-<p id="rfc.section.8.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Thing. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 5</a>.</p>
+<p id="rfc.section.7.1.p.1">In this first scenario, the LPWAN compressor receives from outside client a POST message, which is immediately acknowledged by the Device. For this simple scenario, the rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 5</a>.</p>
 <div id="rfc.figure.5"></div>
 <div id="Fig-CoAP-header-1"></div>
 <pre>
@@ -659,7 +653,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
 |CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
-|CoAP Type    |  |  |dw| CON  |equal    |not- -sent   ||            |
+|CoAP Type    |  |  |dw| CON  |equal    |not-sent   ||            |
 |CoAP Type    |  |  |up|[ACK, |         |             ||            | 
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
@@ -670,9 +664,8 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 
 </pre>
 <p class="figure">Figure 5: CoAP Context to compress header without token</p>
-<p id="rfc.section.8.1.p.2">The version  and Token Length fields are elided. Code has shrunk to 5 bits using the matching list.  Uri-Path contains a single element indicated in the matching operator.</p>
-<p><a href="#Fig-CoAP-3" class="xref">Figure 6</a> shows the time diagram of the exchange. A client in the Application Server sends a CON request. It can go through a proxy which reduces the message ID to a smallest value., with at least the 9 most significant bits equal to 0.  SCHC Compression reduces the header sending only the Type, a mapped code and the least 9 significant bits of Message ID. The receiver decompresses the header</p>
-<p id="rfc.section.8.1.p.4">When the ES receives the ACK message, this will not initiate locally a  message ID mapping since it is a response.  The LC receives the ACK and uncompressed it to restore the original value.  Dynamic Mapping context lifetime follows the same rules as message ID duration.</p>
+<p id="rfc.section.7.1.p.2">The version  and Token Length fields are elided. Code has shrunk to 5 bits using a matching list.  Uri-Path contains a single element indicated in the matching operator.</p>
+<p><a href="#Fig-CoAP-3" class="xref">Figure 6</a> shows the time diagram of the exchange. A client in the Application Server sends a CON request. It can go through a proxy which reduces the message ID to a smallest value, with at least the 9 most significant bits equal to 0.  SCHC Compression reduces the header sending only the Type, a mapped code and the least 9 significant bits of Message ID.</p>
 <div id="rfc.figure.6"></div>
 <div id="Fig-CoAP-3"></div>
 <pre>
@@ -697,33 +690,10 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 
 </pre>
 <p class="figure">Figure 6: Compression with global addresses</p>
-<p id="rfc.section.8.1.p.5">To optimize regula traffic, two rules can be defined for the uplink traffic. The first one</p>
-<div id="rfc.figure.7"></div>
-<div id="Fig-CoAP-header-1-direc"></div>
-<pre>
- Rule ID 2
-+-------------+--+--+--+------+---------+------------++------------+
-| Field &#160; &#160;&#160; &#160;|FL|FP|DI|Target|    MO   |     CDA    ||    Sent    |
-|             |  |  |  |Value |         |            ||   [bits]   |
-+-------------+--+--+--+------+---------+------------++------------+
-|CoAP version |  |  |bi|01    |equal    |not-sent    ||            |
-|CoAP Type    |  |  |dw|CON   |equal    |not-sent    ||            |
-|CoAP Type    |  |  |up| ACK  |equal    |not-sent    ||            |
-|CoAP TKL     |  |  |bi|0     |equal    |not-sent    ||            |
-|CoAP Code    |  |  |dw|ML2   |match-map|mapping-sent||CCCC C      |
-|CoAP Code    |  |  |up|ML3   |match-map|mapping-sent||CCCC C      |
-|CoAP MID     |  |  |bi|0000  |MSB(5)   |LSB(11)     ||      M-ID  |
-|CoAP Uri-Path|  |  |dw|path  |equal 1  |not-sent    ||            |
-+-------------+--+--+--+------+---------+------------++------------+
-
-ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
-
-</pre>
-<p class="figure">Figure 7: CoAP Context to compress header without token</p>
-<h1 id="rfc.section.8.2">
-<a href="#rfc.section.8.2">8.2.</a> <a href="#complete-exchange" id="complete-exchange">Complete exchange</a>
+<h1 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#complete-exchange" id="complete-exchange">Complete exchange</a>
 </h1>
-<p id="rfc.section.8.2.p.1">In that example, the Thing is using CoMi and sends queries for 2 SID.</p>
+<p id="rfc.section.7.2.p.1">In that example, the Thing is using CoMi and sends queries for 2 SID.</p>
 <pre>
   CON 
   MID=0x0012     |                         |
@@ -743,71 +713,12 @@ ACK MID=0x0034   |------------------------&gt;|
 0.00           
 
 </pre>
-<pre>
- Rule ID 3
-+--------------+--+--+--+------+--------+-----------++------------+
-| Field &#160; &#160;&#160; &#160; |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
-|              |  |  |  |Value |        |           ||   [bits]   |
-+--------------+--+--+--+------+--------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal   |not-sent   ||            |
-|CoAP Type     |  |  |up| CON  |equal   |not-sent   ||            |
-|CoAP Type     |  |  |dw| ACK  |equal   |not-sent   ||            |
-|CoAP TKL      |  |  |bi| 1    |equal   |not-sent   ||            |
-|CoAP Code     |  |  |up| POST |equal   |not-sent   ||            |
-|CoAP Code     |  |  |dw| 0.00 |equal   |not-sent   ||            |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)  |LSB        ||MMMMMMMM    |
-|CoAP Token    |  |  |up|      |ignore  |send-value ||TTTTTTTT    |
-|CoAP Uri-Path |  |  |dw| /c   |equal 1 |not-sent   ||            |
-|CoAP Uri-query|  |  |dw|  ML4 |equal 1 |not-sent   ||P           |
-|CoAP Content  |  |  |up| X    |equal   |not-sent   ||            |
-+--------------+--+--+--+------+--------+-----------++------------+
-
- Rule ID 4
-+--------------+--+--+--+------+--------+-----------++------------+
-| Field &#160; &#160;&#160; &#160; |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
-|              |  |  |  |Value |        |           ||   [bits]   |
-+--------------+--+--+--+------+--------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal    |not-sent  ||            |
-|CoAP Type     |  |  |dw| CON  |equal    |not-sent  ||            |
-|CoAP Type     |  |  |up| ACK  |equal    |not-sent  ||            |
-|CoAP TKL      |  |  |bi| 1    |equal    |not-sent  ||            |
-|CoAP Code     |  |  |dw| 2.05 |equal    |not-sent  ||            |
-|CoAP Code     |  |  |up| 0.00 |equal    |not-sent  ||            |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB       ||MMMMMMMM    |
-|CoAP Token    |  |  |dw|      |ignore   |send-value||TTTTTTTT    |
-|COAP Accept   |  |  |dw| X    |equal    |not-sent  ||            |
-+--------------+--+--+--+------+---------+----------++------------+
-
-alternative rule:
-
- Rule ID 4
-+--------------+--+--+--+------+---------+-----------++------------+
-| Field &#160; &#160;&#160; &#160; |FL|FP|DI|Target|   MO    |     CDA   ||    Sent    |
-|              |  |  |  |Value |         |           ||   [bits]   |
-+--------------+--+--+--+------+---------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal    |not-sent   ||            |
-|CoAP Type     |  |  |bi| ML1  |match-map|match-sent ||t           |
-|CoAP TKL      |  |  |bi| 1    |equal    |not-sent   ||            |
-|CoAP Code     |  |  |up| ML2  |match-map|match-sent || cc         |
-|CoAP Code     |  |  |dw| ML3  |match-map|match-sent || cc         |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB        ||MMMMMMMM    |
-|CoAP Token    |  |  |dw|      |ignore   |send-value ||TTTTTTTT    |
-|CoAP Uri-Path |  |  |dw| /c   |equal 1  |not-sent   ||            |
-|CoAP Uri-query|  |  |dw| ML4  |equal 1  |not-sent   ||P           |
-|CoAP Content  |  |  |up| X    |equal    |not-sent   ||            |
-|COAP Accept   |  |  |dw| x    |equal    |not-sent   ||            |
-+--------------+--+--+--+------+---------+-----------++------------+
-
-ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
-ML4 {NULL:0, k=AS:1, K=AZE:2}
-
-</pre>
-<h1 id="rfc.section.8.3">
-<a href="#rfc.section.8.3">8.3.</a> <a href="#Sec-OSCORE-Examples" id="Sec-OSCORE-Examples">OSCORE Compression</a>
+<h1 id="rfc.section.7.3">
+<a href="#rfc.section.7.3">7.3.</a> <a href="#Sec-OSCORE-Examples" id="Sec-OSCORE-Examples">OSCORE Compression</a>
 </h1>
-<p id="rfc.section.8.3.p.1">OSCORE aims to solve the problem of end-to-end encryption for CoAP messages, which are otherwise required to terminate their TLS or DTLS protection at the proxy, as discussed in Section 11.2 of <a href="#rfc7252" class="xref">[rfc7252]</a>. CoAP proxies are men-in-the-middle, but not all of the information they have access to is necessary for their operation. The goal, therefore, is to hide as much of the message as possible while still enabling proxy operation.</p>
-<p id="rfc.section.8.3.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensible information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted and need not be decrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 8</a>.</p>
-<p id="rfc.section.8.3.p.3">CoAP options are sorted into one of 3 classes, each granted a specific type of protection by the protocol:</p>
+<p id="rfc.section.7.3.p.1">OSCORE aims to solve the problem of end-to-end encryption for CoAP messages, which are otherwise required to terminate their TLS or DTLS protection at the proxy, as discussed in Section 11.2 of <a href="#rfc7252" class="xref">[rfc7252]</a>. CoAP proxies are men-in-the-middle, but not all of the information they have access to is necessary for their operation. The goal, therefore, is to hide as much of the message as possible while still enabling proxy operation.</p>
+<p id="rfc.section.7.3.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensible information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted and need not be decrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 7</a>.</p>
+<p id="rfc.section.7.3.p.3">CoAP options are sorted into one of 3 classes, each granted a specific type of protection by the protocol:</p>
 <p></p>
 
 <ul>
@@ -815,8 +726,8 @@ ML4 {NULL:0, k=AS:1, K=AZE:2}
 <li>Class I: Intergrity-protected options included in the AAD for the encryption of the Plaintext but otherwise left untouched in the Outer Message,</li>
 <li>Class U: Unprotected options left untouched in the Outer Message.</li>
 </ul>
-<p id="rfc.section.8.3.p.5">Additionally, the OSCORE Option is added as an Outer option, signaling that the message is OSCORE protected. This option carries the information necessary to retrieve the Security Context with which the message was encrypted so that it may be correctly decrypted at the other end-point.</p>
-<div id="rfc.figure.8"></div>
+<p id="rfc.section.7.3.p.5">Additionally, the OSCORE Option is added as an Outer option, signaling that the message is OSCORE protected. This option carries the information necessary to retrieve the Security Context with which the message was encrypted so that it may be correctly decrypted at the other end-point.</p>
+<div id="rfc.figure.7"></div>
 <div id="Fig-inner-outer"></div>
 <pre>
  
@@ -854,10 +765,10 @@ ML4 {NULL:0, k=AS:1, K=AZE:2}
   +------+                                    +-------------------+
 
 </pre>
-<p class="figure">Figure 8: OSCORE inner and outer header form a CoAP message</p>
-<p><a href="#Fig-inner-outer" class="xref">Figure 8</a> shows the message format for the OSCORE Message and Plaintext. In the Outer Header, the original message code is hidden and replaced by a default value (POST or FETCH) depending on whether the original message was a Request or a Response. The original message code is put into the first byte of the Plaintext. Following the message code come the class E options and if present the original message Payload preceded by its payload marker.</p>
-<p id="rfc.section.8.3.p.7">The Plaintext is now encrypted by an AEAD algorithm which integrity protects Security Context parameters and eventually any class I options from the Outer Header. Currently no CoAP options are marked class I. The resulting Ciphertext becomes the new Payload of the OSCORE message, as illustrated in <a href="#Fig-full-oscore" class="xref">Figure 9</a>.</p>
-<div id="rfc.figure.9"></div>
+<p class="figure">Figure 7: OSCORE inner and outer header form a CoAP message</p>
+<p><a href="#Fig-inner-outer" class="xref">Figure 7</a> shows the message format for the OSCORE Message and Plaintext. In the Outer Header, the original message code is hidden and replaced by a default value (POST or FETCH) depending on whether the original message was a Request or a Response. The original message code is put into the first byte of the Plaintext. Following the message code come the class E options and if present the original message Payload preceded by its payload marker.</p>
+<p id="rfc.section.7.3.p.7">The Plaintext is now encrypted by an AEAD algorithm which integrity protects Security Context parameters and eventually any class I options from the Outer Header. Currently no CoAP options are marked class I. The resulting Ciphertext becomes the new Payload of the OSCORE message, as illustrated in <a href="#Fig-full-oscore" class="xref">Figure 8</a>.</p>
+<div id="rfc.figure.8"></div>
 <div id="Fig-full-oscore"></div>
 <pre>
  
@@ -881,9 +792,9 @@ ML4 {NULL:0, k=AS:1, K=AZE:2}
   +--------------------------------+
    
 </pre>
-<p class="figure">Figure 9: OSCORE message</p>
-<p id="rfc.section.8.3.p.8">The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see <a href="#Fig-OSCORE-Compression" class="xref">Figure 10</a>.  This way compression reaches all fields of the original CoAP message.</p>
-<div id="rfc.figure.10"></div>
+<p class="figure">Figure 8: OSCORE message</p>
+<p id="rfc.section.7.3.p.8">The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see <a href="#Fig-OSCORE-Compression" class="xref">Figure 9</a>.  This way compression reaches all fields of the original CoAP message.</p>
+<div id="rfc.figure.9"></div>
 <div id="Fig-OSCORE-Compression"></div>
 <pre>
      Outer Message                             OSCORE Plaintext
@@ -919,13 +830,13 @@ ML4 {NULL:0, k=AS:1, K=AZE:2}
       +-------------------+
       
 </pre>
-<p class="figure">Figure 10: OSCORE Compression Diagram</p>
-<h1 id="rfc.section.8.4">
-<a href="#rfc.section.8.4">8.4.</a> <a href="#example-oscore-compression" id="example-oscore-compression">Example OSCORE Compression</a>
+<p class="figure">Figure 9: OSCORE Compression Diagram</p>
+<h1 id="rfc.section.7.4">
+<a href="#rfc.section.7.4">7.4.</a> <a href="#example-oscore-compression" id="example-oscore-compression">Example OSCORE Compression</a>
 </h1>
-<p id="rfc.section.8.4.p.1">In what follows we present an example GET Request and consequent CONTENT Response and show a possible set of rules for the Inner and Outer SCHC Compression. We then show a dump of the results and contrast SCHC + OSCORE performance with SCHC + COAP performance. This gives an approximation to the cost of security with SCHC-OSCORE.</p>
-<p id="rfc.section.8.4.p.2">Our first example CoAP message is the GET Request in <a href="#Fig-GET-temp" class="xref">Figure 11</a></p>
-<div id="rfc.figure.11"></div>
+<p id="rfc.section.7.4.p.1">In what follows we present an example GET Request and consequent CONTENT Response and show a possible set of rules for the Inner and Outer SCHC Compression. We then show a dump of the results and contrast SCHC + OSCORE performance with SCHC + COAP performance. This gives an approximation to the cost of security with SCHC-OSCORE.</p>
+<p id="rfc.section.7.4.p.2">Our first example CoAP message is the GET Request in <a href="#Fig-GET-temp" class="xref">Figure 10</a></p>
+<div id="rfc.figure.10"></div>
 <div id="Fig-GET-temp"></div>
 <pre>
 Original message:
@@ -949,9 +860,9 @@ Value = temperature
 
 Original msg length:   17 bytes.
 </pre>
-<p class="figure">Figure 11: CoAP GET Request</p>
-<p id="rfc.section.8.4.p.3">Its corresponding response is the CONTENT Response in <a href="#Fig-CONTENT-temp" class="xref">Figure 12</a>.</p>
-<div id="rfc.figure.12"></div>
+<p class="figure">Figure 10: CoAP GET Request</p>
+<p id="rfc.section.7.4.p.3">Its corresponding response is the CONTENT Response in <a href="#Fig-CONTENT-temp" class="xref">Figure 11</a>.</p>
+<div id="rfc.figure.11"></div>
 <div id="Fig-CONTENT-temp"></div>
 <pre>
 Original message:
@@ -974,9 +885,9 @@ Payload:
 
 Original msg length:   10
 </pre>
-<p class="figure">Figure 12: CoAP CONTENT Response</p>
-<p id="rfc.section.8.4.p.4">The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message, what matters is the order of appearance and inclusion of only those CoAP fields that go into the Plaintext, <a href="#Fig-Inner-Rules" class="xref">Figure 13</a>.</p>
-<div id="rfc.figure.13"></div>
+<p class="figure">Figure 11: CoAP CONTENT Response</p>
+<p id="rfc.section.7.4.p.4">The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message, what matters is the order of appearance and inclusion of only those CoAP fields that go into the Plaintext, <a href="#Fig-Inner-Rules" class="xref">Figure 12</a>.</p>
+<div id="rfc.figure.12"></div>
 <div id="Fig-Inner-Rules"></div>
 <pre>
  Rule ID 0
@@ -990,9 +901,9 @@ Original msg length:   10
 |COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
 +----------------+--+--+-----------+-----------+-----------++--------+
 </pre>
-<p class="figure">Figure 13: Inner SCHC Rules</p>
-<p id="rfc.section.8.4.p.5">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 14</a>) must process the OSCORE Options fields. Here we mask off the repeated bits (most importantly the flag and size bits) with the MSB Mathing Operator.</p>
-<div id="rfc.figure.14"></div>
+<p class="figure">Figure 12: Inner SCHC Rules</p>
+<p id="rfc.section.7.4.p.5">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 13</a>) must process the OSCORE Options fields. Here we mask off the repeated bits (most importantly the flag and size bits) with the MSB Mathing Operator.</p>
+<div id="rfc.figure.13"></div>
 <div id="Fig-Outer-Rules"></div>
 <pre>
 Rule ID 0
@@ -1014,9 +925,9 @@ Rule ID 0
 |COAP Option-End|  |dw|     0xFF     |equal    |not-sent   ||            |
 +---------------+--+--+--------------+---------+-----------++------------+
 </pre>
-<p class="figure">Figure 14: Outer SCHC Rules</p>
-<p id="rfc.section.8.4.p.6">Next we show a dump of the compressed message:</p>
-<div id="rfc.figure.15"></div>
+<p class="figure">Figure 13: Outer SCHC Rules</p>
+<p id="rfc.section.7.4.p.6">Next we show a dump of the compressed message:</p>
+<div id="rfc.figure.14"></div>
 <div id="Fig-Compressed-GET"></div>
 <pre>
 Compressed message:
@@ -1035,8 +946,8 @@ Payload
 
 Compressed message length: 12 bytes
 </pre>
-<p class="figure">Figure 15: SCHC-OSCORE Compressed GET Request</p>
-<div id="rfc.figure.16"></div>
+<p class="figure">Figure 14: SCHC-OSCORE Compressed GET Request</p>
+<div id="rfc.figure.15"></div>
 <div id="Fig-Compressed-CONTENT"></div>
 <pre>
 Compressed message:
@@ -1053,9 +964,9 @@ Payload
 
 Compressed msg length: 16 bytes
 </pre>
-<p class="figure">Figure 16: SCHC-OSCORE Compressed CONTENT Response</p>
-<p id="rfc.section.8.4.p.7">For contrast, we compare these results with what would be obtained by SCHC compressing the original CoAP messages without protecting them with OSCORE. To do this, we compress the CoAP mesages according to the SCHC rules in <a href="#Fig-NoOsc-Rules" class="xref">Figure 17</a>.</p>
-<div id="rfc.figure.17"></div>
+<p class="figure">Figure 15: SCHC-OSCORE Compressed CONTENT Response</p>
+<p id="rfc.section.7.4.p.7">For contrast, we compare these results with what would be obtained by SCHC compressing the original CoAP messages without protecting them with OSCORE. To do this, we compress the CoAP mesages according to the SCHC rules in <a href="#Fig-NoOsc-Rules" class="xref">Figure 16</a>.</p>
+<div id="rfc.figure.16"></div>
 <div id="Fig-NoOsc-Rules"></div>
 <pre>
 Rule ID 1
@@ -1075,9 +986,9 @@ Rule ID 1
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
 +---------------+--+--+-----------+---------+-----------++------------+
 </pre>
-<p class="figure">Figure 17: SCHC-CoAP Rules (No OSCORE)</p>
-<p id="rfc.section.8.4.p.8">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 18</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 19</a> for the Response.</p>
-<div id="rfc.figure.18"></div>
+<p class="figure">Figure 16: SCHC-CoAP Rules (No OSCORE)</p>
+<p id="rfc.section.7.4.p.8">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 17</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 18</a> for the Response.</p>
+<div id="rfc.figure.17"></div>
 <div id="Fig-GET-temp-no-oscore"></div>
 <pre>
 Compressed message:
@@ -1090,8 +1001,8 @@ Compression residue:
 
 Compressed msg length: 2
 </pre>
-<p class="figure">Figure 18: CoAP GET Compressed without OSCORE</p>
-<div id="rfc.figure.19"></div>
+<p class="figure">Figure 17: CoAP GET Compressed without OSCORE</p>
+<div id="rfc.figure.18"></div>
 <div id="Fig-CONTENT-temp-no-oscore"></div>
 <pre>
 Compressed message:
@@ -1107,10 +1018,10 @@ Payload
 
 Compressed msg length: 6
 </pre>
-<p class="figure">Figure 19: CoAP CONTENT Compressed without OSCORE</p>
-<p id="rfc.section.8.4.p.9">As can be seen, the difference between applying SCHC + OSCORE as compared to regular SCHC + COAP is about 10 bytes of cost.</p>
+<p class="figure">Figure 18: CoAP CONTENT Compressed without OSCORE</p>
+<p id="rfc.section.7.4.p.9">As can be seen, the difference between applying SCHC + OSCORE as compared to regular SCHC + COAP is about 10 bytes of cost.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">9.</a> Normative References</h1>
+<a href="#rfc.references">8.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
