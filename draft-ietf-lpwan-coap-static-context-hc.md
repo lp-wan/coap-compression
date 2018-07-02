@@ -470,7 +470,6 @@ code and the least 9 significant bits of Message ID.
 ~~~~
 {: #Fig-CoAP-3 title='Compression with global addresses'}
 
-<!--
 
 ##Complete exchange
 
