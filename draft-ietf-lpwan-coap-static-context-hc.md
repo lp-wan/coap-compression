@@ -425,7 +425,9 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
 |CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
-|CoAP Type    |  |  |bi|      |ignore   |value-sent   ||TT          |
+|CoAP Type    |  |  |dw| CON  |equal    |not- -sent   ||            |
+|CoAP Type    |  |  |up|[ACK, |         |             ||            | 
+|             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
 |CoAP Code    |  |  |bi| ML1  |match-map|matching-sent||  CC CCC    |
 |CoAP MID     |  |  |bi| 0000 |MSB(7 )  |LSB(9)       ||        M-ID|
@@ -437,33 +439,29 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
 The version  and Token Length fields are elided. Code has shrunk to 5 bits
-using the matching list (as the one given 
-#<!--{{Fig--example-code-mapping}}-->
-: 0.01 
-is value 0x01 and 2.05 is value 0x0c) 
-Message-ID has shrunk to 9 bits to preserve alignment on byte boundary. The
-most significant bit must be set to 0 through a CoAP proxy. Uri-Path contains
+using the matching list.  Uri-Path contains
 a single element indicated in the matching operator.
 
-{{Fig-CoAP-3}} shows the time diagram of the exchange. A LPWAN Application Server sends
-a CON message. Compression reduces the header sending only the Type, a mapped
+{{Fig-CoAP-3}} shows the time diagram of the exchange. A client in the Application Server
+sends a CON request. It can go through a proxy which reduces the message ID to 
+a smallest value., with at least the 9 most significant bits equal to 0.
+SCHC Compression reduces the header sending only the Type, a mapped
 code and the least 9 significant bits of Message ID. The receiver decompresses
-the header. .
+the header
 
-The CON message is a request, therefore the LC process to a dynamic
-   mapping.  When the ES receives the ACK message, this will not
+ When the ES receives the ACK message, this will not
    initiate locally a  message ID mapping since it is a response.
    The LC receives the ACK and uncompressed it to restore the original
    value.  Dynamic Mapping context lifetime follows the same rules as
    message ID duration.
 
 ~~~~
-                  End System              LPWA LC
+                    Device     LPWAN      SCHC C/D
                        |                    |
                        |       rule id=1    |<--------------------
                        |<-------------------| +-+-+--+----+------+
-  <------------------- | TTCC CCCM MMMM MMMM| |1|0| 4|0.01|0x0034|
- +-+-+--+----+-------+ | 0000 0010 0011 0100| |  0xb4   p   a   t|
+  <------------------- | CCCCCMMMMMMMMM     | |1|0| 4|0.01|0x0034|
+ +-+-+--+----+-------+ | 00001000110100     | |  0xb4   p   a   t|
  |1|0| 1|0.01|0x0034 | |                    | |  h   |
  |  0xb4   p   a   t | |                    | +------+
  |  h   |              |                    |     
@@ -472,19 +470,16 @@ The CON message is a request, therefore the LC process to a dynamic
                        |                    |    
 ---------------------->|      rule id=1     |
 +-+-+--+----+--------+ |------------------->|
-|1|2| 0|2.05| 0x0034 | | TTCC CCCM MMMM MMMM|--------------------->
-+-+-+--+----+--------+ | 1001 1000 0011 0100| +-+-+--+----+------+
+|1|2| 0|2.05| 0x0034 | |  TCCCCCMMMMMMMMM   |--------------------->
++-+-+--+----+--------+ |  001100000110100   | +-+-+--+----+------+
                        |                    | |1|2| 0|2.05|0x0034|
                        v                    v +-+-+--+----+------+
 
 ~~~~
 {: #Fig-CoAP-3 title='Compression with global addresses'}
 
-The message can be further optimized by setting some fields unidirectional, as
-described in {{Fig-CoAP-header-1-direc}}. Note that Type is no more sent in the
-compressed format, Compressed Code size in not changed in that example (8 values 
-are needed to code all the requests and 21 to code all the responses in the matching list 
-
+To optimize regula traffic, two rules can be defined for the uplink
+traffic. The first one 
 
 
 ~~~~
