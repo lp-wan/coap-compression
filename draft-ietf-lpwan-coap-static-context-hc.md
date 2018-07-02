@@ -33,8 +33,8 @@ author:
 - ins: R. Andreasen
   name: Ricardo Andreasen
   org: Universidad de Buenos Aires
-  street: Av. Paseo Colón 850
-  city: C1063ACV Ciudad Autónoma de Buenos Aires
+  street: Av. Paseo Colon 850
+  city: C1063ACV Ciudad Autonoma de Buenos Aires
   country: Argentina
   email: randreasen@fi.uba.ar
 normative:
