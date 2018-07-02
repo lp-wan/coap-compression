@@ -406,14 +406,13 @@ These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}
 corresponding flag and size bits for each part of the option. Both the flag and size bits can be
 omitted by use of the MSB matching operator on each field. 
 
-# Protocol analysis
 
 # Examples of CoAP header compression
 
 ## Mandatory header with CON message
 
 In this first scenario, the LPWAN compressor receives from outside client
-a POST message, which is immediately acknowledged by the Thing. For this simple
+a POST message, which is immediately acknowledged by the Device. For this simple
 scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
@@ -425,7 +424,7 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
 |CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
-|CoAP Type    |  |  |dw| CON  |equal    |not- -sent   ||            |
+|CoAP Type    |  |  |dw| CON  |equal    |not-sent   ||            |
 |CoAP Type    |  |  |up|[ACK, |         |             ||            | 
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
@@ -439,21 +438,14 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 
 
 The version  and Token Length fields are elided. Code has shrunk to 5 bits
-using the matching list.  Uri-Path contains
+using a matching list.  Uri-Path contains
 a single element indicated in the matching operator.
 
 {{Fig-CoAP-3}} shows the time diagram of the exchange. A client in the Application Server
 sends a CON request. It can go through a proxy which reduces the message ID to 
-a smallest value., with at least the 9 most significant bits equal to 0.
+a smallest value, with at least the 9 most significant bits equal to 0.
 SCHC Compression reduces the header sending only the Type, a mapped
-code and the least 9 significant bits of Message ID. The receiver decompresses
-the header
-
- When the ES receives the ACK message, this will not
-   initiate locally a  message ID mapping since it is a response.
-   The LC receives the ACK and uncompressed it to restore the original
-   value.  Dynamic Mapping context lifetime follows the same rules as
-   message ID duration.
+code and the least 9 significant bits of Message ID. 
 
 ~~~~
                     Device     LPWAN      SCHC C/D
@@ -478,32 +470,7 @@ the header
 ~~~~
 {: #Fig-CoAP-3 title='Compression with global addresses'}
 
-To optimize regula traffic, two rules can be defined for the uplink
-traffic. The first one 
-
-
-~~~~
- Rule ID 2
-+-------------+--+--+--+------+---------+------------++------------+
-| Field       |FL|FP|DI|Target|    MO   |     CDA    ||    Sent    |
-|             |  |  |  |Value |         |            ||   [bits]   |
-+-------------+--+--+--+------+---------+------------++------------+
-|CoAP version |  |  |bi|01    |equal    |not-sent    ||            |
-|CoAP Type    |  |  |dw|CON   |equal    |not-sent    ||            |
-|CoAP Type    |  |  |up| ACK  |equal    |not-sent    ||            |
-|CoAP TKL     |  |  |bi|0     |equal    |not-sent    ||            |
-|CoAP Code    |  |  |dw|ML2   |match-map|mapping-sent||CCCC C      |
-|CoAP Code    |  |  |up|ML3   |match-map|mapping-sent||CCCC C      |
-|CoAP MID     |  |  |bi|0000  |MSB(5)   |LSB(11)     ||      M-ID  |
-|CoAP Uri-Path|  |  |dw|path  |equal 1  |not-sent    ||            |
-+-------------+--+--+--+------+---------+------------++------------+
-
-ML1 = {CON : 0, ACK:1} ML2 = {POST:0, 2.04:1, 0.00:3}
-
-~~~~
-{: #Fig-CoAP-header-1-direc title='CoAP Context to compress header without token'}
-
-
+<!--
 
 ##Complete exchange
 
@@ -530,65 +497,7 @@ ACK MID=0x0034   |------------------------>|
 
 ~~~~
 
-~~~~
- Rule ID 3
-+--------------+--+--+--+------+--------+-----------++------------+
-| Field        |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
-|              |  |  |  |Value |        |           ||   [bits]   |
-+--------------+--+--+--+------+--------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal   |not-sent   ||            |
-|CoAP Type     |  |  |up| CON  |equal   |not-sent   ||            |
-|CoAP Type     |  |  |dw| ACK  |equal   |not-sent   ||            |
-|CoAP TKL      |  |  |bi| 1    |equal   |not-sent   ||            |
-|CoAP Code     |  |  |up| POST |equal   |not-sent   ||            |
-|CoAP Code     |  |  |dw| 0.00 |equal   |not-sent   ||            |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)  |LSB        ||MMMMMMMM    |
-|CoAP Token    |  |  |up|      |ignore  |send-value ||TTTTTTTT    |
-|CoAP Uri-Path |  |  |dw| /c   |equal 1 |not-sent   ||            |
-|CoAP Uri-query|  |  |dw|  ML4 |equal 1 |not-sent   ||P           |
-|CoAP Content  |  |  |up| X    |equal   |not-sent   ||            |
-+--------------+--+--+--+------+--------+-----------++------------+
 
- Rule ID 4
-+--------------+--+--+--+------+--------+-----------++------------+
-| Field        |FL|FP|DI|Target|   MO   |     CDA   ||    Sent    |
-|              |  |  |  |Value |        |           ||   [bits]   |
-+--------------+--+--+--+------+--------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal    |not-sent  ||            |
-|CoAP Type     |  |  |dw| CON  |equal    |not-sent  ||            |
-|CoAP Type     |  |  |up| ACK  |equal    |not-sent  ||            |
-|CoAP TKL      |  |  |bi| 1    |equal    |not-sent  ||            |
-|CoAP Code     |  |  |dw| 2.05 |equal    |not-sent  ||            |
-|CoAP Code     |  |  |up| 0.00 |equal    |not-sent  ||            |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB       ||MMMMMMMM    |
-|CoAP Token    |  |  |dw|      |ignore   |send-value||TTTTTTTT    |
-|COAP Accept   |  |  |dw| X    |equal    |not-sent  ||            |
-+--------------+--+--+--+------+---------+----------++------------+
-
-alternative rule:
-
- Rule ID 4
-+--------------+--+--+--+------+---------+-----------++------------+
-| Field        |FL|FP|DI|Target|   MO    |     CDA   ||    Sent    |
-|              |  |  |  |Value |         |           ||   [bits]   |
-+--------------+--+--+--+------+---------+-----------++------------+ 
-|CoAP version  |  |  |bi| 01   |equal    |not-sent   ||            |
-|CoAP Type     |  |  |bi| ML1  |match-map|match-sent ||t           |
-|CoAP TKL      |  |  |bi| 1    |equal    |not-sent   ||            |
-|CoAP Code     |  |  |up| ML2  |match-map|match-sent || cc         |
-|CoAP Code     |  |  |dw| ML3  |match-map|match-sent || cc         |
-|CoAP MID      |  |  |bi| 0000 |MSB(8)   |LSB        ||MMMMMMMM    |
-|CoAP Token    |  |  |dw|      |ignore   |send-value ||TTTTTTTT    |
-|CoAP Uri-Path |  |  |dw| /c   |equal 1  |not-sent   ||            |
-|CoAP Uri-query|  |  |dw| ML4  |equal 1  |not-sent   ||P           |
-|CoAP Content  |  |  |up| X    |equal    |not-sent   ||            |
-|COAP Accept   |  |  |dw| x    |equal    |not-sent   ||            |
-+--------------+--+--+--+------+---------+-----------++------------+
-
-ML1 {CON:0, ACK:1} ML2 {POST:0, 0.00: 1} ML3 {2.05:0, 0.00:1}
-ML4 {NULL:0, k=AS:1, K=AZE:2}
-
-~~~~
 
 ## OSCORE Compression
 {: #Sec-OSCORE-Examples}
