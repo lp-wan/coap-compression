@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Informational                                L. Toutain
-Expires: January 3, 2019          Institut MINES TELECOM; IMT Atlantique
+Expires: April 24, 2019           Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                           July 02, 2018
+                                                        October 21, 2018
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 3, 2019.
+   This Internet-Draft will expire on April 24, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 1]
+Minaburo, et al.         Expires April 24, 2019                 [Page 1]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    (https://trustee.ietf.org/license-info) in effect on the date of
@@ -99,8 +99,8 @@ Table of Contents
      7.2.  Complete exchange . . . . . . . . . . . . . . . . . . . .  13
      7.3.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  14
      7.4.  Example OSCORE Compression  . . . . . . . . . . . . . . .  17
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
 
 
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 2]
+Minaburo, et al.         Expires April 24, 2019                 [Page 2]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 3]
+Minaburo, et al.         Expires April 24, 2019                 [Page 3]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
     ^   +------------+    ^  +------------+        ^  +------------+
@@ -221,9 +221,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 4]
+Minaburo, et al.         Expires April 24, 2019                 [Page 4]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    o  Even when a field is "symmetric" (i.e. found in both directions)
@@ -277,9 +277,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 5]
+Minaburo, et al.         Expires April 24, 2019                 [Page 5]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 4.  Compression of CoAP header fields
@@ -333,9 +333,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 6]
+Minaburo, et al.         Expires April 24, 2019                 [Page 6]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    In case the Device is a client, the size of the message ID field may
@@ -389,9 +389,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 7]
+Minaburo, et al.         Expires April 24, 2019                 [Page 7]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    If the duration is known by both ends, value can be elided on the
@@ -445,9 +445,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 8]
+Minaburo, et al.         Expires April 24, 2019                 [Page 8]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    FID       FL FP DI    TV       MO        CDA
@@ -501,9 +501,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019                [Page 9]
+Minaburo, et al.         Expires April 24, 2019                 [Page 9]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 6.2.  Observe
@@ -520,7 +520,7 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 6.3.  No-Response
 
-   [rfc7967]  defines an No-Response option limiting the responses made
+   [rfc7967] defines an No-Response option limiting the responses made
    by a server to a request.  If the value is not known by both ends,
    then TV is set to this value, MO is set to "equal" and CDF is set to
    "not-sent".
@@ -557,17 +557,18 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 10]
+Minaburo, et al.         Expires April 24, 2019                [Page 10]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
          0 1 2 3 4 5 6 7 <--------- n bytes ------------->
         +-+-+-+-+-+-+-+-+---------------------------------
         |0 0 0|h|k|  n  |      Partial IV (if any) ...
         +-+-+-+-+-+-+-+-+---------------------------------
-        |                                                |
-        | <--------- CoAP OSCORE_piv ------------------> |
+        |               |                                |
+        |<--  CoAP   -->|<------ CoAP OSCORE_piv ------> |
+           OSCORE_flags
 
          <- 1 byte -> <------ s bytes ----->
         +------------+----------------------+-----------------------+
@@ -586,7 +587,7 @@ Internet-Draft           LPWAN CoAP compression                July 2018
    OSCORE option.  The 3 most significant bits are reserved and always
    set to 0.  Bit h, when set, indicates the presence of the kid context
    field in the option.  Bit k, when set, indicates the presence of a
-   kid field.  The 3 least significant bits n indicate to length of the
+   kid field.  The 3 least significant bits n indicate the length of the
    piv field in bytes, n = 0 taken to mean that no piv is present.
 
    After the flag byte follow the piv field, kid context field and kid
@@ -599,29 +600,29 @@ Internet-Draft           LPWAN CoAP compression                July 2018
    to do a preliminary processing of the message in preparation for
    regular SCHC compression.
 
-   Conceptually, the OSCORE option can transmit up to 3 distinct pieces
-   of information at a time: the piv, the kid context, and the kid.
-   This draft proposes that the SCHC Parser split the contents of this
-   option into 3 SCHC fields:
+   Conceptually, we discern up to 4 distinct pieces of information
+   within the OSCORE option: the flag bits, the piv, the kid context,
+   and the kid.  It is thus recommended that the parser split the OSCORE
+   option into the 4 subsequent fields:
+
+   o  CoAP OSCORE_flags,
 
    o  CoAP OSCORE_piv,
 
-   o  CoAP OSCORE_ctxt,
+   o  CoAP OSCORE_kidctxt,
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 11]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
 
    o  CoAP OSCORE_kid.
 
-
-
-
-Minaburo, et al.         Expires January 3, 2019               [Page 11]
-
-Internet-Draft           LPWAN CoAP compression                July 2018
-
-
    These fields are superposed on the OSCORE Option format in Figure 4,
-   and include the corresponding flag and size bits for each part of the
-   option.  Both the flag and size bits can be omitted by use of the MSB
-   matching operator on each field.
+   the CoAP OSCORE_kidctxt field including the size bits s.  These may
+   be omitted by use of the MSB matching operator.
 
 7.  Examples of CoAP header compression
 
@@ -668,10 +669,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-
-Minaburo, et al.         Expires January 3, 2019               [Page 12]
+Minaburo, et al.         Expires April 24, 2019                [Page 12]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
                        Device     LPWAN      SCHC C/D
@@ -725,9 +725,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 13]
+Minaburo, et al.         Expires April 24, 2019                [Page 13]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 7.3.  OSCORE Compression
@@ -753,9 +753,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
    CoAP options are sorted into one of 3 classes, each granted a
    specific type of protection by the protocol:
 
-   o  Class E: Enrypted options moved to the Inner Plaintext,
+   o  Class E: Encrypted options moved to the Inner Plaintext,
 
-   o  Class I: Intergrity-protected options included in the AAD for the
+   o  Class I: Integrity-protected options included in the AAD for the
       encryption of the Plaintext but otherwise left untouched in the
       Outer Message,
 
@@ -781,12 +781,12 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 14]
+Minaburo, et al.         Expires April 24, 2019                [Page 14]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
-                         Orignal CoAP Message
+                         Original CoAP Message
                       +-+-+---+-------+---------------+
                       |v|t|tkl| code  |  Msg Id.      |
                       +-+-+---+-------+---------------+....+
@@ -823,27 +823,40 @@ Internet-Draft           LPWAN CoAP compression                July 2018
         Figure 7: OSCORE inner and outer header form a CoAP message
 
    Figure 7 shows the message format for the OSCORE Message and
-   Plaintext.  In the Outer Header, the original message code is hidden
-   and replaced by a default value (POST or FETCH) depending on whether
-   the original message was a Request or a Response.  The original
-   message code is put into the first byte of the Plaintext.  Following
-   the message code come the class E options and if present the original
-   message Payload preceded by its payload marker.
+   Plaintext.
+
+   In the Outer Header, the original message code is hidden and replaced
+   by a default dummy value.  As seen in sections 4.1.3.5 and 4.2 of
+   [I-D.ietf-core-object-security], the message code is replaced by POST
+   for requests and Changed for responses when Observe is not used.  If
+   Observe is used, the message code is replaced by FETCH for requests
+   and Content for responses.
+
+   The original message code is put into the first byte of the
+   Plaintext.  Following the message code come the class E options and
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 15]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+   if present the original message Payload preceded by its payload
+   marker.
 
    The Plaintext is now encrypted by an AEAD algorithm which integrity
    protects Security Context parameters and eventually any class I
    options from the Outer Header.  Currently no CoAP options are marked
-
-
-
-
-Minaburo, et al.         Expires January 3, 2019               [Page 15]
-
-Internet-Draft           LPWAN CoAP compression                July 2018
-
-
    class I.  The resulting Ciphertext becomes the new Payload of the
    OSCORE message, as illustrated in Figure 8.
+
+   This Ciphertext is, as defined in RFC 5116, the concatenation of the
+   encrypted Plaintext and its authentication tag.  Note that Inner
+   Compression only affects the Plaintext before encryption, thus we can
+   only aim to reduce this first, variable length component of the
+   Ciphertext.  The authentication tag is fixed in length and considered
+   part of the cost of protection.
 
 
 
@@ -870,33 +883,24 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
    The SCHC Compression scheme consists of compressing both the
    Plaintext before encryption and the resulting OSCORE message after
-   encryption, see Figure 9.  This way compression reaches all fields of
-   the original CoAP message.
+   encryption, see Figure 9.
+
+   This translates into a segmented process where SCHC compression is
+   applied independently in 2 stages, each with its corresponding set of
+   rules.  Throughout this draft we refer to them simply as the Inner
+   SCHC Rules and the Outer SCHC Rules.  This way compression reaches
+   all fields of the original CoAP message.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Minaburo, et al.         Expires January 3, 2019               [Page 16]
+Minaburo, et al.         Expires April 24, 2019                [Page 16]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
+
+   Note that since the Inner part of the message can only be decrypted
+   by the corresponding end-point, this end-point will also have to
+   implement Inner SCHC Compression/Decompression.
 
         Outer Message                             OSCORE Plaintext
      +-+-+---+--------+---------------+          +-------+
@@ -945,13 +949,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-
-
-
-
-Minaburo, et al.         Expires January 3, 2019               [Page 17]
+Minaburo, et al.         Expires April 24, 2019                [Page 17]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    Original message:
@@ -1005,9 +1005,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 18]
+Minaburo, et al.         Expires April 24, 2019                [Page 18]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    The SCHC Rules for the Inner Compression include all fields that are
@@ -1028,82 +1028,363 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
                         Figure 12: Inner SCHC Rules
 
-   The Outer SCHC Rules (Figure 13) must process the OSCORE Options
-   fields.  Here we mask off the repeated bits (most importantly the
-   flag and size bits) with the MSB Mathing Operator.
+   Figure 13 shows the Plaintext obtained for our example GET Request
+   and follows the process of Inner Compression and Encryption until we
+   end up with the Payload to be added in the outer OSCORE Message.
+
+   In this case the original message has no payload and its resulting
+   Plaintext can be compressed up to only 1 byte (size of the Rule ID).
+   The AEAD algorithm preserves this length in its first output, but
+   also yields a fixed-size tag which cannot be compressed and must be
+   included in the OSCORE message.  This translates into an overhead in
+   total message length, which limits the amount of compression that can
+   be achieved and plays into the cost of adding security to the
+   exchange.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 19]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+      ________________________________________________________
+     |                                                        |
+     | OSCORE Plaintext                                       |
+     |                                                        |
+     | 0x01bb74656d7065726174757265  (13 bytes)               |
+     |                                                        |
+     | 0x01 Request Code GET                                  |
+     |                                                        |
+     |      bb74656d7065726174757265 Option 11: URI_PATH      |
+     |                               Value = temperature      |
+     |________________________________________________________|
+
+                                 |
+                                 |
+                                 | Inner SCHC Compression
+                                 |
+                                 v
+                   _________________________________
+                  |                                 |
+                  | Compressed Plaintext            |
+                  |                                 |
+                  | 0x00                            |
+                  |                                 |
+                  | Rule ID = 0x00 (1 byte)         |
+                  | (No residue)                    |
+                  |_________________________________|
+
+                                 |
+                                 | AEAD Encryption
+                                 |  (piv = 0x04)
+                                 v
+            _________________________________________________
+           |                                                 |
+           |  encrypted_plaintext = 0xa2 (1 byte)            |
+           |  tag = 0xc54fe1b434297b62 (8 bytes)             |
+           |                                                 |
+           |  ciphertext = 0xa2c54fe1b434297b62 (9 bytes)    |
+           |_________________________________________________|
+
+
+      Figure 13: Plaintext compression and encryption for GET Request
+
+   In Figure 14 we repeat the process for the example CONTENT Response.
+   In this case the misalignment produced by the compression residue (1
+   bit) makes it so that 7 bits of padding must be applied after the
+   payload, resulting in a compressed Plaintext that is the same size as
+   before compression.  This misalignment also causes the hexcode from
+   the payload to differ from the original, even though it has not been
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 20]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+   compressed.  On top of this we incur the overhead from the tag bytes
+   as before.
+
+      ________________________________________________________
+     |                                                        |
+     | OSCORE Plaintext                                       |
+     |                                                        |
+     | 0x45ff32332043  (6 bytes)                              |
+     |                                                        |
+     | 0x45 Successful Response Code 69 "2.05 Content"        |
+     |                                                        |
+     |     ff Payload marker                                  |
+     |                                                        |
+     |       32332043 Payload                                 |
+     |________________________________________________________|
+
+                                 |
+                                 |
+                                 | Inner SCHC Compression
+                                 |
+                                 v
+            __________________________________________
+           |                                          |
+           | Compressed Plaintext                     |
+           |                                          |
+           | 0x001919902180 (6 bytes)                 |
+           |                                          |
+           |   00 Rule ID                             |
+           |                                          |
+           |    0b0 (1 bit match-map residue)         |
+           |       0x32332043 >> 1 (shifted payload)  |
+           |                        0b0000000 Padding |
+           |__________________________________________|
+
+                                 |
+                                 | AEAD Encryption
+                                 |  (piv = 0x04)
+                                 v
+        _________________________________________________________
+       |                                                         |
+       |  encrypted_plaintext = 0x10c6d7c26cc1 (6 bytes)         |
+       |  tag = 0xe9aef3f2461e0c29 (8 bytes)                     |
+       |                                                         |
+       |  ciphertext = 0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes) |
+       |_________________________________________________________|
+
+
+   Figure 14: Plaintext compression and encryption for CONTENT Response
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 21]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+   The Outer SCHC Rules (Figure 17) must process the OSCORE Options
+   fields.  In Figure 15 and Figure 16 we show a dump of the OSCORE
+   Messages generated from our example messages once they have been
+   provided with the Inner Compressed Ciphertext in the payload.  These
+   are the messages that are to be Outer SCHC compressed.
+
+   Protected message:
+   ==================
+   0x4102000182d7080904636c69656e74ffa2c54fe1b434297b62
+   (25 bytes)
+
+   Header:
+   0x4102
+   01   Ver
+     00   CON
+       0001   tkl
+           00000010   Request Code 2 "POST"
+
+   0x0001 = mid
+   0x82 = token
+
+   Options:
+   0xd7080904636c69656e74 (10 bytes)
+   Option 21: OBJECT_SECURITY
+   Value = 0x0904636c69656e74
+             09 = 000 0 1 001 Flag byte
+                      h k  n
+               04 piv
+                 636c69656e74 kid
+
+
+   0xFF  Payload marker
+   Payload:
+   0xa2c54fe1b434297b62 (9 bytes)
+
+        Figure 15: Protected and Inner SCHC Compressed GET Request
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 22]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+   Protected message:
+   ==================
+   0x6144000182d008ff10c6d7c26cc1e9aef3f2461e0c29
+   (22 bytes)
+
+   Header:
+   0x6144
+   01   Ver
+     10   ACK
+       0001   tkl
+           01000100   Successful Response Code 68 "2.04 Changed"
+
+   0x0001 = mid
+   0x82 = token
+
+   Options:
+   0xd008 (2 bytes)
+   Option 21: OBJECT_SECURITY
+   Value = b''
+
+   0xFF  Payload marker
+   Payload:
+   0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes)
+
+      Figure 16: Protected and Inner SCHC Compressed CONTENT Response
+
+   For the flag bits, a number of compression methods could prove useful
+   depending on the application.  The simplest alternative is to provide
+   a fixed value for the flags, combining MO equal and CDA not-sent.
+   This saves most bits but could hinder flexibility.  Otherwise, match-
+   mapping could allow to choose from a number of configurations of
+   interest to the exchange.  If neither of these alternatives is
+   desirable, MSB could be used to mask off the 3 hard-coded most
+   significant bits.
+
+   Note that fixing a flag bit will limit the choice of CoAP Options
+   that can be used in the exchange, since their values are dependent on
+   certain options.
+
+   The piv field lends itself to having a number of bits masked off with
+   MO MSB and CDA LSB.  This could prove useful in applications where
+   the message frequency is low such as may be found in LPWAN
+   technologies.  Note that compressing the sequence numbers effectively
+   reduces the maximum amount of sequence numbers that can be used in an
+   exchange.  Once this amount is exceeded, the SCHC Context would need
+   to be re-established.
+
+
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 23]
+
+Internet-Draft           LPWAN CoAP compression             October 2018
+
+
+   The size s included in the kid context field may be masked off with
+   CDA MSB.  The rest of the field could have additional bits masked
+   off, or have the whole field be fixed with MO equal and CDA not-sent.
+   The same holds for the kid field.
+
+   Figure 17 shows a possible set of Outer Rules to compress the Outer
+   Header.
 
 Rule ID 0
-+---------------+--+--+--------------+---------+-----------++------------+
-| Field         |FP|DI|    Target    |   MO    |     CDA   ||    Sent    |
-|               |  |  |    Value     |         |           ||   [bits]   |
-+---------------+--+--+--------------+---------+-----------++------------+
-|CoAP version   |  |bi|      01      |equal    |not-sent   ||            |
-|CoAP Type      |  |up|      0       |equal    |not-sent   ||            |
-|CoAP Type      |  |dw|      2       |equal    |not-sent   ||            |
-|CoAP TKL       |  |bi|      1       |equal    |not-sent   ||            |
-|CoAP Code      |  |up|      2       |equal    |not-sent   ||            |
-|CoAP Code      |  |dw|      68      |equal    |not-sent   ||            |
-|CoAP MID       |  |bi|     0000     |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token     |  |bi|     0x80     |MSB(5)   |LSB        ||TTT         |
-|CoAP OSCORE_piv|  |up|    0x0900    |MSB(12)  |LSB        ||PPPP        |
-|COAP OSCORE_kid|  |up|b'\x06client' |MSB(52)  |LSB        ||KKKK        |
-|CoAP OSCORE_piv|  |dw|     b''      |equal    |not-sent   ||            |
-|COAP Option-End|  |dw|     0xFF     |equal    |not-sent   ||            |
-+---------------+--+--+--------------+---------+-----------++------------+
++-------------------+--+--+--------------+---------+-----------++------------+
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||    Sent    |
+|                   |  |  |    Value     |         |           ||   [bits]   |
++-------------------+--+--+--------------+---------+-----------++------------+
+|CoAP version       |  |bi|      01      |equal    |not-sent   ||            |
+|CoAP Type          |  |up|      0       |equal    |not-sent   ||            |
+|CoAP Type          |  |dw|      2       |equal    |not-sent   ||            |
+|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||            |
+|CoAP Code          |  |up|      2       |equal    |not-sent   ||            |
+|CoAP Code          |  |dw|      68      |equal    |not-sent   ||            |
+|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM        |
+|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT         |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||            |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP        |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK        |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||            |
+|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||            |
++-------------------+--+--+--------------+---------+-----------++------------+
 
-                        Figure 13: Outer SCHC Rules
+                        Figure 17: Outer SCHC Rules
 
-   Next we show a dump of the compressed message:
-
-
-
-
+   When these Outer Rules are applied to our example GET Request and
+   CONTENT Response, we get the resulting messages Figure 18 and
+   Figure 19.
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 19]
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires April 24, 2019                [Page 24]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    Compressed message:
    ==================
-   0x00291287f0a5c4833760d170
-   0x00 = Rule ID
-
-   piv = 0x04
+   0x001489458a9fc3686852f6c4 (12 bytes)
+   0x00 Rule ID
+       1489 Compression Residue
+           458a9fc3686852f6c4 Padded payload
 
    Compression residue:
-   0b0001 010 0100 0100 (15 bits -> 2 bytes with padding)
-     mid  tkn piv   kid
+   0b 0001 010 0100 0100 (15 bits -> 2 bytes with padding)
+       mid tkn piv  kid
 
    Payload
-   0xa1fc297120cdd8345c
+   0xa2c54fe1b434297b62 (9 bytes)
 
    Compressed message length: 12 bytes
 
-               Figure 14: SCHC-OSCORE Compressed GET Request
+               Figure 18: SCHC-OSCORE Compressed GET Request
 
    Compressed message:
    ==================
-   0x0015f4de9cb814c96aed9b1d981a3a58
-   0x00 = Rule ID
-
+   0x0014218daf84d983d35de7e48c3c1852 (16 bytes)
+   0x00 Rule ID
+       14 Compression residue
+         218daf84d983d35de7e48c3c1852 Padded payload
    Compression residue:
-   0b0001 010  (7 bits -> 1 byte with padding)
+   0b0001 010 (7 bits -> 1 byte with padding)
      mid  tkn
 
    Payload
-   0xfa6f4e5c0a64b576cd8ecc0d1d2c
+   0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes)
 
    Compressed msg length: 16 bytes
 
-            Figure 15: SCHC-OSCORE Compressed CONTENT Response
+            Figure 19: SCHC-OSCORE Compressed CONTENT Response
 
    For contrast, we compare these results with what would be obtained by
    SCHC compressing the original CoAP messages without protecting them
-   with OSCORE.  To do this, we compress the CoAP mesages according to
-   the SCHC rules in Figure 16.
+   with OSCORE.  To do this, we compress the CoAP messages according to
+   the SCHC rules in Figure 20.
 
 
 
@@ -1116,10 +1397,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-
-Minaburo, et al.         Expires January 3, 2019               [Page 20]
+Minaburo, et al.         Expires April 24, 2019                [Page 25]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
  Rule ID 1
@@ -1139,9 +1419,9 @@ Internet-Draft           LPWAN CoAP compression                July 2018
  |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
  +---------------+--+--+-----------+---------+-----------++------------+
 
-                  Figure 16: SCHC-CoAP Rules (No OSCORE)
+                  Figure 20: SCHC-CoAP Rules (No OSCORE)
 
-   This yields the results in Figure 17 for the Request, and Figure 18
+   This yields the results in Figure 21 for the Request, and Figure 22
    for the Response.
 
    Compressed message:
@@ -1154,7 +1434,7 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
    Compressed msg length: 2
 
-               Figure 17: CoAP GET Compressed without OSCORE
+               Figure 21: CoAP GET Compressed without OSCORE
 
    Compressed message:
    ==================
@@ -1169,13 +1449,13 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
    Compressed msg length: 6
 
-             Figure 18: CoAP CONTENT Compressed without OSCORE
+             Figure 22: CoAP CONTENT Compressed without OSCORE
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 21]
+Minaburo, et al.         Expires April 24, 2019                [Page 26]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    As can be seen, the difference between applying SCHC + OSCORE as
@@ -1186,8 +1466,8 @@ Internet-Draft           LPWAN CoAP compression                July 2018
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
               "Object Security for Constrained RESTful Environments
-              (OSCORE)", draft-ietf-core-object-security-13 (work in
-              progress), June 2018.
+              (OSCORE)", draft-ietf-core-object-security-15 (work in
+              progress), August 2018.
 
    [I-D.ietf-lpwan-ipv6-static-context-hc]
               Minaburo, A., Toutain, L., Gomez, C., and D. Barthel,
@@ -1229,9 +1509,9 @@ Authors' Addresses
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 22]
+Minaburo, et al.         Expires April 24, 2019                [Page 27]
 
-Internet-Draft           LPWAN CoAP compression                July 2018
+Internet-Draft           LPWAN CoAP compression             October 2018
 
 
    Ana Minaburo
@@ -1285,4 +1565,4 @@ Internet-Draft           LPWAN CoAP compression                July 2018
 
 
 
-Minaburo, et al.         Expires January 3, 2019               [Page 23]
+Minaburo, et al.         Expires April 24, 2019                [Page 28]
