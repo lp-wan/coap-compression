@@ -363,8 +363,9 @@ This section describes how SCHC rules can be applied to compress OSCORE-protecte
      +-+-+-+-+-+-+-+-+---------------------------------
      |0 0 0|h|k|  n  |      Partial IV (if any) ...    
      +-+-+-+-+-+-+-+-+---------------------------------
-     |                                                |
-     | <--------- CoAP OSCORE_piv ------------------> | 
+     |               |                                |
+     |<--  CoAP   -->|<------ CoAP OSCORE_piv ------> |
+        OSCORE_flags 
 
       <- 1 byte -> <------ s bytes ----->
      +------------+----------------------+-----------------------+
@@ -383,7 +384,7 @@ The first byte is used for flags that specify the contents of the OSCORE
 option. The 3 most significant bits are reserved and always set to 0. Bit h, 
 when set, indicates the presence of the kid context field in the option. Bit k,
 when set, indicates the presence of a kid field. The 3 least significant bits
-n indicate to length of the piv field in bytes, n = 0 taken to mean that no piv 
+n indicate the length of the piv field in bytes, n = 0 taken to mean that no piv 
 is present.
 
 After the flag byte follow the piv field, kid context field and kid field in
@@ -394,17 +395,14 @@ This draft recommends to implement a parser that is able to identify the OSCORE
 Option and the fields it contains - this makes it possible to do a preliminary processing
 of the message in preparation for regular SCHC compression.
 
-Conceptually, the OSCORE option can transmit up to 3 distinct pieces of
-information at a time: the piv, the kid context, and the kid. This draft
-proposes that the SCHC Parser split the contents of this option into 3 SCHC fields:
+Conceptually, we discern up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. It is thus recommended that the parser split the OSCORE option into the 4 subsequent fields:
 
+ * CoAP OSCORE_flags,
  * CoAP OSCORE_piv,
- * CoAP OSCORE_ctxt,
+ * CoAP OSCORE_kidctxt,
  * CoAP OSCORE_kid.
 
-These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, and include the 
-corresponding flag and size bits for each part of the option. Both the flag and size bits can be
-omitted by use of the MSB matching operator on each field. 
+These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. These may be omitted by use of the MSB matching operator. 
 
 
 # Examples of CoAP header compression
@@ -520,8 +518,8 @@ needed for proxy operation and caching. This decomposition is illustrated in
 CoAP options are sorted into one of 3 classes, each granted a specific
 type of protection by the protocol:
 
- * Class E: Enrypted options moved to the Inner Plaintext,
- * Class I: Intergrity-protected options included in the AAD for the encryption
+ * Class E: Encrypted options moved to the Inner Plaintext,
+ * Class I: Integrity-protected options included in the AAD for the encryption
  of the Plaintext but otherwise left untouched in the Outer Message,
  * Class U: Unprotected options left untouched in the Outer Message.
 
@@ -532,7 +530,7 @@ may be correctly decrypted at the other end-point.
 
 ~~~~
  
-                      Orignal CoAP Message
+                      Original CoAP Message
                    +-+-+---+-------+---------------+
                    |v|t|tkl| code  |  Msg Id.      |
                    +-+-+---+-------+---------------+....+
@@ -569,9 +567,15 @@ may be correctly decrypted at the other end-point.
 {: #Fig-inner-outer title='OSCORE inner and outer header form a CoAP message'}  
 
 {{Fig-inner-outer}} shows the message format for the OSCORE Message and
-Plaintext. In the Outer Header, the original message code is hidden and
-replaced by a default value (POST or FETCH) depending on whether the original
-message was a Request or a Response. The original message code is put into the
+Plaintext. 
+
+In the Outer Header, the original message code is hidden and replaced by a default
+dummy value. As seen in sections 4.1.3.5 and 4.2 of {{I-D.ietf-core-object-security}},
+the message code is replaced by POST for requests and Changed for responses when Observe 
+is not used. If Observe is used, the message code is replaced by FETCH for requests and Content
+for responses.
+
+The original message code is put into the
 first byte of the Plaintext. Following the message code come the class E options
 and if present the original message Payload preceded by its payload marker.
 
@@ -580,6 +584,12 @@ Security Context parameters and eventually any class I options from the
 Outer Header. Currently no CoAP options are marked class I. The resulting
 Ciphertext becomes the new Payload of the OSCORE message, as illustrated in
 {{Fig-full-oscore}}.
+
+This Ciphertext is, as defined in RFC 5116, the concatenation of the
+encrypted Plaintext and its authentication tag. Note that Inner Compression only 
+affects the Plaintext before encryption, thus we can only aim to reduce this first,
+variable length component of the Ciphertext. The authentication tag is fixed in 
+length and considered part of the cost of protection.
 
 ~~~~
  
@@ -607,7 +617,13 @@ Ciphertext becomes the new Payload of the OSCORE message, as illustrated in
 
 The SCHC Compression scheme consists of compressing both the Plaintext before
 encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-Compression}}.
-This way compression reaches all fields of the original CoAP message.   
+
+This translates into a segmented process where SCHC compression is applied independently in 
+2 stages, each with its corresponding set of rules. Throughout this draft we refer to them
+simply as the Inner SCHC Rules and the Outer SCHC Rules. This way compression reaches all 
+fields of the original CoAP message.   
+
+Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.
 
 ~~~~
      Outer Message                             OSCORE Plaintext
@@ -704,11 +720,9 @@ Original msg length:   10
 ~~~~
 {: #Fig-CONTENT-temp title='CoAP CONTENT Response'}
 
-
 The SCHC Rules for the Inner Compression include all fields that are already
 present in a regular CoAP message, what matters is the order of appearance and
 inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rules}}.
-
 
 ~~~~
  Rule ID 0
@@ -724,49 +738,221 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
-The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
-fields. Here we mask off the repeated bits (most importantly the flag and size
-bits) with the MSB Mathing Operator.
+{{Fig-Inner-Compression-GET}} shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message. 
 
+In this case the original message has no payload and its resulting Plaintext can be compressed up to only 1 byte (size of the Rule ID). The AEAD algorithm preserves this length in its first output, but also yields a fixed-size tag which cannot be compressed and must be included in the OSCORE message. This translates into an overhead in total message length, which limits the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
+
+~~~~
+   ________________________________________________________
+  |                                                        |
+  | OSCORE Plaintext                                       |
+  |                                                        |
+  | 0x01bb74656d7065726174757265  (13 bytes)               |
+  |                                                        |
+  | 0x01 Request Code GET                                  |
+  |                                                        |
+  |      bb74656d7065726174757265 Option 11: URI_PATH      |
+  |                               Value = temperature      |
+  |________________________________________________________|
+
+                              |
+                              |
+                              | Inner SCHC Compression
+                              |
+                              v
+                _________________________________
+               |                                 |
+               | Compressed Plaintext            |
+               |                                 |
+               | 0x00                            |
+               |                                 |
+               | Rule ID = 0x00 (1 byte)         |
+               | (No residue)                    |
+               |_________________________________|
+
+                              |
+                              | AEAD Encryption
+                              |  (piv = 0x04)
+                              v
+         _________________________________________________
+        |                                                 |
+        |  encrypted_plaintext = 0xa2 (1 byte)            |
+        |  tag = 0xc54fe1b434297b62 (8 bytes)             |
+        |                                                 |
+        |  ciphertext = 0xa2c54fe1b434297b62 (9 bytes)    |
+        |_________________________________________________|
+
+~~~~
+{: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
+
+
+In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this we incur the overhead from the tag bytes as before.
+
+~~~~
+   ________________________________________________________
+  |                                                        |
+  | OSCORE Plaintext                                       |
+  |                                                        |
+  | 0x45ff32332043  (6 bytes)                              |
+  |                                                        |
+  | 0x45 Successful Response Code 69 "2.05 Content"        |
+  |                                                        |
+  |     ff Payload marker                                  |
+  |                                                        |
+  |       32332043 Payload                                 |
+  |________________________________________________________|
+
+                              |
+                              |
+                              | Inner SCHC Compression
+                              |
+                              v
+         __________________________________________
+        |                                          |
+        | Compressed Plaintext                     |
+        |                                          |
+        | 0x001919902180 (6 bytes)                 |                                 
+        |                                          |
+        |   00 Rule ID                             |
+        |                                          |
+        |    0b0 (1 bit match-map residue)         |
+        |       0x32332043 >> 1 (shifted payload)  |
+        |                        0b0000000 Padding |
+        |__________________________________________|
+
+                              |
+                              | AEAD Encryption
+                              |  (piv = 0x04)
+                              v
+     _________________________________________________________
+    |                                                         |
+    |  encrypted_plaintext = 0x10c6d7c26cc1 (6 bytes)         |
+    |  tag = 0xe9aef3f2461e0c29 (8 bytes)                     |
+    |                                                         |
+    |  ciphertext = 0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes) |
+    |_________________________________________________________|
+
+~~~~
+{: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
+
+The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
+fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to be Outer SCHC compressed.
+
+~~~~
+Protected message:
+==================
+0x4102000182d7080904636c69656e74ffa2c54fe1b434297b62
+(25 bytes)
+
+Header:
+0x4102
+01   Ver
+  00   CON
+    0001   tkl
+        00000010   Request Code 2 "POST"
+
+0x0001 = mid
+0x82 = token
+
+Options:
+0xd7080904636c69656e74 (10 bytes)
+Option 21: OBJECT_SECURITY
+Value = 0x0904636c69656e74
+          09 = 000 0 1 001 Flag byte
+                   h k  n
+            04 piv
+              636c69656e74 kid
+
+
+0xFF  Payload marker
+Payload:
+0xa2c54fe1b434297b62 (9 bytes)
+~~~~
+{: #Fig-Protected-Compressed-GET title='Protected and Inner SCHC Compressed GET Request'}
+
+
+~~~~
+Protected message:
+==================
+0x6144000182d008ff10c6d7c26cc1e9aef3f2461e0c29
+(22 bytes)
+
+Header:
+0x6144
+01   Ver
+  10   ACK
+    0001   tkl
+        01000100   Successful Response Code 68 "2.04 Changed"
+
+0x0001 = mid
+0x82 = token
+
+Options:
+0xd008 (2 bytes)
+Option 21: OBJECT_SECURITY
+Value = b''
+
+0xFF  Payload marker
+Payload:
+0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes)
+~~~~
+{: #Fig-Protected-Compressed-CONTENT title='Protected and Inner SCHC Compressed CONTENT Response'}
+
+For the flag bits, a number of compression methods could prove useful depending on the application. The simplest alternative is to provide a fixed value for the flags, combining MO equal and CDA not-sent. This saves most bits but could hinder flexibility. Otherwise, match-mapping could allow to choose from a number of configurations of interest to the exchange. If neither of these alternatives is desirable, MSB could be used to mask off the 3 hard-coded most significant bits. 
+
+Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.
+
+The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as may be found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
+
+The size s included in the kid context field may be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
+
+{{Fig-Outer-Rules}} shows a possible set of Outer Rules to compress the Outer Header. 
 
 ~~~~
 Rule ID 0
-+---------------+--+--+--------------+---------+-----------++------------+
-| Field         |FP|DI|    Target    |   MO    |     CDA   ||    Sent    |
-|               |  |  |    Value     |         |           ||   [bits]   |
-+---------------+--+--+--------------+---------+-----------++------------+ 
-|CoAP version   |  |bi|      01      |equal    |not-sent   ||            |
-|CoAP Type      |  |up|      0       |equal    |not-sent   ||            |
-|CoAP Type      |  |dw|      2       |equal    |not-sent   ||            |
-|CoAP TKL       |  |bi|      1       |equal    |not-sent   ||            |
-|CoAP Code      |  |up|      2       |equal    |not-sent   ||            |
-|CoAP Code      |  |dw|      68      |equal    |not-sent   ||            |
-|CoAP MID       |  |bi|     0000     |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token     |  |bi|     0x80     |MSB(5)   |LSB        ||TTT         |
-|CoAP OSCORE_piv|  |up|    0x0900    |MSB(12)  |LSB        ||PPPP        |
-|COAP OSCORE_kid|  |up|b'\x06client' |MSB(52)  |LSB        ||KKKK        |
-|CoAP OSCORE_piv|  |dw|     b''      |equal    |not-sent   ||            |
-|COAP Option-End|  |dw|     0xFF     |equal    |not-sent   ||            |
-+---------------+--+--+--------------+---------+-----------++------------+
++-------------------+--+--+--------------+---------+-----------++------------+
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||    Sent    |
+|                   |  |  |    Value     |         |           ||   [bits]   |
++-------------------+--+--+--------------+---------+-----------++------------+ 
+|CoAP version       |  |bi|      01      |equal    |not-sent   ||            |
+|CoAP Type          |  |up|      0       |equal    |not-sent   ||            |
+|CoAP Type          |  |dw|      2       |equal    |not-sent   ||            |
+|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||            |
+|CoAP Code          |  |up|      2       |equal    |not-sent   ||            |
+|CoAP Code          |  |dw|      68      |equal    |not-sent   ||            |
+|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM        |
+|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT         |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||            |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP        |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK        |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||            |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||            |
+|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||            |
++-------------------+--+--+--------------+---------+-----------++------------+
 ~~~~
 {: #Fig-Outer-Rules title='Outer SCHC Rules'}
 
-Next we show a dump of the compressed message:
+
+
+
+When these Outer Rules are applied to our example GET Request and CONTENT Response, we get the resulting messages {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
 
 ~~~~
 Compressed message:
 ==================
-0x00291287f0a5c4833760d170
-0x00 = Rule ID
-
-piv = 0x04
+0x001489458a9fc3686852f6c4 (12 bytes)
+0x00 Rule ID
+    1489 Compression Residue
+        458a9fc3686852f6c4 Padded payload
 
 Compression residue:
-0b0001 010 0100 0100 (15 bits -> 2 bytes with padding)
-  mid  tkn piv   kid
+0b 0001 010 0100 0100 (15 bits -> 2 bytes with padding)
+    mid tkn piv  kid
 
 Payload
-0xa1fc297120cdd8345c
+0xa2c54fe1b434297b62 (9 bytes)
 
 Compressed message length: 12 bytes
 ~~~~
@@ -775,15 +961,16 @@ Compressed message length: 12 bytes
 ~~~~
 Compressed message:
 ==================
-0x0015f4de9cb814c96aed9b1d981a3a58
-0x00 = Rule ID
-
+0x0014218daf84d983d35de7e48c3c1852 (16 bytes)
+0x00 Rule ID
+    14 Compression residue
+      218daf84d983d35de7e48c3c1852 Padded payload
 Compression residue:
-0b0001 010  (7 bits -> 1 byte with padding)
-  mid  tkn 
+0b0001 010 (7 bits -> 1 byte with padding)
+  mid  tkn
 
 Payload
-0xfa6f4e5c0a64b576cd8ecc0d1d2c
+0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes)
 
 Compressed msg length: 16 bytes
 ~~~~
@@ -791,7 +978,7 @@ Compressed msg length: 16 bytes
 
 For contrast, we compare these results with what would be obtained by SCHC
 compressing the original CoAP messages without protecting them with OSCORE. To
-do this, we compress the CoAP mesages according to the SCHC rules in {{Fig-NoOsc-Rules}}.
+do this, we compress the CoAP messages according to the SCHC rules in {{Fig-NoOsc-Rules}}.
 
 ~~~~
 Rule ID 1
