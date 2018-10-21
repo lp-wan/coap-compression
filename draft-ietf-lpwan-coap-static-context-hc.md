@@ -159,7 +159,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field id to appears several times in the
   rule, the Field Position (FP) removes ambiguities for the matching operation. 
 
-* Field size defined in the CoAP protocol can be to large regarding LPWAN traffic constraints. 
+* Field size defined in the CoAP protocol can be too large regarding LPWAN traffic constraints. 
   This is particularly true for the message ID field or Token field. The use of MSB MO can be 
   used to reduce the information carried on LPWANs.
   
@@ -200,7 +200,7 @@ All the response codes should be compressed with a SCHC rule.
  
 ## CoAP Message ID field
 
-This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message has a retransmission. After this period, it will be processed as a new messages.
+This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message as a retransmission. After this period, it will be processed as a new messages.
 
 In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue. 
 
@@ -210,9 +210,9 @@ In case the Device is a server, client may be located outside of the LPWAN area 
 
 Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.
 
-Token Length is processed as a tradition protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwise it will have to the send as a compression residue.
+Token Length is processed as any protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwise it will have to the send as a compression residue.
 
-Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as "TKL" must be used. This function informs the SCHC C/D that the length of this field has to be read from the Token Length field. 
+Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as "TKL" must be used and length do not have to the sent with the residue. During the decompression, this function returns the value contained in the Token Length field. 
 
 
 # CoAP options
@@ -221,7 +221,7 @@ Token Value size should not be defined directly in the rule in the Field Length 
 
 These field are both unidirectional and must not be set to bidirectional in a rule entry.
 
-If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If not the possible, the value as to be sent as a residue (fixed or variable length). 
+If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length). 
 
 
 ## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
@@ -259,7 +259,7 @@ URI-Path     3  up             ignore   value-sent
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
 
-In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping was not allowed, a 2 bits residue whould have been needed.
+In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping was not allowed, a 2 bits residue is needed.
 
 
 ### Variable length Uri-Path and Uri-Query
@@ -300,10 +300,10 @@ These fields are unidirectional and must not be set to bidirectional in a rule e
 They are used only by the client to access to a specific resource and are never found 
 in server response.
 
-If the field value must be sent, TV is not set, MO is set to "ignore" and CDF is set
+If the field value must be sent, TV is not set, MO is set to "ignore" and CDA is set
 to "value-sent. A mapping can also be used.
 
-Otherwise the TV is set to the value, MO is set to "equal" and CDF is set to "not-sent"
+Otherwise the TV is set to the value, MO is set to "equal" and CDA is set to "not-sent"
 
 
 ## CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields
@@ -324,18 +324,18 @@ They are compatible. If a block option is used, its content must be sent as a co
 ## Observe
 
 {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
-CDF is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
-To reduce the transmission size either the device implementation should limit the value 
-increase or a proxy can modify the incrementation.
+CDA is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
+To reduce the transmission size either the device implementation should limit the delta between two consecutive value 
+or a proxy can modify the incrementation.
 
-Since RST message may be sent to inform a server that the client do not require Observe
+Since RST message may be sent to inform a server that the client does not require Observe
 response, a rule must allow the transmission of this message.
 
 ## No-Response
 
 {{rfc7967}}  defines an No-Response option limiting the responses made by a server to 
 a request. If the value is not known by both ends, then TV is set to this value, MO is 
-set to "equal" and CDF is set to "not-sent".
+set to "equal" and CDA is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDA to "value-sent". A matching list can also be used to reduce the size. 
@@ -384,7 +384,7 @@ The first byte is used for flags that specify the contents of the OSCORE
 option. The 3 most significant bits are reserved and always set to 0. Bit h, 
 when set, indicates the presence of the kid context field in the option. Bit k,
 when set, indicates the presence of a kid field. The 3 least significant bits
-n indicate the length of the piv field in bytes, n = 0 taken to mean that no piv 
+n indicate the length of the piv field in bytes. When n = 0, no piv 
 is present.
 
 After the flag byte follow the piv field, kid context field and kid field in
@@ -392,17 +392,16 @@ order and if present; the length of the kid context field is encoded in the
 first byte denoting by s the length of the kid context in bytes.
 
 This draft recommends to implement a parser that is able to identify the OSCORE
-Option and the fields it contains - this makes it possible to do a preliminary processing
-of the message in preparation for regular SCHC compression.
+Option and the fields it contains.
 
-Conceptually, we discern up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. It is thus recommended that the parser split the OSCORE option into the 4 subsequent fields:
+Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. It is thus recommended that the parser split the OSCORE option into the 4 subsequent fields:
 
  * CoAP OSCORE_flags,
  * CoAP OSCORE_piv,
  * CoAP OSCORE_kidctxt,
  * CoAP OSCORE_kid.
 
-These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. These may be omitted by use of the MSB matching operator. 
+These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size may be reduced using the MSB matching operator. 
 
 
 # Examples of CoAP header compression
@@ -469,47 +468,17 @@ code and the least 9 significant bits of Message ID.
 {: #Fig-CoAP-3 title='Compression with global addresses'}
 
 
-##Complete exchange
-
-In that example, the Thing is using CoMi and sends queries for 2 SID. 
-
-~~~~
-
-  CON 
-  MID=0x0012     |                         |
-  POST           |                         |   
-  Accept X       |                         | 
-  /c/k=AS        |------------------------>|
-                 |                         |
-                 |                         |
-                 |<------------------------|  ACK MID=0x0012
-                 |                         |  0.00
-                 |                         |
-                 |                         |
-                 |<------------------------|   CON
-                 |                         |   MID=0X0034
-                 |                         |   Content-Format X
-ACK MID=0x0034   |------------------------>|
-0.00           
-
-~~~~
-
-
-
 ## OSCORE Compression
 {: #Sec-OSCORE-Examples}
 
-OSCORE aims to solve the problem of end-to-end encryption for CoAP messages,
-which are otherwise required to terminate their TLS or DTLS protection at the
-proxy, as discussed in Section 11.2 of {{rfc7252}}. CoAP proxies are men-in-the-middle,
-but not all of the information they have access to is necessary for their 
-operation. The goal, therefore, is to hide as much of the message as possible
+OSCORE aims to solve the problem of end-to-end encryption for CoAP messages.
+The goal, therefore, is to hide as much of the message as possible
 while still enabling proxy operation.
 
 Conceptually this is achieved by splitting the CoAP message into an Inner
 Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensible
 information which is not necessary for proxy operation. This, in turn, is the
-part of the message which can be encrypted and need not be decrypted until it
+part of the message which can be encrypted until it
 reaches its end destination. The Outer Message acts as a shell matching the 
 format of a regular CoAP message, and includes all Options and information 
 needed for proxy operation and caching. This decomposition is illustrated in 
@@ -576,8 +545,8 @@ is not used. If Observe is used, the message code is replaced by FETCH for reque
 for responses.
 
 The original message code is put into the
-first byte of the Plaintext. Following the message code come the class E options
-and if present the original message Payload preceded by its payload marker.
+first byte of the Plaintext. Following the message code, the class E options comes
+and if present the original message Payload is preceded by its payload marker.
 
 The Plaintext is now encrypted by an AEAD algorithm which integrity protects
 Security Context parameters and eventually any class I options from the
@@ -619,8 +588,8 @@ The SCHC Compression scheme consists of compressing both the Plaintext before
 encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-Compression}}.
 
 This translates into a segmented process where SCHC compression is applied independently in 
-2 stages, each with its corresponding set of rules. Throughout this draft we refer to them
-simply as the Inner SCHC Rules and the Outer SCHC Rules. This way compression reaches all 
+2 stages, each with its corresponding set of rules, with the Inner SCHC Rules and the Outer SCHC Rules. 
+This way compression are applied to all 
 fields of the original CoAP message.   
 
 Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.
@@ -663,10 +632,10 @@ Note that since the Inner part of the message can only be decrypted by the corre
 
 ## Example OSCORE Compression
 
-In what follows we present an example GET Request and consequent CONTENT
-Response and show a possible set of rules for the Inner and Outer SCHC
-Compression. We then show a dump of the results and contrast SCHC + OSCORE
-performance with SCHC + COAP performance. This gives an approximation to the
+An example is given with a GET Request and its consequent CONTENT
+Response. A possible set of rules for the Inner and Outer SCHC
+Compression are shown. A dump of the results and contrast SCHC + OSCORE
+performance with SCHC + COAP performance is also listed. This gives an approximation to the
 cost of security with SCHC-OSCORE.
 
 Our first example CoAP message is the GET Request in {{Fig-GET-temp}}
@@ -721,7 +690,7 @@ Original msg length:   10
 {: #Fig-CONTENT-temp title='CoAP CONTENT Response'}
 
 The SCHC Rules for the Inner Compression include all fields that are already
-present in a regular CoAP message, what matters is the order of appearance and
+present in a regular CoAP message, what is important is the order of appearance and
 inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rules}}.
 
 ~~~~
@@ -786,7 +755,7 @@ In this case the original message has no payload and its resulting Plaintext can
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this we incur the overhead from the tag bytes as before.
+In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, incurs the overhead from the tag bytes as before.
 
 ~~~~
    ________________________________________________________
@@ -836,7 +805,7 @@ In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTE
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
 The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
-fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to be Outer SCHC compressed.
+fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to be in the Outer SCHC compressed.
 
 ~~~~
 Protected message:
@@ -898,11 +867,11 @@ Payload:
 ~~~~
 {: #Fig-Protected-Compressed-CONTENT title='Protected and Inner SCHC Compressed CONTENT Response'}
 
-For the flag bits, a number of compression methods could prove useful depending on the application. The simplest alternative is to provide a fixed value for the flags, combining MO equal and CDA not-sent. This saves most bits but could hinder flexibility. Otherwise, match-mapping could allow to choose from a number of configurations of interest to the exchange. If neither of these alternatives is desirable, MSB could be used to mask off the 3 hard-coded most significant bits. 
+For the flag bits, a number of compression methods could prove to be useful depending on the application. The simplest alternative is to provide a fixed value for the flags, combining MO equal and CDA not-sent. This saves most bits but could hinder flexibility. Otherwise, match-mapping could allow to choose from a number of configurations of interest to the exchange. If neither of these alternatives is desirable, MSB could be used to mask off the 3 hard-coded most significant bits. 
 
 Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.
 
-The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as may be found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
+The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as being found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
 
 The size s included in the kid context field may be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
 
@@ -910,34 +879,34 @@ The size s included in the kid context field may be masked off with CDA MSB. The
 
 ~~~~
 Rule ID 0
-+-------------------+--+--+--------------+---------+-----------++------------+
-| Field             |FP|DI|    Target    |   MO    |     CDA   ||    Sent    |
-|                   |  |  |    Value     |         |           ||   [bits]   |
-+-------------------+--+--+--------------+---------+-----------++------------+ 
-|CoAP version       |  |bi|      01      |equal    |not-sent   ||            |
-|CoAP Type          |  |up|      0       |equal    |not-sent   ||            |
-|CoAP Type          |  |dw|      2       |equal    |not-sent   ||            |
-|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||            |
-|CoAP Code          |  |up|      2       |equal    |not-sent   ||            |
-|CoAP Code          |  |dw|      68      |equal    |not-sent   ||            |
-|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT         |
-|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||            |
-|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP        |
-|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK        |
-|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||            |
-|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||            |
-|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||            |
-|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||            |
-|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||            |
-+-------------------+--+--+--------------+---------+-----------++------------+
++-------------------+--+--+--------------+---------+-----------++--------+
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
+|                   |  |  |    Value     |         |           || [bits] |
++-------------------+--+--+--------------+---------+-----------++--------+ 
+|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
+|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
+|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
+|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
+|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
+|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
+|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
+|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
+|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
++-------------------+--+--+--------------+---------+-----------++--------+
 ~~~~
 {: #Fig-Outer-Rules title='Outer SCHC Rules'}
 
 
 
 
-When these Outer Rules are applied to our example GET Request and CONTENT Response, we get the resulting messages {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
+When these Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
 
 ~~~~
 Compressed message:
