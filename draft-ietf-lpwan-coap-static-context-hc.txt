@@ -625,7 +625,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
    +-------------+--+--+--+------+---------+-------------++------------+
    |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
    |CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
-   |CoAP Type    |  |  |dw| CON  |equal    |not-sent   ||            |
+   |CoAP Type    |  |  |dw| CON  |equal    |not-sent     ||            |
    |CoAP Type    |  |  |up|[ACK, |         |             ||            |
    |             |  |  |  | RST] |match-map|matching-sent|| T          |
    |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
