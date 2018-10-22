@@ -416,12 +416,12 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 ~~~~
  Rule ID 1
 +-------------+--+--+--+------+---------+-------------++------------+
-| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
 |CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
-|CoAP Type    |  |  |dw| CON  |equal    |not-sent   ||            |
+|CoAP Type    |  |  |dw| CON  |equal    |not-sent     ||            |
 |CoAP Type    |  |  |up|[ACK, |         |             ||            | 
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
