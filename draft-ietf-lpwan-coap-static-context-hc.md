@@ -589,8 +589,7 @@ encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-C
 
 This translates into a segmented process where SCHC compression is applied independently in 
 2 stages, each with its corresponding set of rules, with the Inner SCHC Rules and the Outer SCHC Rules. 
-This way compression are applied to all 
-fields of the original CoAP message.   
+This way compression is applied to all fields of the original CoAP message.   
 
 Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.
 
@@ -634,7 +633,7 @@ Note that since the Inner part of the message can only be decrypted by the corre
 
 An example is given with a GET Request and its consequent CONTENT
 Response. A possible set of rules for the Inner and Outer SCHC
-Compression are shown. A dump of the results and contrast SCHC + OSCORE
+Compression is shown. A dump of the results and a contrast between SCHC + OSCORE
 performance with SCHC + COAP performance is also listed. This gives an approximation to the
 cost of security with SCHC-OSCORE.
 
@@ -755,7 +754,7 @@ In this case the original message has no payload and its resulting Plaintext can
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, incurs the overhead from the tag bytes as before.
+In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, the overhead from the tag bytes is incurred as before.
 
 ~~~~
    ________________________________________________________
@@ -805,7 +804,7 @@ In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTE
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
 The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
-fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to be in the Outer SCHC compressed.
+fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to go through Outer SCHC Compression.
 
 ~~~~
 Protected message:
@@ -871,7 +870,7 @@ For the flag bits, a number of compression methods could prove to be useful depe
 
 Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.
 
-The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as being found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
+The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
 
 The size s included in the kid context field may be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
 
@@ -906,7 +905,7 @@ Rule ID 0
 
 
 
-When these Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
+These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
 
 ~~~~
 Compressed message:
