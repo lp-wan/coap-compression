@@ -313,7 +313,7 @@ address {
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-04" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-10-21" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-10-22" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP" />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  CoAP header structure differs from IPv6 and UDP protocols since the CoAP" />
 
@@ -337,7 +337,7 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: April 24, 2019</td>
+<td class="left">Expires: April 25, 2019</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
@@ -350,7 +350,7 @@ address {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">October 21, 2018</td>
+<td class="right">October 22, 2018</td>
 </tr>
 
     	
@@ -366,7 +366,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 24, 2019.</p>
+<p>This Internet-Draft will expire on April 25, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -773,7 +773,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 </pre>
 <p class="figure">Figure 8: OSCORE message</p>
 <p id="rfc.section.7.2.p.11">The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see <a href="#Fig-OSCORE-Compression" class="xref">Figure 9</a>.</p>
-<p id="rfc.section.7.2.p.12">This translates into a segmented process where SCHC compression is applied independently in 2 stages, each with its corresponding set of rules, with the Inner SCHC Rules and the Outer SCHC Rules.  This way compression are applied to all fields of the original CoAP message.</p>
+<p id="rfc.section.7.2.p.12">This translates into a segmented process where SCHC compression is applied independently in 2 stages, each with its corresponding set of rules, with the Inner SCHC Rules and the Outer SCHC Rules.  This way compression is applied to all fields of the original CoAP message.</p>
 <p id="rfc.section.7.2.p.13">Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.</p>
 <div id="rfc.figure.9"></div>
 <div id="Fig-OSCORE-Compression"></div>
@@ -815,7 +815,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <h1 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> <a href="#example-oscore-compression" id="example-oscore-compression">Example OSCORE Compression</a>
 </h1>
-<p id="rfc.section.7.3.p.1">An example is given with a GET Request and its consequent CONTENT Response. A possible set of rules for the Inner and Outer SCHC Compression are shown. A dump of the results and contrast SCHC + OSCORE performance with SCHC + COAP performance is also listed. This gives an approximation to the cost of security with SCHC-OSCORE.</p>
+<p id="rfc.section.7.3.p.1">An example is given with a GET Request and its consequent CONTENT Response. A possible set of rules for the Inner and Outer SCHC Compression is shown. A dump of the results and a contrast between SCHC + OSCORE performance with SCHC + COAP performance is also listed. This gives an approximation to the cost of security with SCHC-OSCORE.</p>
 <p id="rfc.section.7.3.p.2">Our first example CoAP message is the GET Request in <a href="#Fig-GET-temp" class="xref">Figure 10</a></p>
 <div id="rfc.figure.10"></div>
 <div id="Fig-GET-temp"></div>
@@ -929,7 +929,7 @@ Original msg length:   10
 
 </pre>
 <p class="figure">Figure 13: Plaintext compression and encryption for GET Request</p>
-<p id="rfc.section.7.3.p.7">In <a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 14</a> we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, incurs the overhead from the tag bytes as before.</p>
+<p id="rfc.section.7.3.p.7">In <a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 14</a> we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, the overhead from the tag bytes is incurred as before.</p>
 <div id="rfc.figure.14"></div>
 <div id="Fig-Inner-Compression-CONTENT"></div>
 <pre>
@@ -978,7 +978,7 @@ Original msg length:   10
 
 </pre>
 <p class="figure">Figure 14: Plaintext compression and encryption for CONTENT Response</p>
-<p id="rfc.section.7.3.p.8">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 17</a>) must process the OSCORE Options fields. In <a href="#Fig-Protected-Compressed-GET" class="xref">Figure 15</a> and <a href="#Fig-Protected-Compressed-CONTENT" class="xref">Figure 16</a> we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to be in the Outer SCHC compressed.</p>
+<p id="rfc.section.7.3.p.8">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 17</a>) must process the OSCORE Options fields. In <a href="#Fig-Protected-Compressed-GET" class="xref">Figure 15</a> and <a href="#Fig-Protected-Compressed-CONTENT" class="xref">Figure 16</a> we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to go through Outer SCHC Compression.</p>
 <div id="rfc.figure.15"></div>
 <div id="Fig-Protected-Compressed-GET"></div>
 <pre>
@@ -1042,7 +1042,7 @@ Payload:
 <p class="figure">Figure 16: Protected and Inner SCHC Compressed CONTENT Response</p>
 <p id="rfc.section.7.3.p.9">For the flag bits, a number of compression methods could prove to be useful depending on the application. The simplest alternative is to provide a fixed value for the flags, combining MO equal and CDA not-sent. This saves most bits but could hinder flexibility. Otherwise, match-mapping could allow to choose from a number of configurations of interest to the exchange. If neither of these alternatives is desirable, MSB could be used to mask off the 3 hard-coded most significant bits.</p>
 <p id="rfc.section.7.3.p.10">Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.</p>
-<p id="rfc.section.7.3.p.11">The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as being found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.</p>
+<p id="rfc.section.7.3.p.11">The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.</p>
 <p id="rfc.section.7.3.p.12">The size s included in the kid context field may be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.</p>
 <p><a href="#Fig-Outer-Rules" class="xref">Figure 17</a> shows a possible set of Outer Rules to compress the Outer Header.</p>
 <div id="rfc.figure.17"></div>
@@ -1072,7 +1072,7 @@ Rule ID 0
 +-------------------+--+--+--------------+---------+-----------++--------+
 </pre>
 <p class="figure">Figure 17: Outer SCHC Rules</p>
-<p id="rfc.section.7.3.p.14">When these Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 18</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 19</a>.</p>
+<p id="rfc.section.7.3.p.14">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 18</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 19</a>.</p>
 <div id="rfc.figure.18"></div>
 <div id="Fig-Compressed-GET"></div>
 <pre>
