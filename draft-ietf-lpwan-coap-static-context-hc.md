@@ -416,7 +416,7 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 ~~~~
  Rule ID 1
 +-------------+--+--+--+------+---------+-------------++------------+
-| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+| Field.      |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
@@ -695,7 +695,7 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 ~~~~
  Rule ID 0
 +----------------+--+--+-----------+-----------+-----------++--------+
-| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
+| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
 |                |  |  |  Value    |           |           || [bits] |
 +----------------+--+--+-----------+-----------+-----------++--------+
 |CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
@@ -879,7 +879,7 @@ The size s included in the kid context field may be masked off with CDA MSB. The
 ~~~~
 Rule ID 0
 +-------------------+--+--+--------------+---------+-----------++--------+
-| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
 |                   |  |  |    Value     |         |           || [bits] |
 +-------------------+--+--+--------------+---------+-----------++--------+ 
 |CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
@@ -951,7 +951,7 @@ do this, we compress the CoAP messages according to the SCHC rules in {{Fig-NoOs
 ~~~~
 Rule ID 1
 +---------------+--+--+-----------+---------+-----------++------------+
-| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
+| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
 |               |  |  |  Value    |         |           ||   [bits]   |
 +---------------+--+--+-----------+---------+-----------++------------+ 
 |CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
