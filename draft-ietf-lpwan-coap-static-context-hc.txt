@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Informational                                L. Toutain
-Expires: April 25, 2019           Institut MINES TELECOM; IMT Atlantique
+Expires: April 26, 2019           Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                        October 22, 2018
+                                                        October 23, 2018
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 25, 2019.
+   This Internet-Draft will expire on April 26, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 1]
+Minaburo, et al.         Expires April 26, 2019                 [Page 1]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 2]
+Minaburo, et al.         Expires April 26, 2019                 [Page 2]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -165,7 +165,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 3]
+Minaburo, et al.         Expires April 26, 2019                 [Page 3]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -221,7 +221,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 4]
+Minaburo, et al.         Expires April 26, 2019                 [Page 4]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -277,7 +277,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 5]
+Minaburo, et al.         Expires April 26, 2019                 [Page 5]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -333,7 +333,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 6]
+Minaburo, et al.         Expires April 26, 2019                 [Page 6]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -389,7 +389,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 7]
+Minaburo, et al.         Expires April 26, 2019                 [Page 7]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -445,7 +445,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 8]
+Minaburo, et al.         Expires April 26, 2019                 [Page 8]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -501,7 +501,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                 [Page 9]
+Minaburo, et al.         Expires April 26, 2019                 [Page 9]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -557,7 +557,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 10]
+Minaburo, et al.         Expires April 26, 2019                [Page 10]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -613,14 +613,14 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 11]
+Minaburo, et al.         Expires April 26, 2019                [Page 11]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
 
     Rule ID 1
    +-------------+--+--+--+------+---------+-------------++------------+
-   | Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+   | Field.      |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
    |             |  |  |  |Value | Opera.  |             ||   [bits]   |
    +-------------+--+--+--+------+---------+-------------++------------+
    |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
@@ -669,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 12]
+Minaburo, et al.         Expires April 26, 2019                [Page 12]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -725,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 13]
+Minaburo, et al.         Expires April 26, 2019                [Page 13]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -781,7 +781,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 14]
+Minaburo, et al.         Expires April 26, 2019                [Page 14]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -837,7 +837,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 15]
+Minaburo, et al.         Expires April 26, 2019                [Page 15]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -893,7 +893,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 16]
+Minaburo, et al.         Expires April 26, 2019                [Page 16]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -949,7 +949,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 17]
+Minaburo, et al.         Expires April 26, 2019                [Page 17]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 18]
+Minaburo, et al.         Expires April 26, 2019                [Page 18]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 19]
+Minaburo, et al.         Expires April 26, 2019                [Page 19]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 20]
+Minaburo, et al.         Expires April 26, 2019                [Page 20]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 21]
+Minaburo, et al.         Expires April 26, 2019                [Page 21]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 22]
+Minaburo, et al.         Expires April 26, 2019                [Page 22]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 23]
+Minaburo, et al.         Expires April 26, 2019                [Page 23]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1341,7 +1341,7 @@ Rule ID 0
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 24]
+Minaburo, et al.         Expires April 26, 2019                [Page 24]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 25]
+Minaburo, et al.         Expires April 26, 2019                [Page 25]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 26]
+Minaburo, et al.         Expires April 26, 2019                [Page 26]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1470,10 +1470,11 @@ Internet-Draft           LPWAN CoAP compression             October 2018
               progress), August 2018.
 
    [I-D.ietf-lpwan-ipv6-static-context-hc]
-              Minaburo, A., Toutain, L., Gomez, C., and D. Barthel,
-              "LPWAN Static Context Header Compression (SCHC) and
-              fragmentation for IPv6 and UDP", draft-ietf-lpwan-ipv6-
-              static-context-hc-16 (work in progress), June 2018.
+              Minaburo, A., Toutain, L., Gomez, C., Barthel, D., and J.
+              Zuniga, "LPWAN Static Context Header Compression (SCHC)
+              and fragmentation for IPv6 and UDP", draft-ietf-lpwan-
+              ipv6-static-context-hc-17 (work in progress), October
+              2018.
 
    [I-D.toutain-core-time-scale]
               Minaburo, A. and L. Toutain, "CoAP Time Scale Option",
@@ -1508,8 +1509,7 @@ Authors' Addresses
 
 
 
-
-Minaburo, et al.         Expires April 25, 2019                [Page 27]
+Minaburo, et al.         Expires April 26, 2019                [Page 27]
 
 Internet-Draft           LPWAN CoAP compression             October 2018
 
@@ -1565,4 +1565,4 @@ Internet-Draft           LPWAN CoAP compression             October 2018
 
 
 
-Minaburo, et al.         Expires April 25, 2019                [Page 28]
+Minaburo, et al.         Expires April 26, 2019                [Page 28]
