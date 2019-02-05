@@ -100,11 +100,11 @@ Table of Contents
      7.1.  Mandatory header with CON message . . . . . . . . . . . .  12
      7.2.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  13
      7.3.  Example OSCORE Compression  . . . . . . . . . . . . . . .  17
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .  27
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
+   9.  Security considerations . . . . . . . . . . . . . . . . . . .  27
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  27
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  27
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
-
-
-
 
 
 
@@ -1478,7 +1478,20 @@ Internet-Draft           LPWAN CoAP compression            February 2019
    As can be seen, the difference between applying SCHC + OSCORE as
    compared to regular SCHC + COAP is about 10 bytes of cost.
 
-8.  Normative References
+8.  IANA Considerations
+
+   This document has no request to IANA.
+
+9.  Security considerations
+
+   This document does not have any more Security consideration than the
+   ones already raised on [I-D.ietf-lpwan-ipv6-static-context-hc]
+
+10.  Acknowledgements
+
+   Thanks to all the persons that have give us feedback
+
+11.  Normative References
 
    [I-D.ietf-core-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
@@ -1493,6 +1506,14 @@ Internet-Draft           LPWAN CoAP compression            February 2019
               ipv6-static-context-hc-18 (work in progress), December
               2018.
 
+
+
+
+Minaburo, et al.         Expires August 9, 2019                [Page 27]
+
+Internet-Draft           LPWAN CoAP compression            February 2019
+
+
    [I-D.toutain-core-time-scale]
               Minaburo, A. and L. Toutain, "CoAP Time Scale Option",
               draft-toutain-core-time-scale-00 (work in progress),
@@ -1502,17 +1523,6 @@ Internet-Draft           LPWAN CoAP compression            February 2019
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/info/rfc7252>.
-
-
-
-
-
-
-
-Minaburo, et al.         Expires August 9, 2019                [Page 27]
-
-Internet-Draft           LPWAN CoAP compression            February 2019
-
 
    [rfc7641]  Hartke, K., "Observing Resources in the Constrained
               Application Protocol (CoAP)", RFC 7641,
@@ -1550,6 +1560,16 @@ Authors' Addresses
    Email: Laurent.Toutain@imt-atlantique.fr
 
 
+
+
+
+
+
+Minaburo, et al.         Expires August 9, 2019                [Page 28]
+
+Internet-Draft           LPWAN CoAP compression            February 2019
+
+
    Ricardo Andreasen
    Universidad de Buenos Aires
    Av. Paseo Colon 850
@@ -1565,4 +1585,40 @@ Authors' Addresses
 
 
 
-Minaburo, et al.         Expires August 9, 2019                [Page 28]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires August 9, 2019                [Page 29]
