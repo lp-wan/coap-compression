@@ -101,7 +101,7 @@ Table of Contents
      7.2.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  13
      7.3.  Example OSCORE Compression  . . . . . . . . . . . . . . .  17
    8.  Normative References  . . . . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 
 
@@ -1434,7 +1434,29 @@ Internet-Draft           LPWAN CoAP compression            February 2019
 
    Compressed msg length: 2
 
+
                Figure 21: CoAP GET Compressed without OSCORE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires August 9, 2019                [Page 26]
+
+Internet-Draft           LPWAN CoAP compression            February 2019
+
 
    Compressed message:
    ==================
@@ -1449,14 +1471,9 @@ Internet-Draft           LPWAN CoAP compression            February 2019
 
    Compressed msg length: 6
 
+
+
              Figure 22: CoAP CONTENT Compressed without OSCORE
-
-
-
-Minaburo, et al.         Expires August 9, 2019                [Page 26]
-
-Internet-Draft           LPWAN CoAP compression            February 2019
-
 
    As can be seen, the difference between applying SCHC + OSCORE as
    compared to regular SCHC + COAP is about 10 bytes of cost.
@@ -1486,6 +1503,17 @@ Internet-Draft           LPWAN CoAP compression            February 2019
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/info/rfc7252>.
 
+
+
+
+
+
+
+Minaburo, et al.         Expires August 9, 2019                [Page 27]
+
+Internet-Draft           LPWAN CoAP compression            February 2019
+
+
    [rfc7641]  Hartke, K., "Observing Resources in the Constrained
               Application Protocol (CoAP)", RFC 7641,
               DOI 10.17487/RFC7641, September 2015,
@@ -1502,17 +1530,6 @@ Internet-Draft           LPWAN CoAP compression            February 2019
               August 2016, <https://www.rfc-editor.org/info/rfc7967>.
 
 Authors' Addresses
-
-
-
-
-
-
-
-Minaburo, et al.         Expires August 9, 2019                [Page 27]
-
-Internet-Draft           LPWAN CoAP compression            February 2019
-
 
    Ana Minaburo
    Acklio
@@ -1540,23 +1557,6 @@ Internet-Draft           LPWAN CoAP compression            February 2019
    Argentina
 
    Email: randreasen@fi.uba.ar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
