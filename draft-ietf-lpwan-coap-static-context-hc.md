@@ -1008,4 +1008,20 @@ Compressed msg length: 6
 As can be seen, the difference between applying SCHC + OSCORE as compared to 
 regular SCHC + COAP is about 10 bytes of cost.
 
+# IANA Considerations
+
+This document has no request to IANA.
+
+# Security considerations {#SecConsiderations}
+
+This document does not have any more Security consideration than the ones already raised on {{I-D.ietf-lpwan-ipv6-static-context-hc}}
+
+# Acknowledgements
+
+Thanks to all the persons that have give us feedback
+
+
+
+
+
 --- back
