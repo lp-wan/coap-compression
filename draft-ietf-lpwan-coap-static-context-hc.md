@@ -49,7 +49,7 @@ normative:
 --- abstract
 
 This draft defines the way SCHC header compression can be applied to CoAP 
-headers. The CoAP header structure differs from IPv6 and UDP protocols since the CoAP  
+headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP  
 use a flexible header with a variable number of options themselves of a variable length.
 The CoAP protocol is asymmetric in its format messages, the format of the header packet in the request messages
 is different than in the response messages. 
