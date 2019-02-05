@@ -971,6 +971,7 @@ This yields the results in {{Fig-GET-temp-no-oscore}} for the Request, and
 {{Fig-CONTENT-temp-no-oscore}} for the Response.
 
 ~~~~
+
 Compressed message:
 ==================
 0x0114
@@ -980,10 +981,13 @@ Compression residue:
 0b00010100 (1 byte)
 
 Compressed msg length: 2
+
 ~~~~
 {: #Fig-GET-temp-no-oscore title='CoAP GET Compressed without OSCORE'}
 
 ~~~~
+
+
 Compressed message:
 ==================
 0x010a32332043
@@ -996,6 +1000,8 @@ Payload
 0x32332043
 
 Compressed msg length: 6
+
+
 ~~~~
 {: #Fig-CONTENT-temp-no-oscore title='CoAP CONTENT Compressed without OSCORE'}
 
