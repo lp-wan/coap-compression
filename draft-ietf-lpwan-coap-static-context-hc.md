@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-05
+docname: draft-ietf-lpwan-coap-static-context-hc-06
 cat: info
 pi:
   symrefs: 'yes'
@@ -49,12 +49,11 @@ normative:
 --- abstract
 
 This draft defines the way SCHC header compression can be applied to CoAP 
-headers.
-CoAP header structure differs from IPv6 and UDP protocols since the CoAP  
-use a flexible header with a variable number of options themselves of a variable length. 
-Another important difference is 
-the asymmetry in the header format used in request and 
-response messages. Most of the compression mechanisms have been introduced in 
+headers. The CoAP header structure differs from IPv6 and UDP protocols since the CoAP  
+use a flexible header with a variable number of options themselves of a variable length.
+The CoAP protocol is asymmetric in its format messages, the format of the header packet in the request messages
+is different than in the response messages. 
+Most of the compression mechanisms have been introduced in 
 {{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to use the SCHC compression
 for CoAP.
 
@@ -178,7 +177,7 @@ This section discusses of the compression of the different CoAP header fields.
 ## CoAP version field
 
 This field is bidirectional and must be elided during the SCHC compression, since it always
-contains  the same value. In the future, if new version of CoAP are defined, new rules ID will 
+contains the same value. In the future, if new version of CoAP are defined, new rules ID will 
 be defined avoiding ambiguities between versions. 
 
 ## CoAP type field
