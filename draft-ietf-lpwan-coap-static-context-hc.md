@@ -332,7 +332,7 @@ response, a rule must allow the transmission of this message.
 
 ## No-Response
 
-{{rfc7967}}  defines an No-Response option limiting the responses made by a server to 
+{{rfc7967}} defines an No-Response option limiting the responses made by a server to 
 a request. If the value is not known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDA is set to "not-sent".
 
