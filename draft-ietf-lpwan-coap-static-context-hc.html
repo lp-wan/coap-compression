@@ -872,15 +872,15 @@ Original msg length:   10
 <div id="Fig-Inner-Rules"></div>
 <pre>
  Rule ID 0
-+----------------+--+--+-----------+-----------+-----------++--------+
-| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
-|                |  |  |  Value    |           |           || [bits] |
-+----------------+--+--+-----------+-----------+-----------++--------+
-|CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
-|CoAP Code       |  |dw|[69,132]   | match-map |match-sent || c      |
-|CoAP Uri-Path   |  |up|temperature|  equal    |not-sent   ||        |
-|COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
-+----------------+--+--+-----------+-----------+-----------++--------+
++---------------+--+--+-----------+-----------+-----------++------+
+| Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
+|               |  |  |  Value    |           |           ||[bits]|
++---------------+--+--+-----------+-----------+-----------++------+
+|CoAP Code      |  |up|   1       |  equal    |not-sent   ||      |
+|CoAP Code      |  |dw|[69,132]   | match-map |match-sent || c    |
+|CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
+|COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
++---------------+--+--+-----------+-----------+-----------++------+
 </pre>
 <p class="figure">Figure 12: Inner SCHC Rules</p>
 <p><a href="#Fig-Inner-Compression-GET" class="xref">Figure 13</a> shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message.</p>
@@ -1049,27 +1049,27 @@ Payload:
 <div id="Fig-Outer-Rules"></div>
 <pre>
 Rule ID 0
-+-------------------+--+--+--------------+---------+-----------++--------+
-| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
-|                   |  |  |    Value     |         |           || [bits] |
-+-------------------+--+--+--------------+---------+-----------++--------+ 
-|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
-|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
-|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
-|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
-|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
-|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
-|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
-|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
-|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
-|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
-|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
-|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
-+-------------------+--+--+--------------+---------+-----------++--------+
++-------------------+--+--+--------------+--------+-----------++------+
+| Field             |FP|DI|    Target    |   MO   |     CDA   || Sent |
+|                   |  |  |    Value     |        |           ||[bits]|
++-------------------+--+--+--------------+--------+-----------++------+ 
+|CoAP version       |  |bi|      01      |equal   |not-sent   ||      |
+|CoAP Type          |  |up|      0       |equal   |not-sent   ||      |
+|CoAP Type          |  |dw|      2       |equal   |not-sent   ||      |
+|CoAP TKL           |  |bi|      1       |equal   |not-sent   ||      |
+|CoAP Code          |  |up|      2       |equal   |not-sent   ||      |
+|CoAP Code          |  |dw|      68      |equal   |not-sent   ||      |
+|CoAP MID           |  |bi|     0000     |MSB(12) |LSB        ||MMMM  |
+|CoAP Token         |  |bi|     0x80     |MSB(5)  |LSB        ||TTT   |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal   |not-sent   ||      |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)  |LSB        ||PPPP  |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52) |LSB        ||KKKK  |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal   |not-sent   ||      |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal   |not-sent   ||      |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal   |not-sent   ||      |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent   ||      |
+|COAP Option-End    |  |dw|     0xFF     |equal   |not-sent   ||      |
++-------------------+--+--+--------------+--------+-----------++------+
 </pre>
 <p class="figure">Figure 17: Outer SCHC Rules</p>
 <p id="rfc.section.7.3.p.14">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 18</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 19</a>.</p>
@@ -1117,21 +1117,21 @@ Compressed msg length: 16 bytes
 <div id="Fig-NoOsc-Rules"></div>
 <pre>
 Rule ID 1
-+---------------+--+--+-----------+---------+-----------++------------+
-| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
-|               |  |  |  Value    |         |           ||   [bits]   |
-+---------------+--+--+-----------+---------+-----------++------------+ 
-|CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
-|CoAP Type      |  |up|    0      |equal    |not-sent   ||            |
-|CoAP Type      |  |dw|    2      |equal    |not-sent   ||            |
-|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||            |
-|CoAP Code      |  |up|    2      |equal    |not-sent   ||            |
-|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||            |
-|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT         |
-|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||            |
-|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
-+---------------+--+--+-----------+---------+-----------++------------+
++---------------+--+--+-----------+---------+-----------++--------+
+| Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
+|               |  |  |  Value    |         |           || [bits] |
++---------------+--+--+-----------+---------+-----------++--------+ 
+|CoAP version   |  |bi|    01     |equal    |not-sent   ||        |
+|CoAP Type      |  |up|    0      |equal    |not-sent   ||        |
+|CoAP Type      |  |dw|    2      |equal    |not-sent   ||        |
+|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||        |
+|CoAP Code      |  |up|    2      |equal    |not-sent   ||        |
+|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||        |
+|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM    |
+|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT     |
+|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
+|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
++---------------+--+--+-----------+---------+-----------++--------+
 </pre>
 <p class="figure">Figure 20: SCHC-CoAP Rules (No OSCORE)</p>
 <p id="rfc.section.7.3.p.16">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 21</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 22</a> for the Response.</p>
