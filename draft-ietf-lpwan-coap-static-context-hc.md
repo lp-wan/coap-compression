@@ -415,7 +415,11 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 ~~~~
  Rule ID 1
 +-------------+--+--+--+------+---------+-------------++------------+
+<<<<<<< Updated upstream
 | Field.      |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+=======
+| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+>>>>>>> Stashed changes
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
@@ -693,6 +697,7 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 
 ~~~~
  Rule ID 0
+<<<<<<< Updated upstream
 +---------------+--+--+-----------+-----------+-----------++------+
 | Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
 |               |  |  |  Value    |           |           ||[bits]|
@@ -702,6 +707,17 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 |CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
 |COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
 +---------------+--+--+-----------+-----------+-----------++------+
+=======
++----------------+--+--+-----------+-----------+-----------++--------+
+| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
+|                |  |  |  Value    |           |           || [bits] |
++----------------+--+--+-----------+-----------+-----------++--------+
+|CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
+|CoAP Code       |  |dw|[69,132]   | match-map |match-sent || c      |
+|CoAP Uri-Path   |  |up|temperature|  equal    |not-sent   ||        |
+|COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
++----------------+--+--+-----------+-----------+-----------++--------+
+>>>>>>> Stashed changes
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
@@ -877,6 +893,7 @@ The size s included in the kid context field may be masked off with CDA MSB. The
 
 ~~~~
 Rule ID 0
+<<<<<<< Updated upstream
 +-------------------+--+--+--------------+--------+---------++------+
 | Field             |FP|DI|    Target    |   MO   |   CDA   || Sent |
 |                   |  |  |    Value     |        |         ||[bits]|
@@ -898,6 +915,29 @@ Rule ID 0
 |CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent ||      |
 |COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
 +-------------------+--+--+--------------+--------+---------++------+
+=======
++-------------------+--+--+--------------+---------+-----------++--------+
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
+|                   |  |  |    Value     |         |           || [bits] |
++-------------------+--+--+--------------+---------+-----------++--------+ 
+|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
+|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
+|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
+|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
+|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
+|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
+|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
+|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
+|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
++-------------------+--+--+--------------+---------+-----------++--------+
+>>>>>>> Stashed changes
 ~~~~
 {: #Fig-Outer-Rules title='Outer SCHC Rules'}
 
@@ -949,6 +989,7 @@ do this, we compress the CoAP messages according to the SCHC rules in {{Fig-NoOs
 
 ~~~~
 Rule ID 1
+<<<<<<< Updated upstream
 +---------------+--+--+-----------+---------+-----------++--------+
 | Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
 |               |  |  |  Value    |         |           || [bits] |
@@ -964,6 +1005,23 @@ Rule ID 1
 |CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
 +---------------+--+--+-----------+---------+-----------++--------+
+=======
++---------------+--+--+-----------+---------+-----------++------------+
+| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
+|               |  |  |  Value    |         |           ||   [bits]   |
++---------------+--+--+-----------+---------+-----------++------------+ 
+|CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
+|CoAP Type      |  |up|    0      |equal    |not-sent   ||            |
+|CoAP Type      |  |dw|    2      |equal    |not-sent   ||            |
+|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||            |
+|CoAP Code      |  |up|    2      |equal    |not-sent   ||            |
+|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||            |
+|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM        |
+|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT         |
+|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||            |
+|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
++---------------+--+--+-----------+---------+-----------++------------+
+>>>>>>> Stashed changes
 ~~~~
 {: #Fig-NoOsc-Rules title='SCHC-CoAP Rules (No OSCORE)'}
 
