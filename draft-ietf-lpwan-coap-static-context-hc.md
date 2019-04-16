@@ -50,11 +50,11 @@ normative:
 
 This draft defines the way SCHC header compression can be applied to CoAP 
 headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP  
-use a flexible header with a variable number of options themselves of a variable length.
+uses a flexible header with a variable number of options themselves of a variable length.
 The CoAP protocol is asymmetric in its format messages, the format of the header packet in the request messages
 is different than in the response messages. 
 Most of the compression mechanisms have been introduced in 
-{{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to use the SCHC compression
+{{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to define SCHC compression rules
 for CoAP.
 
 --- middle
