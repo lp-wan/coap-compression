@@ -311,12 +311,12 @@ address {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.17.2 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.22.3 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-06" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-02-05" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-04-16" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP use a flexible header with a variable number of options themselves of a variable length.  The CoAP protocol is asymmetric in its format messages, the format of the header packet in the request messages is different than in the response messages.  Most of the compression mechanisms have been introduced in , this document explains how to use the SCHC compression for CoAP." />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP use a flexible header with a variable number of options themselves of a variable length.  The CoAP protocol is asymmetric in its format messages, the format of the header packet in the request messages is different than in the response messages.  Most of the compression mechanisms have been introduced in , this document explains how to use the SCHC compression for CoAP." />
 
@@ -340,7 +340,7 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: August 9, 2019</td>
+<td class="left">Expires: October 18, 2019</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
@@ -353,7 +353,7 @@ address {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">February 05, 2019</td>
+<td class="right">April 16, 2019</td>
 </tr>
 
     	
@@ -369,7 +369,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 9, 2019.</p>
+<p>This Internet-Draft will expire on October 18, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -656,7 +656,11 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <pre>
  Rule ID 1
 +-------------+--+--+--+------+---------+-------------++------------+
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 | Field.      |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+=======
+| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
@@ -881,6 +885,7 @@ Original msg length:   10
 <div id="Fig-Inner-Rules"></div>
 <pre>
  Rule ID 0
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +---------------+--+--+-----------+-----------+-----------++------+
 | Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
 |               |  |  |  Value    |           |           ||[bits]|
@@ -890,6 +895,17 @@ Original msg length:   10
 |CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
 |COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
 +---------------+--+--+-----------+-----------+-----------++------+
+=======
++----------------+--+--+-----------+-----------+-----------++--------+
+| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
+|                |  |  |  Value    |           |           || [bits] |
++----------------+--+--+-----------+-----------+-----------++--------+
+|CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
+|CoAP Code       |  |dw|[69,132]   | match-map |match-sent || c      |
+|CoAP Uri-Path   |  |up|temperature|  equal    |not-sent   ||        |
+|COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
++----------------+--+--+-----------+-----------+-----------++--------+
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 </pre>
 <p class="figure">Figure 12: Inner SCHC Rules</p>
 <p><a href="#Fig-Inner-Compression-GET" class="xref">Figure 13</a> shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message.</p>
@@ -1058,6 +1074,7 @@ Payload:
 <div id="Fig-Outer-Rules"></div>
 <pre>
 Rule ID 0
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +-------------------+--+--+--------------+--------+---------++------+
 | Field             |FP|DI|    Target    |   MO   |   CDA   || Sent |
 |                   |  |  |    Value     |        |         ||[bits]|
@@ -1079,6 +1096,29 @@ Rule ID 0
 |CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent ||      |
 |COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
 +-------------------+--+--+--------------+--------+---------++------+
+=======
++-------------------+--+--+--------------+---------+-----------++--------+
+| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
+|                   |  |  |    Value     |         |           || [bits] |
++-------------------+--+--+--------------+---------+-----------++--------+ 
+|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
+|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
+|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
+|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
+|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
+|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
+|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
+|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
+|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
+|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
+|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
+|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
+|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
++-------------------+--+--+--------------+---------+-----------++--------+
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 </pre>
 <p class="figure">Figure 17: Outer SCHC Rules</p>
 <p id="rfc.section.7.3.p.14">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 18</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 19</a>.</p>
@@ -1126,6 +1166,7 @@ Compressed msg length: 16 bytes
 <div id="Fig-NoOsc-Rules"></div>
 <pre>
 Rule ID 1
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +---------------+--+--+-----------+---------+-----------++--------+
 | Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
 |               |  |  |  Value    |         |           || [bits] |
@@ -1141,6 +1182,23 @@ Rule ID 1
 |CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
 +---------------+--+--+-----------+---------+-----------++--------+
+=======
++---------------+--+--+-----------+---------+-----------++------------+
+| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
+|               |  |  |  Value    |         |           ||   [bits]   |
++---------------+--+--+-----------+---------+-----------++------------+ 
+|CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
+|CoAP Type      |  |up|    0      |equal    |not-sent   ||            |
+|CoAP Type      |  |dw|    2      |equal    |not-sent   ||            |
+|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||            |
+|CoAP Code      |  |up|    2      |equal    |not-sent   ||            |
+|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||            |
+|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM        |
+|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT         |
+|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||            |
+|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
++---------------+--+--+-----------+---------+-----------++------------+
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 </pre>
 <p class="figure">Figure 20: SCHC-CoAP Rules (No OSCORE)</p>
 <p id="rfc.section.7.3.p.16">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 21</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 22</a> for the Response.</p>
@@ -1198,7 +1256,7 @@ Compressed msg length: 6
 <tr>
 <td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
 <td class="top">
-<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-15">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-15, August 2018.</td>
+<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-16">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-16, March 2019.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-lpwan-ipv6-static-context-hc">[I-D.ietf-lpwan-ipv6-static-context-hc]</b></td>
