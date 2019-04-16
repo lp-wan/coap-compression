@@ -294,7 +294,7 @@ address {
 <link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 Variable number of path or query elements">
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields">
 <link href="#rfc.section.5.5" rel="Chapter" title="5.5 CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields">
-<link href="#rfc.section.6" rel="Chapter" title="6 Other RFCs">
+<link href="#rfc.section.6" rel="Chapter" title="6 Other options">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Block">
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Observe">
 <link href="#rfc.section.6.3" rel="Chapter" title="6.3 No-Response">
@@ -413,7 +413,7 @@ address {
 </li>
 <li>5.5.   <a href="#rfc.section.5.5">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a>
 </li>
-</ul><li>6.   <a href="#rfc.section.6">Other RFCs</a>
+</ul><li>6.   <a href="#rfc.section.6">Other options</a>
 </li>
 <ul><li>6.1.   <a href="#rfc.section.6.1">Block</a>
 </li>
@@ -456,7 +456,7 @@ address {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#schc-compression-process" id="schc-compression-process">SCHC Compression Process</a>
 </h1>
-<p id="rfc.section.2.p.1">The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independently.  The SCHC adaptation layers as described in <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> may be used as as shown in the <a href="#Fig-SCHCCOAP" class="xref">Figure 1</a>.</p>
+<p id="rfc.section.2.p.1">The SCHC Compression rules can be applied to CoAP messages. SCHC Compression of the CoAP header may be done in conjunction with the above layers (IPv6/UDP) or independently.  The SCHC adaptation layers as described in <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> may be used as as shown in the <a href="#Fig-SCHCCOAP" class="xref">Figure 1</a>.</p>
 <div id="rfc.figure.1"></div>
 <div id="Fig-SCHCCOAP"></div>
 <pre>
@@ -473,7 +473,8 @@ address {
                                                   
 </pre>
 <p class="figure">Figure 1: rule scope for CoAP</p>
-<p><a href="#Fig-SCHCCOAP" class="xref">Figure 1</a> shows some examples for CoAP architecture and the SCHC rule&#8217;s scope. A rule can covers all headers from IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end encryption mechanisms is used between the device and the application.  CoAP must be compressed independently of the other layers. The rule ID and the compression residue are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.<br> Layers below may also be compressed using other SCHC rules (this is out of the scope of this document).  OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> can also define 2 rules to compress the CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary.</p>
+<p><a href="#Fig-SCHCCOAP" class="xref">Figure 1</a> shows some examples for CoAP architecture and the SCHC rule&#8217;s scope. A rule can covers all headers from IPv6 to CoAP, SCHC C/D is done in the device and at the LPWAN boundary. If an end-to-end encryption mechanisms is used between the device and the application.  CoAP must be compressed independently of the other layers. The rule ID and the compression residue are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.<br> Layers below may also be compressed using other SCHC rules (this is out of the scope of this document).</p>
+<p id="rfc.section.2.p.3">OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> can also define 2 rules to compress the CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress the outer header and the layer above. SCHC C/D for inner header is done by both ends, SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#coap-compression-with-schc" id="coap-compression-with-schc">CoAP Compression with SCHC</a>
 </h1>
@@ -486,7 +487,7 @@ address {
 <li>In IPv6 and UDP header fields have a fixed size. In CoAP, Token size may vary from 0 to 8 bytes, length is given by a field in the header. More systematically, the CoAP options are described using the Type-Length-Value.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> offers the possibility to define a function for the Field Length in the Field Description.</li>
 <li>In CoAP headers, a field can be duplicated several times, for instances, elements of an URI (path or queries). The position defined in a rule, associated to a Field ID, can be used to identify the proper element.  <br><br> <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows a Field id to appears several times in the rule, the Field Position (FP) removes ambiguities for the matching operation.</li>
 <li>Field size defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.  This is particularly true for the message ID field or Token field. The use of MSB MO can be used to reduce the information carried on LPWANs.</li>
-<li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from an LPWAN node or from an non LPWAN device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP client will certainly send a larger token to the Thing. SCHC compression will not modify the values to offer a better compression rate. Nevertheless a proxy placed before the compressor may change some field values to offer a better compression rate and maintain the necessary context for interoperability with existing CoAP implementations.</li>
+<li>CoAP also obeys to the client/server paradigm and the compression rate can be different if the request is issued from an LPWAN node or from an non LPWAN device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but a regular CoAP client will certainly send a larger token to the Device. SCHC compression will not modify the values to offer a better compression rate. Nevertheless a proxy placed before the compressor may change some field values to offer a better compression rate and maintain the necessary context for interoperability with existing CoAP implementations.</li>
 </ul>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#compression-of-coap-header-fields" id="compression-of-coap-header-fields">Compression of CoAP header fields</a>
@@ -499,27 +500,27 @@ address {
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#coap-type-field" id="coap-type-field">CoAP type field</a>
 </h1>
-<p><a href="#rfc7252" class="xref">[rfc7252]</a> defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit these property with the mapping list: [CON, NON] for one direction and [ACK, RST] for the other direction. Compression residue is reduced to 1 bit.</p>
+<p><a href="#rfc7252" class="xref">[rfc7252]</a> defines 4 types of messages: CON, NON, ACK and RST. The latter two ones are a response of the two first ones. If the device plays a specific role, a rule can exploit this property with the mapping list: [CON, NON] for one direction and [ACK, RST] for the other direction. Compression residue is reduced to 1 bit.</p>
 <p id="rfc.section.4.2.p.2">The field must be elided if for instance a client is sending only NON or CON messages.</p>
-<p id="rfc.section.4.2.p.3">In any case, a rule must be defined to carry RST to a client.</p>
+<p id="rfc.section.4.2.p.3">In any cases, a rule must be defined to carry RST to a client.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#coap-code-field" id="coap-code-field">CoAP code field</a>
 </h1>
-<p id="rfc.section.4.3.p.1">The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.</p>
-<p id="rfc.section.4.3.p.2">If the device implement only a CoAP client, the request code can be reduced to the set of request the client is able to process.</p>
+<p id="rfc.section.4.3.p.1">The compression of the CoAP code field follows the same principle as for the CoAP type field.  If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.</p>
+<p id="rfc.section.4.3.p.2">If the device implement only a CoAP client, the request code can be reduced to the set of requests the client is able to process.</p>
 <p id="rfc.section.4.3.p.3">All the response codes should be compressed with a SCHC rule.</p>
 <h1 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#coap-message-id-field" id="coap-message-id-field">CoAP Message ID field</a>
 </h1>
-<p id="rfc.section.4.4.p.1">This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message as a retransmission. After this period, it will be processed as a new messages.</p>
+<p id="rfc.section.4.4.p.1">This field is bidirectional and is used to manage acknowledgments. Server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message as a retransmission.  After this period, it will be processed as a new messages.</p>
 <p id="rfc.section.4.4.p.2">In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. Client may use only small message ID values, for instance 4 bit long. Therefore a MSB can be used to limit the size of the compression residue.</p>
-<p id="rfc.section.4.4.p.3">In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA.</p>
+<p id="rfc.section.4.4.p.3">In case the Device is a server, client may be located outside of the LPWAN area and view the device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy may be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA.</p>
 <h1 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#coap-token-fields" id="coap-token-fields">CoAP Token fields</a>
 </h1>
 <p id="rfc.section.4.5.p.1">Token is defined through two CoAP fields, Token Length in the mandatory header and Token Value directly following the mandatory CoAP header.</p>
 <p id="rfc.section.4.5.p.2">Token Length is processed as any protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwise it will have to the send as a compression residue.</p>
-<p id="rfc.section.4.5.p.3">Token Value size should not be defined directly in the rule in the Field Length (FL). Instead a specific function designed as &#8220;TKL&#8221; must be used and length do not have to the sent with the residue. During the decompression, this function returns the value contained in the Token Length field.</p>
+<p id="rfc.section.4.5.p.3">Token Value size should not be defined directly in the rule in the Field Length (FL).  Instead a specific function designed as &#8220;TKL&#8221; must be used and length do not have to the sent with the residue. During the decompression, this function returns the value contained in the Token Length field.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#coap-options" id="coap-options">CoAP options</a>
 </h1>
@@ -527,7 +528,7 @@ address {
 <a href="#rfc.section.5.1">5.1.</a> <a href="#coap-content-and-accept-options" id="coap-content-and-accept-options">CoAP Content and Accept options.</a>
 </h1>
 <p id="rfc.section.5.1.p.1">These field are both unidirectional and must not be set to bidirectional in a rule entry.</p>
-<p id="rfc.section.5.1.p.2">If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length).</p>
+<p id="rfc.section.5.1.p.2">If single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue.  If is not possible, the value has to be sent as a residue (fixed or variable length).</p>
 <h1 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields" id="coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
 </h1>
@@ -561,10 +562,10 @@ URI-Path     3  up             ignore   value-sent
 <div id="rfc.figure.3"></div>
 <div id="Fig-CoMicompress"></div>
 <pre>
-FID       FL FP DI    TV       MO        CDA     
-URI-Path     1  up    "c"     equal     not-sent
-URI-Path     2  up            ignore    value-sent 
-URI-Query    1  up    "k="    MSB (16)  LSB 
+FID       FL   FP DI    TV       MO        CDA     
+URI-Path  1    1  up    "c"     equal     not-sent
+URI-Path  var  2  up            ignore    value-sent 
+URI-Query var  1  up    "k="    MSB (16)  LSB 
 </pre>
 <p class="figure">Figure 3: CoMi URI compression</p>
 <p><a href="#Fig-CoMicompress" class="xref">Figure 3</a> shows the parsing and the compression of the URI. where c is not sent.  The second element is sent with the length (i.e. 0x2 X 6) followed by the query option (i.e. 0x05 &#8220;eth0&#8221;).</p>
@@ -584,7 +585,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <p id="rfc.section.5.5.p.1">These fields are unidirectional.</p>
 <p id="rfc.section.5.5.p.2">These fields values cannot be stored in a rule entry. They must always be sent with the compression residues.</p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#other-rfcs" id="other-rfcs">Other RFCs</a>
+<a href="#rfc.section.6">6.</a> <a href="#other-options" id="other-options">Other options</a>
 </h1>
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#block" id="block">Block</a>
@@ -593,7 +594,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <h1 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#observe" id="observe">Observe</a>
 </h1>
-<p><a href="#rfc7641" class="xref">[rfc7641]</a> defines the Observe option. The TV is not set, MO is set to &#8220;ignore&#8221; and the CDA is set to &#8220;value-sent&#8221;. SCHC does not limit the maximum size for this option (3 bytes).  To reduce the transmission size either the device implementation should limit the delta between two consecutive value or a proxy can modify the incrementation.</p>
+<p><a href="#rfc7641" class="xref">[rfc7641]</a> defines the Observe option. The TV is not set, MO is set to &#8220;ignore&#8221; and the CDA is set to &#8220;value-sent&#8221;. SCHC does not limit the maximum size for this option (3 bytes).  To reduce the transmission size either the device implementation should limit the delta between two consecutive values or a proxy can modify the incrementation.</p>
 <p id="rfc.section.6.2.p.2">Since RST message may be sent to inform a server that the client does not require Observe response, a rule must allow the transmission of this message.</p>
 <h1 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#no-response" id="no-response">No-Response</a>
@@ -609,7 +610,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <h1 id="rfc.section.6.5">
 <a href="#rfc.section.6.5">6.5.</a> <a href="#Sec-OSCORE" id="Sec-OSCORE">OSCORE</a>
 </h1>
-<p id="rfc.section.6.5.p.1">OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> defines end-to-end protection for CoAP messages.  This section describes how SCHC rules can be applied to compress OSCORE-protected messages.</p>
+<p id="rfc.section.6.5.p.1">OSCORE <a href="#I-D.ietf-core-object-security" class="xref">[I-D.ietf-core-object-security]</a> and <a href="#I-D.ietf-core-oscore-groupcomm" class="xref">[I-D.ietf-core-oscore-groupcomm]</a> define end-to-end protection for CoAP messages.  This section describes how SCHC rules can be applied to compress OSCORE-protected messages.</p>
 <div id="rfc.figure.4"></div>
 <div id="Fig-OSCORE-Option"></div>
 <pre>
@@ -634,7 +635,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <p id="rfc.section.6.5.p.3">The first byte is used for flags that specify the contents of the OSCORE option. The 3 most significant bits are reserved and always set to 0. Bit h, when set, indicates the presence of the kid context field in the option. Bit k, when set, indicates the presence of a kid field. The 3 least significant bits n indicate the length of the piv field in bytes. When n = 0, no piv is present.</p>
 <p id="rfc.section.6.5.p.4">After the flag byte follow the piv field, kid context field and kid field in order and if present; the length of the kid context field is encoded in the first byte denoting by s the length of the kid context in bytes.</p>
 <p id="rfc.section.6.5.p.5">This draft recommends to implement a parser that is able to identify the OSCORE Option and the fields it contains.</p>
-<p id="rfc.section.6.5.p.6">Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. It is thus recommended that the parser split the OSCORE option into the 4 subsequent fields:</p>
+<p id="rfc.section.6.5.p.6">Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid.  It is thus recommended that the parser split the OSCORE option into the 4 subsequent fields:</p>
 <p></p>
 
 <ul>
@@ -656,11 +657,7 @@ URI-Query    1  up    "k="    MSB (16)  LSB
 <pre>
  Rule ID 1
 +-------------+--+--+--+------+---------+-------------++------------+
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 | Field.      |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
-=======
-| Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
@@ -885,7 +882,6 @@ Original msg length:   10
 <div id="Fig-Inner-Rules"></div>
 <pre>
  Rule ID 0
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +---------------+--+--+-----------+-----------+-----------++------+
 | Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
 |               |  |  |  Value    |           |           ||[bits]|
@@ -895,17 +891,7 @@ Original msg length:   10
 |CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
 |COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
 +---------------+--+--+-----------+-----------+-----------++------+
-=======
-+----------------+--+--+-----------+-----------+-----------++--------+
-| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
-|                |  |  |  Value    |           |           || [bits] |
-+----------------+--+--+-----------+-----------+-----------++--------+
-|CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
-|CoAP Code       |  |dw|[69,132]   | match-map |match-sent || c      |
-|CoAP Uri-Path   |  |up|temperature|  equal    |not-sent   ||        |
-|COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
-+----------------+--+--+-----------+-----------+-----------++--------+
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
+
 </pre>
 <p class="figure">Figure 12: Inner SCHC Rules</p>
 <p><a href="#Fig-Inner-Compression-GET" class="xref">Figure 13</a> shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message.</p>
@@ -1074,7 +1060,6 @@ Payload:
 <div id="Fig-Outer-Rules"></div>
 <pre>
 Rule ID 0
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +-------------------+--+--+--------------+--------+---------++------+
 | Field             |FP|DI|    Target    |   MO   |   CDA   || Sent |
 |                   |  |  |    Value     |        |         ||[bits]|
@@ -1096,29 +1081,6 @@ Rule ID 0
 |CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent ||      |
 |COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
 +-------------------+--+--+--------------+--------+---------++------+
-=======
-+-------------------+--+--+--------------+---------+-----------++--------+
-| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
-|                   |  |  |    Value     |         |           || [bits] |
-+-------------------+--+--+--------------+---------+-----------++--------+ 
-|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
-|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
-|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
-|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
-|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
-|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
-|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
-|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
-|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
-|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
-|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
-|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
-+-------------------+--+--+--------------+---------+-----------++--------+
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 </pre>
 <p class="figure">Figure 17: Outer SCHC Rules</p>
 <p id="rfc.section.7.3.p.14">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 18</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 19</a>.</p>
@@ -1166,7 +1128,6 @@ Compressed msg length: 16 bytes
 <div id="Fig-NoOsc-Rules"></div>
 <pre>
 Rule ID 1
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
 +---------------+--+--+-----------+---------+-----------++--------+
 | Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
 |               |  |  |  Value    |         |           || [bits] |
@@ -1182,23 +1143,6 @@ Rule ID 1
 |CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
 +---------------+--+--+-----------+---------+-----------++--------+
-=======
-+---------------+--+--+-----------+---------+-----------++------------+
-| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
-|               |  |  |  Value    |         |           ||   [bits]   |
-+---------------+--+--+-----------+---------+-----------++------------+ 
-|CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
-|CoAP Type      |  |up|    0      |equal    |not-sent   ||            |
-|CoAP Type      |  |dw|    2      |equal    |not-sent   ||            |
-|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||            |
-|CoAP Code      |  |up|    2      |equal    |not-sent   ||            |
-|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||            |
-|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT         |
-|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||            |
-|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
-+---------------+--+--+-----------+---------+-----------++------------+
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
 </pre>
 <p class="figure">Figure 20: SCHC-CoAP Rules (No OSCORE)</p>
 <p id="rfc.section.7.3.p.16">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 21</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 22</a> for the Response.</p>
@@ -1257,6 +1201,11 @@ Compressed msg length: 6
 <td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
 <td class="top">
 <a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-16">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-16, March 2019.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</b></td>
+<td class="top">
+<a>Tiloca, M.</a>, <a>Selander, G.</a>, <a>Palombini, F.</a> and <a>J. Park</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-oscore-groupcomm-04">Group OSCORE - Secure Group Communication for CoAP</a>", Internet-Draft draft-ietf-core-oscore-groupcomm-04, March 2019.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-lpwan-ipv6-static-context-hc">[I-D.ietf-lpwan-ipv6-static-context-hc]</b></td>
