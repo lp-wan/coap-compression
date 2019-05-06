@@ -317,7 +317,7 @@ compression residues.
 
 ## Block
 
-Block {{rfc7959}} allows a fragmentation at the CoAP level. SCHC includes also a fragmentation protocol.
+Block {{rfc7959}} allows a fragmentation at the CoAP level. SCHC also includes a fragmentation protocol.
 They are compatible. If a block option is used, its content must be sent as a compression residue. 
 
 ## Observe
@@ -332,7 +332,7 @@ response, a rule must allow the transmission of this message.
 
 ## No-Response
 
-{{rfc7967}} defines an No-Response option limiting the responses made by a server to 
+{{rfc7967}} defines a No-Response option limiting the responses made by a server to
 a request. If the value is not known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDA is set to "not-sent".
 
@@ -400,14 +400,14 @@ Conceptually, it discerns up to 4 distinct pieces of information within the OSCO
  * CoAP OSCORE_kidctxt,
  * CoAP OSCORE_kid.
 
-These fields are superposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size may be reduced using the MSB matching operator. 
+These fields are shown superimposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size may be reduced using the MSB matching operator.
 
 
 # Examples of CoAP header compression
 
 ## Mandatory header with CON message
 
-In this first scenario, the LPWAN compressor receives from outside client
+In this first scenario, the LPWAN compressor at the Network Gateway side receives from a client on the Internet
 a POST message, which is immediately acknowledged by the Device. For this simple
 scenario, the rules are described {{Fig-CoAP-header-1}}.
 
