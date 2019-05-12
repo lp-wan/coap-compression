@@ -2,7 +2,7 @@
 stand_alone: true
 ipr: trust200902
 docname: draft-ietf-lpwan-coap-static-context-hc-06
-cat: info
+cat: std
 pi:
   symrefs: 'yes'
   sortrefs: 'yes'
@@ -68,7 +68,7 @@ devices. Although CoAP was designed for constrained devices, the size of a CoAP 
    
 {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines a header compression
    mechanism for LPWAN network based on a static context. The context is
-   said static since the field description composing the Rules and the context are not
+   said static since the field description composing the Rules are not
    learned during the packet exchanges but are previously defined.  The
    context(s) is(are) known by both ends before transmission. 
   
@@ -263,11 +263,11 @@ In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 p
 
 ### Variable length Uri-Path and Uri-Query
 
-When the length is known at the rule creation, the Field Length must be set to variable, 
+When the length is not known at the rule creation, the Field Length must be set to variable, 
 and the unit is set to bytes. 
 
 The MSB MO can be applied to a Uri-Path or Uri-Query element. Since MSB value is given in bit,
-the size must always be a multiple of 8 bits and the LSB CDA must not carry any value.
+the size must always be a multiple of 8 bits.
 
 The length sent at the beginning of a variable length residue indicates the size of the LSB in bytes. 
 
@@ -333,7 +333,7 @@ response, a rule must allow the transmission of this message.
 ## No-Response
 
 {{rfc7967}} defines a No-Response option limiting the responses made by a server to
-a request. If the value is not known by both ends, then TV is set to this value, MO is 
+a request. If the value is known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDA is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
@@ -344,7 +344,7 @@ CDA to "value-sent". A matching list can also be used to reduce the size.
 The time scale {{I-D.toutain-core-time-scale}} option allows a client to inform the server that
 it is in a slow network and that message ID should be kept for a duration given by the option.
 
-If the value is not known by both ends, then TV is set to this value, MO is 
+If the value is known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDA is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
