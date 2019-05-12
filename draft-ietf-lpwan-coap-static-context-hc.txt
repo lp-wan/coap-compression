@@ -4,11 +4,11 @@
 
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
-Intended status: Informational                                L. Toutain
-Expires: November 11, 2019        Institut MINES TELECOM; IMT Atlantique
+Intended status: Standards Track                              L. Toutain
+Expires: November 13, 2019        Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                            May 10, 2019
+                                                            May 12, 2019
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 11, 2019.
+   This Internet-Draft will expire on November 13, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 1]
+Minaburo, et al.        Expires November 13, 2019               [Page 1]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 2]
+Minaburo, et al.        Expires November 13, 2019               [Page 2]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -124,10 +124,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
    [I-D.ietf-lpwan-ipv6-static-context-hc] defines a header compression
    mechanism for LPWAN network based on a static context.  The context
-   is said static since the field description composing the Rules and
-   the context are not learned during the packet exchanges but are
-   previously defined.  The context(s) is(are) known by both ends before
-   transmission.
+   is said static since the field description composing the Rules are
+   not learned during the packet exchanges but are previously defined.
+   The context(s) is(are) known by both ends before transmission.
 
    A context is composed of a set of rules that are referenced by Rule
    IDs (identifiers).  A rule contains an ordered list of the fields
@@ -165,7 +164,8 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 3]
+
+Minaburo, et al.        Expires November 13, 2019               [Page 3]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -221,7 +221,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 4]
+Minaburo, et al.        Expires November 13, 2019               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -277,7 +277,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 5]
+Minaburo, et al.        Expires November 13, 2019               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -333,7 +333,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 6]
+Minaburo, et al.        Expires November 13, 2019               [Page 6]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -389,7 +389,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 7]
+Minaburo, et al.        Expires November 13, 2019               [Page 7]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -436,16 +436,16 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 5.3.1.  Variable length Uri-Path and Uri-Query
 
-   When the length is known at the rule creation, the Field Length must
-   be set to variable, and the unit is set to bytes.
+   When the length is not known at the rule creation, the Field Length
+   must be set to variable, and the unit is set to bytes.
 
    The MSB MO can be applied to a Uri-Path or Uri-Query element.  Since
    MSB value is given in bit, the size must always be a multiple of 8
-   bits and the LSB CDA must not carry any value.
+   bits.
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 8]
+Minaburo, et al.        Expires November 13, 2019               [Page 8]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -501,7 +501,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019               [Page 9]
+Minaburo, et al.        Expires November 13, 2019               [Page 9]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -530,8 +530,8 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 6.3.  No-Response
 
    [rfc7967] defines a No-Response option limiting the responses made by
-   a server to a request.  If the value is not known by both ends, then
-   TV is set to this value, MO is set to "equal" and CDA is set to "not-
+   a server to a request.  If the value is known by both ends, then TV
+   is set to this value, MO is set to "equal" and CDA is set to "not-
    sent".
 
    Otherwise, if the value is changing over time, TV is not set, MO is
@@ -544,8 +544,8 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
    to inform the server that it is in a slow network and that message ID
    should be kept for a duration given by the option.
 
-   If the value is not known by both ends, then TV is set to this value,
-   MO is set to "equal" and CDA is set to "not-sent".
+   If the value is known by both ends, then TV is set to this value, MO
+   is set to "equal" and CDA is set to "not-sent".
 
    Otherwise, if the value is changing over time, TV is not set, MO is
    set to "ignore" and CDA to "value-sent".  A matching list can also be
@@ -557,7 +557,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 10]
+Minaburo, et al.        Expires November 13, 2019              [Page 10]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -613,7 +613,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 11]
+Minaburo, et al.        Expires November 13, 2019              [Page 11]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -669,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 12]
+Minaburo, et al.        Expires November 13, 2019              [Page 12]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -725,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 13]
+Minaburo, et al.        Expires November 13, 2019              [Page 13]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -781,7 +781,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 14]
+Minaburo, et al.        Expires November 13, 2019              [Page 14]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -837,7 +837,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 15]
+Minaburo, et al.        Expires November 13, 2019              [Page 15]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -893,7 +893,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 16]
+Minaburo, et al.        Expires November 13, 2019              [Page 16]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -949,7 +949,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 17]
+Minaburo, et al.        Expires November 13, 2019              [Page 17]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1005,7 +1005,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 18]
+Minaburo, et al.        Expires November 13, 2019              [Page 18]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1061,7 +1061,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 19]
+Minaburo, et al.        Expires November 13, 2019              [Page 19]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1117,7 +1117,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 20]
+Minaburo, et al.        Expires November 13, 2019              [Page 20]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1173,7 +1173,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 21]
+Minaburo, et al.        Expires November 13, 2019              [Page 21]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1229,7 +1229,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 22]
+Minaburo, et al.        Expires November 13, 2019              [Page 22]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1285,7 +1285,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 23]
+Minaburo, et al.        Expires November 13, 2019              [Page 23]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1341,7 +1341,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 24]
+Minaburo, et al.        Expires November 13, 2019              [Page 24]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1397,7 +1397,7 @@ Rule ID 0
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 25]
+Minaburo, et al.        Expires November 13, 2019              [Page 25]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1453,7 +1453,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 26]
+Minaburo, et al.        Expires November 13, 2019              [Page 26]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1509,7 +1509,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 27]
+Minaburo, et al.        Expires November 13, 2019              [Page 27]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1565,7 +1565,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 28]
+Minaburo, et al.        Expires November 13, 2019              [Page 28]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1621,7 +1621,7 @@ Authors' Addresses
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 29]
+Minaburo, et al.        Expires November 13, 2019              [Page 29]
 
 Internet-Draft           LPWAN CoAP compression                 May 2019
 
@@ -1677,4 +1677,4 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 11, 2019              [Page 30]
+Minaburo, et al.        Expires November 13, 2019              [Page 30]
