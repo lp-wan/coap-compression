@@ -89,7 +89,7 @@ devices. Although CoAP was designed for constrained devices, the size of a CoAP 
 # SCHC Compression Process
 
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP 
-header may be done in conjunction with the above layers (IPv6/UDP) or independently. 
+header MAY be done in conjunction with the above layers (IPv6/UDP) or independently. 
 The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} 
 may be used as shown in {{Fig-SCHCCOAP}}.
 
@@ -113,7 +113,7 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 {{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can cover all headers from
 IPv6 to CoAP, in which case SCHC C/D is performed at the device and at the LPWAN boundary. If an end-to-end
 encryption mechanisms is used between the device and the application,
-CoAP must be compressed independently of the other layers. The rule ID and the compression residue
+CoAP MAY be compressed independently of the other layers. The rule ID and the compression residue
 are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.  
 Layers below may also be compressed using other SCHC rules (this is out of the scope of this document). 
 OSCORE {{I-D.ietf-core-object-security}} can also define 2 rules to compress the
@@ -176,7 +176,7 @@ This section discusses the compression of the different CoAP header fields.
 
 ## CoAP version field
 
-This field is bidirectional and must be elided during the SCHC compression, since it always
+This field is bidirectional and MUST be elided during the SCHC compression, since it always
 contains the same value. In the future, if new versions of CoAP are defined, new rules will
 be defined to avoid ambiguities between versions.
 
@@ -184,9 +184,9 @@ be defined to avoid ambiguities between versions.
 
 {{rfc7252}} defines 4 types of messages: CON, NON, ACK and RST. The last two are a response to the first two. If the device plays a specific role, a rule can exploit these properties with the mapping list: \[CON, NON\] for one direction and \[ACK, RST\] for the other direction. Compression residue is reduced to 1 bit.
 
-The field must be elided if for instance a client is sending only NON or CON messages. 
+The field SHOULD be elided if for instance a client is sending only NON or CON messages. 
 
-In any case, a rule must be defined to carry RST to a client.
+In any case, a rule MUST be defined to carry RST to a client.
   
 ## CoAP code field
 
@@ -194,14 +194,14 @@ The compression of the CoAP code field follows the same principle as for the CoA
 
 If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
 
-All the response codes should be compressed with a SCHC rule. 
+All the response codes MUST be compressed with a SCHC rule. 
 
  
 ## CoAP Message ID field
 
 This field is bidirectional and is used to manage acknowledgments. The server memorizes the value for a EXCHANGE_LIFETIME period (by default 247 seconds) for CON messages and a NON_LIFETIME period (by default 145 seconds) for NON messages. During that period, a server receiving the same Message ID value will process the message as a retransmission. After this period, it will be processed as a new message.
 
-In case the Device is a client, the size of the message ID field may the too large regarding the number of messages sent. The client may use only small message ID values, for instance 4 bit long. Therefore, a MSB can be used to limit the size of the compression residue.
+In case the Device is a client, the size of the message ID field may be too large regarding the number of messages sent. The client SHOULD use only small message ID values, for instance 4 bit long. Therefore, a MSB can be used to limit the size of the compression residue.
 
 In case the Device is a server, the client may be located outside of the LPWAN area and view the Device as a regular device connected to the internet. The client will generate Message ID using the 16 bits space offered by this field. A CoAP proxy can be set before the SCHC C/D to reduce the value of the Message ID, to allow its compression with the MSB matching operator and LSB CDA.
 
@@ -211,21 +211,21 @@ Token is defined through two CoAP fields, Token Length in the mandatory header a
 
 Token Length is processed as any protocol field. If the value remains the same during all the transaction, the size can be stored in the context and elided during the transmission. Otherwise, it will have to the sent as a compression residue.
 
-Token Value size should not be defined directly in the rule in the Field Length (FL). Instead, a specific function designated as "TKL" must be used and length does not have to the sent with the residue. During the decompression, this function returns the value contained in the Token Length field.
+Token Value size cannot be defined directly in the rule in the Field Length (FL). Instead, a specific function designated as "TKL" MUST be used and length does not have to the sent with the residue. During the decompression, this function returns the value contained in the Token Length field.
 
 
 # CoAP options
 
 ## CoAP Content and Accept options.
 
-These fields are both unidirectional and must not be set to bidirectional in a rule entry.
+These fields are both unidirectional and MUST NOT be set to bidirectional in a rule entry.
 
-If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list should be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length).
+If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length).
 
 
 ## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
 
-These fields is unidirectional and must not be set to bidirectional in a rule entry.
+These fields is unidirectional and MUST NOT be set to bidirectional in a rule entry.
 It is used only by the server to inform of the caching duration and is never 
 found in client
 requests.
@@ -234,11 +234,11 @@ If the duration is known by both ends, the value can be elided on the LPWAN.
 
 A matching list can be used if some well-known values are defined.
 
-Otherwise these options should be sent as a residue (fixed or variable length).
+Otherwise these options SHOULD be sent as a residue (fixed or variable length).
 
 ## CoAP option Uri-Path and Uri-Query fields
 
-These fields are unidirectional and must not be set to bidirectional in a rule entry.
+These fields are unidirectional and MUST NOT be set to bidirectional in a rule entry.
 They are used only by the client to access a specific resource and are never found
 in server responses.
 
@@ -263,11 +263,11 @@ In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 p
 
 ### Variable length Uri-Path and Uri-Query
 
-When the length is not known at the rule creation, the Field Length must be set to variable, 
+When the length is not known at the rule creation, the Field Length SHOULD be set to variable, 
 and the unit is set to bytes. 
 
 The MSB MO can be applied to a Uri-Path or Uri-Query element. Since MSB value is given in bit,
-the size must always be a multiple of 8 bits.
+the size MUST always be a multiple of 8 bits.
 
 The length sent at the beginning of a variable length residue indicates the size of the LSB in bytes. 
 
@@ -289,18 +289,18 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
 ### Variable number of path or query elements
 
 The number of Uri-path or Uri-Query elements in a rule is fixed at the rule creation time. If the number
-varies, several rules should be created to cover all the possibilities. Another possibility is
+varies, several rules SHOULD be created to cover all the possibilities. Another possibility is
 to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
 indicate that this Uri-Path is empty. This adds 4 bits to the compression residue.
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
-These fields are unidirectional and must not be set to bidirectional in a rule entry.
+These fields are unidirectional and MUST NOT be set to bidirectional in a rule entry.
 They are used only by the client to access a specific resource and are never found
 in server response.
 
-If the field value must be sent, TV is not set, MO is set to "ignore" and CDA is set
-to "value-sent". A mapping can also be used.
+If the field value has to be sent, TV is not set, MO is set to "ignore" and CDA is set
+to "value-sent". A mapping MAY also be used.
 
 Otherwise, the TV is set to the value, MO is set to "equal" and CDA is set to "not-sent".
 
@@ -309,7 +309,7 @@ Otherwise, the TV is set to the value, MO is set to "equal" and CDA is set to "n
 
 These fields are unidirectional.
 
-These fields values cannot be stored in a rule entry. They must always be sent with the
+These fields values cannot be stored in a rule entry. They MUST always be sent with the
 compression residues. 
 
 
@@ -318,17 +318,17 @@ compression residues.
 ## Block
 
 Block {{rfc7959}} allows a fragmentation at the CoAP level. SCHC also includes a fragmentation protocol.
-They are compatible. If a block option is used, its content must be sent as a compression residue. 
+They are compatible. If a block option is used, its content MUST be sent as a compression residue. 
 
 ## Observe
 
 {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
 CDA is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
-To reduce the transmission size, either the device implementation should limit the delta between two consecutive values,
+To reduce the transmission size, either the device implementation MAY limit the delta between two consecutive values,
 or a proxy can modify the increment.
 
 Since an RST message may be sent to inform a server that the client does not require Observe
-response, a rule must allow the transmission of this message.
+response, a rule MUST allow the transmission of this message.
 
 ## No-Response
 
@@ -342,7 +342,7 @@ CDA to "value-sent". A matching list can also be used to reduce the size.
 ## Time Scale
 
 The time scale {{I-D.toutain-core-time-scale}} option allows a client to inform the server that
-it is in a slow network and that message ID should be kept for a duration given by the option.
+it is in a constrained network and that message ID MUST be kept for a duration given by the option.
 
 If the value is known by both ends, then TV is set to this value, MO is 
 set to "equal" and CDA is set to "not-sent".
@@ -400,7 +400,7 @@ Conceptually, it discerns up to 4 distinct pieces of information within the OSCO
  * CoAP OSCORE_kidctxt,
  * CoAP OSCORE_kid.
 
-These fields are shown superimposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size may be reduced using the MSB matching operator.
+These fields are shown superimposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size SHOULD be reduced using the MSB matching operator.
 
 
 # Examples of CoAP header compression
@@ -719,7 +719,7 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 
 {{Fig-Inner-Compression-GET}} shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message. 
 
-In this case the original message has no payload and its resulting Plaintext can be compressed up to only 1 byte (size of the Rule ID). The AEAD algorithm preserves this length in its first output, but also yields a fixed-size tag which cannot be compressed and must be included in the OSCORE message. This translates into an overhead in total message length, which limits the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
+In this case the original message has no payload and its resulting Plaintext can be compressed up to only 1 byte (size of the Rule ID). The AEAD algorithm preserves this length in its first output, but also yields a fixed-size tag which cannot be compressed and has to be included in the OSCORE message. This translates into an overhead in total message length, which limits the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
 
 ~~~~
    ________________________________________________________
@@ -765,7 +765,7 @@ In this case the original message has no payload and its resulting Plaintext can
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding must be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, the overhead from the tag bytes is incurred as before.
+In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding have to be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, the overhead from the tag bytes is incurred as before.
 
 ~~~~
    ________________________________________________________
@@ -814,7 +814,7 @@ In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTE
 ~~~~
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
-The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
+The Outer SCHC Rules ({{Fig-Outer-Rules}}) MUST process the OSCORE Options
 fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload. These are the messages that are to go through Outer SCHC Compression.
 
 ~~~~
@@ -883,7 +883,7 @@ Note that fixing a flag bit will limit the choice of CoAP Options that can be us
 
 The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could prove useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
 
-The size s included in the kid context field may be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
+The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
 
 {{Fig-Outer-Rules}} shows a possible set of Outer Rules to compress the Outer Header. 
 
