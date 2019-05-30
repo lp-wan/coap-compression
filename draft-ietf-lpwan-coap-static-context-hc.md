@@ -111,7 +111,7 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 
 
 {{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can cover all headers from
-IPv6 to CoAP, in which case SCHC C/D is performed at the device and at the LPWAN boundary. If an end-to-end
+IPv6 to CoAP, in which case SCHC Compression/Decompression (C/D) is performed at the device and at the LPWAN boundary. If an end-to-end
 encryption mechanisms is used between the device and the application,
 CoAP MAY be compressed independently of the other layers. The rule ID and the compression residue
 are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.  
@@ -155,10 +155,10 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   (path or queries). The position defined in a rule, associated to a Field ID, can be used to 
   identify the proper instance.
 
-  {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field ID to appears several times in the
+  {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field ID to appear several times in the
   rule, the Field Position (FP) removes ambiguities for the matching operation. 
 
-* Field sizes defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.
+* Field sizes defined in the CoAP protocol can be too large compared to LPWAN traffic constraints.
   This is particularly true for the message ID field or Token field. The MSB MO can be
   used to reduce the information carried on LPWANs.
   
