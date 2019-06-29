@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Standards Track                              L. Toutain
-Expires: November 25, 2019        Institut MINES TELECOM; IMT Atlantique
+Expires: December 31, 2019        Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                            May 24, 2019
+                                                           June 29, 2019
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 25, 2019.
+   This Internet-Draft will expire on December 31, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 1]
+Minaburo, et al.        Expires December 31, 2019               [Page 1]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 2]
+Minaburo, et al.        Expires December 31, 2019               [Page 2]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 3]
+Minaburo, et al.        Expires December 31, 2019               [Page 3]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
     ^   +------------+    ^  +------------+        ^  +------------+
@@ -221,9 +221,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 4]
+Minaburo, et al.        Expires December 31, 2019               [Page 4]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    o  Even when a field is "symmetric" (i.e. found in both directions)
@@ -277,9 +277,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 5]
+Minaburo, et al.        Expires December 31, 2019               [Page 5]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 4.  Compression of CoAP header fields
@@ -333,9 +333,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 6]
+Minaburo, et al.        Expires December 31, 2019               [Page 6]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    In case the Device is a client, the size of the message ID field may
@@ -389,9 +389,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 7]
+Minaburo, et al.        Expires December 31, 2019               [Page 7]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
@@ -445,9 +445,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 8]
+Minaburo, et al.        Expires December 31, 2019               [Page 8]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    The length sent at the beginning of a variable length residue
@@ -501,9 +501,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019               [Page 9]
+Minaburo, et al.        Expires December 31, 2019               [Page 9]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 6.  Other RFCs
@@ -557,9 +557,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 10]
+Minaburo, et al.        Expires December 31, 2019              [Page 10]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 6.5.  OSCORE
@@ -613,9 +613,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 11]
+Minaburo, et al.        Expires December 31, 2019              [Page 11]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    o  CoAP OSCORE_piv,
@@ -669,9 +669,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 12]
+Minaburo, et al.        Expires December 31, 2019              [Page 12]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
                        Device     LPWAN      SCHC C/D
@@ -725,9 +725,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 13]
+Minaburo, et al.        Expires December 31, 2019              [Page 13]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Additionally, the OSCORE Option is added as an Outer option,
@@ -781,9 +781,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 14]
+Minaburo, et al.        Expires December 31, 2019              [Page 14]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    [I-D.ietf-core-object-security], the message code is replaced by POST
@@ -822,12 +822,13 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
      . OSCORE Option            .
      +------+-------------------+
      | 0xFF |
-     +------+-------------------------+
-     |                                |
-     |  Encrypted Inner Header and    |
-     |  Payload                       |
-     |                                |
-     +--------------------------------+
+     +------+---------------------------+
+     |                                  |
+     | Ciphertext: Encrypted Inner      |
+     |             Header and Payload   |
+     |             + Authentication Tag |
+     |                                  |
+     +----------------------------------+
 
 
                          Figure 8: OSCORE message
@@ -836,10 +837,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-
-Minaburo, et al.        Expires November 25, 2019              [Page 15]
+Minaburo, et al.        Expires December 31, 2019              [Page 15]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    The SCHC Compression scheme consists of compressing both the
@@ -893,9 +893,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 16]
+Minaburo, et al.        Expires December 31, 2019              [Page 16]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 7.3.  Example OSCORE Compression
@@ -949,9 +949,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 17]
+Minaburo, et al.        Expires December 31, 2019              [Page 17]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Original message:
@@ -1005,9 +1005,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 18]
+Minaburo, et al.        Expires December 31, 2019              [Page 18]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Rule ID 0
@@ -1061,9 +1061,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 19]
+Minaburo, et al.        Expires December 31, 2019              [Page 19]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
       ________________________________________________________
@@ -1117,9 +1117,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 20]
+Minaburo, et al.        Expires December 31, 2019              [Page 20]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    compressed.  On top of this, the overhead from the tag bytes is
@@ -1173,9 +1173,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 21]
+Minaburo, et al.        Expires December 31, 2019              [Page 21]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    The Outer SCHC Rules (Figure 17) MUST process the OSCORE Options
@@ -1229,9 +1229,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 22]
+Minaburo, et al.        Expires December 31, 2019              [Page 22]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Protected message:
@@ -1285,9 +1285,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 23]
+Minaburo, et al.        Expires December 31, 2019              [Page 23]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    The size s included in the kid context field MAY be masked off with
@@ -1341,9 +1341,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 24]
+Minaburo, et al.        Expires December 31, 2019              [Page 24]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 Rule ID 0
@@ -1397,9 +1397,9 @@ Rule ID 0
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 25]
+Minaburo, et al.        Expires December 31, 2019              [Page 25]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    These Outer Rules are applied to the example GET Request and CONTENT
@@ -1453,9 +1453,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 26]
+Minaburo, et al.        Expires December 31, 2019              [Page 26]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
  Rule ID 1
@@ -1509,9 +1509,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 27]
+Minaburo, et al.        Expires December 31, 2019              [Page 27]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Compressed message:
@@ -1565,9 +1565,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 28]
+Minaburo, et al.        Expires December 31, 2019              [Page 28]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
 11.  Normative References
@@ -1621,9 +1621,9 @@ Authors' Addresses
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 29]
+Minaburo, et al.        Expires December 31, 2019              [Page 29]
 
-Internet-Draft           LPWAN CoAP compression                 May 2019
+Internet-Draft           LPWAN CoAP compression                June 2019
 
 
    Ana Minaburo
@@ -1677,4 +1677,4 @@ Internet-Draft           LPWAN CoAP compression                 May 2019
 
 
 
-Minaburo, et al.        Expires November 25, 2019              [Page 30]
+Minaburo, et al.        Expires December 31, 2019              [Page 30]
