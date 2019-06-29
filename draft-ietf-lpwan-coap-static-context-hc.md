@@ -573,12 +573,13 @@ length and considered part of the cost of protection.
   . OSCORE Option            .               
   +------+-------------------+               
   | 0xFF |                                  
-  +------+-------------------------+
-  |                                |
-  |  Encrypted Inner Header and    |
-  |  Payload                       |
-  |                                |
-  +--------------------------------+
+  +------+---------------------------+
+  |                                  |
+  | Ciphertext: Encrypted Inner      |
+  |             Header and Payload   |
+  |             + Authentication Tag |
+  |                                  |
+  +----------------------------------+
    
 ~~~~
 {: #Fig-full-oscore title='OSCORE message'}
