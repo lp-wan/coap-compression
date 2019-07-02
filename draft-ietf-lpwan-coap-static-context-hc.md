@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-07
+docname: draft-ietf-lpwan-coap-static-context-hc-09
 cat: std
 pi:
   symrefs: 'yes'
@@ -400,7 +400,7 @@ Conceptually, it discerns up to 4 distinct pieces of information within the OSCO
  * CoAP OSCORE_kidctxt,
  * CoAP OSCORE_kid.
 
-These fields are shown superimposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size SHOULD be reduced using the MSB matching operator.
+These fields are shown superimposed on the OSCORE Option format in {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field including the size bits s. Their size SHOULD be reduced using SCHC compression.
 
 
 # Examples of CoAP header compression
@@ -419,7 +419,6 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
-|CoAP version |  |  |bi| 01   |equal    |not-sent     ||            |
 |CoAP Type    |  |  |dw| CON  |equal    |not-sent     ||            |
 |CoAP Type    |  |  |up|[ACK, |         |             ||            | 
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
@@ -439,32 +438,9 @@ a single element indicated in the matching operator.
 
 {{Fig-CoAP-3}} shows the time diagram of the exchange. A client in the Application Server
 sends a CON request. It can go through a proxy which reduces the message ID to 
-a smallest value, with at least the 9 most significant bits equal to 0.
+a smallest size.
 SCHC Compression reduces the header sending only the Type, a mapped
-code and the least 9 significant bits of Message ID. 
-
-~~~~
-                    Device     LPWAN      SCHC C/D
-                       |                    |
-                       |       rule id=1    |<--------------------
-                       |<-------------------| +-+-+--+----+------+
-  <------------------- | CCCCCMMMMMMMMM     | |1|0| 4|0.01|0x0034|
- +-+-+--+----+-------+ | 00001000110100     | |  0xb4   p   a   t|
- |1|0| 1|0.01|0x0034 | |                    | |  h   |
- |  0xb4   p   a   t | |                    | +------+
- |  h   |              |                    |     
- +------+              |                    |   
-                       |                    |    
-                       |                    |    
----------------------->|      rule id=1     |
-+-+-+--+----+--------+ |------------------->|
-|1|2| 0|2.05| 0x0034 | |  TCCCCCMMMMMMMMM   |--------------------->
-+-+-+--+----+--------+ |  001100000110100   | +-+-+--+----+------+
-                       |                    | |1|2| 0|2.05|0x0034|
-                       v                    v +-+-+--+----+------+
-
-~~~~
-{: #Fig-CoAP-3 title='Compression with global addresses'}
+code and the least significant bits of Message ID (9 in the example above). 
 
 
 ## OSCORE Compression
@@ -532,7 +508,7 @@ may be correctly decrypted at the other end-point.
   +------+                                    +-------------------+
 
 ~~~~
-{: #Fig-inner-outer title='OSCORE inner and outer header form a CoAP message'}  
+{: #Fig-inner-outer title='A CoAP message is splitted into an OSCORE outer and plaintext'}  
 
 {{Fig-inner-outer}} shows the message format for the OSCORE Message and
 Plaintext. 
@@ -632,7 +608,8 @@ Note that since the Inner part of the message can only be decrypted by the corre
 ## Example OSCORE Compression
 
 An example is given with a GET Request and its consequent CONTENT
-Response. A possible set of rules for the Inner and Outer SCHC
+Response from a device-based CoAP client to a cloud-based CoAP server. 
+A possible set of rules for the Inner and Outer SCHC
 Compression is shown. A dump of the results and a contrast between SCHC + OSCORE
 performance with SCHC + COAP performance is also listed. This gives an approximation to the
 cost of security with SCHC-OSCORE.
@@ -694,7 +671,6 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 
 ~~~~
  Rule ID 0
-<<<<<<< Updated upstream
 +---------------+--+--+-----------+-----------+-----------++------+
 | Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
 |               |  |  |  Value    |           |           ||[bits]|
@@ -704,17 +680,6 @@ inclusion of only those CoAP fields that go into the Plaintext, {{Fig-Inner-Rule
 |CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
 |COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
 +---------------+--+--+-----------+-----------+-----------++------+
-=======
-+----------------+--+--+-----------+-----------+-----------++--------+
-| Field          |FP|DI|  Target   |    MO     |     CDA   ||  Sent  |
-|                |  |  |  Value    |           |           || [bits] |
-+----------------+--+--+-----------+-----------+-----------++--------+
-|CoAP Code       |  |up|   1       |  equal    |not-sent   ||        |
-|CoAP Code       |  |dw|[69,132]   | match-map |match-sent || c      |
-|CoAP Uri-Path   |  |up|temperature|  equal    |not-sent   ||        |
-|COAP Option-End |  |dw| 0xFF      |  equal    |not-sent   ||        |
-+----------------+--+--+-----------+-----------+-----------++--------+
->>>>>>> Stashed changes
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
@@ -835,7 +800,7 @@ Header:
 0x82 = token
 
 Options:
-0xd7080904636c69656e74 (10 bytes)
+0xd8080904636c69656e74 (10 bytes)
 Option 21: OBJECT_SECURITY
 Value = 0x0904636c69656e74
           09 = 000 0 1 001 Flag byte
@@ -890,7 +855,6 @@ The size s included in the kid context field MAY be masked off with CDA MSB. The
 
 ~~~~
 Rule ID 0
-<<<<<<< Updated upstream
 +-------------------+--+--+--------------+--------+---------++------+
 | Field             |FP|DI|    Target    |   MO   |   CDA   || Sent |
 |                   |  |  |    Value     |        |         ||[bits]|
@@ -912,29 +876,6 @@ Rule ID 0
 |CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent ||      |
 |COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
 +-------------------+--+--+--------------+--------+---------++------+
-=======
-+-------------------+--+--+--------------+---------+-----------++--------+
-| Field             |FP|DI|    Target    |   MO    |     CDA   ||  Sent  |
-|                   |  |  |    Value     |         |           || [bits] |
-+-------------------+--+--+--------------+---------+-----------++--------+ 
-|CoAP version       |  |bi|      01      |equal    |not-sent   ||        |
-|CoAP Type          |  |up|      0       |equal    |not-sent   ||        |
-|CoAP Type          |  |dw|      2       |equal    |not-sent   ||        |
-|CoAP TKL           |  |bi|      1       |equal    |not-sent   ||        |
-|CoAP Code          |  |up|      2       |equal    |not-sent   ||        |
-|CoAP Code          |  |dw|      68      |equal    |not-sent   ||        |
-|CoAP MID           |  |bi|     0000     |MSB(12)  |LSB        ||MMMM    |
-|CoAP Token         |  |bi|     0x80     |MSB(5)   |LSB        ||TTT     |
-|CoAP OSCORE_flags  |  |up|     0x09     |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)   |LSB        ||PPPP    |
-|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52)  |LSB        ||KKKK    |
-|COAP OSCORE_kidctxt|  |bi|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_flags  |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_piv    |  |dw|     b''      |equal    |not-sent   ||        |
-|CoAP OSCORE_kid    |  |dw|     b''      |equal    |not-sent   ||        |
-|COAP Option-End    |  |dw|     0xFF     |equal    |not-sent   ||        |
-+-------------------+--+--+--------------+---------+-----------++--------+
->>>>>>> Stashed changes
 ~~~~
 {: #Fig-Outer-Rules title='Outer SCHC Rules'}
 
@@ -986,7 +927,6 @@ do this, we compress the CoAP messages according to the SCHC rules in {{Fig-NoOs
 
 ~~~~
 Rule ID 1
-<<<<<<< Updated upstream
 +---------------+--+--+-----------+---------+-----------++--------+
 | Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
 |               |  |  |  Value    |         |           || [bits] |
@@ -996,29 +936,12 @@ Rule ID 1
 |CoAP Type      |  |dw|    2      |equal    |not-sent   ||        |
 |CoAP TKL       |  |bi|    1      |equal    |not-sent   ||        |
 |CoAP Code      |  |up|    2      |equal    |not-sent   ||        |
-|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||        |
+|CoAP Code      |  |dw| [69,132]  |match-map|map-sent   ||C       |
 |CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM    |
 |CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT     |
 |CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
 +---------------+--+--+-----------+---------+-----------++--------+
-=======
-+---------------+--+--+-----------+---------+-----------++------------+
-| Field         |FP|DI|  Target   |   MO    |     CDA   ||    Sent    |
-|               |  |  |  Value    |         |           ||   [bits]   |
-+---------------+--+--+-----------+---------+-----------++------------+ 
-|CoAP version   |  |bi|    01     |equal    |not-sent   ||            |
-|CoAP Type      |  |up|    0      |equal    |not-sent   ||            |
-|CoAP Type      |  |dw|    2      |equal    |not-sent   ||            |
-|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||            |
-|CoAP Code      |  |up|    2      |equal    |not-sent   ||            |
-|CoAP Code      |  |dw| [69,132]  |equal    |not-sent   ||            |
-|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM        |
-|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT         |
-|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||            |
-|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||            |
-+---------------+--+--+-----------+---------+-----------++------------+
->>>>>>> Stashed changes
 ~~~~
 {: #Fig-NoOsc-Rules title='SCHC-CoAP Rules (No OSCORE)'}
 
