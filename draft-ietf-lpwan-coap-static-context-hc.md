@@ -49,8 +49,7 @@ normative:
 --- abstract
 
 This draft defines the way SCHC header compression can be applied to CoAP 
-headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP  
-uses a flexible header with a variable number of options, themselves of variable length.
+headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP uses a flexible header with a variable number of options, themselves of variable length.
 The CoAP protocol is asymmetric in its message format: the format of the packet header in the request messages
 is different from that in the response messages.
 Most of the compression mechanisms have been introduced in 
@@ -86,6 +85,10 @@ devices. Although CoAP was designed for constrained devices, the size of a CoAP 
    send the field value, send nothing, send some least significant bits of the field or send an index.
    Values sent are called Compression Residues and follow the rule ID in the transmitted message.
    
+The compression rules define a generic way to compress and decompress 
+the fields. If the device is modified, for example,  to introduce new functionalities
+ or new CoAP options, the rules must be updated to reflect the evolution. 
+There is no risk to lock a device in a particular version of CoAP. 
     
 # SCHC Compression Process
 
@@ -168,11 +171,11 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   used to reduce the information carried on LPWANs.
   
 * CoAP also obeys the client/server paradigm and the compression ratio can
-  be different if the request is issued from an LPWAN device or from an non LPWAN
+  be different if the request is issued from an LPWAN device or from a non LPWAN
   device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but
   a regular CoAP client will certainly send a larger token to the Dev. The SCHC compression-decompression
   process does not modify the values. Nevertheless, a proxy placed
-  before the compressor may change some field values to allow SCHC acheiving a better compression ratio,
+  before the compressor may change some field values to allow SCHC achieving a better compression ratio,
   while maintaining the necessary context for interoperability with existing CoAP implementations.
 
 # Compression of CoAP header fields
@@ -344,6 +347,7 @@ set to "equal" and CDA is set to "not-sent".
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDA to "value-sent". A matching list can also be used to reduce the size. 
 
+<!--
 ## Time Scale
 
 The time scale {{I-D.toutain-core-time-scale}} option allows a client to inform the server that
@@ -354,6 +358,7 @@ set to "equal" and CDA is set to "not-sent".
 
 Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
 CDA to "value-sent". A matching list can also be used to reduce the size. 
+-->
 
 ## OSCORE
 {: #Sec-OSCORE}
@@ -428,8 +433,10 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 |CoAP Type    |  |  |up|[ACK, |         |             ||            | 
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
-|CoAP Code    |  |  |bi| ML1  |match-map|matching-sent||  CC CCC    |
-|CoAP MID     |  |  |bi| 0000 |MSB(7 )  |LSB(9)       ||        M-ID|
+|CoAP Code    |  |  |bi|[0.00,|         |             ||            |
+|             |  |  |  | ...  |         |             ||            |
+|             |  |  |  | 5.05]|match-map|matching-sent||  CC CCC    |
+|CoAP MID     |  |  |bi| 0000 |MSB(7 )  |LSB          ||        M-ID|
 |CoAP Uri-Path|  |  |dw| path |equal 1  |not-sent     ||            |
 +-------------+--+--+--+------+---------+-------------++------------+
 
@@ -437,15 +444,19 @@ scenario, the rules are described {{Fig-CoAP-header-1}}.
 {: #Fig-CoAP-header-1 title='CoAP Context to compress header without token'}
 
 
-The version  and Token Length fields are elided. Code has shrunk to 5 bits
+The version  and Token Length fields are elided. The 26 method and response codes
+defined in {{rfc7252}} has been shrunk to 5 bits
 using a matching list.  Uri-Path contains
 a single element indicated in the matching operator.
 
-<!-- {{Fig-CoAP-3}} --> shows the time diagram of the exchange. A client in the Application Server
-sends a CON request. It can go through a proxy which reduces the message ID to 
-a smallest size.
 SCHC Compression reduces the header sending only the Type, a mapped
-code and the least significant bits of Message ID (9 in the example above). 
+code and the least significant bits of Message ID (9 bits in the example above). 
+
+Note that a request sent by a client located an Application Server to a server 
+in the device, may not be compressed through
+this rule since the MID will not start with 7 bits equal to 0. A CoAP proxy,
+before the core SCHC C/D can rewrite the message ID to a value matched by the rule.
+
 
 
 ## OSCORE Compression
@@ -1001,7 +1012,7 @@ This document does not have any more Security consideration than the ones alread
 
 # Acknowledgements
 
-Thanks to all the persons that have given us feedback
+The authors would like to thank Dominique Barthel, Carsten Bormann, Thomas Fossati, Klaus Hartke, Francesca Palombini, Alexander Pelov, Goran Selander. 
 
 
 
