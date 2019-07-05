@@ -50,8 +50,8 @@ normative:
 
 This draft defines the way SCHC header compression can be applied to CoAP 
 headers. The CoAP header structure differs from IPv6 and UDP protocols since CoAP  
-uses a flexible header with a variable number of options themselves of variable length.
-The CoAP protocol is asymmetric in its message format, the format of the header packet in the request messages
+uses a flexible header with a variable number of options, themselves of variable length.
+The CoAP protocol is asymmetric in its message format: the format of the packet header in the request messages
 is different from that in the response messages.
 Most of the compression mechanisms have been introduced in 
 {{I-D.ietf-lpwan-ipv6-static-context-hc}}, this document explains how to use the SCHC compression
@@ -63,7 +63,8 @@ for CoAP.
 
 CoAP {{rfc7252}} is an implementation of the REST architecture for constrained 
 devices. Although CoAP was designed for constrained devices, the size of a CoAP header may still be
-   too large for LPWAN constraints and some compression may be
+   too large for the constraints of Low Power Wide Area Networks (LPWAN)
+   and some compression may be
    needed to reduce the header size. 
    
 {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines a header compression
@@ -79,17 +80,17 @@ devices. Although CoAP was designed for constrained devices, the size of a CoAP 
    and some associated Target Values (TV). Target Value indicates the value that can be expected. 
    TV can also be a list of values. A Matching Operator (MO) is
    associated to each header field description. The rule is selected if all the MOs fit
-   the TVs for all fields.  In that case, a Compression/Decompression Action (CDA)
-   associated to each field defines the link between the compressed and
-   decompressed value for each of the header fields. Compression results mainly in 4 actions: 
-   send the field value, send nothing, send less significant bits of a field, send an index. 
-   Values sent are called Compression Residues and follows the rule ID. 
+   the TVs for all fields of the incoming packet.  In that case, a Compression/Decompression Action (CDA)
+   associated to each field defines how the compressed and the
+   decompressed values are computed out of each other, for each of the header fields. Compression mainly results in one of 4 actions:
+   send the field value, send nothing, send some least significant bits of the field or send an index.
+   Values sent are called Compression Residues and follow the rule ID in the transmitted message.
    
     
 # SCHC Compression Process
 
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP 
-header MAY be done in conjunction with the above layers (IPv6/UDP) or independently. 
+header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
 The SCHC adaptation layers as described in {{I-D.ietf-lpwan-ipv6-static-context-hc}} 
 may be used as shown in {{Fig-SCHCCOAP}}.
 
@@ -110,15 +111,21 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 {: #Fig-SCHCCOAP title='rule scope for CoAP'}  
 
 
-{{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope. A rule can cover all headers from
-IPv6 to CoAP, in which case SCHC C/D is performed at the device and at the LPWAN boundary. If an end-to-end
-encryption mechanisms is used between the device and the application,
-CoAP MAY be compressed independently of the other layers. The rule ID and the compression residue
+{{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope.
+
+In the first example, a rule compresses all headers from
+IPv6 to CoAP. In this case, SCHC C/D is performed at the device and at the LPWAN boundary.
+
+In the second example, an end-to-end
+encryption mechanisms is used between the device and the application.
+CoAP is compressed independently of the other layers. The rule ID and the compression residue
 are encrypted using a mechanism such as DTLS. Only the other end can decipher the information.  
-Layers below may also be compressed using other SCHC rules (this is out of the scope of this document). 
-OSCORE {{I-D.ietf-core-object-security}} can also define 2 rules to compress the
-CoAP message. A first rule focuses on the inner header and is end to end, a second rule may compress
-the outer header and the layers below. SCHC C/D for inner header is done by both ends,
+Layers below may also be compressed using other SCHC rules (this is out of the scope of this document).
+
+
+In the third example, OSCORE {{I-D.ietf-core-object-security}} is used. 2 rulesets are used to compress the
+CoAP message. A first ruleset focuses on the inner header and is end to end, a second ruleset compresses
+the outer header and the layers below. SCHC C/D for inner header is done by both ends, and
 SCHC C/D for outer header and other headers is done between the device and the LPWAN boundary. 
 
 
@@ -127,13 +134,13 @@ SCHC C/D for outer header and other headers is done between the device and the L
 CoAP differs from IPv6 and UDP protocols on the following aspects: 
    
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
-  request and in the response, only the location in the header may vary 
-  (e.g. source and destination fields). A CoAP request is different from a response. 
+  request and in the response, with the value of some fields being swapped on the return path
+  (e.g. source and destination fields). A CoAP request is intrinsically different from a response.
   For example, the URI-path option is mandatory in the request and is not found in the response, 
   a request may contain an Accept option and the response a Content option.
   
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines the use of  a message direction (DI) in the Field Description,
-  which allows a single Rule to process message headers differently in both directions.
+  which allows a single Rule to process message headers differently depending of the direction.
   
 * Even when a field is "symmetric" (i.e. found in both directions) the values carried in each direction are
   different.  Combined with a matching list in the TV, this allows reducing the range of
@@ -151,12 +158,10 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   {{I-D.ietf-lpwan-ipv6-static-context-hc}}
   offers the possibility to define a function for the Field Length in the Field Description.
   
-* In CoAP headers, a field can be present several times. This is typical for elements of an URI
-  (path or queries). The position defined in a rule, associated to a Field ID, can be used to 
-  identify the proper instance.
-
+* In CoAP headers, a field can appear several times. This is typical for elements of a URI
+  (path or queries).
   {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field ID to appears several times in the
-  rule, the Field Position (FP) removes ambiguities for the matching operation. 
+  rule, the Field Position (FP) identifies the proper instance, thereby removing the ambiguity of the matching operation.
 
 * Field sizes defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.
   This is particularly true for the message ID field or Token field. The MSB MO can be
@@ -165,10 +170,10 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
 * CoAP also obeys the client/server paradigm and the compression ratio can
   be different if the request is issued from an LPWAN device or from an non LPWAN
   device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but
-  a regular CoAP client will certainly send a larger token to the Dev. SCHC compression
-  will not modify the values to offer a better compression rate. Nevertheless, a proxy placed
-  before the compressor may change some field values to offer a better compression ratio and
-  maintain the necessary context for interoperability with existing CoAP implementations.
+  a regular CoAP client will certainly send a larger token to the Dev. The SCHC compression-decompression
+  process does not modify the values. Nevertheless, a proxy placed
+  before the compressor may change some field values to allow SCHC acheiving a better compression ratio,
+  while maintaining the necessary context for interoperability with existing CoAP implementations.
 
 # Compression of CoAP header fields
 
@@ -182,15 +187,15 @@ be defined to avoid ambiguities between versions.
 
 ## CoAP type field
 
-{{rfc7252}} defines 4 types of messages: CON, NON, ACK and RST. The last two are a response to the first two. If the device plays a specific role, a rule can exploit these properties with the mapping list: \[CON, NON\] for one direction and \[ACK, RST\] for the other direction. Compression residue is reduced to 1 bit.
+{{rfc7252}} defines 4 types of messages: CON, NON, ACK and RST. The last two are a response to the first two. If the device plays a specific client or server role, a rule can exploit these properties with the mapping list: \[CON, NON\] for one direction and \[ACK, RST\] for the other direction. The compression residue is reduced to 1 bit.
 
-The field SHOULD be elided if for instance a client is sending only NON or CON messages. 
+The field SHOULD be elided if for instance a client is sending only NON or only CON messages.
 
 In any case, a rule MUST be defined to carry RST to a client.
   
 ## CoAP code field
 
-The compression of the CoAP code field follows the same principle as for the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values. 
+The compression of the CoAP code field follows the same principle as that of the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.
 
 If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
 
@@ -436,7 +441,7 @@ The version  and Token Length fields are elided. Code has shrunk to 5 bits
 using a matching list.  Uri-Path contains
 a single element indicated in the matching operator.
 
-{{Fig-CoAP-3}} shows the time diagram of the exchange. A client in the Application Server
+<!-- {{Fig-CoAP-3}} --> shows the time diagram of the exchange. A client in the Application Server
 sends a CON request. It can go through a proxy which reduces the message ID to 
 a smallest size.
 SCHC Compression reduces the header sending only the Type, a mapped
@@ -508,7 +513,7 @@ may be correctly decrypted at the other end-point.
   +------+                                    +-------------------+
 
 ~~~~
-{: #Fig-inner-outer title='A CoAP message is splitted into an OSCORE outer and plaintext'}  
+{: #Fig-inner-outer title='A CoAP message is split into an OSCORE outer and plaintext'}
 
 {{Fig-inner-outer}} shows the message format for the OSCORE Message and
 Plaintext. 
@@ -996,7 +1001,7 @@ This document does not have any more Security consideration than the ones alread
 
 # Acknowledgements
 
-Thanks to all the persons that have give us feedback
+Thanks to all the persons that have given us feedback
 
 
 
