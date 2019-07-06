@@ -233,8 +233,8 @@ If a single value is expected by the client, it can be stored in the TV and elid
 
 ## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
 
-These fields is unidirectional and MUST NOT be set to bidirectional in a rule entry.
-It is used only by the server to inform of the caching duration and is never 
+These fields are unidirectional and MUST NOT be set to bidirectional in a rule entry.
+They are used only by the server to inform of the caching duration and is never 
 found in client
 requests.
 
