@@ -288,7 +288,7 @@ address {
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 CoAP Token fields">
 <link href="#rfc.section.5" rel="Chapter" title="5 CoAP options">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 CoAP Content and Accept options.">
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 CoAP option Max-Age, Uri-Host and Uri-Port fields">
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 CoAP option Uri-Path and Uri-Query fields">
 <link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 Variable length Uri-Path and Uri-Query">
 <link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 Variable number of path or query elements">
@@ -400,7 +400,7 @@ address {
 </li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">CoAP Content and Accept options.</a>
 </li>
-<li>5.2.   <a href="#rfc.section.5.2">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
+<li>5.2.   <a href="#rfc.section.5.2">CoAP option Max-Age, Uri-Host and Uri-Port fields</a>
 </li>
 <li>5.3.   <a href="#rfc.section.5.3">CoAP option Uri-Path and Uri-Query fields</a>
 </li>
@@ -530,7 +530,7 @@ address {
 <p id="rfc.section.5.1.p.1">These fields are both unidirectional and MUST NOT be set to bidirectional in a rule entry.</p>
 <p id="rfc.section.5.1.p.2">If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length).</p>
 <h1 id="rfc.section.5.2">
-<a href="#rfc.section.5.2">5.2.</a> <a href="#coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields" id="coap-option-max-age-field-coap-option-uri-host-and-uri-port-fields">CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields</a>
+<a href="#rfc.section.5.2">5.2.</a> <a href="#coap-option-max-age-uri-host-and-uri-port-fields" id="coap-option-max-age-uri-host-and-uri-port-fields">CoAP option Max-Age, Uri-Host and Uri-Port fields</a>
 </h1>
 <p id="rfc.section.5.2.p.1">These fields are unidirectional and MUST NOT be set to bidirectional in a rule entry.  They are used only by the server to inform of the caching duration and is never found in client requests.</p>
 <p id="rfc.section.5.2.p.2">If the duration is known by both ends, the value can be elided on the LPWAN.</p>

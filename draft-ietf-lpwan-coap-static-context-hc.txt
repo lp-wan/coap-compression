@@ -79,8 +79,7 @@ Table of Contents
      4.5.  CoAP Token fields . . . . . . . . . . . . . . . . . . . .   7
    5.  CoAP options  . . . . . . . . . . . . . . . . . . . . . . . .   7
      5.1.  CoAP Content and Accept options.  . . . . . . . . . . . .   7
-     5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-
-           Port fields . . . . . . . . . . . . . . . . . . . . . . .   8
+     5.2.  CoAP option Max-Age, Uri-Host and Uri-Port fields . . . .   7
      5.3.  CoAP option Uri-Path and Uri-Query fields . . . . . . . .   8
        5.3.1.  Variable length Uri-Path and Uri-Query  . . . . . . .   8
        5.3.2.  Variable number of path or query elements . . . . . .   9
@@ -88,20 +87,21 @@ Table of Contents
            fields  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path
            and Location-Query fields . . . . . . . . . . . . . . . .   9
-   6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+   6.  Other RFCs  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     6.1.  Block . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      6.2.  Observe . . . . . . . . . . . . . . . . . . . . . . . . .  10
      6.3.  No-Response . . . . . . . . . . . . . . . . . . . . . . .  10
      6.4.  OSCORE  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Examples of CoAP header compression . . . . . . . . . . . . .  12
-     7.1.  Mandatory header with CON message . . . . . . . . . . . .  12
-     7.2.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  13
+   7.  Examples of CoAP header compression . . . . . . . . . . . . .  11
+     7.1.  Mandatory header with CON message . . . . . . . . . . . .  11
+     7.2.  OSCORE Compression  . . . . . . . . . . . . . . . . . . .  12
      7.3.  Example OSCORE Compression  . . . . . . . . . . . . . . .  16
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  26
    9.  Security considerations . . . . . . . . . . . . . . . . . . .  26
    10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  26
    11. Normative References  . . . . . . . . . . . . . . . . . . . .  26
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
+
 
 
 
@@ -381,11 +381,11 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    used to limit the size of the residue.  If is not possible, the value
    has to be sent as a residue (fixed or variable length).
 
+5.2.  CoAP option Max-Age, Uri-Host and Uri-Port fields
 
-
-
-
-
+   These fields are unidirectional and MUST NOT be set to bidirectional
+   in a rule entry.  They are used only by the server to inform of the
+   caching duration and is never found in client requests.
 
 
 
@@ -393,13 +393,6 @@ Minaburo, et al.         Expires January 7, 2020                [Page 7]
 
 Internet-Draft           LPWAN CoAP compression                July 2019
 
-
-5.2.  CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port
-      fields
-
-   These fields are unidirectional and MUST NOT be set to bidirectional
-   in a rule entry.  They are used only by the server to inform of the
-   caching duration and is never found in client requests.
 
    If the duration is known by both ends, the value can be elided on the
    LPWAN.
@@ -443,18 +436,19 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    MSB value is given in bit, the size MUST always be a multiple of 8
    bits.
 
+   The length sent at the beginning of a variable length residue
+   indicates the size of the LSB in bytes.
+
+   For instance for a CORECONF path /c/X6?k="eth0" the rule can be set
+   to:
+
+
 
 
 Minaburo, et al.         Expires January 7, 2020                [Page 8]
 
 Internet-Draft           LPWAN CoAP compression                July 2019
 
-
-   The length sent at the beginning of a variable length residue
-   indicates the size of the LSB in bytes.
-
-   For instance for a CORECONF path /c/X6?k="eth0" the rule can be set
-   to:
 
    FID       FL FP DI    TV       MO        CDA
    URI-Path     1  up    "c"     equal     not-sent
@@ -496,7 +490,13 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    These fields values cannot be stored in a rule entry.  They MUST
    always be sent with the compression residues.
 
+6.  Other RFCs
 
+6.1.  Block
+
+   Block [rfc7959] allows a fragmentation at the CoAP level.  SCHC also
+   includes a fragmentation protocol.  They are compatible.  If a block
+   option is used, its content MUST be sent as a compression residue.
 
 
 
@@ -505,14 +505,6 @@ Minaburo, et al.         Expires January 7, 2020                [Page 9]
 
 Internet-Draft           LPWAN CoAP compression                July 2019
 
-
-6.  Other RFCs
-
-6.1.  Block
-
-   Block [rfc7959] allows a fragmentation at the CoAP level.  SCHC also
-   includes a fragmentation protocol.  They are compatible.  If a block
-   option is used, its content MUST be sent as a compression residue.
 
 6.2.  Observe
 
@@ -544,24 +536,6 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    for CoAP messages.  This section describes how SCHC rules can be
    applied to compress OSCORE-protected messages.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Minaburo, et al.         Expires January 7, 2020               [Page 10]
-
-Internet-Draft           LPWAN CoAP compression                July 2019
-
-
          0 1 2 3 4 5 6 7 <--------- n bytes ------------->
         +-+-+-+-+-+-+-+-+---------------------------------
         |0 0 0|h|k|  n  |      Partial IV (if any) ...
@@ -579,6 +553,14 @@ Internet-Draft           LPWAN CoAP compression                July 2019
 
 
                           Figure 4: OSCORE Option
+
+
+
+
+Minaburo, et al.         Expires January 7, 2020               [Page 10]
+
+Internet-Draft           LPWAN CoAP compression                July 2019
+
 
    The encoding of the OSCORE Option Value defined in Section 6.1 of
    [I-D.ietf-core-object-security] is repeated in Figure 4.
@@ -611,13 +593,6 @@ Internet-Draft           LPWAN CoAP compression                July 2019
 
    o  CoAP OSCORE_kid.
 
-
-
-Minaburo, et al.         Expires January 7, 2020               [Page 11]
-
-Internet-Draft           LPWAN CoAP compression                July 2019
-
-
    These fields are shown superimposed on the OSCORE Option format in
    Figure 4, the CoAP OSCORE_kidctxt field including the size bits s.
    Their size SHOULD be reduced using SCHC compression.
@@ -630,6 +605,18 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    side receives from a client on the Internet a POST message, which is
    immediately acknowledged by the Device.  For this simple scenario,
    the rules are described Figure 5.
+
+
+
+
+
+
+
+
+Minaburo, et al.         Expires January 7, 2020               [Page 11]
+
+Internet-Draft           LPWAN CoAP compression                July 2019
+
 
     Rule ID 1
    +-------------+--+--+--+------+---------+-------------++------------+
@@ -666,14 +653,6 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    the core SCHC C/D can rewrite the message ID to a value matched by
    the rule.
 
-
-
-
-Minaburo, et al.         Expires January 7, 2020               [Page 12]
-
-Internet-Draft           LPWAN CoAP compression                July 2019
-
-
 7.2.  OSCORE Compression
 
    OSCORE aims to solve the problem of end-to-end encryption for CoAP
@@ -686,6 +665,15 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    operation.  This, in turn, is the part of the message which can be
    encrypted until it reaches its end destination.  The Outer Message
    acts as a shell matching the format of a regular CoAP message, and
+
+
+
+
+Minaburo, et al.         Expires January 7, 2020               [Page 12]
+
+Internet-Draft           LPWAN CoAP compression                July 2019
+
+
    includes all Options and information needed for proxy operation and
    caching.  This decomposition is illustrated in Figure 6.
 
@@ -705,6 +693,18 @@ Internet-Draft           LPWAN CoAP compression                July 2019
    the information necessary to retrieve the Security Context with which
    the message was encrypted so that it may be correctly decrypted at
    the other end-point.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
