@@ -231,7 +231,7 @@ These fields are both unidirectional and MUST NOT be set to bidirectional in a r
 If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the residue. If is not possible, the value has to be sent as a residue (fixed or variable length).
 
 
-## CoAP option Max-Age field, CoAP option Uri-Host and Uri-Port fields
+## CoAP option Max-Age, Uri-Host and Uri-Port fields
 
 These fields are unidirectional and MUST NOT be set to bidirectional in a rule entry.
 They are used only by the server to inform of the caching duration and is never 
