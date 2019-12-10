@@ -315,7 +315,7 @@ address {
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-11" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-12" />
   <meta name="dct.issued" scheme="ISO8601" content="2019-12-10" />
   <meta name="dct.abstract" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  The CoAP header structure differs from IPv6 and UDP protocols since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This document explains how to use the SCHC compression mechanism for CoAP." />
   <meta name="description" content="This draft defines the way SCHC header compression can be applied to CoAP headers.  The CoAP header structure differs from IPv6 and UDP protocols since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This document explains how to use the SCHC compression mechanism for CoAP." />
@@ -361,7 +361,7 @@ address {
   </table>
 
   <p class="title">LPWAN Static Context Header Compression (SCHC) for CoAP<br />
-  <span class="filename">draft-ietf-lpwan-coap-static-context-hc-11</span></p>
+  <span class="filename">draft-ietf-lpwan-coap-static-context-hc-12</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>This draft defines the way SCHC header compression can be applied to CoAP headers.  The CoAP header structure differs from IPv6 and UDP protocols since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This document explains how to use the SCHC compression mechanism for CoAP.</p>
@@ -453,7 +453,7 @@ address {
 <p id="rfc.section.1.p.1">CoAP <a href="#rfc7252" class="xref">[rfc7252]</a> is an implementation of the REST architecture for constrained devices.  Although CoAP was designed for constrained devices, the size of a CoAP header still is too large for the constraints of Low Power Wide Area Networks (LPWAN) and some compression is needed to reduce the header size.</p>
 <p><a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> defines a header compression mechanism for LPWAN network based on a static context. The context is said static since the field description composing the Rules are not learned during the packet exchanges but are previously defined.  The context(s) is(are) known by both ends before transmission.</p>
 <p id="rfc.section.1.p.3">A context is composed of a set of rules that are referenced by Rule IDs (identifiers).  A rule contains an ordered list of the fields descriptions containing a field ID (FID), its length (FL) and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV). Target Value indicates the value that can be expected.  TV can also be a list of values. A Matching Operator (MO) is associated to each header field description. The rule is selected if all the MOs fit the TVs for all fields of the incoming packet.  In that case, a Compression/Decompression Action (CDA) associated to each field defines how the compressed and the decompressed values are computed out of each other, for each of the header fields. Compression mainly results in one of 4 actions: send the field value, send nothing, send some least significant bits of the field or send an index.  After  applying the compression there may be some bits to be sent, these values are called Compression Residues and are transmitted after the Rule ID in the compressed messages.</p>
-<p id="rfc.section.1.p.4">The compression rules define a generic way to compress and decompress the fields. If the device is modified, for example,  to introduce new functionalities or new CoAP options, the rules must be updated to reflect the evolution.  There is no risk to lock a device in a particular version of CoAP.</p>
+<p id="rfc.section.1.p.4">The compression rules define a generic way to compress and decompress the fields. If the device is modified, for example,  to introduce new functionalities or new CoAP options, the rules must be updated to reflect the evolution.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
@@ -479,7 +479,7 @@ address {
 </pre>
 <p class="figure">Figure 1: rule scope for CoAP</p>
 <p><a href="#Fig-SCHCCOAP" class="xref">Figure 1</a> shows some examples for CoAP architecture and the SCHC rule&#8217;s scope.</p>
-<p id="rfc.section.2.p.3">In the first example, a rule compresses the complete header stack from IPv6 to CoAP.  In this case, SCHC C/D is performed at the device and at the LPWAN boundary.</p>
+<p id="rfc.section.2.p.3">In the first example, a rule compresses the complete header stack from IPv6 to CoAP. In this case, SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the device and at the LPWAN boundary.</p>
 <p id="rfc.section.2.p.4">In the second example, an end-to-end encryption mechanisms is used between the device and the application.  The SCHC compression is applied in the CoAP layer  compressing the CoAP header independently of the other layers.  The rule ID and the compression residue are encrypted using a mechanism such as DTLS.  Only the other end can decipher the information.  Layers below may also be compressed using other SCHC rules (this is out of the scope of this document) as defined in the SCHC <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> document.</p>
 <p id="rfc.section.2.p.5">In the third example, OSCORE <a href="#rfc8613" class="xref">[rfc8613]</a> is used. In this case, two rulesets are used to compress the CoAP message.  A first ruleset focused on the inner header and is applied end to end by both ends. A second ruleset compresses the outer header and the layers below  and is done between the device and the LPWAN boundary.</p>
 <h1 id="rfc.section.3">
@@ -495,6 +495,7 @@ address {
 <li>In CoAP headers, a field can appear several times.  This is typical for elements of a URI (path or queries).  The SCHC specification <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> allows a Field ID to appears several times in the rule, and uses the Field Position (FP) to identify the correct instance, and thereby removing the ambiguity of the matching operation.</li>
 <li>Field sizes defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.  This is particularly true for the Message ID field and the Token field.  The MSB MO can be applied to reduce the information carried on LPWANs.</li>
 <li>CoAP also obeys the client/server paradigm and the compression ratio can be different if the request is issued from an LPWAN device or from a non LPWAN device.  For instance, a Device (Dev) aware of LPWAN constraints can generate a 1-byte token, but a regular CoAP client will certainly send a larger token to the Dev.  The SCHC compression-decompression process never modifies the Values it only reduces their sizes.  Nevertheless, a proxy placed before the compressor may change some field values to allow SCHC achieving a better compression ratio, while maintaining the necessary context for interoperability with existing CoAP implementations.</li>
+<li>If no valid Rule was found, then the packet MUST be sent uncompressed using the RuleID dedicated to this purpose and the Compression Residue is the complete header of the packet. See section 6 of <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a>.</li>
 </ul>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#compression-of-coap-header-fields" id="compression-of-coap-header-fields">Compression of CoAP header fields</a>
@@ -692,7 +693,7 @@ address {
 <a href="#rfc.section.7.2">7.2.</a> <a href="#Sec-OSCORE-Examples" id="Sec-OSCORE-Examples">OSCORE Compression</a>
 </h1>
 <p id="rfc.section.7.2.p.1">OSCORE aims to solve the problem of end-to-end encryption for CoAP messages.  The goal, therefore, is to hide as much of the message as possible while still enabling proxy operation.</p>
-<p id="rfc.section.7.2.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensible information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 6</a>.</p>
+<p id="rfc.section.7.2.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 6</a>.</p>
 <p id="rfc.section.7.2.p.3">CoAP options are sorted into one of 3 classes, each granted a specific type of protection by the protocol:</p>
 <p></p>
 
