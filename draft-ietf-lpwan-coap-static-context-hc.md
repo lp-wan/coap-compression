@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-11
+docname: draft-ietf-lpwan-coap-static-context-hc-12
 cat: std
 pi:
   symrefs: 'yes'
@@ -88,8 +88,7 @@ CoAP {{rfc7252}} is an implementation of the REST architecture for
 
 The compression rules define a generic way to compress and decompress 
 the fields. If the device is modified, for example,  to introduce new functionalities
- or new CoAP options, the rules must be updated to reflect the evolution. 
-There is no risk to lock a device in a particular version of CoAP. 
+ or new CoAP options, the rules must be updated to reflect the evolution.  
 
 ## Terminology
 
@@ -125,9 +124,9 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 
 {{Fig-SCHCCOAP}} shows some examples for CoAP architecture and the SCHC rule's scope.
 
-In the first example, a rule compresses the complete header stack from IPv6 to
-CoAP.  In this case, SCHC C/D is performed at the device and at the
-LPWAN boundary.
+In the first example, a rule compresses the complete header stack from IPv6 to CoAP. In this case, 
+SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the device and 
+at the LPWAN boundary.
 
 
 In the second example, an end-to-end encryption mechanisms is used
@@ -201,6 +200,10 @@ described using the Type-Length-Value.
   change some field values to allow SCHC achieving a better
   compression ratio, while maintaining the necessary context for
   interoperability with existing CoAP implementations. 
+  
+* If no valid Rule was found, then the packet MUST be sent uncompressed 
+  using the RuleID dedicated to this purpose and the Compression Residue 
+  is the complete header of the packet. See section 6 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.  
 
 
 # Compression of CoAP header fields
@@ -502,7 +505,7 @@ The goal, therefore, is to hide as much of the message as possible
 while still enabling proxy operation.
 
 Conceptually this is achieved by splitting the CoAP message into an Inner
-Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensible
+Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive
 information which is not necessary for proxy operation. This, in turn, is the
 part of the message which can be encrypted until it
 reaches its end destination. The Outer Message acts as a shell matching the 
