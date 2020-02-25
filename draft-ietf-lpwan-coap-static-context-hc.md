@@ -56,7 +56,7 @@ the header to reduce the redundancy and the size of the information in the heade
 While the RFC8724 describes the SCHC compression and fragmentation framework, and its application 
 for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers. 
 The CoAP header structure differs from IPv6 and UDP one 
-since CoAP uses a flexible header with a variable number options, themselves of 
+since CoAP uses a flexible header with a variable number of options, themselves of 
 variable length. The CoAP protocol messages format is asymmetric: the request messages 
 have a header format different from the one in the response messages.
 This specification gives guidance on how to apply SCHC to flexible headers and
@@ -74,7 +74,8 @@ constraints of LPWAN (Low Power Wide Area Networks) and some
 compression is needed to reduce the header size.
    
 The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network 
-based on a static context. The context is known by both ends before 
+based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
+compression and decompression are done. The context is known by both ends before 
 transmission and the way it is done is out of the scope of this document.
   
 SCHC compresses and decompresses headers based on shared contexts
@@ -204,7 +205,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   be raised after applying the CDA: 
   *  The result of the compression is of fixed 
      length and the compressed value is sent in the residue. 
-  *  Or the result of the compression is of variable length and this case the size is sent 
+  *  Or the result of the compression is of variable-length and in this case, the size is sent 
      with the compressed value in the residue. 
   
 * In CoAP headers, a field can appear several times.  This is
