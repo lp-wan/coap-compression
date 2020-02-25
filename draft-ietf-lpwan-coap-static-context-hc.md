@@ -48,6 +48,7 @@ normative:
   I-D.ietf-lpwan-ipv6-static-context-hc:
 
 --- abstract
+
 This draft defines the way SCHC (Static Context Header Compression) 
 header compression can be applied to CoAP protocol. SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
