@@ -153,7 +153,8 @@ Layers below may also be compressed using other SCHC rules (this is
 out of the scope of this document) as defined in the SCHC 
 {{rfc8724}} document.
 
-In the third example, OSCORE {{rfc8613}} is used. In this case, two rulesets are used to compress the CoAP message.  A first ruleset
+In the third example, OSCORE {{rfc8613}} is used. In this case, two rulesets are used 
+to compress the CoAP message.  A first ruleset
 focused on the inner header and is applied end to end by both ends. A second ruleset
 compresses the outer header and the layers below  and is done between the Sender and the Receiver.
 
@@ -177,7 +178,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   swapped on the return path (e.g. source and destination addresses fields). 
   The CoAP headers instead are asymmetric, the headers are different for a request or a response.
   For example, the URI-path option is mandatory in the request and is not found in the response, 
-  a request may contain an Accept option and the response a Content option.
+  a request may contain an Accept option and the response may contain a Content option.
   
   The {{rfc8724}} defines the use of a Direction Indicator (DI) in the Field Description,
   which allows a single Rule to process message headers differently depending on the direction.
