@@ -223,6 +223,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   In this case the Most Significant Bits (MSB) MO can be applied to reduce the information carried on LP
 
 # Compression of CoAP header fields
+{: #CoAPcomp}
 
 This section discusses the compression of the different CoAP header fields. The CoAP compression with 
 SCHC follows the Section 7.1 of {{rfc8724}}. 
@@ -736,10 +737,7 @@ Original msg length:   10
 ~~~~
 {: #Fig-CONTENT-temp title='CoAP CONTENT Response'}
 
-The SCHC Rules for the Inner Compression include all fields that are
-already present in a regular CoAP message, what is important is their 
-order and the definition of only those CoAP fields are 
-into Plaintext,  {{Fig-Inner-Rules}}.
+TheSCHC Rules for the Inner Compression include all fields that are alreadypresent in a regular CoAP message. The methods described in section {{CoAPcomp}} applies to these fields. As an example, see {{Fig-Inner-Rules}}.
 
 ~~~~
  Rule ID 0
