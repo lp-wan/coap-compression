@@ -801,7 +801,9 @@ In this case the original message has no payload and its resulting Plaintext can
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-In {{Fig-Inner-Compression-CONTENT}} we repeat the process for the example CONTENT Response. In this case the misalignment produced by the compression residue (1 bit) makes it so that 7 bits of padding have to be applied after the payload, resulting in a compressed Plaintext that is the same size as before compression. This misalignment also causes the hexcode from the payload to differ from the original, even though it has not been compressed. On top of this, the overhead from the tag bytes is incurred as before.
+In {{Fig-Inner-Compression-CONTENT}}  the process is repeated for the example CONTENT Response. The residue is 1 bit long. Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed.  
+
+On top of this, the overhead from the tag bytes is incurred as before.
 
 ~~~~
    ________________________________________________________
