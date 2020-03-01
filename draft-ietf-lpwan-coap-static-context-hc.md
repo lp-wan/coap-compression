@@ -863,7 +863,7 @@ are the messages that have to be compressed by the Outer SCHC Compression.
 ~~~~
 Protected message:
 ==================
-0x4102000182d7080904636c69656e74ffa2c54fe1b434297b62
+0x4102000182d8080904636c69656e74ffa2c54fe1b434297b62
 (25 bytes)
 
 Header:
@@ -930,7 +930,7 @@ significant bits.
 
 Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.
 
-The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the SCHC Context would need to be re-established.
+The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the OSCORE keys need to be re-established.
 
 The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
 
