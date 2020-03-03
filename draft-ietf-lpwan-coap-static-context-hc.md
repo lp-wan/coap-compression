@@ -50,12 +50,12 @@ normative:
 --- abstract
 
 This draft defines the way SCHC (Static Context Header Compression) 
-header compression can be applied to CoAP protocol. SCHC is a header 
+header compression can be applied to the CoAP protocol. SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in the header. 
-While the RFC8724 describes the SCHC compression and fragmentation framework, and its application 
+While RFC8724 describes the SCHC compression and fragmentation framework, and its application 
 for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers. 
-The CoAP header structure differs from IPv6 and UDP one 
+The CoAP header structure differs from IPv6 and UDP 
 since CoAP uses a flexible header with a variable number of options, themselves of 
 variable length. The CoAP protocol messages format is asymmetric: the request messages 
 have a header format different from the one in the response messages.
@@ -76,7 +76,7 @@ compression is needed to reduce the header size.
 The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network 
 based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
 compression and decompression are done. The context is known by both ends before 
-transmission and the way it is done is out of the scope of this document.
+transmission. The way the context is configured or exchanged is out of the scope for this document.
   
 SCHC compresses and decompresses headers based on shared contexts
 between devices. Each context consists of multiple Rules. Each rule can match
@@ -117,7 +117,7 @@ appear in all capitals, as shown here.
 
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP 
 header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
-The SCHC adaptation layers as described in section 5 of {{rf8724}} 
+The SCHC adaptation layers as described in section 5 of {{rfc8724}} 
 may be used as shown in {{Fig-SCHCCOAP}}.
 
 ~~~~
@@ -194,9 +194,8 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   Through the direction indicator, a field description in the Rules splits the possible field value in 
   two parts. Resulting in a smaller compression residue.
 
-* In IPv6 and UDP, the header fields are defined with a fixed length in bits in the 
-  packet format. To compress these fields the length it is not sent because it is known 
-  by both ends. In CoAP, some fields in the header have a variable length, 
+* In IPv6 and UDP, header fields have a fixed size, defined in the Rule, which is not sent. In CoAP, some fields
+  in the header have a variable length, 
   for example the Token size may vary from 0 to 8 bytes, the length is given by a field 
   in the header. The CoAP options are described using the Type-Length-Value encoding format.
 
@@ -236,7 +235,7 @@ be needed to avoid ambiguities between versions.
 
 ## CoAP type field
 
-The CoAP Protocol {{7252}} has four type of messages: two request (CON, NON);
+The CoAP Protocol {{rfc7252}} has four type of messages: two request (CON, NON);
 one response (ACK) and one empty message (RST). 
 
 The field SHOULD be elided if for instance a client is sending only NON or only CON messages. For the
