@@ -165,7 +165,7 @@ that the fields description needs to be defined based on
 both headers and target values of the request and the responses.
 SCHC Rules description use the direction information to optmize the compression by reducing the number of Rules 
 needed to compress traffic. 
-CoAP compression follows the {{rfc 8724}} scheme and as for other protocols,
+CoAP compression follows the {{rfc8724}} scheme and as for other protocols,
 if no valid Rule was found, then the packet MUST be sent uncompressed using
 the RuleID dedicated to this purpose and the Compression Residue is the
 complete header of the packet.  See section 6 of {{rfc8724}}.
