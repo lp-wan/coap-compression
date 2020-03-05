@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-12
+docname: draft-ietf-lpwan-coap-static-context-hc-13
 cat: std
 pi:
   symrefs: 'yes'
@@ -53,7 +53,7 @@ This draft defines the way SCHC (Static Context Header Compression)
 header compression can be applied to the CoAP protocol. SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in the header. 
-While RFC8724 describes the SCHC compression and fragmentation framework, and its application 
+While {{I-D.ietf-lpwan-ipv6-static-context-hc}} describes the SCHC compression and fragmentation framework, and its application 
 for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers. 
 The CoAP header structure differs from IPv6 and UDP 
 since CoAP uses a flexible header with a variable number of options, themselves of 
@@ -73,8 +73,8 @@ devices, the size of a CoAP header still is too large for the
 constraints of LPWAN (Low Power Wide Area Networks) and some
 compression is needed to reduce the header size.
    
-The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network 
-based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
+The {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines SCHC, a header compression mechanism for LPWAN network 
+based on a static context. The section 5 of the {{I-D.ietf-lpwan-ipv6-static-context-hc}} explains the architecture where 
 compression and decompression are done. The context is known by both ends before 
 transmission. The way the context is configured or exchanged is out of the scope for this document.
   
@@ -86,7 +86,7 @@ residual bits. Thus, different Rules may correspond to different types of
 packets that a device expects to send or receive. 
 
 A Rule describes the complete header of the packet with an ordered list of fields descriptions, 
-see section 7 of the {{rfc8724}},
+see section 7 of the {{I-D.ietf-lpwan-ipv6-static-context-hc}},
 thereby each description contains the field ID (FID), its length (FL) and its position (FP), 
 a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV). 
 
@@ -117,7 +117,7 @@ appear in all capitals, as shown here.
 
 The SCHC Compression rules can be applied to CoAP flows. SCHC Compression of the CoAP 
 header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
-The SCHC adaptation layers as described in section 5 of {{rfc8724}} 
+The SCHC adaptation layers as described in section 5 of {{I-D.ietf-lpwan-ipv6-static-context-hc}} 
 may be used as shown in {{Fig-SCHCCOAP}}.
 
 ~~~~
@@ -151,7 +151,7 @@ residue are encrypted using a mechanism such as DTLS.  Only the other
 end can decipher the information.
 Layers below may also be compressed using other SCHC rules (this is
 out of the scope of this document) as defined in the SCHC 
-{{rfc8724}} document.
+{{I-D.ietf-lpwan-ipv6-static-context-hc}} document.
 
 In the third example, OSCORE {{rfc8613}} is used. In this case, two rulesets are used 
 to compress the CoAP message.  A first ruleset
@@ -165,10 +165,10 @@ that the fields description needs to be defined based on
 both headers and target values of the request and the responses.
 SCHC Rules description use the direction information to optmize the compression by reducing the number of Rules 
 needed to compress traffic. 
-CoAP compression follows the {{rfc8724}} scheme and as for other protocols,
+CoAP compression follows the {{I-D.ietf-lpwan-ipv6-static-context-hc}} scheme and as for other protocols,
 if no valid Rule was found, then the packet MUST be sent uncompressed using
 the RuleID dedicated to this purpose and the Compression Residue is the
-complete header of the packet.  See section 6 of {{rfc8724}}.
+complete header of the packet.  See section 6 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
 
 ## Differences between CoAP and UDP/IP
 CoAP differs from IPv6 and UDP protocols on the following aspects: 
@@ -180,7 +180,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   For example, the URI-path option is mandatory in the request and is not found in the response, 
   a request may contain an Accept option and the response may contain a Content option.
   
-  The {{rfc8724}} defines the use of a Direction Indicator (DI) in the Field Description,
+  The {{I-D.ietf-lpwan-ipv6-static-context-hc}} defines the use of a Direction Indicator (DI) in the Field Description,
   which allows a single Rule to process message headers differently depending on the direction.
   
 * Even when a field is "symmetric" (i.e. found in both directions) the values carried in each direction are
@@ -199,7 +199,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   for example the Token size may vary from 0 to 8 bytes, the length is given by a field 
   in the header. The CoAP options are described using the Type-Length-Value encoding format.
 
-  Section 7.5.2 from {{rfc8724}} offers the possibility to define a function for 
+  Section 7.5.2 from {{I-D.ietf-lpwan-ipv6-static-context-hc}} offers the possibility to define a function for 
   the Field Length in the Field Description to have knwoledge of the length before 
   compression. When doing SCHC compression of a variable length field two cases may 
   be raised after applying the CDA: 
@@ -210,7 +210,7 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
   
 * In CoAP headers, a field can appear several times.  This is
   typical for elements of a URI (path or queries).
-  The SCHC specification {{rfc8724}} allows a Field ID to
+  The SCHC specification {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field ID to
   appears several times in the rule, and uses the Field Position (FP)
   to identify the correct instance, and thereby removing the ambiguity of
   the matching operation.
@@ -218,14 +218,14 @@ CoAP differs from IPv6 and UDP protocols on the following aspects:
 * Field sizes defined in the CoAP protocol can be too large
   regarding LPWAN traffic constraints.  This is particularly true
   for the Message ID field and the Token field. SCHC uses different
-  Matching operators (MO) to performs the compression, see section 7.4 of {{rfc8724}}.
+  Matching operators (MO) to performs the compression, see section 7.4 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
   In this case the Most Significant Bits (MSB) MO can be applied to reduce the information carried on LP
 
 # Compression of CoAP header fields
 {: #CoAPcomp}
 
 This section discusses the compression of the different CoAP header fields. The CoAP compression with 
-SCHC follows the Section 7.1 of {{rfc8724}}. 
+SCHC follows the Section 7.1 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}. 
 
 ## CoAP version field
 
@@ -252,7 +252,7 @@ A mapping list can be used for known values, for other values the field cannot b
  
 ## CoAP Message ID field
 
-The Message ID field can be compressed with the MSB(x) MO and the Least Significant Bits (LSB) CDA, see section 7.4 of {{rfc8724}}. 
+The Message ID field can be compressed with the MSB(x) MO and the Least Significant Bits (LSB) CDA, see section 7.4 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}. 
 
 ## CoAP Token fields
 Token is defined through two CoAP fields, Token Length in the mandatory header and 
@@ -278,7 +278,7 @@ If a single value is expected by the client, it can be stored in the TV and elid
 ## CoAP option Max-Age, Uri-Host and Uri-Port fields
 
 These fields are unidirectional and MUST NOT be set to bidirectional in a rule DI entry.
-see section 7.1 of {{rfc8724}}.
+see section 7.1 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
 They are used only by the server to inform of the caching duration and is never 
 found in client
 requests.
@@ -354,12 +354,12 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
 The number of Uri-path or Uri-Query elements in a rule is fixed at the rule creation time. If the number
 varies, several rules SHOULD be created to cover all the possibilities. Another possibility is
 to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
-indicate that this Uri-Path is empty. This adds the 4 bits of the variable residue size. See section 7.5.2 {{rfc8724}}
+indicate that this Uri-Path is empty. This adds the 4 bits of the variable residue size. See section 7.5.2 {{I-D.ietf-lpwan-ipv6-static-context-hc}}
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
 These fields are unidirectional and MUST NOT be set to bidirectional in a rule DI entry, 
-see section 7.1 of the {{rfc8724}}.
+see section 7.1 of the {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
 They are used only by the client to access a specific resource and are never found
 in server response.
 
@@ -1074,9 +1074,9 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-This document does not have any more Security consideration than the ones already raised on {{rfc8724}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
+This document does not have any more Security consideration than the ones already raised on {{I-D.ietf-lpwan-ipv6-static-context-hc}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
 
-OSCORE compression is also based on the same compression method described in {{rfc8427}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
+OSCORE compression is also based on the same compression method described in {{I-D.ietf-lpwan-ipv6-static-context-hc}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
 
 
 # Acknowledgements
