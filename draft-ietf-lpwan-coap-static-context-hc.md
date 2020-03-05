@@ -1074,7 +1074,10 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-This document does not have any more Security consideration than the ones already raised on {{I-D.ietf-lpwan-ipv6-static-context-hc}}
+This document does not have any more Security consideration than the ones already raised on {{rfc8724}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
+
+OSCORE compression is also based on the same compression method described in {{rfc8427}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
+
 
 # Acknowledgements
 
