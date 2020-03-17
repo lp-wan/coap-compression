@@ -317,9 +317,9 @@ address {
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-13" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-03-12" />
-  <meta name="dct.abstract" content="This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
-  <meta name="description" content="This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-03-17" />
+  <meta name="dct.abstract" content="This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP (Constrained Application Protocol) protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
+  <meta name="description" content="This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP (Constrained Application Protocol) protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
 
 </head>
 
@@ -341,7 +341,7 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: September 13, 2020</td>
+<td class="left">Expires: September 18, 2020</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
@@ -354,7 +354,7 @@ address {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 12, 2020</td>
+<td class="right">March 17, 2020</td>
 </tr>
 
     	
@@ -365,12 +365,12 @@ address {
   <span class="filename">draft-ietf-lpwan-coap-static-context-hc-13</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules.</p>
+<p>This draft defines the way SCHC (Static Context Header Compression) header compression can be applied to the CoAP (Constrained Application Protocol) protocol. SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 13, 2020.</p>
+<p>This Internet-Draft will expire on September 18, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -457,8 +457,17 @@ address {
 <p id="rfc.section.1.p.2">The <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> defines SCHC, a header compression mechanism for LPWAN network based on a static context. The section 5 of the <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> explains the architecture where compression and decompression are done. The context is known by both ends before transmission. The way the context is configured or exchanged is out of the scope for this document.</p>
 <p id="rfc.section.1.p.3">SCHC compresses and decompresses headers based on shared contexts between devices. Each context consists of multiple Rules. Each rule can match header fields and specific values or ranges of values. If a rule matches, the matched header fields are substituted by the rule ID and optionally some residual bits. Thus, different Rules may correspond to different types of packets that a device expects to send or receive.</p>
 <p id="rfc.section.1.p.4">A Rule describes the complete header of the packet with an ordered list of fields descriptions, see section 7 of the <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a>, thereby each description contains the field ID (FID), its length (FL) and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV).</p>
-<p id="rfc.section.1.p.5">A Matching Operator (MO) is associated to each header field description.  The rule is selected if all the MOs fit the TVs for all fields of the incoming packet.<br> In that case, a Compression/Decompression Action (CDA) associated to each field defines how the compressed and the decompressed values are computed out of each other, for each of the header fields. Compression mainly results in one of 4 actions: *  send the field value, *  send nothing, *  send some least significant bits of the field or *  send an index.  After  applying the compression there may be some bits to be sent, these values are called Compression Residues.</p>
-<p id="rfc.section.1.p.6">SCHC is a general concept mechanism that can be applied to different protocols, the exact Rules to be used depend on the protocol and the application, and CoAP differs from UDP and IPv6, see Section 3.</p>
+<p id="rfc.section.1.p.5">A Matching Operator (MO) is associated to each header field description.  The rule is selected if all the MOs fit the TVs for all fields of the incoming packet.<br> In that case, a Compression/Decompression Action (CDA) associated to each field defines how the compressed and the decompressed values are computed out of each other, for each of the header fields. Compression mainly results in one of 4 actions:</p>
+<p></p>
+
+<ul>
+<li>send the field value,</li>
+<li>send nothing,</li>
+<li>send some least significant bits of the field or</li>
+<li>send an index.</li>
+</ul>
+<p id="rfc.section.1.p.7">After  applying the compression there may be some bits to be sent, these values are called Compression Residues.</p>
+<p id="rfc.section.1.p.8">SCHC is a general concept mechanism that can be applied to different protocols, the exact Rules to be used depend on the protocol and the application, and CoAP differs from UDP and IPv6, see Section 3.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
