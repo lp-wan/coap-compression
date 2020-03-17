@@ -49,8 +49,8 @@ normative:
 
 --- abstract
 
-This draft defines the way SCHC (Static Context Header Compression) 
-header compression can be applied to the CoAP (Constrained Application Protocol) protocol. SCHC is a header 
+This draft defines the way Static Context Header Compression (SCHC) 
+header compression can be applied to the Constrained Application Protocol (CoAP) protocol. SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in the header. 
 While {{I-D.ietf-lpwan-ipv6-static-context-hc}} describes the SCHC compression and fragmentation framework, and its application 
@@ -70,7 +70,7 @@ CoAP {{rfc7252}} is a transfer protocol that implements a subset of HTTP
 (Hypertext Transfer Protocol) and is optimized for REST-based (Representational 
 state transfer) services.  Although CoAP was designed for constrained
 devices, the size of a CoAP header still is too large for the
-constraints of LPWAN (Low Power Wide Area Networks) and some
+constraints of Low Power Wide Area Networks (LPWAN) and some
 compression is needed to reduce the header size.
 
 <!--
@@ -173,7 +173,8 @@ Layers below may also be compressed using other SCHC rules (this is
 out of the scope of this document) as defined in the SCHC 
 {{I-D.ietf-lpwan-ipv6-static-context-hc}} document.
 
-In the third example, OSCORE {{rfc8613}} is used. In this case, two rulesets are used 
+In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
+In this case, two rulesets are used 
 to compress the CoAP message.  A first ruleset
 focused on the inner header and is applied end to end by both ends. A second ruleset
 compresses the outer header and the layers below  and is done between the Sender and the Receiver.
@@ -270,6 +271,7 @@ Ana proposes:
   the Field Length in the Field Description to have knwoledge of the length before 
   compression. When doing SCHC compression of a variable length field two cases may 
   be raised after applying the CDA: 
+  
   *  The result of the compression is of fixed 
      length and the compressed value is sent in the residue. 
   *  Or the result of the compression is of variable-length and in this case, the size is sent 
@@ -283,6 +285,7 @@ Ana proposes:
   Section 7.5.2 from {{I-D.ietf-lpwan-ipv6-static-context-hc}} offers the possibility to define a function 
   for the Field length in the Field Description to have knowledge of the length before compression. 
   When doing SCHC compression of a variable-length field, two cases may raise after applying the CDA: 
+.
   *  The result of the compression is of fixed length, and the residue contains only the compressed value. 
   *  Or the result of the compression is of variable-length, and in this case, the residue contains the size 
      and the compressed value. 
@@ -542,20 +545,19 @@ This section describes how SCHC rules can be applied to compress OSCORE-protecte
 <!--
 A lire, j'ai modifie l'anglais
 The encoding of the OSCORE Option Value defined in Section 6.1 of {{rfc8613}} is repeated in {{Fig-OSCORE-Option}}.
-
+.
 The first byte specifies the content of the OSCORE options using flags. The three most significant bits of this byte are reserved and always set to 0. Bit h, when set, indicates the presence of the kid context field in the option. Bit k, when set, indicates the presence of a kid field. The three least significant bits n indicate the length of the piv (Partial Initialization Vector) field in bytes. When n = 0, no piv is present.
-
+.
 The flag byte is followed by the piv field, kid context field, and kid field in this order, and if present, the length of the kid context field is encoded in the first byte denoting by s the length of the kid context in bytes.
-
-This specification recommends identifying the OSCORE Option and the fields it contains.
-
+.
+This specification recommends identifying the OSCORE Option and the fields it contains
 Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. The SCHC Rule splits into four field descriptions the OSCORE option to compress them:
-
+.
 *  CoAP OSCORE_flags,
 *  CoAP OSCORE_piv,
 *  CoAP OSCORE_kidctxt,
 *  CoAP OSCORE_kid.
-
+.
 The OSCORE Option shows superimposed these four fields using the format {{Fig-OSCORE-Option}}, the CoAP OSCORE_kidctxt field includes the size bits s.
 -->
 
