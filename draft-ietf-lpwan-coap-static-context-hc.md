@@ -47,6 +47,7 @@ normative:
   rfc8613:
   I-D.ietf-lpwan-ipv6-static-context-hc:
 
+
 --- abstract
 
 This draft defines the way Static Context Header Compression (SCHC) 
@@ -120,7 +121,7 @@ appear in all capitals, as shown here.
 
 The SCHC Compression rules can be applied to CoAP headers. SCHC Compression of the CoAP 
 header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
-The SCHC adaptation layers as described in section 5 
+The SCHC adaptation layers as described in Section 5 
 of {{I-D.ietf-lpwan-ipv6-static-context-hc}} and
 may be used as shown in {{Fig-SCHCCOAP}}.
 
@@ -225,7 +226,7 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
 * Field sizes defined in the CoAP protocol can be too large
   regarding LPWAN traffic constraints.  This is particularly true
   for the Message ID field and the Token field. SCHC uses different
-  Matching operators (MO) to performs the compression, see section 7.4 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
+  Matching operators (MO) to perform the compression, see section 7.4 of {{I-D.ietf-lpwan-ipv6-static-context-hc}}.
   In this case the Most Significant Bits (MSB) MO can be applied to reduce the information carried on LPWANs.
 
 # Compression of CoAP header fields
@@ -250,7 +251,7 @@ RST message a dedicated Rule may be needed. For other usages a mapping list can 
   
 ## CoAP code field
 
-The code field indicates the Request Method used in CoAP, a registry is given in section 12.1 of {{rfc7252}}.
+The code field indicates the Request Method used in CoAP, a registry is given in Section 12.1 of {{rfc7252}}.
 The compression of the CoAP code field follows the same principle as that of the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.
 
 If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
@@ -583,7 +584,7 @@ may be correctly decrypted at the other end-point.
 Plaintext. 
 
 In the Outer Header, the original message code is hidden and replaced by a default
-dummy value. As seen in sections 4.1.3.5 and 4.2 of the {{rfc8613}},
+dummy value. As seen in Sections 4.1.3.5 and 4.2 of the {{rfc8613}},
 the message code is replaced by POST for requests and Changed for responses when Observe 
 is not used. If Observe is used, the message code is replaced by FETCH for requests and Content
 for responses.
@@ -1075,11 +1076,7 @@ This document has no request to IANA.
 This document does not have any more Security consideration than the ones already raised on {{I-D.ietf-lpwan-ipv6-static-context-hc}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
 
 OSCORE compression is also based on the same compression method described in {{I-D.ietf-lpwan-ipv6-static-context-hc}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
-<!--
-This document does not have any more Security consideration than the ones already raised on {{I-D.ietf-lpwan-ipv6-static-context-hc}}. Variable-length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary, the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the decompressor must drop the packet.
 
-OSCORE compression is also based on the same compression method described in {{I-D.ietf-lpwan-ipv6-static-context-hc}}. The size of the Initialisation Vector residue size must be considered carefully. A too-large value has an impact on the compression efficiency, and a too-small value will force the device to renew its key more often. This operation may be long and energy-consuming.
--->
 
 # Acknowledgements
 
