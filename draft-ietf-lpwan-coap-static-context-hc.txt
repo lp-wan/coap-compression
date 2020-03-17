@@ -16,22 +16,21 @@ Expires: September 18, 2020       Institut MINES TELECOM; IMT Atlantique
 
 Abstract
 
-   This draft defines the way SCHC (Static Context Header Compression)
-   header compression can be applied to the CoAP (Constrained
-   Application Protocol) protocol.  SCHC is a header compression
-   mechanism adapted for constrained devices.  SCHC uses a static
-   description of the header to reduce the redundancy and the size of
-   the information in the header.  While
-   [I-D.ietf-lpwan-ipv6-static-context-hc] describes the SCHC
-   compression and fragmentation framework, and its application for
-   IPv6/UDP headers, this document applies the use of SCHC for CoAP
-   headers.  The CoAP header structure differs from IPv6 and UDP since
-   CoAP uses a flexible header with a variable number of options,
-   themselves of variable length.  The CoAP protocol messages format is
-   asymmetric: the request messages have a header format different from
-   the one in the response messages.  This specification gives guidance
-   on how to apply SCHC to flexible headers and how to leverage the
-   asymmetry for more efficient compression Rules.
+   This draft defines the way Static Context Header Compression (SCHC)
+   header compression can be applied to the Constrained Application
+   Protocol (CoAP) protocol.  SCHC is a header compression mechanism
+   adapted for constrained devices.  SCHC uses a static description of
+   the header to reduce the redundancy and the size of the information
+   in the header.  While [I-D.ietf-lpwan-ipv6-static-context-hc]
+   describes the SCHC compression and fragmentation framework, and its
+   application for IPv6/UDP headers, this document applies the use of
+   SCHC for CoAP headers.  The CoAP header structure differs from IPv6
+   and UDP since CoAP uses a flexible header with a variable number of
+   options, themselves of variable length.  The CoAP protocol messages
+   format is asymmetric: the request messages have a header format
+   different from the one in the response messages.  This specification
+   gives guidance on how to apply SCHC to flexible headers and how to
+   leverage the asymmetry for more efficient compression Rules.
 
 Status of This Memo
 
@@ -49,6 +48,7 @@ Status of This Memo
    material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on September 18, 2020.
+
 
 
 
@@ -125,7 +125,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
    HTTP (Hypertext Transfer Protocol) and is optimized for REST-based
    (Representational state transfer) services.  Although CoAP was
    designed for constrained devices, the size of a CoAP header still is
-   too large for the constraints of LPWAN (Low Power Wide Area Networks)
+   too large for the constraints of Low Power Wide Area Networks (LPWAN)
    and some compression is needed to reduce the header size.
 
    The [I-D.ietf-lpwan-ipv6-static-context-hc] defines SCHC, a header
@@ -235,11 +235,12 @@ Internet-Draft           LPWAN CoAP compression               March 2020
    rules (this is out of the scope of this document) as defined in the
    SCHC [I-D.ietf-lpwan-ipv6-static-context-hc] document.
 
-   In the third example, OSCORE [rfc8613] is used.  In this case, two
-   rulesets are used to compress the CoAP message.  A first ruleset
-   focused on the inner header and is applied end to end by both ends.
-   A second ruleset compresses the outer header and the layers below and
-   is done between the Sender and the Receiver.
+   In the third example, the Object Security for Constrained RESTful
+   Environments (OSCORE) [rfc8613] is used.  In this case, two rulesets
+   are used to compress the CoAP message.  A first ruleset focused on
+   the inner header and is applied end to end by both ends.  A second
+   ruleset compresses the outer header and the layers below and is done
+   between the Sender and the Receiver.
 
 3.  CoAP Compression with SCHC
 
@@ -273,7 +274,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       Direction Indicator (DI) in the Field Description, which allows a
       single Rule to process message headers differently depending on
       the direction.  <!- Ana proposes:
-
 
 
 
@@ -345,11 +345,14 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       the possibility to define a function for the Field Length in the
       Field Description to have knwoledge of the length before
       compression.  When doing SCHC compression of a variable length
-      field two cases may be raised after applying the CDA: * The result
-      of the compression is of fixed length and the compressed value is
-      sent in the residue.  * Or the result of the compression is of
-      variable-length and in this case, the size is sent with the
-      compressed value in the residue.  <!-
+      field two cases may be raised after applying the CDA:
+
+      *  The result of the compression is of fixed length and the
+         compressed value is sent in the residue.
+
+      *  Or the result of the compression is of variable-length and in
+         this case, the size is sent with the compressed value in the
+         residue.  <!-
 
    o  In IPv6 and UDP, the header fields have a fixed size, which is not
       sent but is defined in the Rule.  In CoAP, some fields in the
@@ -361,7 +364,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       define a function for the Field length in the Field Description to
       have knowledge of the length before compression.  When doing SCHC
       compression of a variable-length field, two cases may raise after
-      applying the CDA:
+      applying the CDA: .
 
       *  The result of the compression is of fixed length, and the
          residue contains only the compressed value.
@@ -382,9 +385,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       of a URI (path or queries).  To compress all the instances, the
       SCHC specification [I-D.ietf-lpwan-ipv6-static-context-hc] allows
       a Field ID to appears several times in the Rule and uses the Field
-      Position (FP) to identify the correct instance, and thereby
-      removing the ambiguity of the matching operation.  ->
-
 
 
 
@@ -393,6 +393,9 @@ Minaburo, et al.       Expires September 18, 2020               [Page 7]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
+
+      Position (FP) to identify the correct instance, and thereby
+      removing the ambiguity of the matching operation.  ->
 
    o  Field sizes defined in the CoAP protocol can be too large
       regarding LPWAN traffic constraints.  This is particularly true
@@ -439,9 +442,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
    The field SHOULD be elided if for instance a client is sending only
    NON or only CON messages.  For the RST message a dedicated Rule may
    be needed.  For other usages a mapping list can be used.
-
-
-
 
 
 
