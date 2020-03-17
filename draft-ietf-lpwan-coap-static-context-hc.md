@@ -50,7 +50,7 @@ normative:
 --- abstract
 
 This draft defines the way SCHC (Static Context Header Compression) 
-header compression can be applied to the CoAP protocol. SCHC is a header 
+header compression can be applied to the CoAP (Constrained Application Protocol) protocol. SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in the header. 
 While {{I-D.ietf-lpwan-ipv6-static-context-hc}} describes the SCHC compression and fragmentation framework, and its application 
@@ -108,10 +108,12 @@ The rule is selected if all the MOs fit the TVs for all fields of the incoming p
 In that case, a Compression/Decompression Action (CDA) associated to each field defines 
 how the compressed and the decompressed values are computed out of each other, 
 for each of the header fields. Compression mainly results in one of 4 actions:
- *  send the field value, 
- *  send nothing, 
- *  send some least significant bits of the field or 
- *  send an index.
+
+*  send the field value, 
+*  send nothing, 
+*  send some least significant bits of the field or 
+*  send an index.
+ 
 After  applying the compression there may be some bits to be sent, these values are called Compression Residues.
 
 SCHC is a general concept mechanism that can be applied to different protocols, the exact Rules to
