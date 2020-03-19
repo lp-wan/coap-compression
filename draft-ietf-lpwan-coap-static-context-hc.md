@@ -205,9 +205,11 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
   The field Code have as well the same behavior, the 0.0X code format value 
   in the request and Y.ZZ code format in the response. 
 
-* In IPv6 and UDP, the header fields have a fixed size, which is defined in the Rule. 
-  In CoAP, some fields in the header have a variable length. For example, the Token size may vary from 0 to 8 bytes.
-  The CoAP options have a variable length since they use the Type-Length-Value 
+* Headers in IPv6 and UDP have a fixed size. The size is not sent as part of the Compression Residue, 
+  but is defined in the Rule. 
+  Some CoAP header fields have variable lengths, so the length is also specified in the Field Description. 
+  For example, the Token size may vary from 0 to 8 bytes.
+  And the CoAP options have a variable length since they use the Type-Length-Value 
   encoding format, as URI-path or URI-query.
 
   Section 7.5.2 from {{I-D.ietf-lpwan-ipv6-static-context-hc}} offers the possibility to define a function 
@@ -216,7 +218,7 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
   if the field size is not known, the Field Length in the rule is set as variable and the size is sent with the
   Compression Residue. 
 
-* In CoAP headers, a field can appear several times.  This is
+* A field can appear several time in the CoAP headers.  This is
   typical for elements of a URI (path or queries).
   The SCHC specification {{I-D.ietf-lpwan-ipv6-static-context-hc}} allows a Field ID to
   appears several times in the rule, and uses the Field Position (FP)
