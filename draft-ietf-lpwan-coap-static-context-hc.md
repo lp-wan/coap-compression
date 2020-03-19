@@ -81,7 +81,8 @@ compression and decompression are done. The context is known by both ends before
 transmission. The way the context is configured or exchanged is out of the scope for this document.
   
 SCHC compresses and decompresses headers based on shared contexts
-between devices. Each context consists of multiple Rules. Each rule can match
+between devices. The way the Contexts are provisioned is out of the scope of this document.
+Each context consists of multiple Rules. Each rule can match
 header fields and specific values or ranges of values. If a rule matches, the
 matched header fields are substituted by the rule ID and optionally some
 residual bits. Thus, different Rules may correspond to different types of
@@ -107,7 +108,7 @@ After  applying the compression there may be some bits to be sent, these values 
 
 SCHC is a general concept mechanism that can be applied to different protocols, the exact Rules to
 be used depend on the protocol and the application, and CoAP
-differs from UDP and IPv6, see Section 3.
+differs from UDP and IPv6, see Section 3. 
 
 ## Terminology
 
@@ -117,7 +118,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 {{rfc2119}}{{rfc8174}} when, and only when, they
 appear in all capitals, as shown here.
 
-# Applying SCHC to CoAP
+# Applying SCHC to CoAP headers
 
 The SCHC Compression rules can be applied to CoAP headers. SCHC Compression of the CoAP 
 header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
