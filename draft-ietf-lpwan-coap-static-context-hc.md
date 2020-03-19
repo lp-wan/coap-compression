@@ -853,7 +853,7 @@ On top of this, the overhead from the tag bytes is incurred as before.
 ~~~~
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
-The Outer SCHC Rules ({{Fig-Outer-Rules}}) MUST process the OSCORE Options
+The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
 fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} 
 we show a dump of the OSCORE
 Messages generated from our example messages once they have been
