@@ -1122,7 +1122,7 @@ Minaburo, et al.       Expires September 20, 2020              [Page 20]
 Internet-Draft           LPWAN CoAP compression               March 2020
 
 
-   The Outer SCHC Rules (Figure 16) MUST process the OSCORE Options
+   The Outer SCHC Rules (Figure 16) must process the OSCORE Options
    fields.  In Figure 14 and Figure 15 we show a dump of the OSCORE
    Messages generated from our example messages once they have been
    provided with the Inner Compressed Ciphertext in the payload.  These
