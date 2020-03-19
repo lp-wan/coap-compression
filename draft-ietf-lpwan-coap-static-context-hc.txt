@@ -77,7 +77,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
-   2.  Applying SCHC to CoAP . . . . . . . . . . . . . . . . . . . .   4
+   2.  Applying SCHC to CoAP headers . . . . . . . . . . . . . . . .   4
    3.  CoAP Headers compressed with SCHC . . . . . . . . . . . . . .   5
      3.1.  Differences between CoAP and UDP/IP Compression . . . . .   5
    4.  Compression of CoAP header fields . . . . . . . . . . . . . .   7
@@ -137,12 +137,13 @@ Internet-Draft           LPWAN CoAP compression               March 2020
    document.
 
    SCHC compresses and decompresses headers based on shared contexts
-   between devices.  Each context consists of multiple Rules.  Each rule
-   can match header fields and specific values or ranges of values.  If
-   a rule matches, the matched header fields are substituted by the rule
-   ID and optionally some residual bits.  Thus, different Rules may
-   correspond to different types of packets that a device expects to
-   send or receive.
+   between devices.  The way the Contexts are provisioned is out of the
+   scope of this document.  Each context consists of multiple Rules.
+   Each rule can match header fields and specific values or ranges of
+   values.  If a rule matches, the matched header fields are substituted
+   by the rule ID and optionally some residual bits.  Thus, different
+   Rules may correspond to different types of packets that a device
+   expects to send or receive.
 
    A Rule describes the complete header of the packet with an ordered
    list of fields descriptions, see section 7 of the
@@ -161,7 +162,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
    o  send the field value,
 
-   o  send nothing,
 
 
 
@@ -169,6 +169,8 @@ Minaburo, et al.       Expires September 20, 2020               [Page 3]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
+
+   o  send nothing,
 
    o  send some least significant bits of the field or
 
@@ -189,7 +191,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
    14 [rfc2119][rfc8174] when, and only when, they appear in all
    capitals, as shown here.
 
-2.  Applying SCHC to CoAP
+2.  Applying SCHC to CoAP headers
 
    The SCHC Compression rules can be applied to CoAP headers.  SCHC
    Compression of the CoAP header MAY be done in conjunction with the
@@ -216,8 +218,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
    In the first example, a rule compresses the complete header stack
    from IPv6 to CoAP.  In this case, SCHC C/D (Static Context Header
-   Compression Compressor/Decompressor) is performed at the Sender and
-   at the Receiver.
 
 
 
@@ -225,6 +225,9 @@ Minaburo, et al.       Expires September 20, 2020               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
+
+   Compression Compressor/Decompressor) is performed at the Sender and
+   at the Receiver.
 
    In the second example, an end-to-end encryption mechanisms is used
    between the Sender and the Receiver.  The SCHC compression is applied
@@ -271,9 +274,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       But all the directions have the same fields (e.g., source and
       destination addresses fields).
 
-      The [I-D.ietf-lpwan-ipv6-static-context-hc] defines the use of a
-      Direction Indicator (DI) in the Field Description, which allows a
-
 
 
 
@@ -282,6 +282,8 @@ Minaburo, et al.       Expires September 20, 2020               [Page 5]
 Internet-Draft           LPWAN CoAP compression               March 2020
 
 
+      The [I-D.ietf-lpwan-ipv6-static-context-hc] defines the use of a
+      Direction Indicator (DI) in the Field Description, which allows a
       single Rule to process message headers differently depending on
       the direction.
 
@@ -328,8 +330,6 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       7.4 of [I-D.ietf-lpwan-ipv6-static-context-hc].  In this case the
       Most Significant Bits (MSB) MO can be applied to reduce the
       information carried on LPWANs.
-
-
 
 
 

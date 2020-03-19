@@ -279,7 +279,7 @@ address {
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Terminology">
-<link href="#rfc.section.2" rel="Chapter" title="2 Applying SCHC to CoAP">
+<link href="#rfc.section.2" rel="Chapter" title="2 Applying SCHC to CoAP headers">
 <link href="#rfc.section.3" rel="Chapter" title="3 CoAP Headers compressed with SCHC">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Differences between CoAP and UDP/IP Compression">
 <link href="#rfc.section.4" rel="Chapter" title="4 Compression of CoAP header fields">
@@ -384,7 +384,7 @@ address {
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Terminology</a>
 </li>
-</ul><li>2.   <a href="#rfc.section.2">Applying SCHC to CoAP</a>
+</ul><li>2.   <a href="#rfc.section.2">Applying SCHC to CoAP headers</a>
 </li>
 <li>3.   <a href="#rfc.section.3">CoAP Headers compressed with SCHC</a>
 </li>
@@ -455,7 +455,7 @@ address {
 </h1>
 <p id="rfc.section.1.p.1">CoAP <a href="#rfc7252" class="xref">[rfc7252]</a> is designed to easily interop with HTTP (Hypertext Transfer Protocol) and is optimized for REST-based (Representational state transfer) services.  Although CoAP was designed for constrained devices, the size of a CoAP header still is too large for the constraints of LPWAN (Low Power Wide Area Networks) and some compression is needed to reduce the header size.</p>
 <p id="rfc.section.1.p.2">The <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> defines SCHC, a header compression mechanism for LPWAN network based on a static context. The section 5 of the <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> explains the architecture where compression and decompression are done. The context is known by both ends before transmission. The way the context is configured or exchanged is out of the scope for this document.</p>
-<p id="rfc.section.1.p.3">SCHC compresses and decompresses headers based on shared contexts between devices. Each context consists of multiple Rules. Each rule can match header fields and specific values or ranges of values. If a rule matches, the matched header fields are substituted by the rule ID and optionally some residual bits. Thus, different Rules may correspond to different types of packets that a device expects to send or receive.</p>
+<p id="rfc.section.1.p.3">SCHC compresses and decompresses headers based on shared contexts between devices. The way the Contexts are provisioned is out of the scope of this document.  Each context consists of multiple Rules. Each rule can match header fields and specific values or ranges of values. If a rule matches, the matched header fields are substituted by the rule ID and optionally some residual bits. Thus, different Rules may correspond to different types of packets that a device expects to send or receive.</p>
 <p id="rfc.section.1.p.4">A Rule describes the complete header of the packet with an ordered list of fields descriptions, see section 7 of the <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a>, thereby each description contains the field ID (FID), its length (FL) and its position (FP), a direction indicator (DI) (upstream, downstream and bidirectional) and some associated Target Values (TV).</p>
 <p id="rfc.section.1.p.5">A Matching Operator (MO) is associated to each header field description.  The rule is selected if all the MOs fit the TVs for all fields of the incoming packet.<br> In that case, a Compression/Decompression Action (CDA) associated to each field defines how the compressed and the decompressed values are computed out of each other, for each of the header fields. Compression mainly results in one of 4 actions:</p>
 <p></p>
@@ -473,7 +473,7 @@ address {
 </h1>
 <p id="rfc.section.1.1.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#rfc2119" class="xref">[rfc2119]</a><a href="#rfc8174" class="xref">[rfc8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#applying-schc-to-coap" id="applying-schc-to-coap">Applying SCHC to CoAP</a>
+<a href="#rfc.section.2">2.</a> <a href="#applying-schc-to-coap-headers" id="applying-schc-to-coap-headers">Applying SCHC to CoAP headers</a>
 </h1>
 <p id="rfc.section.2.p.1">The SCHC Compression rules can be applied to CoAP headers. SCHC Compression of the CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.  The SCHC adaptation layers as described in Section 5 of <a href="#I-D.ietf-lpwan-ipv6-static-context-hc" class="xref">[I-D.ietf-lpwan-ipv6-static-context-hc]</a> and may be used as shown in <a href="#Fig-SCHCCOAP" class="xref">Figure 1</a>.</p>
 <div id="rfc.figure.1"></div>
