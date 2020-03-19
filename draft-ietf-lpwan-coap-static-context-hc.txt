@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Standards Track                              L. Toutain
-Expires: September 18, 2020       Institut MINES TELECOM; IMT Atlantique
+Expires: September 20, 2020       Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                          March 17, 2020
+                                                          March 19, 2020
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -47,13 +47,13 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 18, 2020.
+   This Internet-Draft will expire on September 20, 2020.
 
 
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 1]
+Minaburo, et al.       Expires September 20, 2020               [Page 1]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 2]
+Minaburo, et al.       Expires September 20, 2020               [Page 2]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -165,7 +165,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 3]
+Minaburo, et al.       Expires September 20, 2020               [Page 3]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -221,7 +221,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 4]
+Minaburo, et al.       Expires September 20, 2020               [Page 4]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -277,7 +277,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 5]
+Minaburo, et al.       Expires September 20, 2020               [Page 5]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -298,11 +298,13 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       same behavior, the 0.0X code format value in the request and Y.ZZ
       code format in the response.
 
-   o  In IPv6 and UDP, the header fields have a fixed size, which is
-      defined in the Rule.  In CoAP, some fields in the header have a
-      variable length.  For example, the Token size may vary from 0 to 8
-      bytes.  The CoAP options have a variable length since they use the
-      Type-Length-Value encoding format, as URI-path or URI-query.
+   o  Headers in IPv6 and UDP have a fixed size.  The size is not sent
+      as part of the Compression Residue, but is defined in the Rule.
+      Some CoAP header fields have variable lengths, so the length is
+      also specified in the Field Description.  For example, the Token
+      size may vary from 0 to 8 bytes.  And the CoAP options have a
+      variable length since they use the Type-Length-Value encoding
+      format, as URI-path or URI-query.
 
       Section 7.5.2 from [I-D.ietf-lpwan-ipv6-static-context-hc] offers
       the possibility to define a function for the Field length in the
@@ -312,7 +314,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
       if the field size is not known, the Field Length in the rule is
       set as variable and the size is sent with the Compression Residue.
 
-   o  In CoAP headers, a field can appear several times.  This is
+   o  A field can appear several time in the CoAP headers.  This is
       typical for elements of a URI (path or queries).  The SCHC
       specification [I-D.ietf-lpwan-ipv6-static-context-hc] allows a
       Field ID to appears several times in the rule, and uses the Field
@@ -331,9 +333,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-
-
-Minaburo, et al.       Expires September 18, 2020               [Page 6]
+Minaburo, et al.       Expires September 20, 2020               [Page 6]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -389,7 +389,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 7]
+Minaburo, et al.       Expires September 20, 2020               [Page 7]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -445,7 +445,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 8]
+Minaburo, et al.       Expires September 20, 2020               [Page 8]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -501,7 +501,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020               [Page 9]
+Minaburo, et al.       Expires September 20, 2020               [Page 9]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -557,7 +557,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 10]
+Minaburo, et al.       Expires September 20, 2020              [Page 10]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -613,7 +613,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 11]
+Minaburo, et al.       Expires September 20, 2020              [Page 11]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -669,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 12]
+Minaburo, et al.       Expires September 20, 2020              [Page 12]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -725,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 13]
+Minaburo, et al.       Expires September 20, 2020              [Page 13]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -781,7 +781,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 14]
+Minaburo, et al.       Expires September 20, 2020              [Page 14]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -837,7 +837,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 15]
+Minaburo, et al.       Expires September 20, 2020              [Page 15]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -893,7 +893,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 16]
+Minaburo, et al.       Expires September 20, 2020              [Page 16]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -949,7 +949,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 17]
+Minaburo, et al.       Expires September 20, 2020              [Page 17]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1005,7 +1005,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 18]
+Minaburo, et al.       Expires September 20, 2020              [Page 18]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 19]
+Minaburo, et al.       Expires September 20, 2020              [Page 19]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 20]
+Minaburo, et al.       Expires September 20, 2020              [Page 20]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1173,7 +1173,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 21]
+Minaburo, et al.       Expires September 20, 2020              [Page 21]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 22]
+Minaburo, et al.       Expires September 20, 2020              [Page 22]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1285,7 +1285,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 23]
+Minaburo, et al.       Expires September 20, 2020              [Page 23]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 24]
+Minaburo, et al.       Expires September 20, 2020              [Page 24]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1397,7 +1397,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 25]
+Minaburo, et al.       Expires September 20, 2020              [Page 25]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1453,7 +1453,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 26]
+Minaburo, et al.       Expires September 20, 2020              [Page 26]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1509,7 +1509,7 @@ Internet-Draft           LPWAN CoAP compression               March 2020
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 27]
+Minaburo, et al.       Expires September 20, 2020              [Page 27]
 
 Internet-Draft           LPWAN CoAP compression               March 2020
 
@@ -1565,4 +1565,4 @@ Authors' Addresses
 
 
 
-Minaburo, et al.       Expires September 18, 2020              [Page 28]
+Minaburo, et al.       Expires September 20, 2020              [Page 28]
