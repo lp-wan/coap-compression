@@ -147,7 +147,7 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 
 In the first example, a rule compresses the complete header stack from IPv6 to CoAP. In this case, 
 SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
-at the Receiver.
+at the Receiver. 
 
 
 In the second example, an end-to-end encryption mechanisms is used
