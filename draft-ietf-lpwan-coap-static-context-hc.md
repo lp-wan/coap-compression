@@ -278,6 +278,10 @@ Length. Therefore, Token Length value MUST be used to define the size of the res
 A specific function designated as "TKL" MUST be used in the Rule. During the decompression, this function returns the value contained in the Token Length field.
 
 # CoAP options
+CoAP defines options that are placed after the based header in Option Numbers order, see {{rfc7252}}. Each Option instance in a message uses the format Delta-Type, Length, Value. When applying SCHC compression to the Option, the D-T L V format serves to make the Rule description of the Option. 
+The SCHC compression builds the description of the Option by using in the Field ID the Option Number; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a fixed size, SCHC compression does not send it. Otherwise, when the Option length has a variable size, SCHC Compression carries the length of the Residue plus the Residue value.
+
+The following sections present how SCHC compresses some CoAP Options.
 
 ## CoAP Content and Accept options.
 
