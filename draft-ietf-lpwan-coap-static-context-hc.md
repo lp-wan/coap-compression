@@ -149,15 +149,12 @@ In the first example, a rule compresses the complete header stack from IPv6 to C
 SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
 at the Receiver. 
 
-
-In the second example, an end-to-end encryption mechanisms is used
-between the Sender and the Receiver.  The SCHC compression is applied in the CoAP layer compressing the CoAP header
-independently of the other layers.  The rule ID and the compression
-residue are encrypted using a mechanism such as DTLS.  Only the other
-end can decipher the information.
-Layers below may also be compressed using other SCHC rules (this is
-out of the scope of this document) as defined in the SCHC 
-{{I-D.ietf-lpwan-ipv6-static-context-hc}} document.
+In the second example, the SCHC compression is applied in the CoAP layer compressing the CoAP header 
+independently of the other layers. The Rule ID and the Compression Residue are encrypted using 
+a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
+use SCHC to compress the header as defined in {{I-D.ietf-lpwan-ipv6-static-context-hc}} document. 
+This use case realizes an End-to-End context initialization between the sender and the receiver. 
+The context initialization behavior is out of the scope of this document, see Annex A.
 
 In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
 In this case, two rulesets are used 
