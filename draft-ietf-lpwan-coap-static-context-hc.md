@@ -276,9 +276,9 @@ A specific function designated as "TKL" MUST be used in the Rule. During the dec
 
 # CoAP options
 CoAP defines options that are placed after the based header in Option Numbers order, see {{rfc7252}}. Each Option instance in a message uses the format Delta-Type, Length, Value. When applying SCHC compression to the Option, the D-T L V format serves to make the Rule description of the Option. 
-The SCHC compression builds the description of the Option by using in the Field ID the Option Number; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a fixed size, SCHC compression does not send it. Otherwise, when the Option length has a variable size, SCHC Compression carries the length of the Compression Residue plus the Compression Residue value.
+The SCHC compression builds the description of the Option by using in the Field ID the Option Number; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a wellknown size, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue plus the Compression Residue value. Note that length coding differs between CoAP options and variable size residue.
 
-The following sections present how SCHC compresses some CoAP Options.
+The following sections present how SCHC compresses some specific CoAP Options.
 
 ## CoAP Content and Accept options.
 
@@ -315,20 +315,20 @@ Numbering of elements do not change, MO comparison is set with the first element
 of the matching.
 
 ~~~~~ 
-   +-------------+--+--+--+--------+---------+-------------+
-   | Field       |FL|FP|DI| Target | Match   |     CDA     |
-   |             |  |  |  | Value  | Opera.  |             |
-   +-------------+--+--+--+--------+---------+-------------+
-   |URI-Path     |  | 1|up|["/a/b",|equal    |not-sent     |
-   |             |  |  |  |"/c/d"] |         |             |
-   |URI-Path     |  | 3|up|        |ignore   |value-sent   |
-   +-------------+--+--+--+--------+---------+-------------+
+   +-------------+---+--+--+--------+---------+-------------+
+   | Field       |FL |FP|DI| Target | Match   |     CDA     |
+   |             |   |  |  | Value  | Opera.  |             |
+   +-------------+---+--+--+--------+---------+-------------+
+   |URI-Path     |   | 1|up|["/a/b",|equal    |not-sent     |
+   |             |   |  |  |"/c/d"] |         |             |
+   |URI-Path     |var| 3|up|        |ignore   |value-sent   |
+   +-------------+---+--+--+--------+---------+-------------+
 
 
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
 
-In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed.
+In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed. The third path element is sent as a variable size residue.
 
 
 ### Variable length Uri-Path and Uri-Query
@@ -1081,10 +1081,12 @@ This document does not have any more Security consideration than the ones alread
 
 OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
 
+SCHC header and compression rules must remain tightly coupled. Otherwise a encrypted residue may be decompressed in a different way by the receiver. To avoid this situation, if the rule is modified in one location, the OSCORE keys need to be re-established. 
+
 
 # Acknowledgements
 
-The authors would like to thank Dominique Barthel, Carsten Bormann, Thomas Fossati, Klaus Hartke, Francesca Palombini, Alexander Pelov, Goran Selander and Theresa Enghardt. 
+The authors would like to thank Christian Amsuss, Dominique Barthel, Carsten Bormann, Thomas Fossati, Klaus Hartke, Francesca Palombini, Alexander Pelov, Goran Selander and Theresa Enghardt. 
 
 
 
@@ -1096,7 +1098,7 @@ The authors would like to thank Dominique Barthel, Carsten Bormann, Thomas Fossa
 
 This section extends the RFC8724 Annex D list. 
 
-* How to do the End-to-End context initialization using SCHC for CoAP header only.
+* How to establish the End-to-End context initialization using SCHC for CoAP header only.
 
 
 
