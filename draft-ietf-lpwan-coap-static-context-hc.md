@@ -194,7 +194,7 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
 * Even when a field is "symmetric" (i.e., found in both directions), 
   the values carried in each direction are different.   
   The compression may use a matching list in the TV to limit the range of expected values 
-  in a particular direction and therefore reduces the size of the compression residue. 
+  in a particular direction and therefore reduces the size of the Compression Residue. 
   Through the Direction Indicator (DI), a field description in the Rules splits the possible field value into two parts,
   one for each direction.
   For instance, 
@@ -256,7 +256,7 @@ The compression of the CoAP code field follows the same principle as that of the
 
 If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
 
-A mapping list can be used for known values, for other values the field cannot be compressed an the value needs to be sent in the residue.
+A mapping list can be used for known values, for other values the field cannot be compressed an the value needs to be sent in the Compression Residue.
  
 ## CoAP Message ID field
 
@@ -268,15 +268,15 @@ Token Value directly following the mandatory CoAP header.
 
 Token Length is processed as any protocol field. If the value does not change, the size 
 can be stored in the TV and elided during the transmission. Otherwise, it will 
-have to be sent in the compression residue.
+have to be sent in the Compression Residue.
 
 Token Value MUST NOT be sent as a variable length residue to avoid ambiguity with Token 
-Length. Therefore, Token Length value MUST be used to define the size of the residue. 
+Length. Therefore, Token Length value MUST be used to define the size of the Compression Residue. 
 A specific function designated as "TKL" MUST be used in the Rule. During the decompression, this function returns the value contained in the Token Length field.
 
 # CoAP options
 CoAP defines options that are placed after the based header in Option Numbers order, see {{rfc7252}}. Each Option instance in a message uses the format Delta-Type, Length, Value. When applying SCHC compression to the Option, the D-T L V format serves to make the Rule description of the Option. 
-The SCHC compression builds the description of the Option by using in the Field ID the Option Number; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a fixed size, SCHC compression does not send it. Otherwise, when the Option length has a variable size, SCHC Compression carries the length of the Residue plus the Residue value.
+The SCHC compression builds the description of the Option by using in the Field ID the Option Number; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a fixed size, SCHC compression does not send it. Otherwise, when the Option length has a variable size, SCHC Compression carries the length of the Compression Residue plus the Compression Residue value.
 
 The following sections present how SCHC compresses some CoAP Options.
 
@@ -284,7 +284,7 @@ The following sections present how SCHC compresses some CoAP Options.
 
 These fields are both unidirectional and MUST NOT be set to bidirectional in a rule entry.
 
-If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the residue. Otherwise, the value has to be sent as a residue (fixed or variable length).
+If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the Compression Residue. Otherwise, the value has to be sent as a Compression Residue (fixed or variable length).
 
 
 ## CoAP option Max-Age, Uri-Host and Uri-Port fields
@@ -298,7 +298,7 @@ If the duration is known by both ends, the value can be elided.
 
 A matching list can be used if some well-known values are defined.
 
-Otherwise these options can be sent as a residue (fixed or variable length).
+Otherwise these options can be sent as a Compression Residue (fixed or variable length).
 
 ## CoAP option Uri-Path and Uri-Query fields
 
@@ -364,8 +364,8 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
 
 The number of Uri-path or Uri-Query elements in a rule is fixed at the rule creation time. If the number
 varies, several rules SHOULD be created to cover all the possibilities. Another possibility is
-to define the length of Uri-Path to variable and send a compression residue with a length of 0 to 
-indicate that this Uri-Path is empty. This adds the 4 bits of the variable residue size. See section 7.5.2 {{rfc8724}}
+to define the length of Uri-Path to variable and send a Compression Residue with a length of 0 to 
+indicate that this Uri-Path is empty. This adds the 4 bits of the variable Residue size. See section 7.5.2 {{rfc8724}}
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
@@ -385,7 +385,7 @@ Otherwise, the TV is set to the value, MO is set to "equal" and CDA is set to "n
 These fields are unidirectional.
 
 These fields values cannot be stored in a rule entry. They MUST always be sent with the
-compression residues. 
+Compression Residues. 
 
 
 # SCHC compression of CoAP extension RFCs
@@ -393,7 +393,7 @@ compression residues.
 ## Block
 
 Block {{rfc7959}} allows a fragmentation at the CoAP level. SCHC also includes a fragmentation protocol.
-They are compatible. If a block option is used, its content MUST be sent as a compression residue. 
+They are compatible. If a block option is used, its content MUST be sent as a Compression Residue. 
 
 ## Observe
 
@@ -977,7 +977,7 @@ Compressed message:
     1489 Compression Residue
         458a9fc3686852f6c4 Padded payload
 
-Compression residue:
+Compression Residue:
 0b 0001 010 0100 0100 (15 bits -> 2 bytes with padding)
     mid tkn piv  kid
 
@@ -993,9 +993,9 @@ Compressed message:
 ==================
 0x0014218daf84d983d35de7e48c3c1852 (16 bytes)
 0x00 Rule ID
-    14 Compression residue
+    14 Compression Residue
       218daf84d983d35de7e48c3c1852 Padded payload
-Compression residue:
+Compression Residue:
 0b0001 010 (7 bits -> 1 byte with padding)
   mid  tkn
 
@@ -1040,7 +1040,7 @@ Compressed message:
 0x0114
 0x01 = Rule ID
 
-Compression residue:
+Compression Residue:
 0b00010100 (1 byte)
 
 Compressed msg length: 2
@@ -1056,7 +1056,7 @@ Compressed message:
 0x010a32332043
 0x01 = Rule ID
 
-Compression residue:
+Compression Residue:
 0b00001010 (1 byte)
 
 Payload
@@ -1077,7 +1077,7 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-This document does not have any more Security consideration than the ones already raised on {{rfc8724}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
+This document does not have any more Security consideration than the ones already raised on {{rfc8724}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Compression Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
 
 OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
 
