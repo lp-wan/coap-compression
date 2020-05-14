@@ -1077,9 +1077,17 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-This document does not have any more Security consideration than the ones already raised on {{rfc8724}}. Variable length residues may be used to compress URI elements. They cannot produce a packet expansion either on the LPWAN network or in the Internet network after decompression. The length send is not used to indicate the information that should be reconstructed at the other end, but on the contrary the information sent as a Compression Residue. Therefore, if a length is set to a high value, but the number of bits on the SCHC packet is smaller, the packet must be dropped by the decompressor.
+The Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied. 
 
-OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming.
+The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the communication does not use any security protocol as OSCORE, DTLS, or other. It is highly necessary to use a layer two security.
+ 
+A corrupted header compressor could cause the header decompressor to reconstitute packets that do not match the original ones, but still have valid headers and possibly also correct transport checksums. SCHC scheme uses an Integrity Check to verify the reconstructed headers, which reduces the probability of producing decompressed headers not matching the original header without being noticed. End-to-End Authentication and Integrity mechanisms may detect such corruption. 
+
+DoS attacks are possible if an intruder can introduce a compressed SCHC corrupted packet onto the link and cause a compression efficiency reduction. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
+
+SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
+
+OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector residue size must be considered carefully. A too large value has a impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming. How large and small depends on the security implementation.
 
 SCHC header and compression rules must remain tightly coupled. Otherwise a encrypted residue may be decompressed in a different way by the receiver. To avoid this situation, if the rule is modified in one location, the OSCORE keys need to be re-established. 
 
