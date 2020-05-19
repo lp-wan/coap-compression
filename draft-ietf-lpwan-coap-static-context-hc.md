@@ -154,7 +154,7 @@ independently of the other layers. The Rule ID and the Compression Residue are e
 a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
 use SCHC to compress the header as defined in {{rfc8724}} document. 
 This use case realizes an End-to-End context initialization between the sender and the receiver. 
-The context initialization behavior is out of the scope of this document, see Annex A {{#SCHCParams}}.
+The context initialization behavior is out of the scope of this document, see {{SCHCParams}}.
 
 In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
 In this case, two rulesets are used 
@@ -1102,7 +1102,7 @@ The authors would like to thank Christian Amsuss, Dominique Barthel, Carsten Bor
 
 --- back
 
-# Annex A. Extension to RFC8724 Annex D. {#SCHCParams}
+# Annex A. Extension to RFC8724 Annex D. {SCHCParams}
 
 This section extends the RFC8724 Annex D list. 
 
