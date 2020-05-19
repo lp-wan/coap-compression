@@ -219,7 +219,7 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
 * A field can appear several time in the CoAP headers.  This is
   typical for elements of a URI (path or queries).
   The SCHC specification {{rfc8724}} allows a Field ID to
-  appears several times in the rule, and uses the Field Position (FP)
+  appear several times in the rule, and uses the Field Position (FP)
   to identify the correct instance, and thereby removing the ambiguity of
   the matching operation.
 
