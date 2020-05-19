@@ -681,7 +681,7 @@ Note that since the Inner part of the message can only be decrypted by the corre
 
 ## Example OSCORE Compression
 
-An example is given with a GET Request and its consequent CONTENT
+An example is given with a GET Request and its consequent Content
 Response from a device-based CoAP client to a cloud-based CoAP server. 
 A possible set of rules for the Inner and Outer SCHC
 Compression is shown. A dump of the results and a contrast between SCHC + OSCORE
