@@ -46,7 +46,7 @@ normative:
   rfc8174:
   rfc8613:
   rfc8724:
-  URL: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
+  ETHERNET: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
   
 
 
@@ -251,7 +251,7 @@ RST message a dedicated Rule may be needed. For other usages a mapping list can 
   
 ## CoAP code field
 
-The code field indicates the Request Method used in CoAP, a IANA registry {{url}}.
+The code field indicates the Request Method used in CoAP, a IANA registry {{ETHERNET}}.
 The compression of the CoAP code field follows the same principle as that of the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.
 
 If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
