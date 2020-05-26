@@ -1098,7 +1098,7 @@ The authors would like to thank (in alphabetic order): Christian Amsuss, Dominiq
 
 --- back
 
-# Annex A. Extension to RFC8724 Annex D. {#SCHCParams}
+# Extension to the RFC8724 Annex D. {#SCHCParams}
 
 This section extends the RFC8724 Annex D list. 
 
