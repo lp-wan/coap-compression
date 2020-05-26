@@ -38,7 +38,7 @@ author:
   country: Argentina
   email: randreasen@fi.uba.ar
 normative:  
-  rfc2119:
+  RFC2119:
   rfc7252:
   rfc7967:
   rfc7641:
@@ -46,7 +46,7 @@ normative:
   rfc8174:
   rfc8613:
   rfc8724:
-  ianareg: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
+  IANAREG: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
   
 
 
@@ -116,7 +116,7 @@ for IPv6 and UDP headers. This document targets the CoAP header compression usin
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in BCP 14
-{{rfc2119}}{{rfc8174}} when, and only when, they
+{{RFC2119}}{{rfc8174}} when, and only when, they
 appear in all capitals, as shown here.
 
 # Applying SCHC to CoAP headers
