@@ -51,7 +51,7 @@ normative:
 --- abstract
 
 This draft defines the way Static Context Header Compression (SCHC) 
-header compression can be applied to the Constrained Application Protocol (CoAP) protocol. SCHC is a header 
+header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in the header. 
 While {{rfc8724}} describes the SCHC compression and fragmentation framework, and its application 
@@ -274,7 +274,7 @@ A specific function designated as "TKL" MUST be used in the Rule. During the dec
 
 # CoAP options
 CoAP defines options that are placed after the based header in Option Numbers order, see {{rfc7252}}. Each Option instance in a message uses the format Delta-Type (D-T), Length (L), Value (V). When applying SCHC compression to the Option, the D-T, L, and V format serves to make the Rule description of the Option. 
-The SCHC compression builds the description of the Option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a wellknown size or can be stored in the Rule. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue in addition to the Compression Residue value. 
+The SCHC compression builds the description of the Option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a wellknown size it can be stored in the Rule. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue in addition to the Compression Residue value. 
 
 Note that length coding differs between CoAP options and SCHC variable size Compression Residue.
 
@@ -289,7 +289,7 @@ If a single value is expected by the client, it can be stored in the TV and elid
 
 ## CoAP option Max-Age, Uri-Host and Uri-Port fields
 
-These fields are unidirectional and MUST NOT be set to bidirectional in a Rule DI entry.
+These fields are unidirectional and MUST NOT be set to bidirectional in a Rule DI entry,
 see section 7.1 of {{rfc8724}}.
 They are used only by the server to inform of the caching duration and is never 
 found in client requests.
@@ -365,7 +365,7 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
 The number of Uri-path or Uri-Query elements in a Rule is fixed at the Rule creation time. If the number
 varies, several Rules SHOULD be created to cover all the possibilities. Another possibility is
 to define the length of Uri-Path to variable and send a Compression Residue with a length of 0 to 
-indicate that this Uri-Path is empty. This adds the 4 bits of the variable Residue size. See section 7.5.2 {{rfc8724}}
+indicate that this Uri-Path is empty. This adds 4 bits to the variable Residue size. See section 7.5.2 {{rfc8724}}
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
