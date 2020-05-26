@@ -47,7 +47,7 @@ normative:
   rfc8613:
   rfc8724:
 informative:  
-  IANAREG: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
+  IANAREG: www.iana.org/assignments/core-parameters/core-parameters.xhtml
   
 
 
