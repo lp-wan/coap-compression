@@ -186,7 +186,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [rfc2119][rfc8174] when, and only when, they appear in all
+   14 [RFC2119][rfc8174] when, and only when, they appear in all
    capitals, as shown here.
 
 2.  Applying SCHC to CoAP headers
@@ -356,12 +356,11 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
 
 4.3.  CoAP code field
 
-   The code field indicates the Request Method used in CoAP, a registry
-   is given in Section 12.1 of [rfc7252].  The compression of the CoAP
-   code field follows the same principle as that of the CoAP type field.
-   If the device plays a specific role, the set of code values can be
-   split in two parts, the request codes with the 0 class and the
-   response values.
+   The code field indicates the Request Method used in CoAP, a IANA
+   registry [rfc7252].  The compression of the CoAP code field follows
+   the same principle as that of the CoAP type field.  If the device
+   plays a specific role, the set of code values can be split in two
+   parts, the request codes with the 0 class and the response values.
 
    If the device only implements a CoAP client, the request code can be
    reduced to the set of requests the client is able to process.
@@ -385,6 +384,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
    not change, the size can be stored in the TV and elided during the
    transmission.  Otherwise, it will have to be sent in the Compression
    Residue.
+
 
 
 
@@ -1539,7 +1539,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
 
 11.  Normative References
 
-   [rfc2119]  Bradner, S., "Key words for use in RFCs to Indicate
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
