@@ -18,19 +18,19 @@ Abstract
 
    This draft defines the way Static Context Header Compression (SCHC)
    header compression can be applied to the Constrained Application
-   Protocol (CoAP) protocol.  SCHC is a header compression mechanism
-   adapted for constrained devices.  SCHC uses a static description of
-   the header to reduce the redundancy and the size of the information
-   in the header.  While [rfc8724] describes the SCHC compression and
-   fragmentation framework, and its application for IPv6/UDP headers,
-   this document applies the use of SCHC for CoAP headers.  The CoAP
-   header structure differs from IPv6 and UDP since CoAP uses a flexible
-   header with a variable number of options, themselves of variable
-   length.  The CoAP protocol messages format is asymmetric: the request
-   messages have a header format different from the one in the response
-   messages.  This specification gives guidance on how to apply SCHC to
-   flexible headers and how to leverage the asymmetry for more efficient
-   compression Rules.
+   Protocol (CoAP).  SCHC is a header compression mechanism adapted for
+   constrained devices.  SCHC uses a static description of the header to
+   reduce the redundancy and the size of the information in the header.
+   While [rfc8724] describes the SCHC compression and fragmentation
+   framework, and its application for IPv6/UDP headers, this document
+   applies the use of SCHC for CoAP headers.  The CoAP header structure
+   differs from IPv6 and UDP since CoAP uses a flexible header with a
+   variable number of options, themselves of variable length.  The CoAP
+   protocol messages format is asymmetric: the request messages have a
+   header format different from the one in the response messages.  This
+   specification gives guidance on how to apply SCHC to flexible headers
+   and how to leverage the asymmetry for more efficient compression
+   Rules.
 
 Status of This Memo
 
@@ -411,7 +411,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
    the description of the Option by using in the Field ID the Option
    Number built from D-T; in TV, the Option Value; and the Option Length
    uses section 7.4 of RFC8724.  When the Option Length has a wellknown
-   size or can be stored in the Rule.  Therefore, SCHC compression does
+   size it can be stored in the Rule.  Therefore, SCHC compression does
    not send it.  Otherwise, SCHC Compression carries the length of the
    Compression Residue in addition to the Compression Residue value.
 
@@ -436,9 +436,9 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
 5.2.  CoAP option Max-Age, Uri-Host and Uri-Port fields
 
    These fields are unidirectional and MUST NOT be set to bidirectional
-   in a Rule DI entry.  see section 7.1 of [rfc8724].  They are used
-   only by the server to inform of the caching duration and is never
-   found in client requests.
+   in a Rule DI entry, see section 7.1 of [rfc8724].  They are used only
+   by the server to inform of the caching duration and is never found in
+   client requests.
 
    If the duration is known by both ends, the value can be elided.
 
@@ -531,7 +531,7 @@ Internet-Draft           LPWAN CoAP compression                 May 2020
    be created to cover all the possibilities.  Another possibility is to
    define the length of Uri-Path to variable and send a Compression
    Residue with a length of 0 to indicate that this Uri-Path is empty.
-   This adds the 4 bits of the variable Residue size.  See section 7.5.2
+   This adds 4 bits to the variable Residue size.  See section 7.5.2
    [rfc8724]
 
 5.4.  CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
