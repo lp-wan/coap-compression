@@ -46,6 +46,8 @@ normative:
   rfc8174:
   rfc8613:
   rfc8724:
+  ETHERNET: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml
+  
 
 
 --- abstract
