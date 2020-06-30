@@ -77,14 +77,14 @@ constraints of LPWAN (Low Power Wide Area Networks) and some
 compression is needed to reduce the header size.
 
 The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network 
-based on a static context. Section 5 of the {{rfc8724}} explains the architecture where 
+based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
 compression and decompression are done. The context is known by both ends before 
 transmission. The way the context is configured, provisioned or exchanged is out of the scope of this document.
 
 CoAP is an End-to-End protocol at the application level, so CoAP compression requires to install common Rules between two hosts
-and IP Routing may be needed to allow End-to-End communication. Therefore, SCHC compression may apply at two different levels,
+and IP Routing may be needed to allow End-to-End communication. Therefore, SCHC compression may aply at two different levels,
 one to compress IP and UDP as described in {{rfc8724}} in the LPWAN network and another at the application level. These two compressions
-may be independent. The Compression Rules can be set up by two independent entities and are out of the scope of this document. In both cases, SCHC mechanism remains the same.
+may be independent. The Compression Rules can be setup by two independent entities and are out of the scope of this document. In both cases SCHC mechanism remains the same.
 
 SCHC compresses and decompresses headers based on shared contexts
 between devices. 
@@ -150,9 +150,6 @@ may be used as shown in {{Fig-SCHCCOAP}}.
 
 {{Fig-SCHCCOAP}} shows some examples for CoAP protocol stacks and the SCHC Rule's scope.
 
-In the first example, a Rule compresses the complete header stack from IPv6 to CoAP. In this case, 
-SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
-at the Receiver. 
 ~~~~
 
    (device)        (LPWAN APP)        (internet)           (Host)  
@@ -172,11 +169,9 @@ at the Receiver.
 ~~~~
 {: #Fig-SCHCCOAP1 title='Compression/decompression at the LPWAN bondary'}  
 
-In the second example, the SCHC compression is applied in the CoAP layer, compressing the CoAP header 
-independently of the other layers. The RuleID and the Compression Residue are encrypted using 
-a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
-use SCHC to compress the header as defined in {{rfc8724}} document. 
-This use case realizes an End-to-End context initialization between the sender and the receiver, see {{SCHCParams}}.
+In the first example, a Rule compresses the complete header stack from IPv6 to CoAP. In this case, 
+SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
+at the Receiver. 
 
 ~~~~
 
@@ -199,11 +194,12 @@ This use case realizes an End-to-End context initialization between the sender a
 ~~~~
 {: #Fig-SCHCCOAP2 title='Standalone CoAP ene-to-end compression/decompression'}  
 
-In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
-In this case, two rulesets are used 
-to compress the CoAP message.  A first ruleset
-focused on the inner header and is applied end to end by both ends. A second ruleset
-compresses the outer header and the layers below  and is done between the Sender and the Receiver.
+In the second example, the SCHC compression is applied in the CoAP layer, compressing the CoAP header 
+independently of the other layers. The RuleID and the Compression Residue are encrypted using 
+a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
+use SCHC to compress the header as defined in {{rfc8724}} document. 
+This use case realizes an End-to-End context initialization between the sender and the receiver, see {{SCHCParams}}.
+
 ~~~~
 
    (device)        (LPWAN APP)        (internet)           (Host)  
@@ -228,6 +224,14 @@ compresses the outer header and the layers below  and is done between the Sender
        ((((((()))))))           -----  ------  ------  -----                                   
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'}  
+
+
+In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
+In this case, two rulesets are used 
+to compress the CoAP message.  A first ruleset
+focused on the inner header and is applied end to end by both ends. A second ruleset
+compresses the outer header and the layers below  and is done between the Sender and the Receiver.
+
 
 #  CoAP Headers compressed with SCHC
 
@@ -1129,15 +1133,15 @@ This document has no request to IANA.
 
 When applied to LPWAN, the Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied. 
 
-The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is highly necessary to use a layer two security.
+The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the communication does not use any security protocol as OSCORE, DTLS, or other. It is highly necessary to use a layer two security.
 
 DoS attacks are possible if an intruder can introduce a compressed SCHC corrupted packet onto the link and cause a compression efficiency reduction. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
 
 SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
 
-OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV has an impact on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy-consuming. 
+OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV has an impact on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy consuming. 
 
-SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted residue may be decompressed differently by the receiver. To avoid this situation, if the Rule is modified in one location, the OSCORE keys MUST be re-established. 
+SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted residue may be decompressed in a different way by the receiver. To avoid this situation, if the Rule is modified in one location, the OSCORE keys MUST be re-established. 
 
 
 # Acknowledgements
