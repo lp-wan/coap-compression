@@ -1492,8 +1492,8 @@ Internet-Draft           LPWAN CoAP compression                June 2020
    The definition of SCHC over CoAP header fields permits the
    compression of header information only.  The SCHC header compression
    itself does not increase or reduce the level of security in the
-   communication.  When the communication does not use any security
-   protocol as OSCORE, DTLS, or other.  It is highly necessary to use a
+   communication.  When the connection does not use any security
+   protocol as OSCORE, DTLS, or other, it is highly necessary to use a
    layer two security.
 
    DoS attacks are possible if an intruder can introduce a compressed
@@ -1522,12 +1522,12 @@ Internet-Draft           LPWAN CoAP compression                June 2020
    residue must be considered carefully.  A residue size obtained with
    LSB CDA over the IV has an impact on the compression efficiency and
    the frequency the device will renew its key.  This operation requires
-   several exchanges and is energy consuming.
+   several exchanges and is energy-consuming.
 
    SCHC header and compression Rules MUST remain tightly coupled.
-   Otherwise, an encrypted residue may be decompressed in a different
-   way by the receiver.  To avoid this situation, if the Rule is
-   modified in one location, the OSCORE keys MUST be re-established.
+   Otherwise, an encrypted residue may be decompressed differently by
+   the receiver.  To avoid this situation, if the Rule is modified in
+   one location, the OSCORE keys MUST be re-established.
 
 10.  Acknowledgements
 
