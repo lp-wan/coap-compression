@@ -129,30 +129,14 @@ The SCHC Compression Rules can be applied to CoAP headers. SCHC Compression of t
 header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
 The SCHC adaptation layers as described in Section 5 
 of {{rfc8724}} and
-may be used as shown in {{Fig-SCHCCOAP}}.
-
-~~~~
-
- ^   +------------+    ^  +------------+        ^  +------------+
- |   |    CoAP    |    |  |    CoAP    |  inner |  |    CoAP    |
- |   +------------+    v  +------------+        x  |    OSCORE  |
- |   |    UDP     |       |    DTLS    |  outer |  +------------+
- |   +------------+       +------------+        |  |    UDP     |
- |   |    IPv6    |       |    UDP     |        |  +------------+
- v   +------------+       +------------+        |  |    IPv6    |
-                          |    IPv6    |        v  +------------+
-                          +------------+                 
-                                                  
-                                                  
-~~~~
-{: #Fig-SCHCCOAP title='Rule scope for CoAP'}  
+may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}.
 
 
-{{Fig-SCHCCOAP}} shows some examples for CoAP protocol stacks and the SCHC Rule's scope.
 
-In the first example, a Rule compresses the complete header stack from IPv6 to CoAP. In this case, 
+In the first example {{Fig-SCHCCOAP1}}, a Rule compresses the complete header stack from IPv6 to CoAP. 
+In this case, 
 SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
-at the Receiver. 
+at the Receiver. The host communicating with the device do not implement SCHC C/D.
 ~~~~
 
    (device)        (LPWAN APP)        (internet)           (Host)  
@@ -172,7 +156,7 @@ at the Receiver.
 ~~~~
 {: #Fig-SCHCCOAP1 title='Compression/decompression at the LPWAN bondary'}  
 
-In the second example, the SCHC compression is applied in the CoAP layer, compressing the CoAP header 
+In the second example, {{Fig-SCHCCOAP2}}, the SCHC compression is applied in the CoAP layer, compressing the CoAP header 
 independently of the other layers. The RuleID and the Compression Residue are encrypted using 
 a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
 use SCHC to compress the header as defined in {{rfc8724}} document. 
@@ -186,6 +170,8 @@ This use case realizes an End-to-End context initialization between the sender a
    |  CoAP  |                                           |  CoAP  | 
    +--------+                                           +--------+
    |  SCHC  |                                           |  SCHC  |
+   +--------+                                           +--------+
+   |  DTLS  |                                           |  DTLS  |
    +--------+                                           +--------+
    |  UDP   |                                           |  UDP   |
    +--------+     +----------------+                    +--------+
