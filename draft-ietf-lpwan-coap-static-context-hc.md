@@ -77,14 +77,14 @@ constraints of LPWAN (Low Power Wide Area Networks) and some
 compression is needed to reduce the header size.
 
 The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network 
-based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
+based on a static context. Section 5 of the {{rfc8724}} explains the architecture where 
 compression and decompression are done. The context is known by both ends before 
 transmission. The way the context is configured, provisioned or exchanged is out of the scope of this document.
 
 CoAP is an End-to-End protocol at the application level, so CoAP compression requires to install common Rules between two hosts
 and IP Routing may be needed to allow End-to-End communication. Therefore, SCHC compression may apply at two different levels,
 one to compress IP and UDP as described in {{rfc8724}} in the LPWAN network and another at the application level. These two compressions
-may be independent. The Compression Rules can be set up by two independent entities and are out of the scope of this document. In both cases SCHC mechanism remains the same.
+may be independent. The Compression Rules can be set up by two independent entities and are out of the scope of this document. In both cases, SCHC mechanism remains the same.
 
 SCHC compresses and decompresses headers based on shared contexts
 between devices. 
