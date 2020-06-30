@@ -173,14 +173,14 @@ This use case realizes an End-to-End context initialization between the sender a
    +--------+                                           +--------+
    |  DTLS  |                                           |  DTLS  |
    +--------+                                           +--------+
-   |  UDP   |                                           |  UDP   |
-   +--------+     +----------------+                    +--------+
-   |  IPv6  |     |      IPv6      |                    |  IPv6  |
-   +--------+     +--------+-------+                    +--------+
-   |  SCHC  |     |  SCHC  |       |                    |        |
-   +--------+     +--------+       +                    +        +
-   |  LPWAN |     | LPWAN  |       |                    |        |
-   +--------+     +--------+-------+                    +--------+    
+   .  udp   .                                           .  UDP   .
+   ..........     ..................                    ..........
+   .  ipv6  .     .      ipv6      .                    .  ipv6  .
+   ..........     ..................                    ..........
+   .  schc  .     .  schc  .       .                    .        .
+   ..........     ..........       .                    .        .
+   .  lpwan .     . lpwan  .       .                    .        .
+   ..........     ..................                    ..........
        ((((((()))))))           -----  ------  ------  -----                                   
 ~~~~
 {: #Fig-SCHCCOAP2 title='Standalone CoAP ene-to-end compression/decompression'}  
@@ -203,14 +203,14 @@ compresses the outer header and the layers below  and is done between the Sender
    |  CoAP  |                                           |  CoAP  |
    |  outer |                                           |  outer |
    +--------+                                           +--------+
-   |  UDP   |                                           |  UDP   |
-   +--------+     +----------------+                    +--------+
-   |  IPv6  |     |      IPv6      |                    |  IPv6  |
-   +--------+     +--------+-------+                    +--------+
-   |  SCHC  |     |  SCHC  |       |                    |        |
-   +--------+     +--------+       +                    +        +
-   |  LPWAN |     | LPWAN  |       |                    |        |
-   +--------+     +--------+-------+                    +--------+    
+   .  udp   .                                           .  udp   .
+   ..........     ..................                    ..........
+   .  ipv6  .     .      ipv6      .                    .  ipv6  .
+   ..........     ..................                    ..........
+   .  schc  .     .  schc  .       .                    .        .
+   ..........     ..........       .                    .        .
+   .  lpwan .     . lpwan  .       .                    .        .
+   ..........     ..................                    ..........  
        ((((((()))))))           -----  ------  ------  -----                                   
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'}  
