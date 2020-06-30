@@ -80,7 +80,12 @@ The {{rfc8724}} defines SCHC, a header compression mechanism for LPWAN network
 based on a static context. The section 5 of the {{rfc8724}} explains the architecture where 
 compression and decompression are done. The context is known by both ends before 
 transmission. The way the context is configured, provisioned or exchanged is out of the scope of this document.
-  
+
+CoAP is an End-to-End protocol at the application level, so CoAP compression requires to install common Rules between two hosts
+and IP Routing may be needed to allow End-to-End communication. Therefore, SCHC compression may aply at two different levels,
+one to compress IP and UDP as described in {{rfc8724}} in the LPWAN network and another at the application level. These two compressions
+may be independent. The Compression Rules can be setup by two independent entities and are out of the scope of this document. In both cases SCHC mechanism remains the same.
+
 SCHC compresses and decompresses headers based on shared contexts
 between devices. 
 Each context consists of multiple Rules. Each Rule can match
@@ -277,23 +282,18 @@ A specific function designated as "TKL" MUST be used in the Rule. During the dec
 CoAP defines options that are placed after the based header in Option Numbers order, see {{rfc7252}}. Each Option instance in a message uses the format Delta-Type (D-T), Length (L), Value (V). When applying SCHC compression to the Option, the D-T, L, and V format serves to make the Rule description of the Option. 
 The SCHC compression builds the description of the Option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a wellknown size it can be stored in the Rule. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue in addition to the Compression Residue value. 
 
+CoAP request and response do not include the same options. So Compression Rules may reflect these assymetry by tagging the direction indicator.
+
 Note that length coding differs between CoAP options and SCHC variable size Compression Residue.
 
 The following sections present how SCHC compresses some specific CoAP Options.
 
 ## CoAP Content and Accept options.
 
-These fields are both unidirectional and MUST NOT be set to bidirectional in a Rule entry.
-
 If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the Compression Residue. Otherwise, the value has to be sent as a Compression Residue (fixed or variable length).
 
 
 ## CoAP option Max-Age, Uri-Host and Uri-Port fields
-
-These fields are unidirectional and MUST NOT be set to bidirectional in a Rule DI entry,
-see section 7.1 of {{rfc8724}}.
-They are used only by the server to inform of the caching duration and is never 
-found in client requests.
 
 If the duration is known by both ends, the value can be elided.
 
@@ -302,10 +302,6 @@ A matching list can be used if some well-known values are defined.
 Otherwise these options can be sent as a Compression Residue (fixed or variable length).
 
 ## CoAP option Uri-Path and Uri-Query fields
-
-These fields are unidirectional and MUST NOT be set to bidirectional in a Rule entry.
-They are used only by the client to access a specific resource and are never found
-in server responses.
 
 Uri-Path and Uri-Query elements are a repeatable options, the Field Position (FP) gives the 
 position in the path. 
@@ -370,11 +366,6 @@ indicate that this Uri-Path is empty. This adds 4 bits to the variable Residue s
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
-These fields are unidirectional and MUST NOT be set to bidirectional in a Rule DI entry, 
-see section 7.1 of the {{rfc8724}}.
-They are used only by the client to access a specific resource and are never found
-in server response.
-
 If the field value has to be sent, TV is not set, MO is set to "ignore" and CDA is set
 to "value-sent". A mapping MAY also be used.
 
@@ -382,8 +373,6 @@ Otherwise, the TV is set to the value, MO is set to "equal" and CDA is set to "n
 
 
 ## CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields
-
-These fields are unidirectional.
 
 These fields values cannot be stored in a Rule entry. They MUST always be sent with the
 Compression Residues. 
@@ -1076,7 +1065,7 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-The Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied. 
+When applied to LPWAN, the Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied. 
 
 The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the communication does not use any security protocol as OSCORE, DTLS, or other. It is highly necessary to use a layer two security.
 
@@ -1084,7 +1073,7 @@ DoS attacks are possible if an intruder can introduce a compressed SCHC corrupte
 
 SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
 
-OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue size must be considered carefully. A too large value has an impact on the compression efficiency and a too small value will force the device to renew its key more often. This operation may be long and energy consuming. The size of the compressed IV MUST be choosen regarding the highest expected traffic from the device.
+OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV has an impact on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy consuming. 
 
 SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted residue may be decompressed in a different way by the receiver. To avoid this situation, if the Rule is modified in one location, the OSCORE keys MUST be re-established. 
 
