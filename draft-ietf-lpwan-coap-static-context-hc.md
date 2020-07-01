@@ -139,7 +139,7 @@ SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performe
 at the Receiver. The host communicating with the device do not implement SCHC C/D.
 ~~~~
 
-   (device)        (LPWAN APP)        (internet)           (Host)  
+   (device)            (NGW)        (internet)           (App)  
 
    +--------+                                           +--------+
    |  CoAP  |                                           |  CoAP  | 
@@ -164,7 +164,7 @@ This use case realizes an End-to-End context initialization between the sender a
 
 ~~~~
 
-   (device)        (LPWAN APP)        (internet)           (Host)  
+   (device)            (NGW)        (internet)           (App)  
 
    +--------+                                           +--------+
    |  CoAP  |                                           |  CoAP  | 
@@ -192,7 +192,7 @@ focused on the inner header and is applied end to end by both ends. A second rul
 compresses the outer header and the layers below  and is done between the Sender and the Receiver.
 ~~~~
 
-   (device)        (LPWAN APP)        (internet)           (Host)  
+   (device)            (NGW)        (internet)           (App)  
 
    +--------+                                           +--------+
    |  CoAP  |                                           |  CoAP  | 
