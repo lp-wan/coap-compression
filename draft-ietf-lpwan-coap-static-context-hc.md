@@ -185,7 +185,7 @@ This use case realizes an End-to-End context initialization between the sender a
 ~~~~
 {: #Fig-SCHCCOAP2 title='Standalone CoAP ene-to-end compression/decompression'}  
 
-In the third example, the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
+In the third example, {{Fig-SCHCCOAP3}} the Object Security for Constrained RESTful Environments (OSCORE) {{rfc8613}} is used. 
 In this case, two rulesets are used 
 to compress the CoAP message.  A first ruleset
 focused on the inner header and is applied end to end by both ends. A second ruleset
@@ -214,6 +214,8 @@ compresses the outer header and the layers below  and is done between the Sender
        ((((((()))))))           -----  ------  ------  -----                                   
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'}  
+
+In case of 2 rule sets, as shown in {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP2}}, they may come from different provisioning domains, and that they do not include the crypto part that is done in between the two SCHC activities. This document focuses on CoAP compression represented in the dashed lines in the previous figures.
 
 #  CoAP Headers compressed with SCHC
 
