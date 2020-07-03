@@ -137,6 +137,7 @@ In the first example {{Fig-SCHCCOAP1}}, a Rule compresses the complete header st
 In this case, 
 SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and 
 at the Receiver. The host communicating with the device do not implement SCHC C/D.
+
 ~~~~
 
    (device)            (NGW)        (internet)           (App)  
@@ -190,6 +191,7 @@ In this case, two rulesets are used
 to compress the CoAP message.  A first ruleset
 focused on the inner header and is applied end to end by both ends. A second ruleset
 compresses the outer header and the layers below  and is done between the Sender and the Receiver.
+
 ~~~~
 
    (device)            (NGW)        (internet)           (App)  
