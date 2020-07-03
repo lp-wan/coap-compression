@@ -160,7 +160,7 @@ In the second example, {{Fig-SCHCCOAP2}}, the SCHC compression is applied in the
 independently of the other layers. The RuleID and the Compression Residue are encrypted using 
 a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below 
 use SCHC to compress the header as defined in {{rfc8724}} document. 
-This use case realizes an End-to-End context initialization between the sender and the receiver, see {{SCHCParams}}.
+This use case realizes an End-to-End context initialization between the sender and the receiver and is out-of-scope of this document.
 
 ~~~~
 
@@ -173,7 +173,7 @@ This use case realizes an End-to-End context initialization between the sender a
    +--------+                                           +--------+
    |  DTLS  |                                           |  DTLS  |
    +--------+                                           +--------+
-   .  udp   .                                           .  UDP   .
+   .  udp   .                                           .  udp   .
    ..........     ..................                    ..........
    .  ipv6  .     .      ipv6      .                    .  ipv6  .
    ..........     ..................                    ..........
@@ -215,7 +215,7 @@ compresses the outer header and the layers below  and is done between the Sender
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'}  
 
-In case of 2 rule sets, as shown in {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP2}}, they may come from different provisioning domains, and that they do not include the crypto part that is done in between the two SCHC activities. This document focuses on CoAP compression represented in the dashed lines in the previous figures.
+In case of 2 rule-sets, as shown in {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}, they may come from different provisioning domains, and that they do not include the cryptography part that is done in between the two SCHC activities. This document focuses on CoAP compression represented in the dashed boxes in the previous figures.
 
 #  CoAP Headers compressed with SCHC
 
@@ -1137,12 +1137,6 @@ The authors would like to thank (in alphabetic order): Christian Amsuss, Dominiq
 
 
 --- back
-
-# Extension to the RFC8724 Annex D. {#SCHCParams}
-
-This section extends the RFC8724 Annex D list. 
-
-* How to establish the End-to-End context initialization using SCHC for CoAP header only.
 
 
 
