@@ -309,7 +309,6 @@ address {
 <link href="#rfc.section.9" rel="Chapter" title="9 Security considerations">
 <link href="#rfc.section.10" rel="Chapter" title="10 Acknowledgements">
 <link href="#rfc.references" rel="Chapter" title="11 Normative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Extension to the RFC8724 Annex D.">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -318,7 +317,7 @@ address {
 
   <meta name="dct.creator" content="Minaburo, A., Toutain, L., and R. Andreasen" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-lpwan-coap-static-context-hc-14" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-06-30" />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-07-03" />
   <meta name="dct.abstract" content="This draft defines the way Static Context Header Compression (SCHC) header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
   <meta name="description" content="This draft defines the way Static Context Header Compression (SCHC) header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce the redundancy and the size of the information in the header.  While  describes the SCHC compression and fragmentation framework, and its application for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol messages format is asymmetric: the request messages have a header format different from the one in the response messages.  This specification gives guidance on how to apply SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. " />
 
@@ -342,7 +341,7 @@ address {
 <td class="right">L. Toutain</td>
 </tr>
 <tr>
-<td class="left">Expires: January 1, 2021</td>
+<td class="left">Expires: January 4, 2021</td>
 <td class="right">Institut MINES TELECOM; IMT Atlantique</td>
 </tr>
 <tr>
@@ -355,7 +354,7 @@ address {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 30, 2020</td>
+<td class="right">July 03, 2020</td>
 </tr>
 
     	
@@ -371,7 +370,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 1, 2021.</p>
+<p>This Internet-Draft will expire on January 4, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -445,8 +444,6 @@ address {
 </li>
 <li>11.   <a href="#rfc.references">Normative References</a>
 </li>
-<li>Appendix A.   <a href="#rfc.appendix.A">Extension to the RFC8724 Annex D.</a>
-</li>
 <li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
@@ -479,27 +476,78 @@ address {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#applying-schc-to-coap-headers" id="applying-schc-to-coap-headers">Applying SCHC to CoAP headers</a>
 </h1>
-<p id="rfc.section.2.p.1">The SCHC Compression Rules can be applied to CoAP headers. SCHC Compression of the CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.  The SCHC adaptation layers as described in Section 5 of <a href="#rfc8724" class="xref">[rfc8724]</a> and may be used as shown in <a href="#Fig-SCHCCOAP" class="xref">Figure 1</a>.</p>
+<p id="rfc.section.2.p.1">The SCHC Compression Rules can be applied to CoAP headers. SCHC Compression of the CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.  The SCHC adaptation layers as described in Section 5 of <a href="#rfc8724" class="xref">[rfc8724]</a> and may be used as shown in <a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a>, <a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a> and <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a>.</p>
+<p id="rfc.section.2.p.2">In the first example <a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a>, a Rule compresses the complete header stack from IPv6 to CoAP.  In this case, SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and at the Receiver. The host communicating with the device do not implement SCHC C/D.</p>
 <div id="rfc.figure.1"></div>
-<div id="Fig-SCHCCOAP"></div>
+<div id="Fig-SCHCCOAP1"></div>
 <pre>
- ^   +------------+    ^  +------------+        ^  +------------+
- |   |    CoAP    |    |  |    CoAP    |  inner |  |    CoAP    |
- |   +------------+    v  +------------+        x  |    OSCORE  |
- |   |    UDP     |       |    DTLS    |  outer |  +------------+
- |   +------------+       +------------+        |  |    UDP     |
- |   |    IPv6    |       |    UDP     |        |  +------------+
- v   +------------+       +------------+        |  |    IPv6    |
-                          |    IPv6    |        v  +------------+
-                          +------------+                 
-                                                  
-                                                  
+   (device)            (NGW)        (internet)           (App)  
+
+   +--------+                                           +--------+
+   |  CoAP  |                                           |  CoAP  | 
+   +--------+                                           +--------+
+   |  UDP   |                                           |  UDP   |
+   +--------+     +----------------+                    +--------+
+   |  IPv6  |     |      IPv6      |                    |  IPv6  |
+   +--------+     +--------+-------+                    +--------+
+   |  SCHC  |     |  SCHC  |       |                    |        |
+   +--------+     +--------+       +                    +        +
+   |  LPWAN |     | LPWAN  |       |                    |        |
+   +--------+     +--------+-------+                    +--------+    
+       ((((((()))))))           -----  ------  ------  -----                                   
 </pre>
-<p class="figure">Figure 1: Rule scope for CoAP</p>
-<p><a href="#Fig-SCHCCOAP" class="xref">Figure 1</a> shows some examples for CoAP protocol stacks and the SCHC Rule&#8217;s scope.</p>
-<p id="rfc.section.2.p.3">In the first example, a Rule compresses the complete header stack from IPv6 to CoAP. In this case, SCHC C/D (Static Context Header Compression Compressor/Decompressor) is performed at the Sender and at the Receiver.</p>
-<p id="rfc.section.2.p.4">In the second example, the SCHC compression is applied in the CoAP layer, compressing the CoAP header independently of the other layers. The RuleID and the Compression Residue are encrypted using a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below use SCHC to compress the header as defined in <a href="#rfc8724" class="xref">[rfc8724]</a> document.  This use case realizes an End-to-End context initialization between the sender and the receiver, see <a href="#SCHCParams" class="xref">Appendix A</a>.</p>
-<p id="rfc.section.2.p.5">In the third example, the Object Security for Constrained RESTful Environments (OSCORE) <a href="#rfc8613" class="xref">[rfc8613]</a> is used.  In this case, two rulesets are used to compress the CoAP message.  A first ruleset focused on the inner header and is applied end to end by both ends. A second ruleset compresses the outer header and the layers below  and is done between the Sender and the Receiver.</p>
+<p class="figure">Figure 1: Compression/decompression at the LPWAN bondary</p>
+<p id="rfc.section.2.p.3">In the second example, <a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a>, the SCHC compression is applied in the CoAP layer, compressing the CoAP header independently of the other layers. The RuleID and the Compression Residue are encrypted using a mechanism such as DTLS. Only the other end can decipher the information. If needed, layers below use SCHC to compress the header as defined in <a href="#rfc8724" class="xref">[rfc8724]</a> document.  This use case realizes an End-to-End context initialization between the sender and the receiver and is out-of-scope of this document.</p>
+<div id="rfc.figure.2"></div>
+<div id="Fig-SCHCCOAP2"></div>
+<pre>
+   (device)            (NGW)        (internet)           (App)  
+
+   +--------+                                           +--------+
+   |  CoAP  |                                           |  CoAP  | 
+   +--------+                                           +--------+
+   |  SCHC  |                                           |  SCHC  |
+   +--------+                                           +--------+
+   |  DTLS  |                                           |  DTLS  |
+   +--------+                                           +--------+
+   .  udp   .                                           .  udp   .
+   ..........     ..................                    ..........
+   .  ipv6  .     .      ipv6      .                    .  ipv6  .
+   ..........     ..................                    ..........
+   .  schc  .     .  schc  .       .                    .        .
+   ..........     ..........       .                    .        .
+   .  lpwan .     . lpwan  .       .                    .        .
+   ..........     ..................                    ..........
+       ((((((()))))))           -----  ------  ------  -----                                   
+</pre>
+<p class="figure">Figure 2: Standalone CoAP ene-to-end compression/decompression</p>
+<p id="rfc.section.2.p.4">In the third example, <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a> the Object Security for Constrained RESTful Environments (OSCORE) <a href="#rfc8613" class="xref">[rfc8613]</a> is used.  In this case, two rulesets are used to compress the CoAP message.  A first ruleset focused on the inner header and is applied end to end by both ends. A second ruleset compresses the outer header and the layers below  and is done between the Sender and the Receiver.</p>
+<div id="rfc.figure.3"></div>
+<div id="Fig-SCHCCOAP3"></div>
+<pre>
+   (device)            (NGW)        (internet)           (App)  
+
+   +--------+                                           +--------+
+   |  CoAP  |                                           |  CoAP  | 
+   |  inner |                                           |  inner |
+   +--------+                                           +--------+
+   |  SCHC  |                                           |  SCHC  |
+   +--------+                                           +--------+
+   |  CoAP  |                                           |  CoAP  |
+   |  outer |                                           |  outer |
+   +--------+                                           +--------+
+   .  udp   .                                           .  udp   .
+   ..........     ..................                    ..........
+   .  ipv6  .     .      ipv6      .                    .  ipv6  .
+   ..........     ..................                    ..........
+   .  schc  .     .  schc  .       .                    .        .
+   ..........     ..........       .                    .        .
+   .  lpwan .     . lpwan  .       .                    .        .
+   ..........     ..................                    ..........  
+       ((((((()))))))           -----  ------  ------  -----                                   
+</pre>
+<p class="figure">Figure 3: OSCORE compression/decompression.</p>
+<p id="rfc.section.2.p.5">In case of 2 rule-sets, as shown in <a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a> and <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a>, they may come from different provisioning domains, and that they do not include the cryptography part that is done in between the two SCHC activities. This document focuses on CoAP compression represented in the dashed boxes in the previous figures.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#coap-headers-compressed-with-schc" id="coap-headers-compressed-with-schc">CoAP Headers compressed with SCHC</a>
 </h1>
@@ -568,7 +616,7 @@ address {
 </h1>
 <p id="rfc.section.5.3.p.1">Uri-Path and Uri-Query elements are a repeatable options, the Field Position (FP) gives the position in the path.</p>
 <p id="rfc.section.5.3.p.2">A Mapping list can be used to reduce the size of variable Paths or Queries. In that case, to optimize the compression, several elements can be regrouped into a single entry.  Numbering of elements do not change, MO comparison is set with the first element of the matching.</p>
-<div id="rfc.figure.2"></div>
+<div id="rfc.figure.4"></div>
 <div id="Fig--complex-path"></div>
 <pre>
    +-------------+---+--+--+--------+---------+-------------+
@@ -582,8 +630,8 @@ address {
 
 
 </pre>
-<p class="figure">Figure 2: complex path example</p>
-<p id="rfc.section.5.3.p.3">In <a href="#Fig--complex-path" class="xref">Figure 2</a> a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed. The third path element is sent as a variable size residue.</p>
+<p class="figure">Figure 4: complex path example</p>
+<p id="rfc.section.5.3.p.3">In <a href="#Fig--complex-path" class="xref">Figure 4</a> a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed. The third path element is sent as a variable size residue.</p>
 <h1 id="rfc.section.5.3.1">
 <a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#variable-length-uri-path-and-uri-query" id="variable-length-uri-path-and-uri-query">Variable length Uri-Path and Uri-Query</a>
 </h1>
@@ -591,7 +639,7 @@ address {
 <p id="rfc.section.5.3.1.p.2">The MSB MO can be applied to a Uri-Path or Uri-Query element. Since MSB value is given in bit, the size MUST always be a multiple of 8 bits.</p>
 <p id="rfc.section.5.3.1.p.3">The length sent at the beginning of a variable length residue indicates the size of the LSB in bytes.</p>
 <p id="rfc.section.5.3.1.p.4">For instance for a CORECONF path /c/X6?k=&#8221;eth0&#8221; the Rule can be set to:</p>
-<div id="rfc.figure.3"></div>
+<div id="rfc.figure.5"></div>
 <div id="Fig-CoMicompress"></div>
 <pre>
    +-------------+---+--+--+--------+---------+-------------+
@@ -603,8 +651,8 @@ address {
    |URI-Query    |var| 1|up|"k="    |MSB(16)  |LSB          |
    +-------------+---+--+--+--------+---------+-------------+
 </pre>
-<p class="figure">Figure 3: CORECONF URI compression</p>
-<p><a href="#Fig-CoMicompress" class="xref">Figure 3</a> shows the parsing and the compression of the URI, where c is not sent.  The second element is sent with the length (i.e. 0x2 X 6) followed by the query option (i.e. 0x05 &#8220;eth0&#8221;).</p>
+<p class="figure">Figure 5: CORECONF URI compression</p>
+<p><a href="#Fig-CoMicompress" class="xref">Figure 5</a> shows the parsing and the compression of the URI, where c is not sent.  The second element is sent with the length (i.e. 0x2 X 6) followed by the query option (i.e. 0x05 &#8220;eth0&#8221;).</p>
 <h1 id="rfc.section.5.3.2">
 <a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#variable-number-of-path-or-query-elements" id="variable-number-of-path-or-query-elements">Variable number of path or query elements</a>
 </h1>
@@ -639,7 +687,7 @@ address {
 <a href="#rfc.section.6.4">6.4.</a> <a href="#Sec-OSCORE" id="Sec-OSCORE">OSCORE</a>
 </h1>
 <p id="rfc.section.6.4.p.1">OSCORE <a href="#rfc8613" class="xref">[rfc8613]</a> defines end-to-end protection for CoAP messages.  This section describes how SCHC Rules can be applied to compress OSCORE-protected messages.</p>
-<div id="rfc.figure.4"></div>
+<div id="rfc.figure.6"></div>
 <div id="Fig-OSCORE-Option"></div>
 <pre>
       0 1 2 3 4 5 6 7 &lt;--------- n bytes -------------&gt;
@@ -658,8 +706,8 @@ address {
      | &lt;------ CoAP OSCORE_kidctxt -----&gt;|&lt;-- CoAP OSCORE_kid --&gt;|
 
 </pre>
-<p class="figure">Figure 4: OSCORE Option</p>
-<p id="rfc.section.6.4.p.2">The encoding of the OSCORE Option Value defined in Section 6.1 of <a href="#rfc8613" class="xref">[rfc8613]</a> is repeated in <a href="#Fig-OSCORE-Option" class="xref">Figure 4</a>.</p>
+<p class="figure">Figure 6: OSCORE Option</p>
+<p id="rfc.section.6.4.p.2">The encoding of the OSCORE Option Value defined in Section 6.1 of <a href="#rfc8613" class="xref">[rfc8613]</a> is repeated in <a href="#Fig-OSCORE-Option" class="xref">Figure 6</a>.</p>
 <p id="rfc.section.6.4.p.3">The first byte specifies the content of the OSCORE options using flags. The three most significant bits of this byte are reserved and always set to 0. Bit h, when set, indicates the presence of the kid context field in the option. Bit k, when set, indicates the presence of a kid field. The three least significant bits n indicate the length of the piv (Partial Initialization Vector) field in bytes. When n = 0, no piv is present.</p>
 <p id="rfc.section.6.4.p.4">The flag byte is followed by the piv field, kid context field, and kid field in this order, and if present, the length of the kid context field is encoded in the first byte denoting by s the length of the kid context in bytes.</p>
 <p id="rfc.section.6.4.p.5">This specification recommends identifying the OSCORE Option and the fields it contains Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. The SCHC Rule splits into four field descriptions the OSCORE option to compress them:</p>
@@ -671,15 +719,15 @@ address {
 <li>CoAP OSCORE_kidctxt,</li>
 <li>CoAP OSCORE_kid.</li>
 </ul>
-<p id="rfc.section.6.4.p.7">The OSCORE Option shows superimposed these four fields using the format <a href="#Fig-OSCORE-Option" class="xref">Figure 4</a>, the CoAP OSCORE_kidctxt field includes the size bits s.</p>
+<p id="rfc.section.6.4.p.7">The OSCORE Option shows superimposed these four fields using the format <a href="#Fig-OSCORE-Option" class="xref">Figure 6</a>, the CoAP OSCORE_kidctxt field includes the size bits s.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#examples-of-coap-header-compression" id="examples-of-coap-header-compression">Examples of CoAP header compression</a>
 </h1>
 <h1 id="rfc.section.7.1">
 <a href="#rfc.section.7.1">7.1.</a> <a href="#mandatory-header-with-con-message" id="mandatory-header-with-con-message">Mandatory header with CON message</a>
 </h1>
-<p id="rfc.section.7.1.p.1">In this first scenario, the LPWAN Compressor at the Network Gateway side receives from an Internet client a POST message, which is immediately acknowledged by the Device. For this simple scenario, the Rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 5</a>.</p>
-<div id="rfc.figure.5"></div>
+<p id="rfc.section.7.1.p.1">In this first scenario, the LPWAN Compressor at the Network Gateway side receives from an Internet client a POST message, which is immediately acknowledged by the Device. For this simple scenario, the Rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 7</a>.</p>
+<div id="rfc.figure.7"></div>
 <div id="Fig-CoAP-header-1"></div>
 <pre>
  RuleID 1
@@ -700,7 +748,7 @@ address {
 +-------------+--+--+--+------+---------+-------------++------------+
 
 </pre>
-<p class="figure">Figure 5: CoAP Context to compress header without token</p>
+<p class="figure">Figure 7: CoAP Context to compress header without token</p>
 <p id="rfc.section.7.1.p.2">The version  and Token Length fields are elided. The 26 method and response codes defined in <a href="#rfc7252" class="xref">[rfc7252]</a> has been shrunk to 5 bits using a matching list.  Uri-Path contains a single element indicated in the matching operator.</p>
 <p id="rfc.section.7.1.p.3">SCHC Compression reduces the header sending only the Type, a mapped code and the least significant bits of Message ID (9 bits in the example above).</p>
 <p id="rfc.section.7.1.p.4">Note that a request sent by a client located in an Application Server to a server located in the device, may not be compressed through this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy, before the core SCHC C/D can rewrite the message ID to a value matched by the Rule.</p>
@@ -708,7 +756,7 @@ address {
 <a href="#rfc.section.7.2">7.2.</a> <a href="#Sec-OSCORE-Examples" id="Sec-OSCORE-Examples">OSCORE Compression</a>
 </h1>
 <p id="rfc.section.7.2.p.1">OSCORE aims to solve the problem of end-to-end encryption for CoAP messages.  The goal, therefore, is to hide as much of the message as possible while still enabling proxy operation.</p>
-<p id="rfc.section.7.2.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 6</a>.</p>
+<p id="rfc.section.7.2.p.2">Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive information which is not necessary for proxy operation. This, in turn, is the part of the message which can be encrypted until it reaches its end destination. The Outer Message acts as a shell matching the format of a regular CoAP message, and includes all Options and information needed for proxy operation and caching. This decomposition is illustrated in <a href="#Fig-inner-outer" class="xref">Figure 8</a>.</p>
 <p id="rfc.section.7.2.p.3">CoAP options are sorted into one of 3 classes, each granted a specific type of protection by the protocol:</p>
 <p></p>
 
@@ -718,7 +766,7 @@ address {
 <li>Class U: Unprotected options left untouched in the Outer Message.</li>
 </ul>
 <p id="rfc.section.7.2.p.5">Additionally, the OSCORE Option is added as an Outer option, signalling that the message is OSCORE protected. This option carries the information necessary to retrieve the Security Context with which the message was encrypted so that it may be correctly decrypted at the other end-point.</p>
-<div id="rfc.figure.6"></div>
+<div id="rfc.figure.8"></div>
 <div id="Fig-inner-outer"></div>
 <pre>
  
@@ -756,13 +804,13 @@ address {
   +------+                                    +-------------------+
 
 </pre>
-<p class="figure">Figure 6: A CoAP message is split into an OSCORE outer and plaintext</p>
-<p><a href="#Fig-inner-outer" class="xref">Figure 6</a> shows the message format for the OSCORE Message and Plaintext.</p>
+<p class="figure">Figure 8: A CoAP message is split into an OSCORE outer and plaintext</p>
+<p><a href="#Fig-inner-outer" class="xref">Figure 8</a> shows the message format for the OSCORE Message and Plaintext.</p>
 <p id="rfc.section.7.2.p.7">In the Outer Header, the original message code is hidden and replaced by a default dummy value. As seen in Sections 4.1.3.5 and 4.2 of the <a href="#rfc8613" class="xref">[rfc8613]</a>, the message code is replaced by POST for requests and Changed for responses when Observe is not used. If Observe is used, the message code is replaced by FETCH for requests and Content for responses.</p>
 <p id="rfc.section.7.2.p.8">The original message code is put into the first byte of the Plaintext. Following the message code, the class E options comes and if present the original message Payload is preceded by its payload marker.</p>
-<p id="rfc.section.7.2.p.9">The Plaintext is now encrypted by an AEAD algorithm which integrity protects Security Context parameters and eventually any class I options from the Outer Header. Currently no CoAP options are marked class I. The resulting Ciphertext becomes the new Payload of the OSCORE message, as illustrated in <a href="#Fig-full-oscore" class="xref">Figure 7</a>.</p>
+<p id="rfc.section.7.2.p.9">The Plaintext is now encrypted by an AEAD algorithm which integrity protects Security Context parameters and eventually any class I options from the Outer Header. Currently no CoAP options are marked class I. The resulting Ciphertext becomes the new Payload of the OSCORE message, as illustrated in <a href="#Fig-full-oscore" class="xref">Figure 9</a>.</p>
 <p id="rfc.section.7.2.p.10">This Ciphertext is, as defined in RFC 5116, the concatenation of the encrypted Plaintext and its authentication tag. Note that Inner Compression only affects the Plaintext before encryption, thus we can only aim to reduce this first, variable length component of the Ciphertext. The authentication tag is fixed in length and considered part of the cost of protection.</p>
-<div id="rfc.figure.7"></div>
+<div id="rfc.figure.9"></div>
 <div id="Fig-full-oscore"></div>
 <pre>
  
@@ -787,11 +835,11 @@ address {
   +----------------------------------+
    
 </pre>
-<p class="figure">Figure 7: OSCORE message</p>
-<p id="rfc.section.7.2.p.11">The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see <a href="#Fig-OSCORE-Compression" class="xref">Figure 8</a>.</p>
+<p class="figure">Figure 9: OSCORE message</p>
+<p id="rfc.section.7.2.p.11">The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see <a href="#Fig-OSCORE-Compression" class="xref">Figure 10</a>.</p>
 <p id="rfc.section.7.2.p.12">This translates into a segmented process where SCHC compression is applied independently in 2 stages, each with its corresponding set of Rules, with the Inner SCHC Rules and the Outer SCHC Rules.  This way compression is applied to all fields of the original CoAP message.</p>
 <p id="rfc.section.7.2.p.13">Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.</p>
-<div id="rfc.figure.8"></div>
+<div id="rfc.figure.10"></div>
 <div id="Fig-OSCORE-Compression"></div>
 <pre>
      Outer Message                             OSCORE Plaintext
@@ -827,13 +875,13 @@ address {
       +-------------------+
       
 </pre>
-<p class="figure">Figure 8: OSCORE Compression Diagram</p>
+<p class="figure">Figure 10: OSCORE Compression Diagram</p>
 <h1 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> <a href="#example-oscore-compression" id="example-oscore-compression">Example OSCORE Compression</a>
 </h1>
 <p id="rfc.section.7.3.p.1">An example is given with a GET Request and its consequent Content Response from a device-based CoAP client to a cloud-based CoAP server.  A possible set of Rules for the Inner and Outer SCHC Compression is shown. A dump of the results and a contrast between SCHC + OSCORE performance with SCHC + COAP performance is also listed. This gives an approximation to the cost of security with SCHC-OSCORE.</p>
-<p id="rfc.section.7.3.p.2">Our first example CoAP message is the GET Request in <a href="#Fig-GET-temp" class="xref">Figure 9</a></p>
-<div id="rfc.figure.9"></div>
+<p id="rfc.section.7.3.p.2">Our first example CoAP message is the GET Request in <a href="#Fig-GET-temp" class="xref">Figure 11</a></p>
+<div id="rfc.figure.11"></div>
 <div id="Fig-GET-temp"></div>
 <pre>
 Original message:
@@ -857,9 +905,9 @@ Value = temperature
 
 Original msg length:   17 bytes.
 </pre>
-<p class="figure">Figure 9: CoAP GET Request</p>
-<p id="rfc.section.7.3.p.3">Its corresponding response is the CONTENT Response in <a href="#Fig-CONTENT-temp" class="xref">Figure 10</a>.</p>
-<div id="rfc.figure.10"></div>
+<p class="figure">Figure 11: CoAP GET Request</p>
+<p id="rfc.section.7.3.p.3">Its corresponding response is the CONTENT Response in <a href="#Fig-CONTENT-temp" class="xref">Figure 12</a>.</p>
+<div id="rfc.figure.12"></div>
 <div id="Fig-CONTENT-temp"></div>
 <pre>
 Original message:
@@ -882,9 +930,9 @@ Payload:
 
 Original msg length:   10
 </pre>
-<p class="figure">Figure 10: CoAP CONTENT Response</p>
-<p id="rfc.section.7.3.p.4">The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message. The methods described in <a href="#CoAPcomp" class="xref">Section 4</a> applies to these fields. As an example, see <a href="#Fig-Inner-Rules" class="xref">Figure 11</a>.</p>
-<div id="rfc.figure.11"></div>
+<p class="figure">Figure 12: CoAP CONTENT Response</p>
+<p id="rfc.section.7.3.p.4">The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message. The methods described in <a href="#CoAPcomp" class="xref">Section 4</a> applies to these fields. As an example, see <a href="#Fig-Inner-Rules" class="xref">Figure 13</a>.</p>
+<div id="rfc.figure.13"></div>
 <div id="Fig-Inner-Rules"></div>
 <pre>
  RuleID 0
@@ -898,10 +946,10 @@ Original msg length:   10
 |COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
 +---------------+--+--+-----------+-----------+-----------++------+
 </pre>
-<p class="figure">Figure 11: Inner SCHC Rules</p>
-<p><a href="#Fig-Inner-Compression-GET" class="xref">Figure 12</a> shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message.</p>
+<p class="figure">Figure 13: Inner SCHC Rules</p>
+<p><a href="#Fig-Inner-Compression-GET" class="xref">Figure 14</a> shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message.</p>
 <p id="rfc.section.7.3.p.6">In this case the original message has no payload and its resulting Plaintext can be compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output, but also yields a fixed-size tag which cannot be compressed and has to be included in the OSCORE message. This translates into an overhead in total message length, which limits the amount of compression that can be achieved and plays into the cost of adding security to the exchange.</p>
-<div id="rfc.figure.12"></div>
+<div id="rfc.figure.14"></div>
 <div id="Fig-Inner-Compression-GET"></div>
 <pre>
    ________________________________________________________
@@ -944,10 +992,10 @@ Original msg length:   10
         |_________________________________________________|
 
 </pre>
-<p class="figure">Figure 12: Plaintext compression and encryption for GET Request</p>
-<p id="rfc.section.7.3.p.7">In <a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 13</a>  the process is repeated for the example CONTENT Response. The residue is 1 bit long. Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed.</p>
+<p class="figure">Figure 14: Plaintext compression and encryption for GET Request</p>
+<p id="rfc.section.7.3.p.7">In <a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 15</a>  the process is repeated for the example CONTENT Response. The residue is 1 bit long. Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed.</p>
 <p id="rfc.section.7.3.p.8">On top of this, the overhead from the tag bytes is incurred as before.</p>
-<div id="rfc.figure.13"></div>
+<div id="rfc.figure.15"></div>
 <div id="Fig-Inner-Compression-CONTENT"></div>
 <pre>
    ________________________________________________________
@@ -994,9 +1042,9 @@ Original msg length:   10
     |_________________________________________________________|
 
 </pre>
-<p class="figure">Figure 13: Plaintext compression and encryption for CONTENT Response</p>
-<p id="rfc.section.7.3.p.9">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 16</a>) must process the OSCORE Options fields. In <a href="#Fig-Protected-Compressed-GET" class="xref">Figure 14</a> and <a href="#Fig-Protected-Compressed-CONTENT" class="xref">Figure 15</a> we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload.  These are the messages that have to be compressed by the Outer SCHC Compression.</p>
-<div id="rfc.figure.14"></div>
+<p class="figure">Figure 15: Plaintext compression and encryption for CONTENT Response</p>
+<p id="rfc.section.7.3.p.9">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 18</a>) must process the OSCORE Options fields. In <a href="#Fig-Protected-Compressed-GET" class="xref">Figure 16</a> and <a href="#Fig-Protected-Compressed-CONTENT" class="xref">Figure 17</a> we show a dump of the OSCORE Messages generated from our example messages once they have been provided with the Inner Compressed Ciphertext in the payload.  These are the messages that have to be compressed by the Outer SCHC Compression.</p>
+<div id="rfc.figure.16"></div>
 <div id="Fig-Protected-Compressed-GET"></div>
 <pre>
 Protected message:
@@ -1028,8 +1076,8 @@ Value = 0x0904636c69656e74
 Payload:
 0xa2c54fe1b434297b62 (9 bytes)
 </pre>
-<p class="figure">Figure 14: Protected and Inner SCHC Compressed GET Request</p>
-<div id="rfc.figure.15"></div>
+<p class="figure">Figure 16: Protected and Inner SCHC Compressed GET Request</p>
+<div id="rfc.figure.17"></div>
 <div id="Fig-Protected-Compressed-CONTENT"></div>
 <pre>
 Protected message:
@@ -1056,13 +1104,13 @@ Value = b''
 Payload:
 0x10c6d7c26cc1e9aef3f2461e0c29 (14 bytes)
 </pre>
-<p class="figure">Figure 15: Protected and Inner SCHC Compressed CONTENT Response</p>
+<p class="figure">Figure 17: Protected and Inner SCHC Compressed CONTENT Response</p>
 <p id="rfc.section.7.3.p.10">For the flag bits, a number of compression methods has been shown to be useful depending on the application.  The simplest alternative is to provide a fixed value for the flags, combining MO equal and CDA not- sent.  This saves most bits but could prevent flexibility.  Otherwise, match-mapping could be used to choose from an interested number of configurations to the exchange.  Otherwise, MSB could be used to mask off the 3 hard-coded most significant bits.</p>
 <p id="rfc.section.7.3.p.11">Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.</p>
 <p id="rfc.section.7.3.p.12">The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the OSCORE keys need to be re-established.</p>
 <p id="rfc.section.7.3.p.13">The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.</p>
-<p><a href="#Fig-Outer-Rules" class="xref">Figure 16</a> shows a possible set of Outer Rules to compress the Outer Header.</p>
-<div id="rfc.figure.16"></div>
+<p><a href="#Fig-Outer-Rules" class="xref">Figure 18</a> shows a possible set of Outer Rules to compress the Outer Header.</p>
+<div id="rfc.figure.18"></div>
 <div id="Fig-Outer-Rules"></div>
 <pre>
 RuleID 0
@@ -1088,9 +1136,9 @@ RuleID 0
 |COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
 +-------------------+--+--+--------------+--------+---------++------+
 </pre>
-<p class="figure">Figure 16: Outer SCHC Rules</p>
-<p id="rfc.section.7.3.p.15">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 17</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 18</a>.</p>
-<div id="rfc.figure.17"></div>
+<p class="figure">Figure 18: Outer SCHC Rules</p>
+<p id="rfc.section.7.3.p.15">These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in <a href="#Fig-Compressed-GET" class="xref">Figure 19</a> and <a href="#Fig-Compressed-CONTENT" class="xref">Figure 20</a>.</p>
+<div id="rfc.figure.19"></div>
 <div id="Fig-Compressed-GET"></div>
 <pre>
 Compressed message:
@@ -1109,8 +1157,8 @@ Payload
 
 Compressed message length: 12 bytes
 </pre>
-<p class="figure">Figure 17: SCHC-OSCORE Compressed GET Request</p>
-<div id="rfc.figure.18"></div>
+<p class="figure">Figure 19: SCHC-OSCORE Compressed GET Request</p>
+<div id="rfc.figure.20"></div>
 <div id="Fig-Compressed-CONTENT"></div>
 <pre>
 Compressed message:
@@ -1128,9 +1176,9 @@ Payload
 
 Compressed msg length: 16 bytes
 </pre>
-<p class="figure">Figure 18: SCHC-OSCORE Compressed CONTENT Response</p>
-<p id="rfc.section.7.3.p.16">For contrast, we compare these results with what would be obtained by SCHC compressing the original CoAP messages without protecting them with OSCORE. To do this, we compress the CoAP messages according to the SCHC Rules in <a href="#Fig-NoOsc-Rules" class="xref">Figure 19</a>.</p>
-<div id="rfc.figure.19"></div>
+<p class="figure">Figure 20: SCHC-OSCORE Compressed CONTENT Response</p>
+<p id="rfc.section.7.3.p.16">For contrast, we compare these results with what would be obtained by SCHC compressing the original CoAP messages without protecting them with OSCORE. To do this, we compress the CoAP messages according to the SCHC Rules in <a href="#Fig-NoOsc-Rules" class="xref">Figure 21</a>.</p>
+<div id="rfc.figure.21"></div>
 <div id="Fig-NoOsc-Rules"></div>
 <pre>
 RuleID 1
@@ -1150,9 +1198,9 @@ RuleID 1
 |COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
 +---------------+--+--+-----------+---------+-----------++--------+
 </pre>
-<p class="figure">Figure 19: SCHC-CoAP Rules (No OSCORE)</p>
-<p id="rfc.section.7.3.p.17">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 20</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 21</a> for the Response.</p>
-<div id="rfc.figure.20"></div>
+<p class="figure">Figure 21: SCHC-CoAP Rules (No OSCORE)</p>
+<p id="rfc.section.7.3.p.17">This yields the results in <a href="#Fig-GET-temp-no-oscore" class="xref">Figure 22</a> for the Request, and <a href="#Fig-CONTENT-temp-no-oscore" class="xref">Figure 23</a> for the Response.</p>
+<div id="rfc.figure.22"></div>
 <div id="Fig-GET-temp-no-oscore"></div>
 <pre>
 Compressed message:
@@ -1166,8 +1214,8 @@ Compression Residue:
 Compressed msg length: 2
 
 </pre>
-<p class="figure">Figure 20: CoAP GET Compressed without OSCORE</p>
-<div id="rfc.figure.21"></div>
+<p class="figure">Figure 22: CoAP GET Compressed without OSCORE</p>
+<div id="rfc.figure.23"></div>
 <div id="Fig-CONTENT-temp-no-oscore"></div>
 <pre>
 
@@ -1186,7 +1234,7 @@ Compressed msg length: 6
 
 
 </pre>
-<p class="figure">Figure 21: CoAP CONTENT Compressed without OSCORE</p>
+<p class="figure">Figure 23: CoAP CONTENT Compressed without OSCORE</p>
 <p id="rfc.section.7.3.p.18">As can be seen, the difference between applying SCHC + OSCORE as compared to regular SCHC + COAP is about 10 bytes of cost.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
@@ -1195,7 +1243,7 @@ Compressed msg length: 6
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#SecConsiderations" id="SecConsiderations">Security considerations</a>
 </h1>
-<p id="rfc.section.9.p.1">When applied to LPWAN, the Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied.</p>
+<p id="rfc.section.9.p.1">When applied to LPWAN, the Security Considerations of SCHC header compression <a href="#rfc8724" class="xref">[rfc8724]</a> are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in <a href="#rfc8613" class="xref">[rfc8613]</a> does not change when SCHC header compression is applied.</p>
 <p id="rfc.section.9.p.2">The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is highly necessary to use a layer two security.</p>
 <p id="rfc.section.9.p.3">DoS attacks are possible if an intruder can introduce a compressed SCHC corrupted packet onto the link and cause a compression efficiency reduction. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.</p>
 <p id="rfc.section.9.p.4">SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.</p>
@@ -1249,13 +1297,6 @@ Compressed msg length: 6
 <a>Minaburo, A.</a>, <a>Toutain, L.</a>, <a>Gomez, C.</a>, <a>Barthel, D.</a> and <a>JC. Z&#250;&#241;iga</a>, "<a href="https://tools.ietf.org/html/rfc8724">SCHC: Generic Framework for Static Context Header Compression and Fragmentation</a>", RFC 8724, DOI 10.17487/RFC8724, April 2020.</td>
 </tr>
 </tbody></table>
-<h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#SCHCParams" id="SCHCParams">Extension to the RFC8724 Annex D.</a>
-</h1>
-<p id="rfc.section.A.p.1">This section extends the RFC8724 Annex D list.</p>
-<p></p>
-
-<ul><li>How to establish the End-to-End context initialization using SCHC for CoAP header only.</li></ul>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
