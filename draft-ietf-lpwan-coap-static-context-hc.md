@@ -1115,7 +1115,7 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-When applied to LPWAN, the Security Considerations of SCHC header compression RFC8724 are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in RFC8613 does not change when SCHC header compression is applied. 
+When applied to LPWAN, the Security Considerations of SCHC header compression {{rfc8724}} are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in {{rfc8613}} does not change when SCHC header compression is applied. 
 
 The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is highly necessary to use a layer two security.
 
