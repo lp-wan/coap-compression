@@ -9,9 +9,8 @@
 <meta content="Laurent Toutain" name="author">
 <meta content="Ricardo Andreasen" name="author">
 <meta content="
-       This document defines how Static Context Header Compression (SCHC) 
-header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header 
-compression mechanism adapted for constrained devices. SCHC uses a static description of 
+       This document defines how Static Context Header Compression (SCHC)can be applied to the Constrained Application Protocol (CoAP). 
+SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in it.
 While 
 The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with multiple options, themselves of 
@@ -363,9 +362,8 @@ address {
 <h1 id="title">LPWAN Static Context Header Compression (SCHC) for CoAP</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines how Static Context Header Compression (SCHC) 
-header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header 
-compression mechanism adapted for constrained devices. SCHC uses a static description of 
+<p id="section-abstract-1">This document defines how Static Context Header Compression (SCHC)can be applied to the Constrained Application Protocol (CoAP). 
+SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in it.
 While 
 The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with multiple options, themselves of 
@@ -422,118 +420,118 @@ for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.<a 
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.1">
+<nav class="toc"><ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.1.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-terminology" class="xref">Terminology</a><a href="#section-toc.1-1.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.2">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-applying-schc-to-coap-heade" class="xref">Applying SCHC to CoAP headers</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.3">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-coap-headers-compressed-wit" class="xref">CoAP Headers compressed with SCHC</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.3.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-differences-between-coap-an" class="xref">Differences between CoAP and UDP/IP Compression</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.4">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-compression-of-coap-header-" class="xref">Compression of CoAP header fields</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.4.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-coap-version-field" class="xref">CoAP version field</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.4.2.2">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-coap-type-field" class="xref">CoAP type field</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.4.2.3">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-coap-code-field" class="xref">CoAP code field</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.4.2.4">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-coap-message-id-field" class="xref">CoAP Message ID field</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.4.2.5">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-coap-token-fields" class="xref">CoAP Token fields</a><a href="#section-toc.1-1.4.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.5">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-coap-options" class="xref">CoAP options</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.5.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-coap-content-and-accept-opt" class="xref">CoAP Content and Accept options.</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.5.2.2">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-coap-option-max-age-uri-hos" class="xref">CoAP option Max-Age, Uri-Host and Uri-Port fields</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.5.2.3">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-coap-option-uri-path-and-ur" class="xref">CoAP option Uri-Path and Uri-Query fields</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.5.2.3.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.5.2.3.2.1">
                     <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="xref">5.3.1</a>.  <a href="#name-variable-length-uri-path-an" class="xref">Variable length Uri-Path and Uri-Query</a><a href="#section-toc.1-1.5.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                  <li class="toc compact ulEmpty" id="section-toc.1-1.5.2.3.2.2">
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.3.2.2">
                     <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="xref">5.3.2</a>.  <a href="#name-variable-number-of-path-or-" class="xref">Variable number of path or query elements</a><a href="#section-toc.1-1.5.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.5.2.4">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.4">
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-coap-option-size1-size2-pro" class="xref">CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.5.2.5">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.5">
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-coap-option-etag-if-match-i" class="xref">CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields</a><a href="#section-toc.1-1.5.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.6">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-schc-compression-of-coap-ex" class="xref">SCHC compression of CoAP extension RFCs</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.6.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-block" class="xref">Block</a><a href="#section-toc.1-1.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.6.2.2">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.6.2.2">
                 <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-observe" class="xref">Observe</a><a href="#section-toc.1-1.6.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.6.2.3">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.6.2.3">
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-no-response" class="xref">No-Response</a><a href="#section-toc.1-1.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.6.2.4">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.6.2.4">
                 <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="xref">6.4</a>.  <a href="#name-oscore" class="xref">OSCORE</a><a href="#section-toc.1-1.6.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.7">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-examples-of-coap-header-com" class="xref">Examples of CoAP header compression</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
-<ul class="toc compact ulEmpty">
-<li class="toc compact ulEmpty" id="section-toc.1-1.7.2.1">
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-mandatory-header-with-con-m" class="xref">Mandatory header with CON message</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.7.2.2">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-oscore-compression" class="xref">OSCORE Compression</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc compact ulEmpty" id="section-toc.1-1.7.2.3">
+              <li class="ulEmpty toc compact" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-example-oscore-compression" class="xref">Example OSCORE Compression</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.8">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.9">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-security-considerations" class="xref">Security considerations</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.10">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.11">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.11">
             <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="toc compact ulEmpty" id="section-toc.1-1.12">
+          <li class="ulEmpty toc compact" id="section-toc.1-1.12">
             <p id="section-toc.1-1.12.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -555,8 +553,11 @@ The way the context is configured, provisioned, or exchanged is out of the scope
 Each context consists of multiple Rules. Each Rule can match header fields and specific values or ranges of values.
 If a Rule matches, the matched header fields are replaced by the RuleID and some residual bits. 
 Thus, different Rules may correspond to divers protocols packets that a device expects to send or receive.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">A Rule describes the complete header of the packet with an ordered list of fields descriptions; see section 7 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>. 
-Thereby each description contains the field ID (FID), its length (FL), and its position (FP), a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV).<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">A Rule describes the packet's complete header with an ordered list of fields descriptions; see section 7 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>. 
+Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
+a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). 
+The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. 
+So a field may be described several times depending on the asymmetry of its possible TVs.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">A Matching Operator (MO) is associated with each header field description.
 The Rule is selected if all the MOs fit the TVs for all fields of the incoming header. 
 In that case, a Compression/Decompression Action (CDA) associated with each field give the method to compress and decompress each field. 

@@ -16,20 +16,20 @@ Expires: 18 April 2021            Institut MINES TELECOM; IMT Atlantique
 
 Abstract
 
-   This document defines how Static Context Header Compression (SCHC)
-   header compression can be applied to the Constrained Application
-   Protocol (CoAP).  SCHC is a header compression mechanism adapted for
-   constrained devices.  SCHC uses a static description of the header to
-   reduce the redundancy and the size of the information in it.  While
-   The CoAP header structure differs from IPv6 and UDP since CoAP uses a
-   flexible header with multiple options, themselves of variable length.
-   The CoAP protocol messages format is asymmetric: the request messages
-   have a header format different from the one in the response messages.
-   This specification gives guidance on applying SCHC to flexible
-   headers and how to leverage the asymmetry for more efficient
-   compression Rules.[rfc8724] describes the SCHC compression and
-   fragmentation framework, and its application for IPv6/UDP headers,
-   this document applies the use of SCHC for CoAP headers.
+   This document defines how Static Context Header Compression (SCHC)can
+   be applied to the Constrained Application Protocol (CoAP).  SCHC is a
+   header compression mechanism adapted for constrained devices.  SCHC
+   uses a static description of the header to reduce the redundancy and
+   the size of the information in it.  While The CoAP header structure
+   differs from IPv6 and UDP since CoAP uses a flexible header with
+   multiple options, themselves of variable length.  The CoAP protocol
+   messages format is asymmetric: the request messages have a header
+   format different from the one in the response messages.  This
+   specification gives guidance on applying SCHC to flexible headers and
+   how to leverage the asymmetry for more efficient compression
+   Rules.[rfc8724] describes the SCHC compression and fragmentation
+   framework, and its application for IPv6/UDP headers, this document
+   applies the use of SCHC for CoAP headers.
 
 Status of This Memo
 
@@ -141,11 +141,15 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    and some residual bits.  Thus, different Rules may correspond to
    divers protocols packets that a device expects to send or receive.
 
-   A Rule describes the complete header of the packet with an ordered
-   list of fields descriptions; see section 7 of [rfc8724].  Thereby
+   A Rule describes the packet's complete header with an ordered list of
+   fields descriptions; see section 7 of [rfc8724].  Thereby
    each description contains the field ID (FID), its length (FL), and
    its position (FP), a direction indicator (DI) (upstream, downstream,
-   and bidirectional), and some associated Target Values (TV).
+   and bidirectional), and some associated Target Values (TV).  The
+   direction indicator is used for compression to give the best TV to
+   the FID when these values differ in the transmission direction.  So a
+   field may be described several times depending on the asymmetry of
+   its possible TVs. 
 
    A Matching Operator (MO) is associated with each header field
    description.  The Rule is selected if all the MOs fit the TVs for all
@@ -158,10 +162,6 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
    *  send nothing,
 
-   *  send some least significant bits of the field or
-
-   *  send an index.
-
 
 
 
@@ -169,6 +169,10 @@ Minaburo, et al.          Expires 18 April 2021                 [Page 3]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
+
+   *  send some least significant bits of the field or
+
+   *  send an index.
 
    After applying the compression, there may be some bits to be sent.
    These values are called Compression Residues.
@@ -214,10 +218,6 @@ Internet-Draft           LPWAN CoAP compression             October 2020
       +--------+     +--------+-------+                    +--------+
           ((((((()))))))           -----  ------  ------  -----
 
-          Figure 1: Compression/decompression at the LPWAN bondary
-
-
-
 
 
 
@@ -225,6 +225,8 @@ Minaburo, et al.          Expires 18 April 2021                 [Page 4]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
+
+          Figure 1: Compression/decompression at the LPWAN bondary
 
    Figure 2 shows the second use case, where the first instance of SCHC
    compresses the CoAP header at the application layer independently of
@@ -266,8 +268,6 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    And the second instance for the outer part of the CoAP header
    together with the lower layers' headers.  The second instance is
    carried out between the Device and the Network Gateway.
-
-
 
 
 
