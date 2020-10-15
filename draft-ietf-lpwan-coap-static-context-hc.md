@@ -50,6 +50,7 @@ normative:
 
 
 --- abstract
+
 This document defines how Static Context Header Compression (SCHC) 
 header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header 
 compression mechanism adapted for constrained devices. SCHC uses a static description of 
