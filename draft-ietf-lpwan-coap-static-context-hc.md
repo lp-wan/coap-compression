@@ -51,9 +51,8 @@ normative:
 
 --- abstract
 
-This document defines how Static Context Header Compression (SCHC) 
-header compression can be applied to the Constrained Application Protocol (CoAP). SCHC is a header 
-compression mechanism adapted for constrained devices. SCHC uses a static description of 
+This document defines how Static Context Header Compression (SCHC)can be applied to the Constrained Application Protocol (CoAP). 
+SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of 
 the header to reduce the redundancy and the size of the information in it.
 While [rfc8724] describes the SCHC compression and fragmentation framework, and its application 
 for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.  
@@ -81,8 +80,11 @@ Each context consists of multiple Rules. Each Rule can match header fields and s
 If a Rule matches, the matched header fields are replaced by the RuleID and some residual bits. 
 Thus, different Rules may correspond to divers protocols packets that a device expects to send or receive.
 
-A Rule describes the complete header of the packet with an ordered list of fields descriptions; see section 7 of [rfc8724]. 
-Thereby each description contains the field ID (FID), its length (FL), and its position (FP), a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV).
+A Rule describes the packet's complete header with an ordered list of fields descriptions; see section 7 of [rfc8724]. 
+Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
+a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). 
+The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. 
+So a field may be described several times depending on the asymmetry of its possible TVs. 
 
 A Matching Operator (MO) is associated with each header field description.  
 The Rule is selected if all the MOs fit the TVs for all fields of the incoming header. 
