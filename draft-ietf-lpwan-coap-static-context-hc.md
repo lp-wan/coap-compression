@@ -39,6 +39,7 @@ author:
   email: randreasen@fi.uba.ar
 normative:  
   RFC2119:
+  rfc5116
   rfc7252:
   rfc7967:
   rfc7641:
