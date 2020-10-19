@@ -9,21 +9,26 @@
 <meta content="Laurent Toutain" name="author">
 <meta content="Ricardo Andreasen" name="author">
 <meta content="
-       This document defines how Static Context Header Compression (SCHC)can be applied to the Constrained Application Protocol (CoAP). 
-SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of 
-the header to reduce the redundancy and the size of the information in it.
-While 
-The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with multiple options, themselves of 
-variable length.  The CoAP protocol messages format is asymmetric: the request messages 
-have a header format different from the one in the response messages.
-This specification gives guidance on applying SCHC to flexible headers and 
-how to leverage the asymmetry for more efficient compression Rules.  describes the SCHC compression and fragmentation framework, and its application 
-for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers. 
+       This draft defines the way Static Context Header Compression (SCHC)
+   can be applied to the Constrained Application
+   Protocol (CoAP).  SCHC is a header compression mechanism adapted for
+   constrained devices.  SCHC uses a static description of the header to
+   reduce the redundancy and the size of the information in the header.
+   While RFC 8724 describes the SCHC compression and fragmentation
+   framework, and its application for IPv6/UDP headers, this document
+   applies the use of SCHC for CoAP headers. The CoAP header structure
+   differs from IPv6 and UDP since CoAP uses a flexible header with a
+   variable number of options, themselves of variable length.  The CoAP
+   protocol messages format is asymmetric: the request messages have a
+   header format different from the one in the response messages.  This
+   specification gives guidance on applying SCHC to flexible headers
+   and how to leverage the asymmetry for more efficient compression
+   Rules. 
     " name="description">
-<meta content="xml2rfc 3.2.1" name="generator">
+<meta content="xml2rfc 3.3.0" name="generator">
 <meta content="draft-ietf-lpwan-coap-static-context-hc-15" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.2.1
+  xml2rfc 3.3.0
     Python 3.6.3
     appdirs 1.4.4
     ConfigArgParse 1.2.3
@@ -32,7 +37,7 @@ for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.
     intervaltree 3.1.0
     Jinja2 2.11.2
     kitchen 1.2.6
-    lxml 4.5.2
+    lxml 4.6.1
     pycountry 20.7.3
     pyflakes 2.2.0
     PyYAML 5.3.1
@@ -323,7 +328,7 @@ address {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Minaburo, et al.</td>
-<td class="center">Expires 18 April 2021</td>
+<td class="center">Expires 22 April 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -336,12 +341,12 @@ address {
 <dd class="internet-draft">draft-ietf-lpwan-coap-static-context-hc-15</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-10-15" class="published">15 October 2020</time>
+<time datetime="2020-10-19" class="published">19 October 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-04-18">18 April 2021</time></dd>
+<dd class="expires"><time datetime="2021-04-22">22 April 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -362,16 +367,21 @@ address {
 <h1 id="title">LPWAN Static Context Header Compression (SCHC) for CoAP</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines how Static Context Header Compression (SCHC)can be applied to the Constrained Application Protocol (CoAP). 
-SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of 
-the header to reduce the redundancy and the size of the information in it.
-While 
-The CoAP header structure differs from IPv6 and UDP since CoAP uses a flexible header with multiple options, themselves of 
-variable length.  The CoAP protocol messages format is asymmetric: the request messages 
-have a header format different from the one in the response messages.
-This specification gives guidance on applying SCHC to flexible headers and 
-how to leverage the asymmetry for more efficient compression Rules.<span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> describes the SCHC compression and fragmentation framework, and its application 
-for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This draft defines the way Static Context Header Compression (SCHC)
+   can be applied to the Constrained Application
+   Protocol (CoAP).  SCHC is a header compression mechanism adapted for
+   constrained devices.  SCHC uses a static description of the header to
+   reduce the redundancy and the size of the information in the header.
+   While RFC 8724 describes the SCHC compression and fragmentation
+   framework, and its application for IPv6/UDP headers, this document
+   applies the use of SCHC for CoAP headers. The CoAP header structure
+   differs from IPv6 and UDP since CoAP uses a flexible header with a
+   variable number of options, themselves of variable length.  The CoAP
+   protocol messages format is asymmetric: the request messages have a
+   header format different from the one in the response messages.  This
+   specification gives guidance on applying SCHC to flexible headers
+   and how to leverage the asymmetry for more efficient compression
+   Rules.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -392,7 +402,7 @@ for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.<a 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 April 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 April 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -430,7 +440,7 @@ for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.<a 
             </ul>
 </li>
           <li class="ulEmpty toc compact" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-applying-schc-to-coap-heade" class="xref">Applying SCHC to CoAP headers</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-schc-applicability-to-coap" class="xref">SCHC Applicability to CoAP</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="ulEmpty toc compact" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-coap-headers-compressed-wit" class="xref">CoAP Headers compressed with SCHC</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
@@ -543,39 +553,43 @@ for IPv6/UDP headers, this document applies the use of SCHC for CoAP headers.<a 
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">CoAP 
-Although constrained devices use CoAP, the size of a CoAP header is still too large for the constraints of LPWAN (Low Power Wide Area Networks), 
-and some compression is needed to reduce the header size.<span>[<a href="#rfc7252" class="xref">rfc7252</a>]</span> is a web transfer protocol based on REST (Representational state transfer) services for constrained nodes and networks.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> defines SCHC, a header compression mechanism for the LPWAN networks based on a static context. 
-Section 5 of the <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> explains the process of compression and decompression, where both ends known the context before transmission. 
-The way the context is configured, provisioned, or exchanged is out of the scope of this document.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">SCHC compresses and decompresses headers based on shared contexts between devices.
+<p id="section-1-1">CoAP <span>[<a href="#rfc7252" class="xref">rfc7252</a>]</span> is a command/response protocol, designed for micro-controllers with small amount of RAM and ROM, and is optimized for REST-based (Representational
+state transfer) services.  Although CoAP was designed for Low-Power Wireless Personal Area Networks (6LoWPAN), the size of a CoAP header is still too large for LPWAN (Low Power Wide Area Networks) and some compression of the CoAP header is required either to increase performances or allow CoAP other some LPWAN technologies.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> defines SCHC, a header compression mechanism for the LPWAN
+network based on a static context.  Section 5 of the <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>
+explains the architecture where compression and decompression are
+done.  The SCHC compression scheme assumes as a prerequisite that the static context is known to both endpoints before transmission. The way the context is configured, provisioned or exchanged is out of the scope of this document.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">CoAP is an application protocol, so CoAP compression requires to installation of common rules between the two SCHC instances. 
+SCHC compression may apply at two different levels: one to compress
+IP and UDP in the LPWAN network and another at the application level for CoAP.  These two compressions may be independent. Both follow the same principle described in RFC8724. SCHC rules driving the compression/decompression are different and may be managed by different entities. The <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> describes how the IP and UDP headers may be compressed. This document specifies how the SCHC compression rules can be applied to CoAP traffic.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">SCHC compresses and decompresses headers based on shared contexts between devices.
 Each context consists of multiple Rules. Each Rule can match header fields and specific values or ranges of values.
 If a Rule matches, the matched header fields are replaced by the RuleID and some residual bits. 
-Thus, different Rules may correspond to divers protocols packets that a device expects to send or receive.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">A Rule describes the packet's complete header with an ordered list of fields descriptions; see section 7 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>. 
+Thus, different Rules may correspond to divers protocols packets that a device expects to send or receive.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">A Rule describes the entire header of the packet with an ordered list of fields descriptions; see section 7 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>. 
 Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
 a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). 
 The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. 
-So a field may be described several times depending on the asymmetry of its possible TVs.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">A Matching Operator (MO) is associated with each header field description.
-The Rule is selected if all the MOs fit the TVs for all fields of the incoming header. 
-In that case, a Compression/Decompression Action (CDA) associated with each field give the method to compress and decompress each field. 
-Compression mainly results in one of 4 actions:<a href="#section-1-5" class="pilcrow">¶</a></p>
+So a field may be described several times depending on the asymmetry of its possible TVs.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">A Matching Operator (MO) is associated with each header field description.
+The Rule is selected if all the MOs fit the TVs for all fields of the incoming header. A rule cannot be selected if the message contains a field unknown to the SCHC compressor.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">In that case, a Compression/Decompression Action (CDA) associated with each field give the method to compress and decompress each field. 
+Compression mainly results in one of 4 actions:<a href="#section-1-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-6.1">send the field value,<a href="#section-1-6.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-8.1">send the field value,<a href="#section-1-8.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-6.2">send nothing,<a href="#section-1-6.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-8.2">send nothing,<a href="#section-1-8.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-6.3">send some least significant bits of the field or<a href="#section-1-6.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-8.3">send some least significant bits of the field or<a href="#section-1-8.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-6.4">send an index.<a href="#section-1-6.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-8.4">send an index.<a href="#section-1-8.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-1-7">After applying the compression, there may be some bits to be sent. These values are called Compression Residues.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<p id="section-1-8">SCHC is a general mechanism applied to different protocols, the exact Rules to be used depending on the protocol and the application.
+<p id="section-1-9">After applying the compression, there may be some bits to be sent.
+These values are called Compression Residues.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-10">SCHC is a general mechanism applied to different protocols, the exact Rules to be used depending on the protocol and the application.
 Section 10 of the 
-This document targets the CoAP header compression using SCHC.<span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> describes the compression scheme for IPv6 and UDP headers.<a href="#section-1-8" class="pilcrow">¶</a></p>
+This document targets the CoAP header compression using SCHC.<span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> describes the compression scheme for IPv6 and UDP headers.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <div id="terminology">
 <section id="section-1.1">
         <h3 id="name-terminology">
@@ -590,108 +604,124 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </div>
 </section>
 </div>
-<div id="applying-schc-to-coap-headers">
+<div id="schc-applicability-to-coap">
 <section id="section-2">
-      <h2 id="name-applying-schc-to-coap-heade">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-applying-schc-to-coap-heade" class="section-name selfRef">Applying SCHC to CoAP headers</a>
+      <h2 id="name-schc-applicability-to-coap">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-schc-applicability-to-coap" class="section-name selfRef">SCHC Applicability to CoAP</a>
       </h2>
-<p id="section-2-1">SCHC Compression of the CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently.
-This section shows three uses cases of the use of SCHC adaptation layer as described in Section 5 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>,<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">Figure 1 shows a first use case where the Rule compresses the complete header stack from IPv6 to CoAP protocols.
-In this case, the Device and the Network Gateway perform SCHC at the radio link. 
-The host communicating with the Device does not implement SCHC.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-1">The SCHC Compression Rules can be applied to CoAP headers.  SCHC
+Compression of the CoAP header MAY be done in conjunction with the
+lower layers (IPv6/UDP) or independently.  The SCHC adaptation layers,
+described in Section 5 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>, may be used, as shown in <a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a>,<a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a> and <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a><a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">In the first example, <a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a>, a Rule compresses the complete header
+stack from IPv6 to CoAP.  In this case, SCHC C/D (Static Context
+Header Compression Compressor/Decompressor) is performed at the
+device and the application.  The host communicating with the device
+does not implement SCHC C/D.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <span id="name-compression-decompression-a"></span><div id="Fig-SCHCCOAP1">
 <figure id="figure-1">
         <div class="artwork art-text alignLeft" id="section-2-3.1">
 <pre>
-   (device)            (NGW)        (internet)           (App)
+      (device)            (NGW)                              (App)
 
-   +--------+                                           +--------+
-   |  CoAP  |                                           |  CoAP  |
-   +--------+                                           +--------+
-   |  UDP   |                                           |  UDP   |
-   +--------+     +----------------+                    +--------+
-   |  IPv6  |     |      IPv6      |                    |  IPv6  |
-   +--------+     +--------+-------+                    +--------+
-   |  SCHC  |     |  SCHC  |       |                    |        |
-   +--------+     +--------+       +                    +        +
-   |  LPWAN |     | LPWAN  |       |                    |        |
-   +--------+     +--------+-------+                    +--------+
-       ((((((()))))))           -----  ------  ------  -----
+      +--------+                                           +--------+
+      |  CoAP  |                                           |  CoAP  |
+      +--------+                                           +--------+
+      |  UDP   |                                           |  UDP   |
+      +--------+     +----------------+                    +--------+
+      |  IPv6  |     |      IPv6      |                    |  IPv6  |
+      +--------+     +--------+-------+                    +--------+
+      |  SCHC  |     |  SCHC  |       |                    |        |
+      +--------+     +--------+       +                    +        +
+      |  LPWAN |     | LPWAN  |       |                    |        |
+      +--------+     +--------+-------+                    +--------+
+          ((((LPWAN))))             ------   Internet  ------
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-compression-decompression-a" class="selfRef">Compression/decompression at the LPWAN bondary</a>
+<a href="#name-compression-decompression-a" class="selfRef">Compression/decompression at the LPWAN boundary</a>
         </figcaption></figure>
 </div>
-<p id="section-2-4">Figure 2 shows the second use case, where the first instance of SCHC compresses the CoAP header at the application layer independently of the other layers. 
-The RuleID and the Compression Residue are encrypted using a mechanism such as DTLS. 
-Only the other end can decipher the information.  If needed, the layers below use a second instance of SCHC.<a href="#section-2-4" class="pilcrow">¶</a></p>
-<p id="section-2-5">This use case realizes an End-to-End context initialization between the Sender and the Receiver. 
-This initialization is out-of-scope of this document.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-4">The SCHC can be viewed as a layer above layer 2. This layer received non encrypted packets and can apply compression rule to all the headers. On the other end, the NGW receives the SCHC packet and reconstructs the headers from the rule, identified by its ID, and the header residues. The result is a regular IPv6 packet that can be forwarded toward destination. The same process applies in the other direction. A not encrypted packet arrived at the NGW, thanks to IP forwarding based on the IPv6 prefix. The NGW identifies the device and compresses headers using the device's rules.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">In the second example, <a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a>, the SCHC compression is applied in
+the CoAP layer, compressing the CoAP header independently of the
+other layers. The RuleID, the Compression Residue and CoAP payload are encrypted
+using a mechanism such as DTLS.  Only the other end (App) can decipher the
+information.  If needed, layers below use SCHC to compress the header
+as defined in <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> document (represented in dotted lines).<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">This use case needs an end-to-end context initialization between the device and the application and is out-of-scope of this document.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">This use case needs an end-to-end context initialization between the device and the application and is out-of-scope of this document.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <span id="name-standalone-coap-ene-to-end-"></span><div id="Fig-SCHCCOAP2">
 <figure id="figure-2">
-        <div class="artwork art-text alignLeft" id="section-2-6.1">
+        <div class="artwork art-text alignLeft" id="section-2-8.1">
 <pre>
-   (device)            (NGW)        (internet)           (App)
+      (device)            (NGW)                               (App)
 
-   +--------+                                           +--------+
-   |  CoAP  |                                           |  CoAP  |
-   +--------+                                           +--------+
-   |  SCHC  |                                           |  SCHC  |
-   +--------+                                           +--------+
-   |  DTLS  |                                           |  DTLS  |
-   +--------+                                           +--------+
-   .  udp   .                                           .  udp   .
-   ..........     ..................                    ..........
-   .  ipv6  .     .      ipv6      .                    .  ipv6  .
-   ..........     ..................                    ..........
-   .  schc  .     .  schc  .       .                    .        .
-   ..........     ..........       .                    .        .
-   .  lpwan .     . lpwan  .       .                    .        .
-   ..........     ..................                    ..........
-       ((((((()))))))           -----  ------  ------  -----
+      +--------+                                           +--------+
+      |  CoAP  |                                           |  CoAP  |
+      +--------+                                           +--------+
+      |  SCHC  |                                           |  SCHC  |
+      +--------+                                           +--------+
+      |  DTLS  |                                           |  DTLS  |
+      +--------+                                           +--------+
+      .  udp   .                                           .  udp   .
+      ..........     ..................                    ..........
+      .  ipv6  .     .      ipv6      .                    .  ipv6  .
+      ..........     ..................                    ..........
+      .  schc  .     .  schc  .       .                    .        .
+      ..........     ..........       .                    .        .
+      .  lpwan .     . lpwan  .       .                    .        .
+      ..........     ..................                    ..........
+          ((((LPWAN))))             ------   Internet  ------
+
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-standalone-coap-ene-to-end-" class="selfRef">Standalone CoAP ene-to-end compression/decompression</a>
         </figcaption></figure>
 </div>
-<p id="section-2-7">Figure 3 shows the third use case where SCHC compresses Object Security for Constrained RESTful Environments (OSCORE) <span>[<a href="#rfc8613" class="xref">rfc8613</a>]</span>.  In this case, two instances of SCHC using different rulesets are necessary to compress the CoAP header. One for the inner CoAP part performed End-to-End between the Device and the Application Server. And the second instance for the outer part of the CoAP header together with the lower layers' headers. The second instance is carried out between the Device and the Network Gateway.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-9">In the third example, <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a>, the Object Security for Constrained
+RESTful Environments (OSCORE) <span>[<a href="#rfc8613" class="xref">rfc8613</a>]</span> is used.  In this case, two
+rulesets are used to compress the CoAP message.  A first ruleset
+focused on the inner header, compresses it. The result is encrypted using OSCORE mechanism. A second ruleset compresses the outer header, including the OSCORE Options.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <span id="name-oscore-compression-decompre"></span><div id="Fig-SCHCCOAP3">
 <figure id="figure-3">
-        <div class="artwork art-text alignLeft" id="section-2-8.1">
+        <div class="artwork art-text alignLeft" id="section-2-10.1">
 <pre>
-   (device)            (NGW)        (internet)           (App)
+      (device)            (NGW)                              (App)
 
-   +--------+                                           +--------+
-   |  CoAP  |                                           |  CoAP  |
-   |  inner |                                           |  inner |
-   +--------+                                           +--------+
-   |  SCHC  |                                           |  SCHC  |
-   +--------+                                           +--------+
-   |  CoAP  |                                           |  CoAP  |
-   |  outer |                                           |  outer |
-   +--------+                                           +--------+
-   .  udp   .                                           .  udp   .
-   ..........     ..................                    ..........
-   .  ipv6  .     .      ipv6      .                    .  ipv6  .
-   ..........     ..................                    ..........
-   .  schc  .     .  schc  .       .                    .        .
-   ..........     ..........       .                    .        .
-   .  lpwan .     . lpwan  .       .                    .        .
-   ..........     ..................                    ..........
-       ((((((()))))))           -----  ------  ------  -----
+      +--------+                                           +--------+
+      |  CoAP  |                                           |  CoAP  |
+      |  inner |                                           |  inner |
+      +--------+                                           +--------+
+      |  SCHC  |                                           |  SCHC  |
+      |  inner |                                           |  inner |
+      +--------+                                           +--------+
+      |  CoAP  |                                           |  CoAP  |
+      |  outer |                                           |  outer |
+      +--------+                                           +--------+
+      |  SCHC  |                                           |  SCHC  |
+      |  outer |                                           |  outer |
+      +--------+                                           +--------+
+      .  udp   .                                           .  udp   .
+      ..........     ..................                    ..........
+      .  ipv6  .     .      ipv6      .                    .  ipv6  .
+      ..........     ..................                    ..........
+      .  schc  .     .  schc  .       .                    .        .
+      ..........     ..........       .                    .        .
+      .  lpwan .     . lpwan  .       .                    .        .
+      ..........     ..................                    ..........
+          ((((LPWAN))))             ------   Internet  ------
+
+
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-oscore-compression-decompre" class="selfRef">OSCORE compression/decompression.</a>
         </figcaption></figure>
 </div>
-<p id="section-2-9">When using two instances of SCHC as Figure 2 and Figure 3 uses cases, the rulesets may come from different provisioning domains. 
-The rulesets do not include the cryptography part because the two instances of SCHC are independently one of the other. 
-So the cryptography should perform between the two SCHC occurrences. 
-This document focuses on CoAP compression represented in the dashed boxes of the previous figures.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-11">In case of several SCHC instances, as shown in <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a> and <a href="#Fig-SCHCCOAP3" class="xref">Figure 3</a>, the rulesets may come from different provisioning domains.<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">This document focuses on CoAP compression represented in the dashed boxes in the previous figures.<a href="#section-2-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coap-headers-compressed-with-schc">
@@ -704,11 +734,10 @@ IP and UDP explained in the <span>[<a href="#rfc8724" class="xref">rfc8724</a>]<
 For CoAP, SCHC Rules description uses the direction information to optimize the compression
 by reducing the number of Rules needed to compress headers.  The field description MAY define
 both request/response headers and target values in the same Rule, using the DI (direction
-indicator) to make the difference.
-As for other protocols, when the compressor does not find a correct Rule to compress the
-header, the packet MUST be sent uncompressed using the RuleID dedicated to this purpose, and
-the Compression Residue is the complete header of the packet.  See section 6 
-of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+indicator) to make the difference.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">As for other header compression protocols, when the compressor does not find a correct
+Rule to compress the header, the packet MUST be sent uncompressed
+using the RuleID dedicated to this purpose. Where the Compression Residue is the complete header of the packet.  See section 6 of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <div id="differences-between-coap-and-udpip-compression">
 <section id="section-3.1">
         <h3 id="name-differences-between-coap-an">
@@ -717,16 +746,18 @@ of <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>.<a href="#section-
 <p id="section-3.1-1">CoAP compression differs from IPv6 and UDP compression on the following aspects:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-2.1">
-            <p id="section-3.1-2.1.1">The CoAP protocol is asymmetric, the headers are different for a request or a response. 
-For example, the URI-path option is mandatory in the request, and it is not present in the response, 
-a request may contain an Accept option, and the response may include a Content option. 
-In comparison, IPv6 and UDP returning path swap the value of some fields in the header.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-2.1.1">The CoAP protocol is asymmetric; the headers are different for a
+request or a response. For example, the URI-Path option is
+mandatory in the request, and it may not be present in the response.  A
+request may contain an Accept option, and the response may include
+a Content-Format option.  In comparison, IPv6 and UDP returning path swap
+the value of some fields in the header.
+But all the directions have the same fields (e.g., source and
+destination addresses fields).<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2.1.2">
-But all the directions have the same fields  (e.g., source and destination addresses fields).<a href="#section-3.1-2.1.2" class="pilcrow">¶</a></p>
-<p id="section-3.1-2.1.3">
-The <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> defines the use of a Direction Indicator (DI) 
-in the Field Description, which allows a single Rule to process message headers differently 
-depending on the direction.<a href="#section-3.1-2.1.3" class="pilcrow">¶</a></p>
+The <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span> defines the use of a Direction Indicator (DI) in the
+Field Descriptor, which allows a single Rule to process message
+headers differently depending on the direction.<a href="#section-3.1-2.1.2" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.2">
             <p id="section-3.1-2.2.1">Even when a field is "symmetric" (i.e., found in both directions), 
@@ -844,11 +875,23 @@ A specific function designated as "TKL" MUST be used in the Rule. During the dec
       <h2 id="name-coap-options">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-coap-options" class="section-name selfRef">CoAP options</a>
       </h2>
-<p id="section-5-1">CoAP defines options that are placed after the based header in Option Numbers order, see <span>[<a href="#rfc7252" class="xref">rfc7252</a>]</span>. Each Option instance in a message uses the format Delta-Type (D-T), Length (L), Value (V). When applying SCHC compression to the Option, the D-T, L, and V format serves to make the Rule description of the Option. 
-The SCHC compression builds the description of the Option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of RFC8724. When the Option Length has a wellknown size it can be stored in the Rule. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue in addition to the Compression Residue value.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">CoAP request and response do not include the same options. So Compression Rules may reflect these assymetry by tagging the direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-1">CoAP defines options that are placed after the based header in Option
+Numbers order, see <span>[<a href="#rfc7252" class="xref">rfc7252</a>]</span>.  Each Option instance in a message uses
+the format Delta-Type (D-T), Length (L), Value (V).  When applying
+SCHC compression to the Option, the D-T, L, and V format serves to
+make the Rule description of the Option.  The SCHC compression builds
+the description of the Option by using in the Field ID the Option
+Number built from D-T; in TV, the Option Value; and the Option Length
+uses section 7.4 of  <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span>.  When the Option Length has a wellknown
+size it can be stored in the Rule.  Therefore, SCHC compression does
+not send it.  Otherwise, SCHC Compression carries the length of the
+Compression Residue in addition to the Compression Residue value.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">CoAP request and response do not include the same options.  So
+Compression Rules may reflect these asymmetry by tagging the
+direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Note that length coding differs between CoAP options and SCHC variable size Compression Residue.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">The following sections present how SCHC compresses some specific CoAP Options.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-4">The following sections present how SCHC compresses some specific CoAP options.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">If a new option is introduced in CoAP, a new Field ID has to be assigned in the Rules to allow its compression. Otherwise, if no Rule describes this Option the SCHC compression is not possible and the CoAP header is sent without compression.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <div id="coap-content-and-accept-options">
 <section id="section-5.1">
         <h3 id="name-coap-content-and-accept-opt">
@@ -862,9 +905,9 @@ The SCHC compression builds the description of the Option by using in the Field 
         <h3 id="name-coap-option-max-age-uri-hos">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-coap-option-max-age-uri-hos" class="section-name selfRef">CoAP option Max-Age, Uri-Host and Uri-Port fields</a>
         </h3>
-<p id="section-5.2-1">If the duration is known by both ends, the value can be elided.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">If the value is known by both ends, the value can be elided.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">A matching list can be used if some well-known values are defined.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Otherwise these options can be sent as a Compression Residue (fixed or variable length).<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Otherwise these options can be sent as a Compression Residue.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coap-option-uri-path-and-uri-query-fields">
@@ -872,7 +915,7 @@ The SCHC compression builds the description of the Option by using in the Field 
         <h3 id="name-coap-option-uri-path-and-ur">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-coap-option-uri-path-and-ur" class="section-name selfRef">CoAP option Uri-Path and Uri-Query fields</a>
         </h3>
-<p id="section-5.3-1">Uri-Path and Uri-Query elements are a repeatable options, the Field Position (FP) gives the 
+<p id="section-5.3-1">Uri-Path and Uri-Query elements are repeatable options, the Field Position (FP) gives the 
 position in the path.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.3-2">A Mapping list can be used to reduce the size of variable Paths or Queries. In that case, to
 optimize the compression, several elements can be regrouped into a single entry. 
@@ -886,9 +929,9 @@ of the matching.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
    | Field       |FL |FP|DI| Target | Match   |     CDA     |
    |             |   |  |  | Value  | Opera.  |             |
    +-------------+---+--+--+--------+---------+-------------+
-   |URI-Path     |   | 1|up|["/a/b",|equal    |not-sent     |
+   |Uri-Path     |   | 1|up|["/a/b",|equal    |not-sent     |
    |             |   |  |  |"/c/d"] |         |             |
-   |URI-Path     |var| 3|up|        |ignore   |value-sent   |
+   |Uri-Path     |var| 3|up|        |ignore   |value-sent   |
    +-------------+---+--+--+--------+---------+-------------+
 
 
@@ -918,9 +961,9 @@ the size MUST always be a multiple of 8 bits.<a href="#section-5.3.1-2" class="p
    | Field       |FL |FP|DI| Target | Match   |     CDA     |
    |             |   |  |  | Value  | Opera.  |             |
    +-------------+---+--+--+--------+---------+-------------+
-   |URI-Path     |  8| 1|up|"c"     |equal    |not-sent     |
-   |URI-Path     |var| 2|up|        |ignore   |value-sent   |
-   |URI-Query    |var| 1|up|"k="    |MSB(16)  |LSB          |
+   |Uri-Path     |  8| 1|up|"c"     |equal    |not-sent     |
+   |Uri-Path     |var| 2|up|        |ignore   |value-sent   |
+   |Uri-Query    |var| 1|up|"k="    |MSB(16)  |LSB          |
    +-------------+---+--+--+--------+---------+-------------+
 </pre>
 </div>
@@ -938,7 +981,7 @@ The second element is sent with the length (i.e. 0x2 X 6) followed by the query 
           <h4 id="name-variable-number-of-path-or-">
 <a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-variable-number-of-path-or-" class="section-name selfRef">Variable number of path or query elements</a>
           </h4>
-<p id="section-5.3.2-1">The number of Uri-path or Uri-Query elements in a Rule is fixed at the Rule creation time. If the number
+<p id="section-5.3.2-1">The number of Uri-Path or Uri-Query elements in a Rule is fixed at the Rule creation time. If the number
 varies, several Rules SHOULD be created to cover all the possibilities. Another possibility is
 to define the length of Uri-Path to variable and send a Compression Residue with a length of 0 to 
 indicate that this Uri-Path is empty. This adds 4 bits to the variable Residue size. See section 7.5.2 <span>[<a href="#rfc8724" class="xref">rfc8724</a>]</span><a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
@@ -990,8 +1033,9 @@ They can be both used. If a block option is used, its content MUST be sent as a 
 CDA is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
 To reduce the transmission size, either the device implementation MAY limit the delta between two consecutive values,
 or a proxy can modify the increment.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">Since an RST message may be sent to inform a server that the client does not require Observe
-response, a Rule MUST allow the transmission of this message.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">Since an RST message may be sent to inform a server that the client
+does not require Observe response; a Rule SHOULD exist to allow the compression
+of the message with the RST type.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="no-response">
@@ -1030,7 +1074,7 @@ This section describes how SCHC Rules can be applied to compress OSCORE-protecte
      | s (if any) | kid context (if any) | kid (if any)      ... |
      +------------+----------------------+-----------------------+
      |                                   |                       |
-     | &lt;------ CoAP OSCORE_kidctxt -----&gt;|&lt;-- CoAP OSCORE_kid --&gt;|
+     | &lt;------ CoAP OSCORE_kidctx ------&gt;|&lt;-- CoAP OSCORE_kid --&gt;|
 
 </pre>
 </div>
@@ -1041,19 +1085,23 @@ This section describes how SCHC Rules can be applied to compress OSCORE-protecte
 <p id="section-6.4-3">The encoding of the OSCORE Option Value defined in Section 6.1 of <span>[<a href="#rfc8613" class="xref">rfc8613</a>]</span> is repeated in <a href="#Fig-OSCORE-Option" class="xref">Figure 6</a>.<a href="#section-6.4-3" class="pilcrow">¶</a></p>
 <p id="section-6.4-4">The first byte specifies the content of the OSCORE options using flags. The three most significant bits of this byte are reserved and always set to 0. Bit h, when set, indicates the presence of the kid context field in the option. Bit k, when set, indicates the presence of a kid field. The three least significant bits n indicate the length of the piv (Partial Initialization Vector) field in bytes. When n = 0, no piv is present.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
 <p id="section-6.4-5">The flag byte is followed by the piv field, kid context field, and kid field in this order, and if present, the length of the kid context field is encoded in the first byte denoting by s the length of the kid context in bytes.<a href="#section-6.4-5" class="pilcrow">¶</a></p>
-<p id="section-6.4-6">This specification recommends identifying the OSCORE Option and the fields it contains
-Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid. The SCHC Rule splits into four field descriptions the OSCORE option to compress them:<a href="#section-6.4-6" class="pilcrow">¶</a></p>
+<p id="section-6.4-6">This specification recommends identifying the OSCORE Option and the
+fields it contains. Conceptually, it discerns up to 4 distinct pieces
+of information within the OSCORE option: the flag bits, the piv, the
+kid context, and the kid.  The SCHC Rule splits into four field
+descriptions the OSCORE option to compress them:<a href="#section-6.4-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6.4-7.1">CoAP OSCORE_flags,<a href="#section-6.4-7.1" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-6.4-7.2">CoAP OSCORE_piv,<a href="#section-6.4-7.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-6.4-7.3">CoAP OSCORE_kidctxt,<a href="#section-6.4-7.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-6.4-7.3">CoAP OSCORE_kidctx,<a href="#section-6.4-7.3" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-6.4-7.4">CoAP OSCORE_kid.<a href="#section-6.4-7.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-6.4-8">The OSCORE Option shows superimposed these four fields using the format <a href="#Fig-OSCORE-Option" class="xref">Figure 6</a>, the CoAP OSCORE_kidctxt field includes the size bits s.<a href="#section-6.4-8" class="pilcrow">¶</a></p>
+<p id="section-6.4-8"><a href="#Fig-OSCORE-Option" class="xref">Figure 6</a> shows the OSCORE Option format with those four fields
+superimposed on it.  Note that the CoAP OSCORE_kidctx field includes directly the size octet s.<a href="#section-6.4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1070,27 +1118,29 @@ Conceptually, it discerns up to 4 distinct pieces of information within the OSCO
         </h3>
 <p id="section-7.1-1">In this first scenario, the LPWAN Compressor at the Network Gateway side receives from an Internet client 
 a POST message, which is immediately acknowledged by the Device. For this simple
-scenario, the Rules are described <a href="#Fig-CoAP-header-1" class="xref">Figure 7</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+scenario, the Rules are described in <a href="#Fig-CoAP-header-1" class="xref">Figure 7</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <span id="name-coap-context-to-compress-he"></span><div id="Fig-CoAP-header-1">
 <figure id="figure-7">
           <div class="artwork art-text alignLeft" id="section-7.1-2.1">
 <pre>
- RuleID 1
+RuleID 1
 +-------------+--+--+--+------+---------+-------------++------------+
 | Field       |FL|FP|DI|Target| Match   |     CDA     ||    Sent    |
 |             |  |  |  |Value | Opera.  |             ||   [bits]   |
 +-------------+--+--+--+------+---------+-------------++------------+
-|CoAP version |  |  |bi|  01  |equal    |not-sent     ||            |
-|CoAP Type    |  |  |dw| CON  |equal    |not-sent     ||            |
-|CoAP Type    |  |  |up|[ACK, |         |             ||            |
+|CoAP version | 2| 1|bi|  01  |equal    |not-sent     ||            |
+|CoAP Type    | 2| 1|dw| CON  |equal    |not-sent     ||            |
+|CoAP Type    | 4| 1|up|[ACK, |         |             ||            |
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
-|CoAP TKL     |  |  |bi| 0    |equal    |not-sent     ||            |
-|CoAP Code    |  |  |bi|[0.00,|         |             ||            |
+|CoAP TKL     | 4| 1|bi| 0    |equal    |not-sent     ||            |
+|CoAP Code    | 8| 1|bi|[0.00,|         |             ||            |
 |             |  |  |  | ...  |         |             ||            |
 |             |  |  |  | 5.05]|match-map|matching-sent||  CC CCC    |
-|CoAP MID     |  |  |bi| 0000 |MSB(7 )  |LSB          ||        M-ID|
-|CoAP Uri-Path|  |  |dw| path |equal 1  |not-sent     ||            |
+|CoAP MID     |16| 1|bi| 0000 |MSB(7 )  |LSB          ||        M-ID|
+|CoAP Uri-Path|var 1|dw| path |equal 1  |not-sent     ||            |
 +-------------+--+--+--+------+---------+-------------++------------+
+
+
 
 </pre>
 </div>
@@ -1200,7 +1250,7 @@ Security Context parameters and eventually any class I options from the
 Outer Header. Currently no CoAP options are marked class I. The resulting
 Ciphertext becomes the new Payload of the OSCORE message, as illustrated in
 <a href="#Fig-full-oscore" class="xref">Figure 9</a>.<a href="#section-7.2-10" class="pilcrow">¶</a></p>
-<p id="section-7.2-11">This Ciphertext is, as defined in RFC 5116, the concatenation of the
+<p id="section-7.2-11">This Ciphertext is, as defined in <span>[<a href="#rfc5116" class="xref">rfc5116</a>]</span>, the concatenation of the
 encrypted Plaintext and its authentication tag. Note that Inner Compression only 
 affects the Plaintext before encryption, thus we can only aim to reduce this first,
 variable length component of the Ciphertext. The authentication tag is fixed in 
@@ -1364,15 +1414,14 @@ Original msg length:   10
           <div class="artwork art-text alignLeft" id="section-7.3-7.1">
 <pre>
  RuleID 0
-+---------------+--+--+-----------+-----------+-----------++------+
-| Field         |FP|DI|  Target   |    MO     |     CDA   || Sent |
-|               |  |  |  Value    |           |           ||[bits]|
-+---------------+--+--+-----------+-----------+-----------++------+
-|CoAP Code      |  |up|   1       |  equal    |not-sent   ||      |
-|CoAP Code      |  |dw|[69,132]   | match-map |match-sent || c    |
-|CoAP Uri-Path  |  |up|temperature|  equal    |not-sent   ||      |
-|COAP Option-End|  |dw| 0xFF      |  equal    |not-sent   ||      |
-+---------------+--+--+-----------+-----------+-----------++------+
++---------------+--+--+--+-----------+-----------+-----------++------+
+| Field         |FL|FP|DI|  Target   |    MO     |     CDA   || Sent |
+|               |  |  |  |  Value    |           |           ||[bits]|
++---------------+--+--+--+-----------+-----------+-----------++------+
+|CoAP Code      | 4| 1|up|   1       |  equal    |not-sent   ||      |
+|CoAP Code      | 4| 1|dw|[69,132]   | match-map |match-sent || c    |
+|CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
++---------------+--+--+--+-----------+-----------+-----------++------+
 </pre>
 </div>
 <figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
@@ -1408,7 +1457,7 @@ Original msg length:   10
                |                                 |
                | 0x00                            |
                |                                 |
-               | RuleID = 0x00 (1 byte)         |
+               | RuleID = 0x00 (1 byte)          |
                | (No residue)                    |
                |_________________________________|
 
@@ -1577,27 +1626,26 @@ significant bits.<a href="#section-7.3-17" class="pilcrow">¶</a></p>
           <div class="artwork art-text alignLeft" id="section-7.3-22.1">
 <pre>
 RuleID 0
-+-------------------+--+--+--------------+--------+---------++------+
-| Field             |FP|DI|    Target    |   MO   |   CDA   || Sent |
-|                   |  |  |    Value     |        |         ||[bits]|
-+-------------------+--+--+--------------+--------+---------++------+
-|CoAP version       |  |bi|      01      |equal   |not-sent ||      |
-|CoAP Type          |  |up|      0       |equal   |not-sent ||      |
-|CoAP Type          |  |dw|      2       |equal   |not-sent ||      |
-|CoAP TKL           |  |bi|      1       |equal   |not-sent ||      |
-|CoAP Code          |  |up|      2       |equal   |not-sent ||      |
-|CoAP Code          |  |dw|      68      |equal   |not-sent ||      |
-|CoAP MID           |  |bi|     0000     |MSB(12) |LSB      ||MMMM  |
-|CoAP Token         |  |bi|     0x80     |MSB(5)  |LSB      ||TTT   |
-|CoAP OSCORE_flags  |  |up|     0x09     |equal   |not-sent ||      |
-|CoAP OSCORE_piv    |  |up|     0x00     |MSB(4)  |LSB      ||PPPP  |
-|COAP OSCORE_kid    |  |up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
-|COAP OSCORE_kidctxt|  |bi|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_flags  |  |dw|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_piv    |  |dw|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_kid    |  |dw|     b''      |equal   |not-sent ||      |
-|COAP Option-End    |  |dw|     0xFF     |equal   |not-sent ||      |
-+-------------------+--+--+--------------+--------+---------++------+
++------------------+--+--+--+--------------+--------+---------++------+
+| Field            |FL|FP|DI|    Target    |   MO   |   CDA   || Sent |
+|                  |  |  |  |    Value     |        |         ||[bits]|
++------------------+--+--+--+--------------+--------+---------++------+
+|CoAP version      | 2| 1|bi|      01      |equal   |not-sent ||      |
+|CoAP Type         | 2| 1|up|      0       |equal   |not-sent ||      |
+|CoAP Type         | 2| 1|dw|      2       |equal   |not-sent ||      |
+|CoAP TKL          | 4| 1|bi|      1       |equal   |not-sent ||      |
+|CoAP Code         | 8| 1|up|      2       |equal   |not-sent ||      |
+|CoAP Code         | 8| 1|dw|      68      |equal   |not-sent ||      |
+|CoAP MID          |16| 1|bi|     0000     |MSB(12) |LSB      ||MMMM  |
+|CoAP Token        |tlk 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
+|CoAP OSCORE_flags | 8| 1|up|     0x09     |equal   |not-sent ||      |
+|CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4)  |LSB      ||PPPP  |
+|COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
+|COAP OSCORE_kidctx|var 1|bi|     b''      |equal   |not-sent ||      |
+|CoAP OSCORE_flags | 8| 1|dw|     b''      |equal   |not-sent ||      |
+|CoAP OSCORE_piv   |var 1|dw|     b''      |equal   |not-sent ||      |
+|CoAP OSCORE_kid   |var 1|dw|     b''      |equal   |not-sent ||      |
++------------------+--+--+--+--------------+--------+---------++------+
 </pre>
 </div>
 <figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
@@ -1662,21 +1710,20 @@ do this, we compress the CoAP messages according to the SCHC Rules in <a href="#
           <div class="artwork art-text alignLeft" id="section-7.3-27.1">
 <pre>
 RuleID 1
-+---------------+--+--+-----------+---------+-----------++--------+
-| Field         |FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
-|               |  |  |  Value    |         |           || [bits] |
-+---------------+--+--+-----------+---------+-----------++--------+
-|CoAP version   |  |bi|    01     |equal    |not-sent   ||        |
-|CoAP Type      |  |up|    0      |equal    |not-sent   ||        |
-|CoAP Type      |  |dw|    2      |equal    |not-sent   ||        |
-|CoAP TKL       |  |bi|    1      |equal    |not-sent   ||        |
-|CoAP Code      |  |up|    2      |equal    |not-sent   ||        |
-|CoAP Code      |  |dw| [69,132]  |match-map|map-sent   ||C       |
-|CoAP MID       |  |bi|   0000    |MSB(12)  |LSB        ||MMMM    |
-|CoAP Token     |  |bi|    0x80   |MSB(5)   |LSB        ||TTT     |
-|CoAP Uri-Path  |  |up|temperature|equal    |not-sent   ||        |
-|COAP Option-End|  |dw|   0xFF    |equal    |not-sent   ||        |
-+---------------+--+--+-----------+---------+-----------++--------+
++---------------+--+--+--+-----------+---------+-----------++-------+
+| Field         |FL|FP|DI|  Target   |   MO    |     CDA   ||  Sent |
+|               |  |  |  |  Value    |         |           || [bits]|
++---------------+--+--+--+-----------+---------+-----------++-------+
+|CoAP version   | 2| 1|bi|    01     |equal    |not-sent   ||       |
+|CoAP Type      | 2| 1|up|    0      |equal    |not-sent   ||       |
+|CoAP Type      | 2| 1|dw|    2      |equal    |not-sent   ||       |
+|CoAP TKL       | 4| 1|bi|    1      |equal    |not-sent   ||       |
+|CoAP Code      | 8| 1|up|    2      |equal    |not-sent   ||       |
+|CoAP Code      | 8| 1|dw| [69,132]  |match-map|map-sent   ||C      |
+|CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM   |
+|CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT    |
+|CoAP Uri-Path  |88| 1|up|temperature|equal    |not-sent   ||       |
++---------------+--+--+--+-----------+---------+-----------++-------+
 </pre>
 </div>
 <figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
@@ -1773,6 +1820,10 @@ regular SCHC + COAP is about 10 bytes of cost.<a href="#section-7.3-31" class="p
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="rfc5116">[rfc5116]</dt>
+      <dd>
+<span class="refAuthor">McGrew, D.</span>, <span class="refTitle">"An Interface and Algorithms for Authenticated Encryption"</span>, <span class="seriesInfo">RFC 5116</span>, <span class="seriesInfo">DOI 10.17487/RFC5116</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5116">https://www.rfc-editor.org/info/rfc5116</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="rfc7252">[rfc7252]</dt>
       <dd>
