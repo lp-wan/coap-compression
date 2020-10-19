@@ -856,7 +856,7 @@ In this case the original message has no payload and its resulting Plaintext can
                |                                 |
                | 0x00                            |
                |                                 |
-               | RuleID = 0x00 (1 byte)         |
+               | RuleID = 0x00 (1 byte)          |
                | (No residue)                    |
                |_________________________________|
 
