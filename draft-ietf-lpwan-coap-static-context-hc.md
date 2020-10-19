@@ -823,8 +823,8 @@ The SCHC Rules for the Inner Compression include all fields that are already pre
 +---------------+--+--+--+-----------+-----------+-----------++------+
 |CoAP Code      | 4| 1|up|   1       |  equal    |not-sent   ||      |
 |CoAP Code      | 4| 1|dw|[69,132]   | match-map |match-sent || c    |
-|CoAP Uri-Path  |var 1|up|temperature|  equal    |not-sent   ||      |
-+---------------+--+--+-----------+-----------+-----------++------+
+|CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
++---------------+--+--+--+-----------+-----------+-----------++------+
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
@@ -1084,20 +1084,20 @@ do this, we compress the CoAP messages according to the SCHC Rules in {{Fig-NoOs
 
 ~~~~
 RuleID 1
-+---------------+--+--+--+-----------+---------+-----------++--------+
-| Field         |FL|FP|DI|  Target   |   MO    |     CDA   ||  Sent  |
-|               |  |  |  |  Value    |         |           || [bits] |
-+---------------+--+--+--+-----------+---------+-----------++--------+ 
-|CoAP version   | 2| 1|bi|    01     |equal    |not-sent   ||        |
-|CoAP Type      | 2| 1|up|    0      |equal    |not-sent   ||        |
-|CoAP Type      | 2| 1|dw|    2      |equal    |not-sent   ||        |
-|CoAP TKL       | 4| 1|bi|    1      |equal    |not-sent   ||        |
-|CoAP Code      | 8| 1|up|    2      |equal    |not-sent   ||        |
-|CoAP Code      | 8| 1|dw| [69,132]  |match-map|map-sent   ||C       |
-|CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM    |
-|CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT     |
-|CoAP Uri-Path  |var 1|up|temperature|equal    |not-sent   ||        |
-+---------------+--+--+--+-----------+---------+-----------++--------+
++---------------+--+--+--+-----------+---------+-----------++-------+
+| Field         |FL|FP|DI|  Target   |   MO    |     CDA   ||  Sent |
+|               |  |  |  |  Value    |         |           || [bits]|
++---------------+--+--+--+-----------+---------+-----------++-------+ 
+|CoAP version   | 2| 1|bi|    01     |equal    |not-sent   ||       |
+|CoAP Type      | 2| 1|up|    0      |equal    |not-sent   ||       |
+|CoAP Type      | 2| 1|dw|    2      |equal    |not-sent   ||       |
+|CoAP TKL       | 4| 1|bi|    1      |equal    |not-sent   ||       |
+|CoAP Code      | 8| 1|up|    2      |equal    |not-sent   ||       |
+|CoAP Code      | 8| 1|dw| [69,132]  |match-map|map-sent   ||C      |
+|CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM   |
+|CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT    |
+|CoAP Uri-Path  |88| 1|up|temperature|equal    |not-sent   ||       |
++---------------+--+--+--+-----------+---------+-----------++-------+
 ~~~~
 {: #Fig-NoOsc-Rules title='SCHC-CoAP Rules (No OSCORE)'}
 
