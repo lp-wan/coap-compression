@@ -52,21 +52,13 @@ normative:
 
 --- abstract
 
-   This draft defines the way Static Context Header Compression (SCHC)
-   can be applied to the Constrained Application
-   Protocol (CoAP).  SCHC is a header compression mechanism adapted for
-   constrained devices.  SCHC uses a static description of the header to
-   reduce the redundancy and the size of the information in the header.
-   While RFC 8724 describes the SCHC compression and fragmentation
-   framework, and its application for IPv6/UDP headers, this document
-   applies the use of SCHC for CoAP headers. The CoAP header structure
-   differs from IPv6 and UDP since CoAP uses a flexible header with a
-   variable number of options, themselves of variable length.  The CoAP
-   protocol messages format is asymmetric: the request messages have a
-   header format different from the one in the response messages.  This
-   specification gives guidance on applying SCHC to flexible headers
-   and how to leverage the asymmetry for more efficient compression
-   Rules.
+   This draft defines how Static Context Header Compression (SCHC) can be applied to the Constrained Application Protocol (CoAP). 
+   SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce 
+   the redundancy and size of the header's information. While RFC 8724 describes the SCHC compression and fragmentation framework, 
+   and its application for IPv6/UDP headers, this document applies SCHC for CoAP headers. The CoAP header structure differs from 
+   IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol 
+   messages format is asymmetric: the request messages have a header format different from the one in the response messages. This 
+   specification gives guidance on applying SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules.
 
 
 
@@ -74,16 +66,18 @@ normative:
 
 # Introduction {#Introduction}
 
-CoAP {{rfc7252}} is a command/response protocol, designed for micro-controllers with small amount of RAM and ROM, and is optimized for REST-based (Representational
-state transfer) services.  Although CoAP was designed for Low-Power Wireless Personal Area Networks (6LoWPAN), the size of a CoAP header is still too large for LPWAN (Low Power Wide Area Networks) and some compression of the CoAP header is required either to increase performances or allow CoAP other some LPWAN technologies.
+CoAP {{rfc7252}} is a command/response protocol designed for micro-controllers with a small amount of RAM and ROM and is optimized 
+for REST-based (Representational state transfer) services.  Although CoAP was designed for Low-Power Wireless Personal Area Networks 
+(6LoWPAN), a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks) and some compression of the CoAP header 
+is required either to increase performances or allow CoAP other some LPWAN technologies.
 
 
 The {{rfc8724}} defines SCHC, a header compression mechanism for the LPWAN
 network based on a static context.  Section 5 of the {{rfc8724}}
 explains the architecture where compression and decompression are
-done.  The SCHC compression scheme assumes as a prerequisite that the static context is known to both endpoints before transmission. The way the context is configured, provisioned or exchanged is out of the scope of this document.
+done.  The SCHC compression scheme assumes as a prerequisite that the static context is known to both endpoints before transmission. The way the context is configured, provisioned or exchanged is out of this document's scope.
 
-CoAP is an application protocol, so CoAP compression requires to installation of common rules between the two SCHC instances. 
+CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances. 
 SCHC compression may apply at two different levels: one to compress
 IP and UDP in the LPWAN network and another at the application level for CoAP.  These two compressions may be independent. Both follow the same principle described in RFC8724. SCHC rules driving the compression/decompression are different and may be managed by different entities. The {{rfc8724}} describes how the IP and UDP headers may be compressed. This document specifies how the SCHC compression rules can be applied to CoAP traffic.
 
@@ -93,7 +87,7 @@ Each context consists of multiple Rules. Each Rule can match header fields and s
 If a Rule matches, the matched header fields are replaced by the RuleID and some residual bits. 
 Thus, different Rules may correspond to divers protocols packets that a device expects to send or receive.
 
-A Rule describes the entire header of the packet with an ordered list of fields descriptions; see section 7 of {{rfc8724}}. 
+A Rule describes the packets's entire header with an ordered list of fields descriptions; see section 7 of {{rfc8724}}. 
 Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
 a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). 
 The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. 
@@ -160,19 +154,22 @@ does not implement SCHC C/D.
 ~~~~
 {: #Fig-SCHCCOAP1 title='Compression/decompression at the LPWAN boundary'}  
 
-The SCHC can be viewed as a layer above layer 2. This layer received non encrypted packets and can apply compression rule to all the headers. On the other end, the NGW receives the SCHC packet and reconstructs the headers from the rule, identified by its ID, and the header residues. The result is a regular IPv6 packet that can be forwarded toward destination. The same process applies in the other direction. A not encrypted packet arrived at the NGW, thanks to IP forwarding based on the IPv6 prefix. The NGW identifies the device and compresses headers using the device’s rules. 
+The SCHC can be viewed as a layer above layer 2. This layer received non-encrypted packets and can apply compression rule to all the headers. 
+On the other end, the NGW receives the SCHC packet and reconstructs the headers from the rule, identified by its ID and the header residues. 
+The result is a regular IPv6 packet that can be forwarded toward the destination. The same process applies in the other direction. 
+A not encrypted packet arrived at the NGW, thanks to IP forwarding based on the IPv6 prefix. 
+The NGW identifies the device and compresses headers using the device’s rules. 
 
 
 In the second example, {{Fig-SCHCCOAP2}}, the SCHC compression is applied in
 the CoAP layer, compressing the CoAP header independently of the
-other layers. The RuleID, the Compression Residue and CoAP payload are encrypted
+other layers. The RuleID, the Compression Residue, and CoAP payload are encrypted
 using a mechanism such as DTLS.  Only the other end (App) can decipher the
 information.  If needed, layers below use SCHC to compress the header
 as defined in {{rfc8724}} document (represented in dotted lines). 
 
 This use case needs an end-to-end context initialization between the device and the application and is out-of-scope of this document.
 
-This use case needs an end-to-end context initialization between the device and the application and is out-of-scope of this document.
 
 ~~~~
       (device)            (NGW)                               (App)
@@ -200,7 +197,8 @@ This use case needs an end-to-end context initialization between the device and 
 In the third example, {{Fig-SCHCCOAP3}}, the Object Security for Constrained
 RESTful Environments (OSCORE) {{rfc8613}} is used.  In this case, two
 rulesets are used to compress the CoAP message.  A first ruleset
-focused on the inner header, compresses it. The result is encrypted using OSCORE mechanism. A second ruleset compresses the outer header, including the OSCORE Options.
+focused on the inner header compresses it. The result is encrypted using the OSCORE mechanism. 
+A second ruleset compresses the outer header, including the OSCORE Options.
 
 
 ~~~~
@@ -234,7 +232,7 @@ focused on the inner header, compresses it. The result is encrypted using OSCORE
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'} 
 
-In case of several SCHC instances, as shown in {{Fig-SCHCCOAP3}} and {{Fig-SCHCCOAP3}}, the rulesets may come from different provisioning domains.
+In the case of several SCHC instances, as shown in {{Fig-SCHCCOAP3}} and {{Fig-SCHCCOAP3}}, the rulesets may come from different provisioning domains.
 
 This document focuses on CoAP compression represented in the dashed boxes in the previous figures.
 
@@ -242,7 +240,7 @@ This document focuses on CoAP compression represented in the dashed boxes in the
 
 #  CoAP Headers compressed with SCHC
 
-The use of SCHC over the CoAP header uses the same description and compression/decompression techniques as the one for
+The use of SCHC over the CoAP header uses the same description and compression/decompression techniques like the one for
 IP and UDP explained in the {{rfc8724}}. 
 For CoAP, SCHC Rules description uses the direction information to optimize the compression
 by reducing the number of Rules needed to compress headers.  The field description MAY define
@@ -264,26 +262,24 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
   a Content-Format option.  In comparison, IPv6 and UDP returning path swap
   the value of some fields in the header.
   But all the directions have the same fields (e.g., source and
-  destination addresses fields).
+  destination address fields).
 
   The {{rfc8724}} defines the use of a Direction Indicator (DI) in the
-  Field Descriptor, which allows a single Rule to process message
+  Field Descriptor, which allows a single Rule to process a message
   headers differently depending on the direction.
 
   
 * Even when a field is "symmetric" (i.e., found in both directions), 
   the values carried in each direction are different.   
   The compression may use a matching list in the TV to limit the range of expected values 
-  in a particular direction and therefore reduces the size of the Compression Residue. 
+  in a particular direction and therefore reduce the Compression Residue's size. 
   Through the Direction Indicator (DI), a field description in the Rules splits the possible field value into two parts,
   one for each direction.
-  For instance, 
-  if a client sends only CON requests, the type can be elided by compression, and the answer may use 
+  For instance, if a client sends only CON requests, the type can be elided by compression, and the answer may use 
   one single bit to carry either the ACK or RST type.
-  The field Code have as well the same behavior, the 0.0X code format value 
-  in the request and Y.ZZ code format in the response. 
+  The field Code has the same behavior, the 0.0X code format value in the request, and Y.ZZ code format in the response. 
 
-* Headers in IPv6 and UDP have a fixed size. The size is not sent as part of the Compression Residue, 
+* Headers in IPv6 and UDP have a fixed size. The size is not sent as part of the Compression Residue 
   but is defined in the Rule. 
   Some CoAP header fields have variable lengths, so the length is also specified in the Field Description. 
   For example, the Token size may vary from 0 to 8 bytes.
@@ -291,23 +287,20 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
   encoding format, as URI-path or URI-query.
 
   Section 7.5.2 from {{rfc8724}} offers the possibility to define a function 
-  for the Field length in the Field Description to have knowledge of the length before compression. 
+  for the Field length in the Field Description to know the length before compression. 
   When doing SCHC compression of a variable-length field,  
-  if the field size is not known, the Field Length in the Rule is set as variable and the size is sent with the
+  if the field size is unknown, the Field Length in the Rule is set as variable, and the size is sent with the
   Compression Residue. 
 
-* A field can appear several time in the CoAP headers.  This is
-  typical for elements of a URI (path or queries).
-  The SCHC specification {{rfc8724}} allows a Field ID to
-  appear several times in the Rule, and uses the Field Position (FP)
-  to identify the correct instance, and thereby removing the ambiguity of
-  the matching operation.
+* A field can appear several times in the CoAP headers.  This is typical for elements of a URI (path or queries). 
+  The SCHC specification {{rfc8724}} allows a Field ID to appear several times in the Rule and uses the Field Position
+  (FP) to identify the correct instance, and thereby removing the ambiguity of the matching operation.
 
-* Field sizes defined in the CoAP protocol can be too large
-  regarding LPWAN traffic constraints.  This is particularly true
-  for the Message ID field and the Token field. SCHC uses different
-  Matching operators (MO) to perform the compression, see section 7.4 of {{rfc8724}}.
-  In this case the Most Significant Bits (MSB) MO can be applied to reduce the information carried on LPWANs.
+
+* Field sizes defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.
+  This is particularly true for the Message-ID field and the Token field. SCHC uses different Matching operators (MO)
+  to perform the compression. See section 7.4 of {{rfc8724}}. In this case, the Most Significant Bits (MSB) MO can be applied 
+  to reduce the information carried on LPWANs.
 
 # Compression of CoAP header fields
 {: #CoAPcomp}
@@ -317,58 +310,58 @@ SCHC follows the Section 7.1 of {{rfc8724}}.
 
 ## CoAP version field
 
-CoAP version is bidirectional and MUST be elided during the SCHC compression, since it always
+CoAP version is bidirectional and MUST be elided during the SCHC compression since it always
 contains the same value. In the future, if new versions of CoAP are defined, new Rules will
 be needed to avoid ambiguities between versions.
 
 ## CoAP type field
 
-The CoAP Protocol {{rfc7252}} has four type of messages: two request (CON, NON);
-one response (ACK) and one empty message (RST). 
+The CoAP Protocol {{rfc7252}} has four types of messages: two requests (CON, NON),
+one response (ACK), and one empty message (RST). 
 
-The field SHOULD be elided if for instance a client is sending only NON or only CON messages. For the
-RST message a dedicated Rule may be needed. For other usages a mapping list can be used.
+The field SHOULD be elided if, for instance, a client is sending only NON or only CON messages. For the
+RST message, a dedicated Rule may be needed. For other usages, a mapping list can be used.
   
 ## CoAP code field
 
-The code field indicates the Request Method used in CoAP, a IANA registry {{rfc7252}}.
-The compression of the CoAP code field follows the same principle as that of the CoAP type field. If the device plays a specific role, the set of code values can be split in two parts, the request codes with the 0 class and the response values.
+The code field indicates the Request Method used in CoAP, an IANA registry {{rfc7252}}.
+The compression of the CoAP code field follows the same principle as that of the CoAP type field. If the device plays a specific role, the set of code values can be split into two parts, the request codes with the 0 class and the response values.
 
-If the device only implements a CoAP client, the request code can be reduced to the set of requests the client is able to process.
+If the device only implements a CoAP client, the request code can be reduced to the set of requests the client can to process.
 
-A mapping list can be used for known values. For other values the field cannot be compressed an the value needs to be sent in the Compression Residue.
+A mapping list can be used for known values. The field cannot be compressed for other values, and the value needs to be sent in the Compression Residue.
  
 ## CoAP Message ID field
 
-The Message ID field can be compressed with the MSB(x) MO and the Least Significant Bits (LSB) CDA, see section 7.4 of {{rfc8724}}. 
+The Message ID field can be compressed with the MSB(x) MO and the Least Significant Bits (LSB) CDA. See section 7.4 of {{rfc8724}}. 
 
 ## CoAP Token fields
-Token is defined through two CoAP fields, Token Length in the mandatory header and 
+A Token is defined through two CoAP fields, Token Length in the mandatory header and 
 Token Value directly following the mandatory CoAP header.
 
 Token Length is processed as any protocol field. If the value does not change, the size 
 can be stored in the TV and elided during the transmission. Otherwise, it will 
 have to be sent in the Compression Residue.
 
-Token Value MUST NOT be sent as a variable length residue to avoid ambiguity with Token 
-Length. Therefore, Token Length value MUST be used to define the size of the Compression Residue. 
+Token Value MUST NOT be sent as a variable-length residue to avoid ambiguity with Token 
+Length. Therefore, the Token Length value MUST be used to define the size of the Compression Residue. 
 A specific function designated as "TKL" MUST be used in the Rule. During the decompression, this function returns the value contained in the Token Length field.
 
 # CoAP options
 CoAP defines options that are placed after the based header in Option
 Numbers order, see {{rfc7252}}.  Each Option instance in a message uses
 the format Delta-Type (D-T), Length (L), Value (V).  When applying
-SCHC compression to the Option, the D-T, L, and V format serves to
+SCHC compression to the Option, the D-T, L, and V format serve to
 make the Rule description of the Option.  The SCHC compression builds
 the description of the Option by using in the Field ID the Option
 Number built from D-T; in TV, the Option Value; and the Option Length
 uses section 7.4 of  {{rfc8724}}.  When the Option Length has a wellknown
-size it can be stored in the Rule.  Therefore, SCHC compression does
+size, it can be stored in the Rule.  Therefore, SCHC compression does
 not send it.  Otherwise, SCHC Compression carries the length of the
-Compression Residue in addition to the Compression Residue value.
+Compression Residue, in addition to the Compression Residue value.
 
-CoAP request and response do not include the same options.  So
-Compression Rules may reflect these asymmetry by tagging the
+CoAP requests and responses do not include the same options.  So
+Compression Rules may reflect this asymmetry by tagging the
 direction indicator.
 
 
@@ -376,29 +369,30 @@ Note that length coding differs between CoAP options and SCHC variable size Comp
 
 The following sections present how SCHC compresses some specific CoAP options.
 
-If a new option is introduced in CoAP, a new Field ID has to be assigned in the Rules to allow its compression. Otherwise, if no Rule describes this Option the SCHC compression is not possible and the CoAP header is sent without compression. 
+If a new option is introduced in CoAP, a new Field ID has to be assigned in the Rules to allow its compression. Otherwise, if no Rule describes this Option, the SCHC compression is not possible, and the CoAP header is sent without compression. 
 
 ## CoAP Content and Accept options.
 
-If a single value is expected by the client, it can be stored in the TV and elided during the transmission. Otherwise, if several possible values are expected by the client, a matching-list SHOULD be used to limit the size of the Compression Residue. Otherwise, the value has to be sent as a Compression Residue (fixed or variable length).
+If the client expects a single value, it can be stored in the TV and elided during the transmission. Otherwise, if the client expects several possible values,
+a matching-list SHOULD be used to limit the Compression Residue's size. Otherwise, the value has to be sent as a Compression Residue (fixed or variable length).
 
 
-## CoAP option Max-Age, Uri-Host and Uri-Port fields
+## CoAP option Max-Age, Uri-Host, and Uri-Port fields
 
-If the value is known by both ends, the value can be elided.
+If both ends know the value, the value can be elided.
 
 A matching list can be used if some well-known values are defined.
 
-Otherwise these options can be sent as a Compression Residue.
+Otherwise, these options can be sent as a Compression Residue.
 
 ## CoAP option Uri-Path and Uri-Query fields
 
-Uri-Path and Uri-Query elements are repeatable options, the Field Position (FP) gives the 
+Uri-Path and Uri-Query elements are repeatable options. The Field Position (FP) gives the 
 position in the path. 
 
 A Mapping list can be used to reduce the size of variable Paths or Queries. In that case, to
 optimize the compression, several elements can be regrouped into a single entry. 
-Numbering of elements do not change, MO comparison is set with the first element 
+The Numbering of elements do not change; MO comparison is set with the first element 
 of the matching.
 
 ~~~~~ 
@@ -415,10 +409,10 @@ of the matching.
 ~~~~~
 {: #Fig--complex-path title="complex path example"}
 
-In {{Fig--complex-path}} a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed. The third path element is sent as a variable size residue.
+In {{Fig--complex-path}}, a single bit residue can be used to code one of the 2 paths. If regrouping were not allowed, a 2 bits residue would be needed. The third path element is sent as a variable size residue.
 
 
-### Variable length Uri-Path and Uri-Query
+### Variable-length Uri-Path and Uri-Query
 
 When the length is not known at the Rule creation, the Field Length MUST be set to variable, 
 and the unit is set to bytes. 
@@ -426,9 +420,9 @@ and the unit is set to bytes.
 The MSB MO can be applied to a Uri-Path or Uri-Query element. Since MSB value is given in bit,
 the size MUST always be a multiple of 8 bits.
 
-The length sent at the beginning of a variable length residue indicates the size of the LSB in bytes. 
+The length sent at the beginning of a variable-length residue indicates the size of the LSB in bytes. 
 
-For instance for a CORECONF path /c/X6?k="eth0" the Rule can be set to:
+For instance, for a CORECONF path /c/X6?k="eth0" the Rule can be set to:
 
 ~~~~~ 
    +-------------+---+--+--+--------+---------+-------------+
@@ -443,11 +437,11 @@ For instance for a CORECONF path /c/X6?k="eth0" the Rule can be set to:
 {: #Fig-CoMicompress title='CORECONF URI compression'}
 
 {{Fig-CoMicompress}} shows the parsing and the compression of the URI, where c is not sent.
-The second element is sent with the length (i.e. 0x2 X 6) followed by the query option 
+The second element is sent with the length (i.e., 0x2 X 6) followed by the query option 
 (i.e. 0x05 "eth0").
 
 
-### Variable number of path or query elements
+### Variable number of Path or Query elements
 
 The number of Uri-Path or Uri-Query elements in a Rule is fixed at the Rule creation time. If the number
 varies, several Rules SHOULD be created to cover all the possibilities. Another possibility is
@@ -456,15 +450,15 @@ indicate that this Uri-Path is empty. This adds 4 bits to the variable Residue s
 
 ## CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
-If the field value has to be sent, TV is not set, MO is set to "ignore" and CDA is set
-to "value-sent". A mapping MAY also be used.
+If the field value has to be sent, TV is not set, MO is set to "ignore", and CDA is set
+to "value-sent." A mapping MAY also be used.
 
-Otherwise, the TV is set to the value, MO is set to "equal" and CDA is set to "not-sent".
+Otherwise, the TV is set to the value, MO is set to "equal", and CDA is set to "not-sent".
 
 
-## CoAP option ETag, If-Match, If-None-Match, Location-Path and Location-Query fields
+## CoAP option ETag, If-Match, If-None-Match, Location-Path, and Location-Query fields
 
-These fields values cannot be stored in a Rule entry. They MUST always be sent with the
+These fields' values cannot be stored in a Rule entry. They MUST always be sent with the
 Compression Residues. 
 
 
@@ -477,23 +471,22 @@ They can be both used. If a block option is used, its content MUST be sent as a 
 
 ## Observe
 
-The {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore" and the
+The {{rfc7641}} defines the Observe option. The TV is not set, MO is set to "ignore", and the
 CDA is set to "value-sent". SCHC does not limit the maximum size for this option (3 bytes).
 To reduce the transmission size, either the device implementation MAY limit the delta between two consecutive values,
 or a proxy can modify the increment.
 
 Since an RST message may be sent to inform a server that the client
-does not require Observe response; a Rule SHOULD exist to allow the compression
-of the message with the RST type.
+does not require Observe response; a Rule SHOULD exist to allow the message's compression with the RST type.
 
 
 ## No-Response
 
 The {{rfc7967}} defines a No-Response option limiting the responses made by a server to
-a request. If the value is known by both ends, then TV is set to this value, MO is 
-set to "equal" and CDA is set to "not-sent".
+a request. If both ends know the value, then TV is set to this value, MO is 
+set to "equal", and CDA is set to "not-sent".
 
-Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore" and
+Otherwise, if the value is changing over time, TV is not set, MO is set to "ignore", and
 CDA to "value-sent". A matching list can also be used to reduce the size. 
 
 ## OSCORE
