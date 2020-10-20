@@ -1131,7 +1131,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    01   Ver
      10   ACK
        0001   tkl
-           01000101   Successful Response Code 69 "2.05 Content"
+           01000101 Successful Response Code 69 "2.05 Content"
 
    0x0001 = mid
    0x82 = token
@@ -1148,17 +1148,17 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    present in a regular CoAP message.  The methods described in
    Section 4 apply to these fields.  As an example, see Figure 13.
 
-   RuleID 0
-  +---------------+--+--+--+-----------+-----------+-----------++------+
-  | Field         |FL|FP|DI|  Target   |    MO     |     CDA   || Sent |
-  |               |  |  |  |  Value    |           |           ||[bits]|
-  +---------------+--+--+--+-----------+-----------+-----------++------+
-  |CoAP Code      | 8| 1|up|   1       |  equal    |not-sent   ||      |
-  |CoAP Code      | 8| 1|dw|[69,132]   | match-map |match-sent || c    |
-  |CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
-  +---------------+--+--+--+-----------+-----------+-----------++------+
+    RuleID 0
+   +--------------+--+--+--+-----------+----------+----------++------+
+   | Field        |FL|FP|DI|  Target   |    MO    |    CDA   || Sent |
+   |              |  |  |  |  Value    |          |          ||[bits]|
+   +--------------+--+--+--+-----------+----------+----------++------+
+   |CoAP Code     | 8| 1|up|   1       |  equal   |not-sent  ||      |
+   |CoAP Code     | 8| 1|dw|[69,132]   | match-map|match-sent|| c    |
+   |CoAP Uri-Path |88| 1|up|temperature|  equal   |not-sent  ||      |
+   +--------------+--+--+--+-----------+----------+----------++------+
 
-                       Figure 13: Inner SCHC Rules
+                        Figure 13: Inner SCHC Rules
 
    Figure 14 shows the Plaintext obtained for the example GET Request
    and follows the process of Inner Compression and Encryption until the
@@ -1466,29 +1466,29 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    Figure 18 shows a possible set of Outer Rules to compress the Outer
    Header.
 
- RuleID 0
- +------------------+--+--+--+--------------+--------+---------++------+
- | Field            |FL|FP|DI|    Target    |   MO   |   CDA   || Sent |
- |                  |  |  |  |    Value     |        |         ||[bits]|
- +------------------+--+--+--+--------------+--------+---------++------+
- |CoAP version      | 2| 1|bi|      01      |equal   |not-sent ||      |
- |CoAP Type         | 2| 1|up|      0       |equal   |not-sent ||      |
- |CoAP Type         | 2| 1|dw|      2       |equal   |not-sent ||      |
- |CoAP TKL          | 4| 1|bi|      1       |equal   |not-sent ||      |
- |CoAP Code         | 8| 1|up|      2       |equal   |not-sent ||      |
- |CoAP Code         | 8| 1|dw|      68      |equal   |not-sent ||      |
- |CoAP MID          |16| 1|bi|     0000     |MSB(12) |LSB      ||MMMM  |
- |CoAP Token        |tkl 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
- |CoAP OSCORE_flags | 8| 1|up|     0x09     |equal   |not-sent ||      |
- |CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4)  |LSB      ||PPPP  |
- |COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
- |COAP OSCORE_kidctx|var 1|bi|     b''      |equal   |not-sent ||      |
- |CoAP OSCORE_flags | 8| 1|dw|     b''      |equal   |not-sent ||      |
- |CoAP OSCORE_piv   |var 1|dw|     b''      |equal   |not-sent ||      |
- |CoAP OSCORE_kid   |var 1|dw|     b''      |equal   |not-sent ||      |
- +------------------+--+--+--+--------------+--------+---------++------+
+  RuleID 0
+  +------------------+--+--+--+--------------+-------+---------++------+
+  | Field            |FL|FP|DI|    Target    |   MO  |   CDA   || Sent |
+  |                  |  |  |  |    Value     |       |         ||[bits]|
+  +------------------+--+--+--+--------------+-------+---------++------+
+  |CoAP version      | 2| 1|bi|      01      |equal  |not-sent ||      |
+  |CoAP Type         | 2| 1|up|      0       |equal  |not-sent ||      |
+  |CoAP Type         | 2| 1|dw|      2       |equal  |not-sent ||      |
+  |CoAP TKL          | 4| 1|bi|      1       |equal  |not-sent ||      |
+  |CoAP Code         | 8| 1|up|      2       |equal  |not-sent ||      |
+  |CoAP Code         | 8| 1|dw|      68      |equal  |not-sent ||      |
+  |CoAP MID          |16| 1|bi|     0000     |MSB(12)|LSB      ||MMMM  |
+  |CoAP Token        |tkl 1|bi|     0x80     |MSB(5) |LSB      ||TTT   |
+  |CoAP OSCORE_flags | 8| 1|up|     0x09     |equal  |not-sent ||      |
+  |CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4) |LSB      ||PPPP  |
+  |COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52)|LSB      ||KKKK  |
+  |COAP OSCORE_kidctx|var 1|bi|     b''      |equal  |not-sent ||      |
+  |CoAP OSCORE_flags | 8| 1|dw|     b''      |equal  |not-sent ||      |
+  |CoAP OSCORE_piv   |var 1|dw|     b''      |equal  |not-sent ||      |
+  |CoAP OSCORE_kid   |var 1|dw|     b''      |equal  |not-sent ||      |
+  +------------------+--+--+--+--------------+-------+---------++------+
 
-                      Figure 18: Outer SCHC Rules
+                       Figure 18: Outer SCHC Rules
 
    These Outer Rules are applied to the example GET Request and CONTENT
    Response.  The resulting messages are shown in Figure 19 and
