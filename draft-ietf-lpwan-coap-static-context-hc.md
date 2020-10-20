@@ -615,7 +615,7 @@ type of protection by the protocol:
  of the Plaintext but otherwise left untouched in the Outer Message,
  * Class U: Unprotected options left untouched in the Outer Message.
 
-Additionally, the OSCORE Option is added as an Outer option, signalling that the
+Additionally, the OSCORE Option is added as an Outer option, signaling that the
 message is OSCORE protected. This option carries the information necessary to
 retrieve the Security Context with which the message was encrypted so that it
 may be correctly decrypted at the other end-point.
@@ -662,14 +662,14 @@ may be correctly decrypted at the other end-point.
 Plaintext. 
 
 In the Outer Header, the original message code is hidden and replaced by a default
-dummy value. As seen in Sections 4.1.3.5 and 4.2 of the {{rfc8613}},
+dummy value. As seen in Sections 4.1.3.5 and 4.2 of {{rfc8613}},
 the message code is replaced by POST for requests and Changed for responses when Observe 
 is not used. If Observe is used, the message code is replaced by FETCH for requests and Content
 for responses.
 
 The original message code is put into the
-first byte of the Plaintext. Following the message code, the class E options comes
-and if present the original message Payload is preceded by its payload marker.
+first byte of the Plaintext. Following the message code, the class E options come
+and, if present, the original message Payload is preceded by its payload marker.
 
 The Plaintext is now encrypted by an AEAD algorithm which integrity protects
 Security Context parameters and eventually any class I options from the
@@ -813,7 +813,7 @@ Original msg length:   10
 ~~~~
 {: #Fig-CONTENT-temp title='CoAP CONTENT Response'}
 
-The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message. The methods described in {{CoAPcomp}} applies to these fields. As an example, see {{Fig-Inner-Rules}}.
+The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message. The methods described in {{CoAPcomp}} apply to these fields. As an example, see {{Fig-Inner-Rules}}.
 
 ~~~~
  RuleID 0
@@ -995,7 +995,7 @@ Payload:
 ~~~~
 {: #Fig-Protected-Compressed-CONTENT title='Protected and Inner SCHC Compressed CONTENT Response'}
 
-For the flag bits, a number of compression methods has been shown to be
+For the flag bits, a number of compression methods have been shown to be
 useful depending on the application.  The simplest alternative is to
 provide a fixed value for the flags, combining MO equal and CDA not-
 sent.  This saves most bits but could prevent flexibility.  Otherwise,
