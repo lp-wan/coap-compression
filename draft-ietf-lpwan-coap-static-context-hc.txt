@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Standards Track                              L. Toutain
-Expires: 22 April 2021            Institut MINES TELECOM; IMT Atlantique
+Expires: 23 April 2021            Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                         19 October 2020
+                                                         20 October 2020
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2021.
+   This Internet-Draft will expire on 23 April 2021.
 
 
 
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 1]
+Minaburo, et al.          Expires 23 April 2021                 [Page 1]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 2]
+Minaburo, et al.          Expires 23 April 2021                 [Page 2]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -165,7 +165,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 3]
+Minaburo, et al.          Expires 23 April 2021                 [Page 3]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -221,7 +221,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 4]
+Minaburo, et al.          Expires 23 April 2021                 [Page 4]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -277,7 +277,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 5]
+Minaburo, et al.          Expires 23 April 2021                 [Page 5]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -333,7 +333,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 6]
+Minaburo, et al.          Expires 23 April 2021                 [Page 6]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -389,7 +389,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 7]
+Minaburo, et al.          Expires 23 April 2021                 [Page 7]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -445,7 +445,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 8]
+Minaburo, et al.          Expires 23 April 2021                 [Page 8]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -501,7 +501,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                 [Page 9]
+Minaburo, et al.          Expires 23 April 2021                 [Page 9]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -557,7 +557,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 10]
+Minaburo, et al.          Expires 23 April 2021                [Page 10]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -613,7 +613,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 11]
+Minaburo, et al.          Expires 23 April 2021                [Page 11]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -669,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 12]
+Minaburo, et al.          Expires 23 April 2021                [Page 12]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -725,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 13]
+Minaburo, et al.          Expires 23 April 2021                [Page 13]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -781,7 +781,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 14]
+Minaburo, et al.          Expires 23 April 2021                [Page 14]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -806,7 +806,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    +-------------+--+--+--+------+---------+-------------++------------+
    |CoAP version | 2| 1|bi|  01  |equal    |not-sent     ||            |
    |CoAP Type    | 2| 1|dw| CON  |equal    |not-sent     ||            |
-   |CoAP Type    | 4| 1|up|[ACK, |         |             ||            |
+   |CoAP Type    | 2| 1|up|[ACK, |         |             ||            |
    |             |  |  |  | RST] |match-map|matching-sent|| T          |
    |CoAP TKL     | 4| 1|bi| 0    |equal    |not-sent     ||            |
    |CoAP Code    | 8| 1|bi|[0.00,|         |             ||            |
@@ -837,7 +837,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 15]
+Minaburo, et al.          Expires 23 April 2021                [Page 15]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -869,7 +869,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    *  Class U: Unprotected options left untouched in the Outer Message.
 
    Additionally, the OSCORE Option is added as an Outer option,
-   signalling that the message is OSCORE protected.  This option carries
+   signaling that the message is OSCORE protected.  This option carries
    the information necessary to retrieve the Security Context with which
    the message was encrypted so that it may be correctly decrypted at
    the other end-point.
@@ -893,7 +893,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 16]
+Minaburo, et al.          Expires 23 April 2021                [Page 16]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -937,7 +937,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    Plaintext.
 
    In the Outer Header, the original message code is hidden and replaced
-   by a default dummy value.  As seen in Sections 4.1.3.5 and 4.2 of the
+   by a default dummy value.  As seen in Sections 4.1.3.5 and 4.2 of
    [rfc8613], the message code is replaced by POST for requests and
    Changed for responses when Observe is not used.  If Observe is used,
    the message code is replaced by FETCH for requests and Content for
@@ -949,14 +949,14 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 17]
+Minaburo, et al.          Expires 23 April 2021                [Page 17]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
 
    The original message code is put into the first byte of the
-   Plaintext.  Following the message code, the class E options comes and
-   if present the original message Payload is preceded by its payload
+   Plaintext.  Following the message code, the class E options come and,
+   if present, the original message Payload is preceded by its payload
    marker.
 
    The Plaintext is now encrypted by an AEAD algorithm which integrity
@@ -1005,7 +1005,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 18]
+Minaburo, et al.          Expires 23 April 2021                [Page 18]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 19]
+Minaburo, et al.          Expires 23 April 2021                [Page 19]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 20]
+Minaburo, et al.          Expires 23 April 2021                [Page 20]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1146,15 +1146,15 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
    The SCHC Rules for the Inner Compression include all fields that are
    already present in a regular CoAP message.  The methods described in
-   Section 4 applies to these fields.  As an example, see Figure 13.
+   Section 4 apply to these fields.  As an example, see Figure 13.
 
    RuleID 0
   +---------------+--+--+--+-----------+-----------+-----------++------+
   | Field         |FL|FP|DI|  Target   |    MO     |     CDA   || Sent |
   |               |  |  |  |  Value    |           |           ||[bits]|
   +---------------+--+--+--+-----------+-----------+-----------++------+
-  |CoAP Code      | 4| 1|up|   1       |  equal    |not-sent   ||      |
-  |CoAP Code      | 4| 1|dw|[69,132]   | match-map |match-sent || c    |
+  |CoAP Code      | 8| 1|up|   1       |  equal    |not-sent   ||      |
+  |CoAP Code      | 8| 1|dw|[69,132]   | match-map |match-sent || c    |
   |CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
   +---------------+--+--+--+-----------+-----------+-----------++------+
 
@@ -1173,7 +1173,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 21]
+Minaburo, et al.          Expires 23 April 2021                [Page 21]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 22]
+Minaburo, et al.          Expires 23 April 2021                [Page 22]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1285,7 +1285,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 23]
+Minaburo, et al.          Expires 23 April 2021                [Page 23]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 24]
+Minaburo, et al.          Expires 23 April 2021                [Page 24]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1397,7 +1397,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 25]
+Minaburo, et al.          Expires 23 April 2021                [Page 25]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1428,7 +1428,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
       Figure 17: Protected and Inner SCHC Compressed CONTENT Response
 
-   For the flag bits, a number of compression methods has been shown to
+   For the flag bits, a number of compression methods have been shown to
    be useful depending on the application.  The simplest alternative is
    to provide a fixed value for the flags, combining MO equal and CDA
    not- sent.  This saves most bits but could prevent flexibility.
@@ -1453,7 +1453,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 26]
+Minaburo, et al.          Expires 23 April 2021                [Page 26]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1478,7 +1478,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
  |CoAP Code         | 8| 1|up|      2       |equal   |not-sent ||      |
  |CoAP Code         | 8| 1|dw|      68      |equal   |not-sent ||      |
  |CoAP MID          |16| 1|bi|     0000     |MSB(12) |LSB      ||MMMM  |
- |CoAP Token        |tlk 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
+ |CoAP Token        |tkl 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
  |CoAP OSCORE_flags | 8| 1|up|     0x09     |equal   |not-sent ||      |
  |CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4)  |LSB      ||PPPP  |
  |COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
@@ -1509,7 +1509,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 27]
+Minaburo, et al.          Expires 23 April 2021                [Page 27]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1565,7 +1565,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 28]
+Minaburo, et al.          Expires 23 April 2021                [Page 28]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1621,7 +1621,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 29]
+Minaburo, et al.          Expires 23 April 2021                [Page 29]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1677,7 +1677,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 30]
+Minaburo, et al.          Expires 23 April 2021                [Page 30]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1733,7 +1733,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 31]
+Minaburo, et al.          Expires 23 April 2021                [Page 31]
 
 Internet-Draft           LPWAN CoAP compression             October 2020
 
@@ -1789,4 +1789,4 @@ Authors' Addresses
 
 
 
-Minaburo, et al.          Expires 22 April 2021                [Page 32]
+Minaburo, et al.          Expires 23 April 2021                [Page 32]
