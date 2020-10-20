@@ -965,12 +965,12 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    class I.  The resulting Ciphertext becomes the new Payload of the
    OSCORE message, as illustrated in Figure 9.
 
-   This Ciphertext is, as defined in [rfc5116], the concatenation of the
-   encrypted Plaintext, and its authentication tag.  Note that Inner
-   Compression only affects the Plaintext before encryption.  Thus we
-   can only aim to reduce this first, variable-length component of the
-   Ciphertext.  The authentication tag is fixed in length and is
-   considered part of the cost of protection.
+   As defined in [rfc5116], this Ciphertext is the concatenation of the
+   encrypted Plaintext and its authentication tag.  Note that Inner
+   Compression only affects the Plaintext before encryption.  Thus only
+   the first variable-length of the Ciphertext can be reduced.  The
+   authentication tag is fixed in length and is considered part of the
+   cost of protection.
 
 
 
@@ -1160,8 +1160,8 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
                        Figure 13: Inner SCHC Rules
 
-   Figure 14 shows the Plaintext obtained for our example GET Request
-   and follows the process of Inner Compression and Encryption until we
+   Figure 14 shows the Plaintext obtained for the example GET Request
+   and follows the process of Inner Compression and Encryption until the
    end up with the Payload to be added in the outer OSCORE Message.
 
 
@@ -1549,10 +1549,10 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
              Figure 20: SCHC-OSCORE Compressed CONTENT Response
 
-   In contrast, we compare these results with what would be obtained by
+   In contrast, comparing these results with what would be obtained by
    SCHC compressing the original CoAP messages without protecting them
-   with OSCORE.  To do this, we compress the CoAP messages according to
-   the SCHC Rules in Figure 21.
+   with OSCORE is done by compressing the CoAP messages according to the
+   SCHC Rules in Figure 21.
 
 
 
