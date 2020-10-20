@@ -805,7 +805,7 @@ Original msg length:   10
 ~~~~
 {: #Fig-CONTENT-temp title='CoAP CONTENT Response'}
 
-The SCHC Rules for the Inner Compression include all fields that are already present in a regular CoAP message. The methods described in {{CoAPcomp}} apply to these fields. As an example, see {{Fig-Inner-Rules}}.
+The SCHC Rules for the Inner Compression include all fields already present in a regular CoAP message. The methods described in {{CoAPcomp}} apply to these fields. As an example, see {{Fig-Inner-Rules}}.
 
 ~~~~
  RuleID 0
@@ -822,7 +822,7 @@ The SCHC Rules for the Inner Compression include all fields that are already pre
 
 {{Fig-Inner-Compression-GET}} shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message. 
 
-In this case the original message has no payload and its resulting Plaintext can be compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output, but also yields a fixed-size tag which cannot be compressed and has to be included in the OSCORE message. This translates into an overhead in total message length, which limits the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
+In this case, the original message has no payload, and its resulting Plaintext can be compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output and yields a fixed-size tag that cannot be compressed and has to be included in the OSCORE message. This translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
 
 ~~~~
    ________________________________________________________
@@ -868,7 +868,7 @@ In this case the original message has no payload and its resulting Plaintext can
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-In {{Fig-Inner-Compression-CONTENT}}  the process is repeated for the example CONTENT Response. The residue is 1 bit long. Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed.  
+In {{Fig-Inner-Compression-CONTENT}}, the process is repeated for the example CONTENT Response. The residue is 1 bit long. Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed.  
 
 On top of this, the overhead from the tag bytes is incurred as before.
 
@@ -920,9 +920,8 @@ On top of this, the overhead from the tag bytes is incurred as before.
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
 The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
-fields. In {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} 
-we show a dump of the OSCORE
-Messages generated from our example messages once they have been
+fields. The {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} 
+show a dump of the OSCORE Messages generated from the example messages once they have been
 provided with the Inner Compressed Ciphertext in the payload.  These
 are the messages that have to be compressed by the Outer SCHC Compression.
 
@@ -987,19 +986,19 @@ Payload:
 ~~~~
 {: #Fig-Protected-Compressed-CONTENT title='Protected and Inner SCHC Compressed CONTENT Response'}
 
-For the flag bits, a number of compression methods have been shown to be
-useful depending on the application.  The simplest alternative is to
+For the flag bits, some SCHC compression methods are
+useful, depending on the application.  The simplest alternative is to
 provide a fixed value for the flags, combining MO equal and CDA not-
 sent.  This saves most bits but could prevent flexibility.  Otherwise,
-match-mapping could be used to choose from an interested number of configurations to the exchange.  Otherwise, MSB could be used to mask off the 3 hard-coded most
+match-mapping could be used to choose from an interesting number of configurations for the exchange.  Otherwise, MSB could be used to mask off the 3 hard-coded most
 significant bits.
 
 
-Note that fixing a flag bit will limit the choice of CoAP Options that can be used in the exchange, since their values are dependent on certain options.
+Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on certain options.
 
-The piv field lends itself to having a number of bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as that found in LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum amount of sequence numbers that can be used in an exchange. Once this amount is exceeded, the OSCORE keys need to be re-established.
+The piv field lends itself to having some bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as  LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum number of sequence numbers used in an exchange. Once this amount is exceeded, the OSCORE keys need to be re-established.
 
-The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off, or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
+The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
 
 {{Fig-Outer-Rules}} shows a possible set of Outer Rules to compress the Outer Header. 
 
@@ -1031,7 +1030,7 @@ RuleID 0
 
 
 
-These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages  are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
+These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
 
 ~~~~
 Compressed message:
@@ -1070,7 +1069,7 @@ Compressed msg length: 16 bytes
 ~~~~
 {: #Fig-Compressed-CONTENT title='SCHC-OSCORE Compressed CONTENT Response'}
 
-For contrast, we compare these results with what would be obtained by SCHC
+In contrast, we compare these results with what would be obtained by SCHC
 compressing the original CoAP messages without protecting them with OSCORE. To
 do this, we compress the CoAP messages according to the SCHC Rules in {{Fig-NoOsc-Rules}}.
 
@@ -1132,7 +1131,7 @@ Compressed msg length: 6
 {: #Fig-CONTENT-temp-no-oscore title='CoAP CONTENT Compressed without OSCORE'}
 
 As can be seen, the difference between applying SCHC + OSCORE as compared to 
-regular SCHC + COAP is about 10 bytes of cost.
+regular SCHC + COAP is about 10 bytes.
 
 # IANA Considerations
 
@@ -1148,7 +1147,7 @@ DoS attacks are possible if an intruder can introduce a compressed SCHC corrupte
 
 SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
 
-OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV has an impact on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy-consuming. 
+OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV impacts on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy-consuming. 
 
 SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted residue may be decompressed differently by the receiver. To avoid this situation, if the Rule is modified in one location, the OSCORE keys MUST be re-established. 
 
