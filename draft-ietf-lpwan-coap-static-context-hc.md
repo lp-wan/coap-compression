@@ -560,7 +560,7 @@ RuleID 1
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version | 2| 1|bi|  01  |equal    |not-sent     ||            |
 |CoAP Type    | 2| 1|dw| CON  |equal    |not-sent     ||            |
-|CoAP Type    | 4| 1|up|[ACK, |         |             ||            |
+|CoAP Type    | 2| 1|up|[ACK, |         |             ||            |
 |             |  |  |  | RST] |match-map|matching-sent|| T          |
 |CoAP TKL     | 4| 1|bi| 0    |equal    |not-sent     ||            |
 |CoAP Code    | 8| 1|bi|[0.00,|         |             ||            |
@@ -821,8 +821,8 @@ The SCHC Rules for the Inner Compression include all fields that are already pre
 | Field         |FL|FP|DI|  Target   |    MO     |     CDA   || Sent |
 |               |  |  |  |  Value    |           |           ||[bits]|
 +---------------+--+--+--+-----------+-----------+-----------++------+
-|CoAP Code      | 4| 1|up|   1       |  equal    |not-sent   ||      |
-|CoAP Code      | 4| 1|dw|[69,132]   | match-map |match-sent || c    |
+|CoAP Code      | 8| 1|up|   1       |  equal    |not-sent   ||      |
+|CoAP Code      | 8| 1|dw|[69,132]   | match-map |match-sent || c    |
 |CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
 +---------------+--+--+--+-----------+-----------+-----------++------+
 ~~~~
@@ -1024,7 +1024,7 @@ RuleID 0
 |CoAP Code         | 8| 1|up|      2       |equal   |not-sent ||      |
 |CoAP Code         | 8| 1|dw|      68      |equal   |not-sent ||      |
 |CoAP MID          |16| 1|bi|     0000     |MSB(12) |LSB      ||MMMM  |
-|CoAP Token        |tlk 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
+|CoAP Token        |tkl 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
 |CoAP OSCORE_flags | 8| 1|up|     0x09     |equal   |not-sent ||      |
 |CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4)  |LSB      ||PPPP  |
 |COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
