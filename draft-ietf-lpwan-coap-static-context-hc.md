@@ -195,7 +195,7 @@ This use case needs an end-to-end context initialization between the device and 
           ((((LPWAN))))             ------   Internet  ------
 
 ~~~~
-{: #Fig-SCHCCOAP2 title='Standalone CoAP ene-to-end compression/decompression'} 
+{: #Fig-SCHCCOAP2 title='Standalone CoAP end-to-end compression/decompression'} 
 
 In the third example, {{Fig-SCHCCOAP3}}, the Object Security for Constrained
 RESTful Environments (OSCORE) {{rfc8613}} is used.  In this case, two
