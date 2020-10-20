@@ -307,7 +307,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
          ..........     ..................                    ..........
              ((((LPWAN))))             ------   Internet  ------
 
-       Figure 2: Standalone CoAP ene-to-end compression/decompression
+       Figure 2: Standalone CoAP end-to-end compression/decompression
 
    In the third example, Figure 3, the Object Security for Constrained
    RESTful Environments (OSCORE) [rfc8613] is used.  In this case, two
