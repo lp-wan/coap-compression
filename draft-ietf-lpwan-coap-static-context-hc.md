@@ -593,10 +593,10 @@ while still enabling proxy operation.
 
 Conceptually this is achieved by splitting the CoAP message into an Inner
 Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive
-information which is not necessary for proxy operation. This, in turn, is the
+information that is not necessary for proxy operation. This, in turn, is the
 part of the message which can be encrypted until it
 reaches its end destination. The Outer Message acts as a shell matching the 
-format of a regular CoAP message, and includes all Options and information 
+regular CoAP message format and includes all Options and information 
 needed for proxy operation and caching. This decomposition is illustrated in 
 {{Fig-inner-outer}}.
 
@@ -610,8 +610,7 @@ type of protection by the protocol:
 
 Additionally, the OSCORE Option is added as an Outer option, signaling that the
 message is OSCORE protected. This option carries the information necessary to
-retrieve the Security Context with which the message was encrypted so that it
-may be correctly decrypted at the other end-point.
+retrieve the Security Context with which the message was encrypted to be correctly decrypted at the other end-point.
 
 ~~~~
  
@@ -661,20 +660,20 @@ is not used. If Observe is used, the message code is replaced by FETCH for reque
 for responses.
 
 The original message code is put into the
-first byte of the Plaintext. Following the message code, the class E options come
+first byte of the Plaintext. Following the message code, the class E options come,
 and, if present, the original message Payload is preceded by its payload marker.
 
 The Plaintext is now encrypted by an AEAD algorithm which integrity protects
-Security Context parameters and eventually any class I options from the
-Outer Header. Currently no CoAP options are marked class I. The resulting
+Security Context parameters and, eventually, any class I options from the
+Outer Header. Currently, no CoAP options are marked class I. The resulting
 Ciphertext becomes the new Payload of the OSCORE message, as illustrated in
 {{Fig-full-oscore}}.
 
 This Ciphertext is, as defined in {{rfc5116}}, the concatenation of the
-encrypted Plaintext and its authentication tag. Note that Inner Compression only 
-affects the Plaintext before encryption, thus we can only aim to reduce this first,
-variable length component of the Ciphertext. The authentication tag is fixed in 
-length and considered part of the cost of protection.
+encrypted Plaintext, and its authentication tag. Note that Inner Compression only 
+affects the Plaintext before encryption. Thus we can only aim to reduce this first,
+variable-length component of the Ciphertext. The authentication tag is fixed in 
+length and is considered part of the cost of protection.
 
 ~~~~
  
@@ -706,9 +705,9 @@ encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-C
 
 This translates into a segmented process where SCHC compression is applied independently in 
 2 stages, each with its corresponding set of Rules, with the Inner SCHC Rules and the Outer SCHC Rules. 
-This way compression is applied to all fields of the original CoAP message.   
+This way, compression is applied to all fields of the original CoAP message.   
 
-Note that since the Inner part of the message can only be decrypted by the corresponding end-point, this end-point will also have to implement Inner SCHC Compression/Decompression.
+Note that since the corresponding end-point can only decrypt the Inner part of the message, this end-point will also have to implement Inner SCHC Compression/Decompression.
 
 ~~~~
      Outer Message                             OSCORE Plaintext
