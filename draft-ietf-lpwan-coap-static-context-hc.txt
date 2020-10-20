@@ -1144,8 +1144,8 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
                       Figure 12: CoAP CONTENT Response
 
-   The SCHC Rules for the Inner Compression include all fields that are
-   already present in a regular CoAP message.  The methods described in
+   The SCHC Rules for the Inner Compression include all fields already
+   present in a regular CoAP message.  The methods described in
    Section 4 apply to these fields.  As an example, see Figure 13.
 
    RuleID 0
@@ -1178,14 +1178,13 @@ Minaburo, et al.          Expires 23 April 2021                [Page 21]
 Internet-Draft           LPWAN CoAP compression             October 2020
 
 
-   In this case the original message has no payload and its resulting
+   In this case, the original message has no payload, and its resulting
    Plaintext can be compressed up to only 1 byte (size of the RuleID).
-   The AEAD algorithm preserves this length in its first output, but
-   also yields a fixed-size tag which cannot be compressed and has to be
+   The AEAD algorithm preserves this length in its first output and
+   yields a fixed-size tag that cannot be compressed and has to be
    included in the OSCORE message.  This translates into an overhead in
-   total message length, which limits the amount of compression that can
-   be achieved and plays into the cost of adding security to the
-   exchange.
+   total message length, limiting the amount of compression that can be
+   achieved and plays into the cost of adding security to the exchange.
 
       ________________________________________________________
      |                                                        |
@@ -1226,6 +1225,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
            |  ciphertext = 0xa2c54fe1b434297b62 (9 bytes)    |
            |_________________________________________________|
 
+      Figure 14: Plaintext compression and encryption for GET Request
 
 
 
@@ -1234,9 +1234,7 @@ Minaburo, et al.          Expires 23 April 2021                [Page 22]
 Internet-Draft           LPWAN CoAP compression             October 2020
 
 
-      Figure 14: Plaintext compression and encryption for GET Request
-
-   In Figure 15 the process is repeated for the example CONTENT
+   In Figure 15, the process is repeated for the example CONTENT
    Response.  The residue is 1 bit long.  Note that since SCHC adds
    padding after the payload, this misalignment causes the hexadecimal
    code from the payload to differ from the original, even though it has
@@ -1244,6 +1242,8 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
    On top of this, the overhead from the tag bytes is incurred as
    before.
+
+
 
 
 
@@ -1336,8 +1336,8 @@ Internet-Draft           LPWAN CoAP compression             October 2020
     Figure 15: Plaintext compression and encryption for CONTENT Response
 
    The Outer SCHC Rules (Figure 18) must process the OSCORE Options
-   fields.  In Figure 16 and Figure 17 we show a dump of the OSCORE
-   Messages generated from our example messages once they have been
+   fields.  The Figure 16 and Figure 17 show a dump of the OSCORE
+   Messages generated from the example messages once they have been
 
 
 
@@ -1428,25 +1428,25 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
       Figure 17: Protected and Inner SCHC Compressed CONTENT Response
 
-   For the flag bits, a number of compression methods have been shown to
-   be useful depending on the application.  The simplest alternative is
-   to provide a fixed value for the flags, combining MO equal and CDA
-   not- sent.  This saves most bits but could prevent flexibility.
-   Otherwise, match-mapping could be used to choose from an interested
-   number of configurations to the exchange.  Otherwise, MSB could be
-   used to mask off the 3 hard-coded most significant bits.
+   For the flag bits, some SCHC compression methods are useful,
+   depending on the application.  The simplest alternative is to provide
+   a fixed value for the flags, combining MO equal and CDA not- sent.
+   This saves most bits but could prevent flexibility.  Otherwise,
+   match-mapping could be used to choose from an interesting number of
+   configurations for the exchange.  Otherwise, MSB could be used to
+   mask off the 3 hard-coded most significant bits.
 
-   Note that fixing a flag bit will limit the choice of CoAP Options
-   that can be used in the exchange, since their values are dependent on
-   certain options.
+   Note that fixing a flag bit will limit CoAP Options choice that can
+   be used in the exchange since their values are dependent on certain
+   options.
 
-   The piv field lends itself to having a number of bits masked off with
-   MO MSB and CDA LSB.  This could be useful in applications where the
-   message frequency is low such as that found in LPWAN technologies.
-   Note that compressing the sequence numbers effectively reduces the
-   maximum amount of sequence numbers that can be used in an exchange.
-   Once this amount is exceeded, the OSCORE keys need to be re-
-   established.
+   The piv field lends itself to having some bits masked off with MO MSB
+   and CDA LSB.  This could be useful in applications where the message
+   frequency is low such as LPWAN technologies.  Note that compressing
+   the sequence numbers effectively reduces the maximum number of
+   sequence numbers used in an exchange.  Once this amount is exceeded,
+   the OSCORE keys need to be re-established.
+
 
 
 
@@ -1459,9 +1459,9 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
    The size s included in the kid context field MAY be masked off with
-   CDA MSB.  The rest of the field could have additional bits masked
-   off, or have the whole field be fixed with MO equal and CDA not-sent.
-   The same holds for the kid field.
+   CDA MSB.  The rest of the field could have additional bits masked off
+   or have the whole field be fixed with MO equal and CDA not-sent.  The
+   same holds for the kid field.
 
    Figure 18 shows a possible set of Outer Rules to compress the Outer
    Header.
@@ -1549,7 +1549,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
              Figure 20: SCHC-OSCORE Compressed CONTENT Response
 
-   For contrast, we compare these results with what would be obtained by
+   In contrast, we compare these results with what would be obtained by
    SCHC compressing the original CoAP messages without protecting them
    with OSCORE.  To do this, we compress the CoAP messages according to
    the SCHC Rules in Figure 21.
@@ -1627,7 +1627,7 @@ Internet-Draft           LPWAN CoAP compression             October 2020
 
 
    As can be seen, the difference between applying SCHC + OSCORE as
-   compared to regular SCHC + COAP is about 10 bytes of cost.
+   compared to regular SCHC + COAP is about 10 bytes.
 
 8.  IANA Considerations
 
@@ -1663,8 +1663,8 @@ Internet-Draft           LPWAN CoAP compression             October 2020
    OSCORE compression is also based on the same compression method
    described in [rfc8724].  The size of the Initialisation Vector (IV)
    residue must be considered carefully.  A residue size obtained with
-   LSB CDA over the IV has an impact on the compression efficiency and
-   the frequency the device will renew its key.  This operation requires
+   LSB CDA over the IV impacts on the compression efficiency and the
+   frequency the device will renew its key.  This operation requires
    several exchanges and is energy-consuming.
 
    SCHC header and compression Rules MUST remain tightly coupled.
