@@ -669,10 +669,9 @@ Outer Header. Currently, no CoAP options are marked class I. The resulting
 Ciphertext becomes the new Payload of the OSCORE message, as illustrated in
 {{Fig-full-oscore}}.
 
-This Ciphertext is, as defined in {{rfc5116}}, the concatenation of the
-encrypted Plaintext, and its authentication tag. Note that Inner Compression only 
-affects the Plaintext before encryption. Thus we can only aim to reduce this first,
-variable-length component of the Ciphertext. The authentication tag is fixed in 
+As defined in {{rfc5116}}, this Ciphertext is the concatenation of the
+encrypted Plaintext and its authentication tag. Note that Inner Compression only 
+affects the Plaintext before encryption. Thus only the first variable-length of the Ciphertext can be reduced. The authentication tag is fixed in 
 length and is considered part of the cost of protection.
 
 ~~~~
@@ -820,7 +819,7 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
-{{Fig-Inner-Compression-GET}} shows the Plaintext obtained for our example GET Request and follows the process of Inner Compression and Encryption until we end up with the Payload to be added in the outer OSCORE Message. 
+{{Fig-Inner-Compression-GET}} shows the Plaintext obtained for the example GET Request and follows the process of Inner Compression and Encryption until the end up with the Payload to be added in the outer OSCORE Message. 
 
 In this case, the original message has no payload, and its resulting Plaintext can be compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output and yields a fixed-size tag that cannot be compressed and has to be included in the OSCORE message. This translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
 
@@ -990,15 +989,20 @@ For the flag bits, some SCHC compression methods are
 useful, depending on the application.  The simplest alternative is to
 provide a fixed value for the flags, combining MO equal and CDA not-
 sent.  This saves most bits but could prevent flexibility.  Otherwise,
-match-mapping could be used to choose from an interesting number of configurations for the exchange.  Otherwise, MSB could be used to mask off the 3 hard-coded most
-significant bits.
+match-mapping could be used to choose from an interesting number of configurations for the exchange.  
+Otherwise, MSB could be used to mask off the 3 hard-coded most significant bits.
 
 
 Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on certain options.
 
-The piv field lends itself to having some bits masked off with MO MSB and CDA LSB. This could be useful in applications where the message frequency is low such as  LPWAN technologies. Note that compressing the sequence numbers effectively reduces the maximum number of sequence numbers used in an exchange. Once this amount is exceeded, the OSCORE keys need to be re-established.
+The piv field lends itself to having some bits masked off with MO MSB and CDA LSB.
+This could be useful in applications where the message frequency is low such as LPWAN technologies. 
+Note that compressing the sequence numbers effectively reduces the maximum number of sequence numbers used in an exchange. 
+Once this amount is exceeded, the OSCORE keys need to be re-established.
 
-The size s included in the kid context field MAY be masked off with CDA MSB. The rest of the field could have additional bits masked off or have the whole field be fixed with MO equal and CDA not-sent. The same holds for the kid field.
+The size s included in the kid context field MAY be masked off with CDA MSB. 
+The rest of the field could have additional bits masked off or have the whole field be fixed with MO equal and CDA not-sent. 
+The same holds for the kid field.
 
 {{Fig-Outer-Rules}} shows a possible set of Outer Rules to compress the Outer Header. 
 
@@ -1030,7 +1034,8 @@ RuleID 0
 
 
 
-These Outer Rules are applied to the example GET Request and CONTENT Response. The resulting messages are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
+These Outer Rules are applied to the example GET Request and CONTENT Response. 
+The resulting messages are shown in {{Fig-Compressed-GET}} and {{Fig-Compressed-CONTENT}}.
 
 ~~~~
 Compressed message:
@@ -1069,9 +1074,9 @@ Compressed msg length: 16 bytes
 ~~~~
 {: #Fig-Compressed-CONTENT title='SCHC-OSCORE Compressed CONTENT Response'}
 
-In contrast, we compare these results with what would be obtained by SCHC
-compressing the original CoAP messages without protecting them with OSCORE. To
-do this, we compress the CoAP messages according to the SCHC Rules in {{Fig-NoOsc-Rules}}.
+In contrast, comparing these results with what would be obtained by SCHC
+compressing the original CoAP messages without protecting them with OSCORE is done
+by compressing the CoAP messages according to the SCHC Rules in {{Fig-NoOsc-Rules}}.
 
 ~~~~
 RuleID 1
