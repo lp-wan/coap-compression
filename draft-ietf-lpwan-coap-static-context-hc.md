@@ -791,7 +791,7 @@ Header:
 01   Ver
   10   ACK
     0001   tkl
-        01000101   Successful Response Code 69 "2.05 Content"
+        01000101 Successful Response Code 69 "2.05 Content"
 
 0x0001 = mid
 0x82 = token
@@ -808,14 +808,14 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 
 ~~~~
  RuleID 0
-+---------------+--+--+--+-----------+-----------+-----------++------+
-| Field         |FL|FP|DI|  Target   |    MO     |     CDA   || Sent |
-|               |  |  |  |  Value    |           |           ||[bits]|
-+---------------+--+--+--+-----------+-----------+-----------++------+
-|CoAP Code      | 8| 1|up|   1       |  equal    |not-sent   ||      |
-|CoAP Code      | 8| 1|dw|[69,132]   | match-map |match-sent || c    |
-|CoAP Uri-Path  |88| 1|up|temperature|  equal    |not-sent   ||      |
-+---------------+--+--+--+-----------+-----------+-----------++------+
++--------------+--+--+--+-----------+----------+----------++------+
+| Field        |FL|FP|DI|  Target   |    MO    |    CDA   || Sent |
+|              |  |  |  |  Value    |          |          ||[bits]|
++--------------+--+--+--+-----------+----------+----------++------+
+|CoAP Code     | 8| 1|up|   1       |  equal   |not-sent  ||      |
+|CoAP Code     | 8| 1|dw|[69,132]   | match-map|match-sent|| c    |
+|CoAP Uri-Path |88| 1|up|temperature|  equal   |not-sent  ||      |
++--------------+--+--+--+-----------+----------+----------++------+
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
@@ -1008,26 +1008,26 @@ The same holds for the kid field.
 
 ~~~~
 RuleID 0
-+------------------+--+--+--+--------------+--------+---------++------+
-| Field            |FL|FP|DI|    Target    |   MO   |   CDA   || Sent |
-|                  |  |  |  |    Value     |        |         ||[bits]|
-+------------------+--+--+--+--------------+--------+---------++------+ 
-|CoAP version      | 2| 1|bi|      01      |equal   |not-sent ||      |
-|CoAP Type         | 2| 1|up|      0       |equal   |not-sent ||      |
-|CoAP Type         | 2| 1|dw|      2       |equal   |not-sent ||      |
-|CoAP TKL          | 4| 1|bi|      1       |equal   |not-sent ||      |
-|CoAP Code         | 8| 1|up|      2       |equal   |not-sent ||      |
-|CoAP Code         | 8| 1|dw|      68      |equal   |not-sent ||      |
-|CoAP MID          |16| 1|bi|     0000     |MSB(12) |LSB      ||MMMM  |
-|CoAP Token        |tkl 1|bi|     0x80     |MSB(5)  |LSB      ||TTT   |
-|CoAP OSCORE_flags | 8| 1|up|     0x09     |equal   |not-sent ||      |
-|CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4)  |LSB      ||PPPP  |
-|COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52) |LSB      ||KKKK  |
-|COAP OSCORE_kidctx|var 1|bi|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_flags | 8| 1|dw|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_piv   |var 1|dw|     b''      |equal   |not-sent ||      |
-|CoAP OSCORE_kid   |var 1|dw|     b''      |equal   |not-sent ||      |
-+------------------+--+--+--+--------------+--------+---------++------+
++------------------+--+--+--+--------------+-------+---------++------+
+| Field            |FL|FP|DI|    Target    |   MO  |   CDA   || Sent |
+|                  |  |  |  |    Value     |       |         ||[bits]|
++------------------+--+--+--+--------------+-------+---------++------+ 
+|CoAP version      | 2| 1|bi|      01      |equal  |not-sent ||      |
+|CoAP Type         | 2| 1|up|      0       |equal  |not-sent ||      |
+|CoAP Type         | 2| 1|dw|      2       |equal  |not-sent ||      |
+|CoAP TKL          | 4| 1|bi|      1       |equal  |not-sent ||      |
+|CoAP Code         | 8| 1|up|      2       |equal  |not-sent ||      |
+|CoAP Code         | 8| 1|dw|      68      |equal  |not-sent ||      |
+|CoAP MID          |16| 1|bi|     0000     |MSB(12)|LSB      ||MMMM  |
+|CoAP Token        |tkl 1|bi|     0x80     |MSB(5) |LSB      ||TTT   |
+|CoAP OSCORE_flags | 8| 1|up|     0x09     |equal  |not-sent ||      |
+|CoAP OSCORE_piv   |var 1|up|     0x00     |MSB(4) |LSB      ||PPPP  |
+|COAP OSCORE_kid   |var 1|up|0x636c69656e70|MSB(52)|LSB      ||KKKK  |
+|COAP OSCORE_kidctx|var 1|bi|     b''      |equal  |not-sent ||      |
+|CoAP OSCORE_flags | 8| 1|dw|     b''      |equal  |not-sent ||      |
+|CoAP OSCORE_piv   |var 1|dw|     b''      |equal  |not-sent ||      |
+|CoAP OSCORE_kid   |var 1|dw|     b''      |equal  |not-sent ||      |
++------------------+--+--+--+--------------+-------+---------++------+
 ~~~~
 {: #Fig-Outer-Rules title='Outer SCHC Rules'}
 
