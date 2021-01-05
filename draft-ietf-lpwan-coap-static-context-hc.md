@@ -39,14 +39,14 @@ author:
   email: randreasen@fi.uba.ar
 normative:  
   RFC2119:
-  rfc5116:
-  rfc7252:
-  rfc7967:
-  rfc7641:
-  rfc7959:
-  rfc8174:
-  rfc8613:
-  rfc8724: 
+  RFC5116:
+  RFC7252:
+  RFC7967:
+  RFC7641:
+  RFC7959:
+  RFC8174:
+  RFC8613:
+  RFC8724: 
   
 
 
@@ -167,7 +167,7 @@ the CoAP layer, compressing the CoAP header independently of the
 other layers. The RuleID, the Compression Residue, and CoAP payload are encrypted
 using a mechanism such as DTLS.  Only the other end (App) can decipher the
 information.  If needed, layers below use SCHC to compress the header
-as defined in {{rfc8724}} document (represented in dotted lines). 
+as defined in {{rfc8724}} (represented in dotted lines). 
 
 This use case needs an end-to-end context initialization between the device and the application and is out-of-scope of this document.
 
@@ -542,7 +542,7 @@ superimposed on it.  Note that the CoAP OSCORE_kidctx field includes directly th
 ## Mandatory header with CON message
 
 In this first scenario, the LPWAN Compressor at the Network Gateway side receives from an Internet client 
-a POST message, which is immediately acknowledged by the Device. For this simple
+a POST message, which is immediately acknowledged by the device. For this simple
 scenario, the Rules are described in {{Fig-CoAP-header-1}}.
 
 
