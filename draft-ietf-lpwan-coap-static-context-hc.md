@@ -256,7 +256,7 @@ CoAP compression differs from IPv6 and UDP compression on the following aspects:
 * The CoAP protocol is asymmetric; the headers are different for a
   request or a response. For example, the URI-Path option is
   mandatory in the request, and it might not be present in the response.  A
-  request migth contain an Accept option, and the response might include
+  request might contain an Accept option, and the response might include
   a Content-Format option.  In comparison, IPv6 and UDP returning path swap
   the value of some fields in the header.
   But all the directions have the same fields (e.g., source and
