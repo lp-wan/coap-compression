@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-16
+docname: draft-ietf-lpwan-coap-static-context-hc-17
 cat: std
 pi:
   symrefs: 'yes'
@@ -67,9 +67,11 @@ normative:
 # Introduction {#Introduction}
 
 CoAP {{rfc7252}} is a command/response protocol designed for micro-controllers with a small amount of RAM and ROM and is optimized 
-for REST-based (Representational state transfer) services.  Although CoAP was designed for Low-Power Wireless Personal Area Networks 
-(6LoWPAN), a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks) and some compression of the CoAP header 
-is required either to increase performances or allow CoAP other some LPWAN technologies.
+for REST-based (Representational state transfer) services.  
+
+Although CoAP was designed for constrained devices, 
+a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks) and some compression of the CoAP header is
+required either to increase performances or allow CoAP over some LPWAN technologies.
 
 
 The {{rfc8724}} defines SCHC, a header compression mechanism for the LPWAN
@@ -79,8 +81,7 @@ done.  The SCHC compression scheme assumes as a prerequisite that the static con
 
 CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances. 
 SCHC compression may apply at two different levels: one to compress
-IP and UDP in the LPWAN network and another at the application level for CoAP.  These two compressions may be independent. Both follow the same principle described in RFC8724. SCHC rules driving the compression/decompression are different and may be managed by different entities. The {{rfc8724}} describes how the IP and UDP headers may be compressed. This document specifies how the SCHC compression rules can be applied to CoAP traffic.
-
+IP and UDP in the LPWAN network and another at the application level for CoAP.  These two compressions may be independent. Both follow the same principle described in RFC 8724. SCHC rules driving the compression/decompression are different and may be managed by different entities. The {{rfc8724}} describes how the IP and UDP headers may be compressed. This document specifies how the SCHC compression rules can be applied to CoAP traffic.
 
 SCHC compresses and decompresses headers based on shared contexts between devices.  
 Each context consists of multiple Rules. Each Rule can match header fields and specific values or ranges of values.  
@@ -122,10 +123,10 @@ appear in all capitals, as shown here.
 
 # SCHC Applicability to CoAP 
 
-The SCHC Compression Rules can be applied to CoAP headers.  SCHC
-Compression of the CoAP header MAY be done in conjunction with the
-lower layers (IPv6/UDP) or independently.  The SCHC adaptation layers,
-described in Section 5 of {{rfc8724}}, may be used, as shown in {{Fig-SCHCCOAP1}},{{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}
+SCHC Compression for CoAP header MAY be done in conjunction with the
+lower layers (IPv6/UDP) or independently.  
+The SCHC adaptation layers, described in Section 5 of {{rfc8724}}, 
+may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}.
 
 
 In the first example, {{Fig-SCHCCOAP1}}, a Rule compresses the complete header
@@ -1144,13 +1145,14 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-When applied to LPWAN, the Security Considerations of SCHC header compression {{rfc8724}} are valid for SCHC CoAP header compression. When CoAP uses OSCORE, the security considerations defined in {{rfc8613}} does not change when SCHC header compression is applied. 
+When applied on top of LPWAN, the Security Considerations of SCHC header compression {{rfc8724}} are valid for SCHC CoAP header compression. When other technologies are used, an integrity protection mechanism MUST be defined to carry SCHC compressed packets. 
+When CoAP uses OSCORE, the security considerations defined in {{rfc8613}} does not change when SCHC header compression is applied. 
 
 The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is highly necessary to use a layer two security.
 
-DoS attacks are possible if an intruder can introduce a compressed SCHC corrupted packet onto the link and cause a compression efficiency reduction. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
+DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause a compression efficiency reduction. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
 
-SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue. So if a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
+SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length that is sent is not the length of the original header field but rather the length of the Residue that is transmitted. If a corrupted packet arrives at a  decompressor that does not match the length from the original header, SCHC decompression will detect an error and drop the packet.
 
 OSCORE compression is also based on the same compression method described in {{rfc8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV impacts on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy-consuming. 
 
