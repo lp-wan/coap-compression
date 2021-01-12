@@ -50,7 +50,7 @@ normative:
   
 
 
---- abstract
+--- Abstract
 
    This draft defines how Static Context Header Compression (SCHC) can be applied to the Constrained Application Protocol (CoAP). 
    SCHC is a header compression mechanism adapted for constrained devices. SCHC uses a static description of the header to reduce 
@@ -120,7 +120,7 @@ appear in all capitals, as shown here.
 
 # SCHC Applicability to CoAP 
 
-SCHC Compression for CoAP header MAY be done in conjunction with the
+The SCHC Compression Rules can be applied to CoAP headers. SCHC Compression for CoAP header MAY be done in conjunction with the
 lower layers (IPv6/UDP) or independently.  
 The SCHC adaptation layers, described in Section 5 of {{RFC8724}}, 
 may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}.
@@ -1149,7 +1149,7 @@ The definition of SCHC over CoAP header fields permits the compression of header
 
 DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause an excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
 
-SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length that is sent is not the length of the original header field but rather the length of the Residue that is transmitted. If a corrupted packet arrives at a  decompressor that does not match the length from the original header, SCHC decompression will drop the packet when it is out of data or will not generate a larger packet than the original one.
+SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, the length sent is not the original header field length but the length of the Residue that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drops the packet.
 
 OSCORE compression is also based on the same compression method described in {{RFC8724}}. The size of the Initialisation Vector (IV) residue must be considered carefully. A residue size obtained with LSB CDA over the IV impacts on the compression efficiency and the frequency the device will renew its key. This operation requires several exchanges and is energy-consuming. 
 
@@ -1158,7 +1158,7 @@ SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an enc
 
 # Acknowledgements
 
-The authors would like to thank (in alphabetic order): Christian Amsuss, Dominique Barthel, Carsten Bormann, Theresa Enghardt, Thomas Fossati, Klaus Hartke, Francesca Palombini, Alexander Pelov and Goran Selander. 
+The authors would like to thank (in alphabetic order): Christian Amsuss, Dominique Barthel, Carsten Bormann, Theresa Enghardt, Thomas Fossati, Klaus Hartke, Benjamin Kaduk, Francesca Palombini, Alexander Pelov and Goran Selander. 
 
 
 
