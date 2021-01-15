@@ -18,8 +18,8 @@ Abstract
 
    This draft defines how to compress the Constrained Application
    Protocol (CoAP) using the Static Context Header Compression (SCHC).
-   SCHC is a header compression mechanism adapted for constrained
-   devices.  SCHC uses a static description of the header to reduce the
+   SCHC is a header compression mechanism adapted for Constrained
+   Devices.  SCHC uses a static description of the header to reduce the
    header's redundancy and size.  While RFC 8724 describes the SCHC
    compression and fragmentation framework, and its application for
    IPv6/UDP headers, this document applies SCHC for CoAP headers.  The
@@ -123,7 +123,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    CoAP [RFC7252] is a command/response protocol designed for micro-
    controllers with a small RAM and ROM and optimized for REST-based
    (Representative state transfer) services.  Although CoAP was designed
-   for constrained devices, a CoAP header's size is still too large for
+   for Constrained Devices, a CoAP header's size is still too large for
    LPWAN (Low Power Wide Area Networks).  SCHC header compression over
    CoAP header is required to increase performance or use CoAP over
    LPWAN technologies.
@@ -137,23 +137,23 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    of this document's scope.
 
    CoAP is an application protocol, so CoAP compression requires
-   installing common rules between the two SCHC instances.  SCHC
+   installing common Rules between the two SCHC instances.  SCHC
    compression may apply at two different levels: at IP and UDP in the
    LPWAN network and another at the application level for CoAP.  These
    two compressions may be independent.  Both follow the same principle
    described in [RFC8724].  As different entities manage the CoAP
-   compression at different levels, the SCHC rules driving the
+   compression at different levels, the SCHC Rules driving the
    compression/decompression are also different.  The [RFC8724]
    describes how to use SCHC for IP and UDP headers.  This document
    specifies how to apply SCHC compression to CoAP headers.
 
    SCHC compresses and decompresses headers based on shared contexts
-   between devices.  Each SCHC context consists of multiple Rules.  Each
+   between Devices.  Each SCHC context consists of multiple Rules.  Each
    Rule can match the header fields and specific values or ranges of
    values.  If a Rule matches, the matched header fields are replaced by
    the RuleID and the Compression Residue that contains the residual
    bits of the compression.  Thus, different Rules may correspond to
-   different protocol headers in the packet that a device expects to
+   different protocol headers in the packet that a Device expects to
    send or receive.
 
    A Rule describes the packets' entire header with an ordered list of
@@ -176,7 +176,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    A Matching Operator (MO) is associated with each header field
    description.  The Rule is selected if all the MOs fit the TVs for all
-   fields of the incoming header.  A rule cannot be selected if the
+   fields of the incoming header.  A Rule cannot be selected if the
    message contains an unknown field to the SCHC compressor.
 
    In that case, a Compression/Decompression Action (CDA) associated
@@ -305,10 +305,10 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    In the third example, Figure 3, shows the use of Object Security for
    Constrained RESTful Environments (OSCORE) [RFC8613].  In this case,
-   SCHC needs two rulesets to compress the CoAP header.  A first ruleset
+   SCHC needs two Rules to compress the CoAP header.  A first Rule
    focused on the inner header.  The result of this first compression is
-   encrypted using the OSCORE mechanism.  Then a second ruleset
-   compresses the outer header, including the OSCORE Options.
+   encrypted using the OSCORE mechanism.  Then a second Rule compresses
+   the outer header, including the OSCORE Options.
 
 
 
@@ -366,7 +366,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
                 Figure 3: OSCORE compression/decompression.
 
    In the case of several SCHC instances, as shown in Figure 2 and
-   Figure 3, the rulesets may come from different provisioning domains.
+   Figure 3, the Rules may come from different provisioning domains.
 
    This document focuses on CoAP compression represented in the dashed
    boxes in the previous figures.
@@ -745,7 +745,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    The [RFC7641] defines the Observe option.  The SCHC Rule description
    will define the TV to "not-sent," MO to "ignore," and the CDA to
    "value-sent."  SCHC does not limit the maximum size for this option
-   (3 bytes).  To reduce the transmission size, either the device
+   (3 bytes).  To reduce the transmission size, either the Device
    implementation MAY limit the delta between two consecutive values, or
    a proxy can modify the increment.
 
@@ -1107,7 +1107,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 7.3.  Example OSCORE Compression
 
    This section gives an example with a GET Request and its consequent
-   Content Response from a device-based CoAP client to a cloud-based
+   Content Response from a Device-based CoAP client to a cloud-based
    CoAP server.  The example also describes a possible set of Rules for
    the Inner and Outer SCHC Compression.  A dump of the results and a
    contrast between SCHC + OSCORE performance with SCHC + COAP
