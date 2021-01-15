@@ -465,14 +465,14 @@ Internet-Draft           LPWAN CoAP compression             January 2021
       large regarding LPWAN traffic constraints.  For instance, this is
       particularly true for the Message-ID field and the Token field.
       SCHC uses different Matching operators (MO) to perform the
-      compression.  See section 7.4 of [RFC8724]. In this case, SCHC can
-      apply the Most Significant Bits (MSB) MO to reduce the information
-      carried on LPWANs.
+      compression.  See section 7.4 of [RFC8724].  In this case, SCHC
+      can apply the Most Significant Bits (MSB) MO to reduce the
+      information carried on LPWANs.
 
 4.  Compression of CoAP header fields
 
    This section discusses the compression of the different CoAP header
-   fields.  The CoAP compression with SCHC follows the Section 7.1 of
+   fields.  The CoAP compression with SCHC follows Section 7.1 of
    [RFC8724].
 
 4.1.  CoAP version field
@@ -606,7 +606,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    of these options is known, SCHC can elide these fields.  If the
    option uses well-known values, SCHC can use a "match-mapping" MO.
    Otherwise, SCHC will use "value-sent" MO, and the Compression Residue
-   will send the values of these options.
+   will send these options' values.
 
 
 
@@ -643,9 +643,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
                        Figure 4: complex path example
 
    In Figure 4, SCHC can use a single bit in the Compression Residue to
-   code one of the two paths.  If regrouping were not allowed, a 2 bits
-   in the Compression Residue would be needed.  SCHC sends the third
-   path element as a variable size in the Compression Residue.
+   code one of the two paths.  If regrouping were not allowed, 2 bits in
+   the Compression Residue would be needed.  SCHC sends the third path
+   element as a variable size in the Compression Residue.
 
 5.3.1.  Variable-length Uri-Path and Uri-Query
 
@@ -698,17 +698,15 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    define the length of Uri-Path to variable and sends a Compression
    Residue with a length of 0 to indicate that this Uri-Path is empty.
    However, this adds 4 bits to the variable Compression Residue size.
-   See section 7.5.2 [RFC8724]
+   See section 7.5.2 [RFC8724].
 
 5.4.  CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields
 
    The SCHC Rule description MAY define sending some field values by
-   setting the TV to "not-sent," MO to "ignore," and CDA to "value-
-   sent."  A Rule MAY also use a "match-mapping" when there are
-   different options for the same FID.
-
-   Otherwise, the Rule sets the TV to the value, MO to "equal," and CDA
-   to "not-sent."
+   setting the TV to "not-sent," MO to "ignore," and CDAto "value-sent."
+   A Rule MAY also use a "match-mapping" when there are different
+   options for the same FID.  Otherwise, the Rule sets the TV to the
+   value, MO to "equal," and CDA to "not-sent."
 
 5.5.  CoAP option ETag, If-Match, If-None-Match, Location-Path, and
       Location-Query fields
@@ -717,6 +715,8 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    MUST always send these values in the Compression Residue.
 
 6.  SCHC compression of CoAP extension RFCs
+
+
 
 
 
@@ -743,9 +743,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 6.2.  Observe
 
    The [RFC7641] defines the Observe option.  The SCHC Rule description
-   will define the TV to "not-sent," MO to "ignore," and the CDA to
-   "value-sent."  SCHC does not limit the maximum size for this option
-   (3 bytes).  To reduce the transmission size, either the Device
+   will not define the TV, but MO to "ignore," and the CDA to "value-
+   sent."  SCHC does not limit the maximum size for this option (3
+   bytes).  To reduce the transmission size, either the Device
    implementation MAY limit the delta between two consecutive values, or
    a proxy can modify the increment.
 
@@ -759,11 +759,11 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    The [RFC7967] defines a No-Response.  Different behaviors exist while
    using this option to limit the responses made by a server to a
    request.  If both ends know the value, then the SCHC Rule will
-   describe a TV to this value, with a MO sets to "equal," and CDA set
-   to "not-sent."
+   describe a TV to this value, with a MO set to "equal" and CDA set to
+   "not-sent."
 
    Otherwise, if the value is changing over time, the SCHC Rule will set
-   the MO to "ignore", and CDA to "value-sent".  The Rule may also use a
+   the MO to "ignore" and CDA to "value-sent."  The Rule may also use a
    "match-mapping" to compress this option.
 
 6.4.  OSCORE
