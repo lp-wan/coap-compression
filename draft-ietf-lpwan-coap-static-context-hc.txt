@@ -5,10 +5,10 @@
 lpwan Working Group                                          A. Minaburo
 Internet-Draft                                                    Acklio
 Intended status: Standards Track                              L. Toutain
-Expires: 18 July 2021             Institut MINES TELECOM; IMT Atlantique
+Expires: 19 July 2021             Institut MINES TELECOM; IMT Atlantique
                                                             R. Andreasen
                                              Universidad de Buenos Aires
-                                                         14 January 2021
+                                                         15 January 2021
 
 
         LPWAN Static Context Header Compression (SCHC) for CoAP
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 July 2021.
+   This Internet-Draft will expire on 19 July 2021.
 
 
 
 
 
 
-Minaburo, et al.          Expires 18 July 2021                  [Page 1]
+Minaburo, et al.          Expires 19 July 2021                  [Page 1]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -76,7 +76,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
-   2.  SCHC Applicability to CoAP  . . . . . . . . . . . . . . . . .   5
+   2.  SCHC Applicability to CoAP  . . . . . . . . . . . . . . . . .   4
    3.  CoAP Headers compressed with SCHC . . . . . . . . . . . . . .   7
      3.1.  Differences between CoAP and UDP/IP Compression . . . . .   8
    4.  Compression of CoAP header fields . . . . . . . . . . . . . .   9
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Minaburo, et al.          Expires 18 July 2021                  [Page 2]
+Minaburo, et al.          Expires 19 July 2021                  [Page 2]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -149,26 +149,12 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    SCHC compresses and decompresses headers based on shared contexts
    between devices.  Each SCHC context consists of multiple Rules.  Each
-   Rule can match header fields and specific values or ranges of values.
-   If a Rule matches, the matched header fields are replaced by the
-   RuleID and some residual bits.  Thus, different Rules may correspond
-   to different protocol headers in the packet that a device expects to
+   Rule can match the header fields and specific values or ranges of
+   values.  If a Rule matches, the matched header fields are replaced by
+   the RuleID and the Compression Residue that contains the residual
+   bits of the compression.  Thus, different Rules may correspond to
+   different protocol headers in the packet that a device expects to
    send or receive.
-
-
-
-
-
-
-
-
-
-
-
-Minaburo, et al.          Expires 18 July 2021                  [Page 3]
-
-Internet-Draft           LPWAN CoAP compression             January 2021
-
 
    A Rule describes the packets' entire header with an ordered list of
    fields descriptions; see section 7 of [RFC8724].  Thereby
@@ -176,6 +162,14 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    its position (FP), a direction indicator (DI) (upstream, downstream,
    and bidirectional), and some associated Target Values (TV).  The
    direction indicator is used for compression to give the best TV to
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 3]
+
+Internet-Draft           LPWAN CoAP compression             January 2021
+
+
    the FID when these values differ in the transmission direction.  So a
    field may be described several times depending on the asymmetry of
    its possible TVs. 
@@ -193,7 +187,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    *  send nothing (not-sent),
 
-   *  send some least significant bits of the field (MSB) or,
+   *  send some least significant bits of the field (LSB) or,
 
    *  send an index (mapping-sent).
 
@@ -214,24 +208,23 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    14 [RFC2119][RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-
-
-
-
-
-
-
-Minaburo, et al.          Expires 18 July 2021                  [Page 4]
-
-Internet-Draft           LPWAN CoAP compression             January 2021
-
-
 2.  SCHC Applicability to CoAP
 
    SCHC Compression for CoAP header MAY be done in conjunction with the
    lower layers (IPv6/UDP) or independently.  The SCHC adaptation
    layers, described in Section 5 of [RFC8724], may be used as shown in
    Figure 1, Figure 2, and Figure 3.
+
+
+
+
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 4]
+
+Internet-Draft           LPWAN CoAP compression             January 2021
+
 
    In the first example, Figure 1, a Rule compresses the complete header
    stack from IPv6 to CoAP.  In this case, The Device and the NGW
@@ -260,10 +253,10 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    the Device and the NGW.  The SCHC layer received non-encrypted
    packets and can apply compression Rules to all the headers in the
    stack.  On the other end, the NGW receives the SCHC packet and
-   reconstructs the headers from the Rule and the Compression Residue.
+   reconstructs the headers using the Rule and the Compression Residue.
    After the decompression, the NGW forwards the IPv6 packet toward the
-   destination.  The same process applies in the other direction.  A
-   non-encrypted packet arrived at the NGW; thanks to the IP forwarding
+   destination.  The same process applies in the other direction, when a
+   non-encrypted packet arrives at the NGW.  Thanks to the IP forwarding
    based on the IPv6 prefix, the NGW identifies the Device and
    compresses headers using the Device's Rules.
 
@@ -275,16 +268,19 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    to compress the header as defined in [RFC8724] (represented in dotted
    lines).
 
-
-
-Minaburo, et al.          Expires 18 July 2021                  [Page 5]
-
-Internet-Draft           LPWAN CoAP compression             January 2021
-
-
    This use case needs an end-to-end context initialization between the
    Device and the Application.  The context initialization is out of the
    scope of this document.
+
+
+
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 5]
+
+Internet-Draft           LPWAN CoAP compression             January 2021
+
 
          (Device)            (NGW)                               (App)
 
@@ -333,7 +329,11 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                  [Page 6]
+
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 6]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -389,7 +389,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                  [Page 7]
+Minaburo, et al.          Expires 19 July 2021                  [Page 7]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -419,10 +419,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
       header differently depending on the direction.
 
    *  Even when a field is "symmetric" (i.e., found in both directions),
-      the values carried in each direction are different.
-
-      The compression may use a matching list in the TV to limit the
-      range of expected values in a particular direction and reduce the
+      the values carried in each direction are different.  The
+      compression may use a "match-mapping" MO to limit the range of
+      expected values in a particular direction and reduce the
       Compression Residue's size.  Through the direction indicator (DI),
       a field description in the Rules splits the possible field value
       into two parts, one for each direction.  For instance, if a client
@@ -436,23 +435,21 @@ Internet-Draft           LPWAN CoAP compression             January 2021
       SCHC does not need to send it.  In IPv6 and UDP headers, the
       fields have a fixed size, known by definition.  On the other hand,
       some CoAP header fields have variable lengths, and the Rule
-      description specifies it.
-
-      For example, in a URI-path or URI-query, the Token size may vary
-      from 0 to 8 bytes, and the CoAP options use the Type-Length-Value
-      encoding format.
-
-
-
-
-Minaburo, et al.          Expires 18 July 2021                  [Page 8]
-
-Internet-Draft           LPWAN CoAP compression             January 2021
-
+      description specifies it.  For example, in a URI-path or URI-
+      query, the Token size may vary from 0 to 8 bytes, and the CoAP
+      options use the Type-Length-Value encoding format.
 
       When doing SCHC compression of a variable-length field,
       Section 7.5.2 from [RFC8724] offers the possibility to define a
       function for the Field length in the Field Description to know the
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 8]
+
+Internet-Draft           LPWAN CoAP compression             January 2021
+
+
       length before compression.  If the field length is unknown, the
       Rule will set it as a variable, and SCHC will send the compressed
       field's length in the Compression Residue.
@@ -493,7 +490,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    The SCHC compression SHOULD elide this field if, for instance, a
    client is sending only NON or only CON messages.  For the RST
    message, SCHC may use a dedicated Rule.  For other usages, SCHC can
-   use a match-mapping MO.
+   use a "match-mapping" MO.
 
 
 
@@ -501,7 +498,10 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                  [Page 9]
+
+
+
+Minaburo, et al.          Expires 19 July 2021                  [Page 9]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -540,11 +540,11 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    the transmission.  Otherwise, SCHC will send the token length in the
    Compression Residue.
 
-   For the Token Value, SCHC MUST NOT send it as a variable-length
-   residue to avoid ambiguity with Token Length.  Therefore, SCHC MUST
-   use the Token length value to define the size of the Compression
-   Residue.  SCHC designates a specific function "tkl" that the Rule
-   MUST use to complete the field description.  During the
+   For the Token Value, SCHC MUST NOT send it as a variable-length in
+   the Compression Residue to avoid ambiguity with Token Length.
+   Therefore, SCHC MUST use the Token length value to define the size of
+   the Compression Residue.  SCHC designates a specific function "tkl"
+   that the Rule MUST use to complete the field description.  During the
    decompression, this function returns the value contained in the Token
    Length field.
 
@@ -557,7 +557,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 10]
+Minaburo, et al.          Expires 19 July 2021                 [Page 10]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -565,11 +565,11 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 5.  CoAP options
 
    CoAP defines options placed after the based header in Option Numbers
-   order; see The SCHC Rule builds the description of the option by
-   using in the Field ID the Option Number built from D-T; in TV, the
-   Option Value; and the Option Length uses section 7.4 of [RFC7252].
-   Each Option instance in a message uses the format Delta-Type (D-T),
-   Length (L), Value (V).[RFC8724].  When the Option Length has a well-
+   order; see [RFC7252].  Each Option instance in a message uses the
+   format Delta-Type (D-T), Length (L), Value (V).  The SCHC Rule builds
+   the description of the option by using in the Field ID the Option
+   Number built from D-T; in TV, the Option Value; and the Option Length
+   uses section 7.4 of [RFC8724].  When the Option Length has a well-
    known size, the Rule may stock the length value.  Therefore, SCHC
    compression does not send it.  Otherwise, SCHC Compression carries
    the length of the Compression Residue, in addition to the Compression
@@ -613,7 +613,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 11]
+Minaburo, et al.          Expires 19 July 2021                 [Page 11]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -625,9 +625,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    values.  SCHC Rule description uses the Field Position (FP) to
    distinguish the different instances in the path.
 
-   To compress repeatable field values, SCHC may use a match-mapping to
-   reduce the size of variable Paths or Queries.  In these cases, to
-   optimize the compression, several elements can be regrouped into a
+   To compress repeatable field values, SCHC may use a "match-mapping"
+   MO to reduce the size of variable Paths or Queries.  In these cases,
+   to optimize the compression, several elements can be regrouped into a
    single entry.  The Numbering of elements does not change, and the
    first matching element sets the MO comparison.
 
@@ -642,10 +642,10 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
                        Figure 4: complex path example
 
-   In Figure 4, SCHC can use a single bit residue to code one of the two
-   paths.  If regrouping were not allowed, a 2 bits residue would be
-   needed.  SCHC sends the third path element as a variable size in the
-   Compression Residue.
+   In Figure 4, SCHC can use a single bit in the Compression Residue to
+   code one of the two paths.  If regrouping were not allowed, a 2 bits
+   in the Compression Residue would be needed.  SCHC sends the third
+   path element as a variable size in the Compression Residue.
 
 5.3.1.  Variable-length Uri-Path and Uri-Query
 
@@ -669,7 +669,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 12]
+Minaburo, et al.          Expires 19 July 2021                 [Page 12]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -686,7 +686,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
                      Figure 5: CORECONF URI compression
 
    Figure 5 shows the Rule description for a URI-Path and a URI-Query.
-   SCHC compresses the first part of the URI-Path with a not-sent CDA.
+   SCHC compresses the first part of the URI-Path with a "not-sent" CDA.
    SCHC will send the second element of the URI-Path with the length
    (i.e., 0x2 X 6) followed by the query option (i.e., 0x05 "eth0").
 
@@ -725,7 +725,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 13]
+Minaburo, et al.          Expires 19 July 2021                 [Page 13]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -781,7 +781,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 14]
+Minaburo, et al.          Expires 19 July 2021                 [Page 14]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -837,7 +837,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 15]
+Minaburo, et al.          Expires 19 July 2021                 [Page 15]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -893,7 +893,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 16]
+Minaburo, et al.          Expires 19 July 2021                 [Page 16]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -949,7 +949,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 17]
+Minaburo, et al.          Expires 19 July 2021                 [Page 17]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 18]
+Minaburo, et al.          Expires 19 July 2021                 [Page 18]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 19]
+Minaburo, et al.          Expires 19 July 2021                 [Page 19]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1088,19 +1088,19 @@ Internet-Draft           LPWAN CoAP compression             January 2021
              |                      |             |   Inner SCHC    |
              v                      |             |   Compression   |
        +-----------------+          |             +-----------------+
-       |   Outer SCHC    |          |                      |
-       |   Compression   |          |                      v
-       +-----------------+          |              +-------+
-             |                      |              |RuleID |
-             v                      |              +-------+--+
-         +--------+           +------------+       | Residue  |
-         |RuleID' |           | Encryption | <---  +----------+--------+
-         +--------+--+        +------------+       |                   |
-         | Residue'  |                             | Payload           |
-         +-----------+-------+                     |                   |
-         |  Ciphertext       |                     +-------------------+
-         |                   |
-         +-------------------+
+       |   Outer SCHC    |          |                     |
+       |   Compression   |          |                     v
+       +-----------------+          |             +-------+
+             |                      |             |RuleID |
+             v                      |             +-------+-----------+
+       +--------+             +------------+      |Compression Residue|
+       |RuleID' |             | Encryption | <--  +----------+--------+
+       +--------+-----------+ +------------+      |                   |
+       |Compression Residue'|                     | Payload           |
+       +-----------+--------+                     |                   |
+       |  Ciphertext        |                     +-------------------+
+       |                    |
+       +--------------------+
 
                    Figure 10: OSCORE Compression Diagram
 
@@ -1117,7 +1117,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 20]
+Minaburo, et al.          Expires 19 July 2021                 [Page 20]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1173,7 +1173,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 21]
+Minaburo, et al.          Expires 19 July 2021                 [Page 21]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1229,7 +1229,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 22]
+Minaburo, et al.          Expires 19 July 2021                 [Page 22]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1258,7 +1258,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
                   | 0x00                            |
                   |                                 |
                   | RuleID = 0x00 (1 byte)          |
-                  | (No residue)                    |
+                  | (No Compression Residue)        |
                   |_________________________________|
 
                                  |
@@ -1276,16 +1276,16 @@ Internet-Draft           LPWAN CoAP compression             January 2021
       Figure 14: Plaintext compression and encryption for GET Request
 
    Figure 15 shows the process is repeated for the example CONTENT
-   Response.  The residue is 1 bit long.  Note that since SCHC adds
-   padding after the payload, this misalignment causes the hexadecimal
-   code from the payload to differ from the original, even though it has
-   not been compressed.  The overhead for the tag bytes limits the
-   SCHC's performance but brings security to the transmission.
+   Response.  The Compression Residue is 1 bit long.  Note that since
+   SCHC adds padding after the payload, this misalignment causes the
+   hexadecimal code from the payload to differ from the original, even
+   though it has not been compressed.  The overhead for the tag bytes
+   limits the SCHC's performance but brings security to the
+   transmission.
 
 
 
-
-Minaburo, et al.          Expires 18 July 2021                 [Page 23]
+Minaburo, et al.          Expires 19 July 2021                 [Page 23]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1308,18 +1308,18 @@ Internet-Draft           LPWAN CoAP compression             January 2021
                                  | Inner SCHC Compression
                                  |
                                  v
-            __________________________________________
-           |                                          |
-           | Compressed Plaintext                     |
-           |                                          |
-           | 0x001919902180 (6 bytes)                 |
-           |                                          |
-           |   00 RuleID                             |
-           |                                          |
-           |    0b0 (1 bit match-map residue)         |
-           |       0x32332043 >> 1 (shifted payload)  |
-           |                        0b0000000 Padding |
-           |__________________________________________|
+            _____________________________________________
+           |                                             |
+           | Compressed Plaintext                        |
+           |                                             |
+           | 0x001919902180 (6 bytes)                    |
+           |                                             |
+           |   00 RuleID                                 |
+           |                                             |
+           |  0b0 (1 bit match-map Compression Residue)  |
+           |       0x32332043 >> 1 (shifted payload)     |
+           |                        0b0000000 Padding    |
+           |_____________________________________________|
 
                                  |
                                  | AEAD Encryption
@@ -1341,7 +1341,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 24]
+Minaburo, et al.          Expires 19 July 2021                 [Page 24]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1397,7 +1397,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 25]
+Minaburo, et al.          Expires 19 July 2021                 [Page 25]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1431,11 +1431,11 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    For the flag bits, some SCHC compression methods are useful,
    depending on the Application.  The most straightforward alternative
    is to provide a fixed value for the flags, combining MO "equal" and
-   CDA "not- sent."  This SCHC definition saves most bits but could
+   CDA "not-sent."  This SCHC definition saves most bits but could
    prevent flexibility.  Otherwise, SCHC could use a "match-mapping" MO
-   to choose from several configurations for the exchange.  Otherwise,
-   the SCHC description may use an "MSB" MO to mask off the three hard-
-   coded most significant bits.
+   to choose from several configurations for the exchange.  If not, the
+   SCHC description may use an "MSB" MO to mask off the three hard-coded
+   most significant bits.
 
    Note that fixing a flag bit will limit CoAP Options choice that can
    be used in the exchange since their values are dependent on specific
@@ -1453,7 +1453,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 26]
+Minaburo, et al.          Expires 19 July 2021                 [Page 26]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1509,7 +1509,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 27]
+Minaburo, et al.          Expires 19 July 2021                 [Page 27]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1565,7 +1565,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 28]
+Minaburo, et al.          Expires 19 July 2021                 [Page 28]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1621,7 +1621,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 29]
+Minaburo, et al.          Expires 19 July 2021                 [Page 29]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1655,9 +1655,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    ability to add corrupted packets at the link layer raises additional
    security issues than those related to the use of header compression.
 
-   SCHC compression returns variable-length Residues for some CoAP
-   fields.  In the compressed header, the length sent is not the
-   original header field length but the Compression Residue's length
+   SCHC compression returns variable-length Compression Residues for
+   some CoAP fields.  In the compressed header, the length sent is not
+   the original header field length but the Compression Residue's length
    that is transmitted.  So If a corrupted packet comes to the
    decompressor with a longer or shorter length than the one in the
    original header, SCHC decompression will detect an error and drop the
@@ -1677,7 +1677,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 30]
+Minaburo, et al.          Expires 19 July 2021                 [Page 30]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1733,7 +1733,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 31]
+Minaburo, et al.          Expires 19 July 2021                 [Page 31]
 
 Internet-Draft           LPWAN CoAP compression             January 2021
 
@@ -1789,4 +1789,4 @@ Authors' Addresses
 
 
 
-Minaburo, et al.          Expires 18 July 2021                 [Page 32]
+Minaburo, et al.          Expires 19 July 2021                 [Page 32]

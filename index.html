@@ -11,11 +11,11 @@
 <meta content="
        This draft defines how to compress the Constrained Application Protocol (CoAP) using the Static Context Header Compression (SCHC). 
    SCHC is a header compression mechanism adapted for constrained devices. 
-   SCHC uses a static description of the header to reduce the header's redundancy and size. 
-   While RFC 8724 describes the SCHC compression and fragmentation framework, 
+   SCHC uses a static description of the header to reduce the header's redundancy and size.
+   While RFC 8724 describes the SCHC compression and fragmentation framework,
    and its application for IPv6/UDP headers, this document applies SCHC for CoAP headers. The CoAP header structure differs from 
    IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol 
-   messages format is asymmetric: the request messages have a header format different from the one in the response messages. This 
+   messages format is asymmetric: the request messages have a header format different from the one in the response messages. This
    specification gives guidance on applying SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. 
     " name="description">
 <meta content="xml2rfc 3.5.0" name="generator">
@@ -321,7 +321,7 @@ address {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Minaburo, et al.</td>
-<td class="center">Expires 18 July 2021</td>
+<td class="center">Expires 19 July 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -334,12 +334,12 @@ address {
 <dd class="internet-draft">draft-ietf-lpwan-coap-static-context-hc-17</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-01-14" class="published">14 January 2021</time>
+<time datetime="2021-01-15" class="published">15 January 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-07-18">18 July 2021</time></dd>
+<dd class="expires"><time datetime="2021-07-19">19 July 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -362,11 +362,11 @@ address {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This draft defines how to compress the Constrained Application Protocol (CoAP) using the Static Context Header Compression (SCHC). 
    SCHC is a header compression mechanism adapted for constrained devices. 
-   SCHC uses a static description of the header to reduce the header's redundancy and size. 
-   While RFC 8724 describes the SCHC compression and fragmentation framework, 
+   SCHC uses a static description of the header to reduce the header's redundancy and size.
+   While RFC 8724 describes the SCHC compression and fragmentation framework,
    and its application for IPv6/UDP headers, this document applies SCHC for CoAP headers. The CoAP header structure differs from 
    IPv6 and UDP since CoAP uses a flexible header with a variable number of options, themselves of variable length. The CoAP protocol 
-   messages format is asymmetric: the request messages have a header format different from the one in the response messages. This 
+   messages format is asymmetric: the request messages have a header format different from the one in the response messages. This
    specification gives guidance on applying SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
@@ -388,7 +388,7 @@ address {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 July 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 July 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -541,12 +541,14 @@ address {
       </h2>
 <p id="section-1-1">CoAP <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span> is a command/response protocol designed for micro- controllers with a small RAM and ROM and optimized for REST-based (Representative state transfer) services. Although CoAP was designed for constrained devices, a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks). SCHC header compression over CoAP header is required to increase performance or use CoAP over LPWAN technologies.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> defines SCHC, a header compression mechanism for the LPWAN network based on a static context. Section 5 of the <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>
-explains where compression and decompression take place in the architecture. The SCHC compression scheme assumes as a prerequisite that both end-points know the static context before transmission.    The way the context is configured, provisioned, or exchanged is out of this document's scope.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances.   SCHC compression may apply at two different levels: at IP and UDP in the LPWAN network and another at the application level for CoAP.   These two compressions may be independent. Both follow the same principle described in <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. 
+explains where compression and decompression take place in the architecture. The SCHC compression scheme assumes as a prerequisite that both end-points know the static context before transmission. The way the context is configured, provisioned, or exchanged is out of this document's scope.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances. 
+SCHC compression may apply at two different levels: at IP and UDP in the LPWAN network and another at the application level for CoAP. 
+These two compressions may be independent. Both follow the same principle described in <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. 
 As different entities manage the CoAP compression at different levels, the SCHC rules driving the compression/decompression are also different. The <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> describes how to use SCHC for IP and UDP headers.       This document specifies how to apply SCHC compression to CoAP headers.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">SCHC compresses and decompresses headers based on shared contexts between devices.
-Each SCHC context consists of multiple Rules. Each Rule can match header fields and specific values or ranges of values.
-If a Rule matches, the matched header fields are replaced by the RuleID and some residual bits. 
+Each SCHC context consists of multiple Rules. Each Rule can match the header fields and specific values or ranges of values.
+If a Rule matches, the matched header fields are replaced by the RuleID and the Compression Residue that contains the residual bits of the compression. 
 Thus, different Rules may correspond to different protocol headers in the packet that a device expects to send or receive.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">A Rule describes the packets' entire header with an ordered list of fields descriptions; see section 7 of <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. 
 Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
@@ -563,7 +565,7 @@ Compression mainly results in one of 4 actions:<a href="#section-1-7" class="pil
 </li>
         <li class="normal" id="section-1-8.2">send nothing (not-sent),<a href="#section-1-8.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-8.3">send some least significant bits of the field (MSB) or,<a href="#section-1-8.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-8.3">send some least significant bits of the field (LSB) or,<a href="#section-1-8.3" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-8.4">send an index (mapping-sent).<a href="#section-1-8.4" class="pilcrow">¶</a>
 </li>
@@ -625,14 +627,20 @@ does not implement SCHC C/D.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <a href="#name-compression-decompression-a" class="selfRef">Compression/Decompression at the LPWAN boundary.</a>
         </figcaption></figure>
 </div>
-<p id="section-2-4"><a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a> shows the use of SCHC header compression above layer 2 in the Device and the NGW. The SCHC layer received non-encrypted packets and can apply compression Rules to all the headers in the stack. On the other end, the NGW receives the SCHC packet and reconstructs the headers from the Rule and the Compression Residue.  After the decompression, the NGW forwards the IPv6 packet toward the destination. The same process applies in the other direction. A non-encrypted packet arrived at the NGW; thanks to the IP forwarding based on the IPv6 prefix, the NGW identifies the Device and compresses headers using the Device's Rules.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-4"><a href="#Fig-SCHCCOAP1" class="xref">Figure 1</a> shows the use of SCHC header compression above layer 2 in the Device and the NGW.
+The SCHC layer received non-encrypted packets and can apply compression Rules to all the headers in the stack.
+On the other end, the NGW receives the SCHC packet and reconstructs the headers using the Rule and the Compression Residue.
+After the decompression, the NGW forwards the IPv6 packet toward the destination. 
+The same process applies in the other direction, when a non-encrypted packet arrives at the NGW.
+Thanks to the IP forwarding based on the IPv6 prefix, the NGW identifies the Device and compresses headers using the Device's Rules.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">In the second example, <a href="#Fig-SCHCCOAP2" class="xref">Figure 2</a>, the SCHC compression is applied in
 the CoAP layer, compressing the CoAP header independently of the
 other layers. The RuleID, the Compression Residue, and CoAP payload are encrypted
 using a mechanism such as DTLS.  Only the other end (App) can decipher the
 information.  If needed, layers below use SCHC to compress the header
 as defined in <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> (represented in dotted lines).<a href="#section-2-5" class="pilcrow">¶</a></p>
-<p id="section-2-6">This use case needs an end-to-end context initialization between the Device and the Application. The context initialization is out of the scope of this document.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-6">This use case needs an end-to-end context initialization between the Device and the Application.
+The context initialization is out of the scope of this document.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <span id="name-standalone-coap-end-to-end-"></span><div id="Fig-SCHCCOAP2">
 <figure id="figure-2">
         <div class="artwork art-text alignLeft" id="section-2-7.1">
@@ -716,7 +724,7 @@ the rulesets may come from different provisioning domains.<a href="#section-2-10
 <p id="section-3-1">The use of SCHC over the CoAP header uses the same description and compression/decompression techniques as the one for
 IP and UDP explained in the <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. 
 For CoAP, the SCHC Rules description uses the direction information to optimize the compression
-by reducing the number of Rules needed to compress headers.  The field description MAY define
+by reducing the number of Rules needed to compress headers. The field description MAY define
 both request/response headers and target values in the same Rule, using the DI (direction
 indicator) to make the difference.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">As for other header compression protocols, when the compressor does not find a correct
@@ -732,9 +740,9 @@ using the RuleID dedicated to this purpose. Where the Compression Residue is the
 <li class="normal" id="section-3.1-2.1">
             <p id="section-3.1-2.1.1">The CoAP protocol is asymmetric; the headers are different for a
 request or a response. For example, the URI-Path option is
-mandatory in the request, and it might not be present in the response.  A
+mandatory in the request, and it might not be present in the response. A
 request might contain an Accept option, and the response might include
-a Content-Format option.  In comparison, IPv6 and UDP returning path swap
+a Content-Format option. In comparison, IPv6 and UDP returning path swap
 the value of some fields in the header.
 However, all the directions have the same fields (e.g., source and
 destination address fields).<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
@@ -743,32 +751,29 @@ The <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> defines the use o
 Field Descriptor, which allows a single Rule to process a message
 header differently depending on the direction.<a href="#section-3.1-2.1.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-2.2">
-            <p id="section-3.1-2.2.1">Even when a field is "symmetric" (i.e., found in both directions), 
-the values carried in each direction are different.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2.2.2">
-The compression may use a matching list in the TV to limit the range of expected values 
-in a particular direction and reduce the Compression Residue's size. 
+          <li class="normal" id="section-3.1-2.2">Even when a field is "symmetric" (i.e., found in both directions),
+the values carried in each direction are different.
+The compression may use a "match-mapping" MO to limit the range of expected values
+in a particular direction and reduce the Compression Residue's size.
 Through the direction indicator (DI), a field description in the Rules splits the possible field value into two parts,
 one for each direction.
 For instance, if a client sends only CON requests, the Type can be elided by compression, and the answer may use 
 one single bit to carry either the ACK or RST type.
-The field Code has the same behavior, the 0.0X code format value in the request, and the Y.ZZ code format in the response.<a href="#section-3.1-2.2.2" class="pilcrow">¶</a></p>
+The field Code has the same behavior, the 0.0X code format value in the request, and the Y.ZZ code format in the response.<a href="#section-3.1-2.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-3.1-2.3">
-            <p id="section-3.1-2.3.1">In SCHC, the Rule defines the different header fields' length, so SCHC does not need to send it. 
-In IPv6 and UDP headers, the fields have a fixed size, known by definition. 
-On the other hand, some CoAP header fields have variable lengths, and the Rule description specifies it.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2.3.2">
+            <p id="section-3.1-2.3.1">In SCHC, the Rule defines the different header fields' length, so SCHC does not need to send it.
+In IPv6 and UDP headers, the fields have a fixed size, known by definition.
+On the other hand, some CoAP header fields have variable lengths, and the Rule description specifies it.
 For example, in a URI-path or URI-query, the Token size may vary from 0 to 8 bytes, and the CoAP options use the Type-Length-Value 
-encoding format.<a href="#section-3.1-2.3.2" class="pilcrow">¶</a></p>
-<p id="section-3.1-2.3.3">
+encoding format.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2.3.2">
 When doing SCHC compression of a variable-length field, Section 7.5.2 from <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> offers the possibility to define a function 
-for the Field length in the Field Description to know the length before compression. 
+for the Field length in the Field Description to know the length before compression.
 If the field length is unknown, the Rule will set it as a variable, and SCHC will send the compressed field's length in the
-Compression Residue.<a href="#section-3.1-2.3.3" class="pilcrow">¶</a></p>
+Compression Residue.<a href="#section-3.1-2.3.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-2.4">A field can appear several times in the CoAP headers.  It is found typically for elements of a URI (path or queries). 
+          <li class="normal" id="section-3.1-2.4">A field can appear several times in the CoAP headers. It is found typically for elements of a URI (path or queries).
 The SCHC specification <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> allows a Field ID to appear several times in the Rule and uses the Field Position
 (FP) to identify the correct instance, thereby removing the matching operation's ambiguity.<a href="#section-3.1-2.4" class="pilcrow">¶</a>
 </li>
@@ -807,7 +812,7 @@ be needed to avoid ambiguities between versions.<a href="#section-4.1-1" class="
 <p id="section-4.2-1">The CoAP protocol <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span> has four types of messages: two requests (CON, NON),
 one response (ACK), and one empty message (RST).<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">The SCHC compression SHOULD elide this field if, for instance, a client is sending only NON or only CON messages. For the
-RST message, SCHC may use a dedicated Rule. For other usages, SCHC can use a match-mapping MO.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+RST message, SCHC may use a dedicated Rule. For other usages, SCHC can use a "match-mapping" MO.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coap-code-field">
@@ -816,8 +821,9 @@ RST message, SCHC may use a dedicated Rule. For other usages, SCHC can use a mat
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-coap-code-field" class="section-name selfRef">CoAP code field</a>
         </h3>
 <p id="section-4.3-1">The code field is an IANA registry <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>, and it indicates the Request Method used in CoAP.
-The compression of the CoAP code field follows the same principle as that of the CoAP type field. 
-If the Device plays a specific role, SCHC may split the code values into two fields description, the request codes with the 0 class and the response values. SCHC will use the direction indicator to identify the correct value in the packet.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+The compression of the CoAP code field follows the same principle as that of the CoAP type field.
+If the Device plays a specific role, SCHC may split the code values into two fields description, the request codes with the 0 class and the response values.
+SCHC will use the direction indicator to identify the correct value in the packet.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">If the Device only implements a CoAP client, SCHC compression may reduce the request code to the set of requests the client can process.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <p id="section-4.3-3">For known values, SCHC can use a "match-mapping" MO. If SCHC cannot compress the code field, it will send the values in the Compression Residue.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
@@ -840,7 +846,7 @@ Token Value directly following the mandatory CoAP header.<a href="#section-4.5-1
 <p id="section-4.5-2">SCHC processes the Token length as any header field. If the value does not change, the size 
 can be stored in the TV and elided during the transmission. Otherwise, SCHC will 
 send the token length in the Compression Residue.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
-<p id="section-4.5-3">For the Token Value, SCHC MUST NOT send it as a variable-length residue to avoid ambiguity with Token 
+<p id="section-4.5-3">For the Token Value, SCHC MUST NOT send it as a variable-length in the Compression Residue to avoid ambiguity with Token 
 Length. Therefore, SCHC MUST use the Token length value to define the size of the Compression Residue. 
 SCHC designates a specific function "tkl" that the Rule MUST use to complete the field description.
 During the decompression, this function returns the value contained in the Token Length field.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
@@ -854,11 +860,11 @@ During the decompression, this function returns the value contained in the Token
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-coap-options" class="section-name selfRef">CoAP options</a>
       </h2>
 <p id="section-5-1">CoAP defines options placed after the based header in Option
-Numbers order; see 
+Numbers order; see <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>. Each Option instance in a message uses
+the format Delta-Type (D-T), Length (L), Value (V).
 The SCHC Rule builds the description of the option by using in the Field ID the Option
 Number built from D-T; in TV, the Option Value; and the Option Length
-uses section 7.4 of  <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>.  Each Option instance in a message uses
-the format Delta-Type (D-T), Length (L), Value (V).<span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>.  When the Option Length has a well-known
+uses section 7.4 of  <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>.  When the Option Length has a well-known
 size, the Rule may stock the length value.  Therefore, SCHC compression does
 not send it.  Otherwise, SCHC Compression carries the length of the
 Compression Residue, in addition to the Compression Residue value.<a href="#section-5-1" class="pilcrow">¶</a></p>
@@ -866,14 +872,18 @@ Compression Residue, in addition to the Compression Residue value.<a href="#sect
 Compression Rules may reflect this asymmetry by tagging the
 direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Note that length coding differs between CoAP options and SCHC variable size Compression Residue.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">The following sections present how SCHC compresses some specific CoAP options, the different subsections are based on how SCHC will compress the options and not by the options' behavior.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">If CoAP introduces a new option, the SCHC Rules MAY be updated, and the new Field ID description MUST be assigned to allow its compression.     Otherwise, if no Rule describes this new option, the SCHC compression is not achieved, and SCHC sends the CoAP header without compression.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-4">The following sections present how SCHC compresses some specific CoAP options, the different subsections are based on 
+how SCHC will compress the options and not by the options' behavior.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">If CoAP introduces a new option, the SCHC Rules MAY be updated, and the new Field ID description MUST be assigned to allow its compression.
+Otherwise, if no Rule describes this new option, the SCHC compression is not achieved, and SCHC sends the CoAP header without compression.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <div id="coap-content-and-accept-options">
 <section id="section-5.1">
         <h3 id="name-coap-content-and-accept-opt">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-coap-content-and-accept-opt" class="section-name selfRef">CoAP Content and Accept options.</a>
         </h3>
-<p id="section-5.1-1">If the client expects a single value, it can be stored in the TV and elided during the transmission. Otherwise, if the client expects several possible values, a "match-mapping" SHOULD be used to limit the Compression Residue's size. If not, SCHC has to send the option value in the Compression Residue (fixed or variable length).<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">If the client expects a single value, it can be stored in the TV and elided during the transmission. 
+Otherwise, if the client expects several possible values, a "match-mapping" SHOULD be used to limit the Compression Residue's size. 
+If not, SCHC has to send the option value in the Compression Residue (fixed or variable length).<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coap-option-max-age-uri-host-and-uri-port-fields">
@@ -882,7 +892,7 @@ direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-coap-option-max-age-uri-hos" class="section-name selfRef">CoAP option Max-Age, Uri-Host, and Uri-Port fields</a>
         </h3>
 <p id="section-5.2-1">SCHC compresses these three fields in the same way. When the value of these options is known, SCHC can elide these fields.
- If the option uses well-known values, SCHC can use a "match-mapping" MO. Otherwise, SCHC will use "value-sent" MO, and the Compression Residue will send the values of these options.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+If the option uses well-known values, SCHC can use a "match-mapping" MO. Otherwise, SCHC will use "value-sent" MO, and the Compression Residue will send the values of these options.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coap-option-uri-path-and-uri-query-fields">
@@ -891,7 +901,7 @@ direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-coap-option-uri-path-and-ur" class="section-name selfRef">CoAP option Uri-Path and Uri-Query fields</a>
         </h3>
 <p id="section-5.3-1">The Uri-Path and Uri-Query fields are repeatable options; this means that in the CoAP header, they may appear several times with different values. SCHC Rule description uses the Field Position (FP) to distinguish the different instances in the path.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">To compress repeatable field values, SCHC may use a match-mapping to reduce the size of variable Paths or Queries. In these cases, to optimize the compression, several elements can be regrouped into a single entry. The Numbering of elements does not change, and the first matching element sets the MO comparison.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">To compress repeatable field values, SCHC may use a "match-mapping" MO to reduce the size of variable Paths or Queries. In these cases, to optimize the compression, several elements can be regrouped into a single entry. The Numbering of elements does not change, and the first matching element sets the MO comparison.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 <span id="name-complex-path-example"></span><div id="Fig--complex-path">
 <figure id="figure-4">
           <div class="artwork art-text alignLeft" id="section-5.3-3.1">
@@ -912,8 +922,8 @@ direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <a href="#name-complex-path-example" class="selfRef">complex path example</a>
           </figcaption></figure>
 </div>
-<p id="section-5.3-4">In <a href="#Fig--complex-path" class="xref">Figure 4</a>, SCHC can use a single bit residue to code one of the two paths. 
-If regrouping were not allowed, a 2 bits residue would be needed. SCHC sends the third path element as a variable size in the Compression Residue.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.3-4">In <a href="#Fig--complex-path" class="xref">Figure 4</a>, SCHC can use a single bit in the Compression Residue to code one of the two paths. 
+If regrouping were not allowed, a 2 bits in the Compression Residue would be needed. SCHC sends the third path element as a variable size in the Compression Residue.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
 <div id="variable-length-uri-path-and-uri-query">
 <section id="section-5.3.1">
           <h4 id="name-variable-length-uri-path-an">
@@ -942,7 +952,7 @@ and the unit to bytes.<a href="#section-5.3.1-1" class="pilcrow">¶</a></p>
 <a href="#name-coreconf-uri-compression" class="selfRef">CORECONF URI compression</a>
             </figcaption></figure>
 </div>
-<p id="section-5.3.1-6"><a href="#Fig-CoMicompress" class="xref">Figure 5</a> shows the Rule description for a URI-Path and a URI-Query. SCHC compresses the first part of the URI-Path with a not-sent CDA.
+<p id="section-5.3.1-6"><a href="#Fig-CoMicompress" class="xref">Figure 5</a> shows the Rule description for a URI-Path and a URI-Query. SCHC compresses the first part of the URI-Path with a "not-sent" CDA.
 SCHC will send the second element of the URI-Path with the length (i.e., 0x2 X 6) followed by the query option 
 (i.e., 0x05 "eth0").<a href="#section-5.3.1-6" class="pilcrow">¶</a></p>
 </section>
@@ -991,8 +1001,10 @@ Compression Residue.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
         <h3 id="name-block">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-block" class="section-name selfRef">Block</a>
         </h3>
-<p id="section-6.1-1">When a packet uses a Block <span>[<a href="#RFC7959" class="xref">RFC7959</a>]</span> option, SCHC compression MUST send its content in the Compression Residue. The SCHC Rule describes an empty TV with a MO set to "ignore" and a CDA to "value-sent." 
-Block option allows fragmentation at the CoAP level that is compatible with SCHC fragmentation. Both fragmentation mechanisms are complementary, and the node may use them for the same packet as needed.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">When a packet uses a Block <span>[<a href="#RFC7959" class="xref">RFC7959</a>]</span> option, SCHC compression MUST send its content in the Compression Residue. 
+The SCHC Rule describes an empty TV with a MO set to "ignore" and a CDA to "value-sent."
+Block option allows fragmentation at the CoAP level that is compatible with SCHC fragmentation.
+Both fragmentation mechanisms are complementary, and the node may use them for the same packet as needed.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="observe">
@@ -1226,9 +1238,9 @@ Outer Header. Currently, no CoAP options are marked class I. The resulting
 Ciphertext becomes the new payload of the OSCORE message, as illustrated in
 <a href="#Fig-full-oscore" class="xref">Figure 9</a>.<a href="#section-7.2-10" class="pilcrow">¶</a></p>
 <p id="section-7.2-11">As defined in <span>[<a href="#RFC5116" class="xref">RFC5116</a>]</span>, this Ciphertext is the encrypted Plaintext's concatenation of the
-authentication tag. Note that Inner Compression only 
-affects the Plaintext before encryption. Thus only the first variable-length of the Ciphertext can be reduced. The authentication tag is fixed in 
-length and is considered part of the cost of protection.<a href="#section-7.2-11" class="pilcrow">¶</a></p>
+authentication tag. Note that Inner Compression only affects the Plaintext before encryption.
+Thus only the first variable-length of the Ciphertext can be reduced. 
+The authentication tag is fixed in length and is considered part of the cost of protection.<a href="#section-7.2-11" class="pilcrow">¶</a></p>
 <span id="name-oscore-message"></span><div id="Fig-full-oscore">
 <figure id="figure-9">
           <div class="artwork art-text alignLeft" id="section-7.2-12.1">
@@ -1265,7 +1277,8 @@ encryption and the resulting OSCORE message after encryption, see <a href="#Fig-
 <p id="section-7.2-14">The OSCORE message translates into a segmented process where SCHC compression is applied independently in 
 2 stages, each with its corresponding set of Rules, with the Inner SCHC Rules and the Outer SCHC Rules. 
 This way, compression is applied to all fields of the original CoAP message.<a href="#section-7.2-14" class="pilcrow">¶</a></p>
-<p id="section-7.2-15">Note that since the corresponding end-point can only decrypt the Inner part of the message, this end-point will also have to implement Inner SCHC Compression/Decompression.<a href="#section-7.2-15" class="pilcrow">¶</a></p>
+<p id="section-7.2-15">Note that since the corresponding end-point can only decrypt the Inner part of the message,
+this end-point will also have to implement Inner SCHC Compression/Decompression.<a href="#section-7.2-15" class="pilcrow">¶</a></p>
 <span id="name-oscore-compression-diagram"></span><div id="Fig-OSCORE-Compression">
 <figure id="figure-10">
           <div class="artwork art-text alignLeft" id="section-7.2-16.1">
@@ -1288,19 +1301,19 @@ This way, compression is applied to all fields of the original CoAP message.<a h
           |                      |             |   Inner SCHC    |
           v                      |             |   Compression   |
     +-----------------+          |             +-----------------+
-    |   Outer SCHC    |          |                      |
-    |   Compression   |          |                      v
-    +-----------------+          |              +-------+
-          |                      |              |RuleID |
-          v                      |              +-------+--+
-      +--------+           +------------+       | Residue  |
-      |RuleID' |           | Encryption | &lt;---  +----------+--------+
-      +--------+--+        +------------+       |                   |
-      | Residue'  |                             | Payload           |
-      +-----------+-------+                     |                   |
-      |  Ciphertext       |                     +-------------------+
-      |                   |
-      +-------------------+
+    |   Outer SCHC    |          |                     |
+    |   Compression   |          |                     v
+    +-----------------+          |             +-------+
+          |                      |             |RuleID |
+          v                      |             +-------+-----------+
+    +--------+             +------------+      |Compression Residue|
+    |RuleID' |             | Encryption | &lt;--  +----------+--------+
+    +--------+-----------+ +------------+      |                   |
+    |Compression Residue'|                     | Payload           |
+    +-----------+--------+                     |                   |
+    |  Ciphertext        |                     +-------------------+
+    |                    |
+    +--------------------+
 
 </pre>
 </div>
@@ -1316,7 +1329,7 @@ This way, compression is applied to all fields of the original CoAP message.<a h
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-example-oscore-compression" class="section-name selfRef">Example OSCORE Compression</a>
         </h3>
 <p id="section-7.3-1">This section gives an example with a GET Request and its consequent Content
-Response from a device-based CoAP client to a cloud-based CoAP server. 
+Response from a device-based CoAP client to a cloud-based CoAP server.
 The example also describes a possible set of Rules for the Inner and Outer SCHC
 Compression. A dump of the results and a contrast between SCHC + OSCORE
 performance with SCHC + COAP performance is also listed. This example gives an approximation of the
@@ -1436,7 +1449,7 @@ that can be achieved and plays into the cost of adding security to the exchange.
                | 0x00                            |
                |                                 |
                | RuleID = 0x00 (1 byte)          |
-               | (No residue)                    |
+               | (No Compression Residue)        |
                |_________________________________|
 
                               |
@@ -1457,7 +1470,7 @@ that can be achieved and plays into the cost of adding security to the exchange.
 <a href="#name-plaintext-compression-and-e" class="selfRef">Plaintext compression and encryption for GET Request</a>
           </figcaption></figure>
 </div>
-<p id="section-7.3-11"><a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 15</a> shows the process is repeated for the example CONTENT Response. The residue is 1 bit long.
+<p id="section-7.3-11"><a href="#Fig-Inner-Compression-CONTENT" class="xref">Figure 15</a> shows the process is repeated for the example CONTENT Response. The Compression Residue is 1 bit long.
 Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed. The overhead for the tag bytes limits the SCHC's performance but brings security to the transmission.<a href="#section-7.3-11" class="pilcrow">¶</a></p>
 <span id="name-plaintext-compression-and-en"></span><div id="Fig-Inner-Compression-CONTENT">
 <figure id="figure-15">
@@ -1481,18 +1494,18 @@ Note that since SCHC adds padding after the payload, this misalignment causes th
                               | Inner SCHC Compression
                               |
                               v
-         __________________________________________
-        |                                          |
-        | Compressed Plaintext                     |
-        |                                          |
-        | 0x001919902180 (6 bytes)                 |
-        |                                          |
-        |   00 RuleID                             |
-        |                                          |
-        |    0b0 (1 bit match-map residue)         |
-        |       0x32332043 &gt;&gt; 1 (shifted payload)  |
-        |                        0b0000000 Padding |
-        |__________________________________________|
+         _____________________________________________
+        |                                             |
+        | Compressed Plaintext                        |
+        |                                             |
+        | 0x001919902180 (6 bytes)                    |
+        |                                             |
+        |   00 RuleID                                 |
+        |                                             |
+        |  0b0 (1 bit match-map Compression Residue)  |
+        |       0x32332043 &gt;&gt; 1 (shifted payload)     |
+        |                        0b0000000 Padding    |
+        |_____________________________________________|
 
                               |
                               | AEAD Encryption
@@ -1515,8 +1528,8 @@ Note that since SCHC adds padding after the payload, this misalignment causes th
 <p id="section-7.3-13">The Outer SCHC Rules (<a href="#Fig-Outer-Rules" class="xref">Figure 18</a>) must process the OSCORE Options
 fields. <a href="#Fig-Protected-Compressed-GET" class="xref">Figure 16</a> and <a href="#Fig-Protected-Compressed-CONTENT" class="xref">Figure 17</a> 
 show a dump of the OSCORE Messages generated from the example messages. They include 
-the Inner Compressed Ciphertext in the payload.  These
-are the messages that have to be compressed by the Outer SCHC Compression.<a href="#section-7.3-13" class="pilcrow">¶</a></p>
+the Inner Compressed Ciphertext in the payload.
+These are the messages that have to be compressed by the Outer SCHC Compression.<a href="#section-7.3-13" class="pilcrow">¶</a></p>
 <span id="name-protected-and-inner-schc-co"></span><div id="Fig-Protected-Compressed-GET">
 <figure id="figure-16">
           <div class="artwork art-text alignLeft" id="section-7.3-14.1">
@@ -1589,19 +1602,17 @@ Payload:
           </figcaption></figure>
 </div>
 <p id="section-7.3-16">For the flag bits, some SCHC compression methods are
-useful, depending on the Application.  The most straightforward alternative is to
-provide a fixed value for the flags, combining MO "equal" and CDA "not-
-sent."
-This SCHC definition saves most bits but could prevent flexibility.  Otherwise, SCHC could use a
-"match-mapping" MO to choose from several configurations for the exchange.
-Otherwise, the SCHC description may use an "MSB" MO to mask off the three hard-coded most significant bits.<a href="#section-7.3-16" class="pilcrow">¶</a></p>
+useful, depending on the Application. The most straightforward alternative is to
+provide a fixed value for the flags, combining MO "equal" and CDA "not-sent." 
+This SCHC definition saves most bits but could prevent flexibility.
+Otherwise, SCHC could use a "match-mapping" MO to choose from several configurations for the exchange.
+If not, the SCHC description may use an "MSB" MO to mask off the three hard-coded most significant bits.<a href="#section-7.3-16" class="pilcrow">¶</a></p>
 <p id="section-7.3-17">Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on specific options.<a href="#section-7.3-17" class="pilcrow">¶</a></p>
 <p id="section-7.3-18">The piv field lends itself to having some bits masked off with "MSB" MO and "LSB" CDA.
 This SCHC description could be useful in applications where the message frequency is low such as LPWAN technologies. 
-Note that compressing the sequence numbers may reduce 
-the maximum number of sequence numbers used in an exchange. 
+Note that compressing the sequence numbers may reduce the maximum number of sequence numbers used in an exchange. 
 Once the sequence number exceeds the maximum value, the OSCORE keys need to be re-established.<a href="#section-7.3-18" class="pilcrow">¶</a></p>
-<p id="section-7.3-19">The size s included in the kid context field MAY be masked off with "LSB" CDA. 
+<p id="section-7.3-19">The size s included in the kid context field MAY be masked off with "LSB" CDA.
 The rest of the field could have additional bits masked off or have the whole field fixed with MO "equal" and CDA "not-sent." 
 The same holds for the kid field.<a href="#section-7.3-19" class="pilcrow">¶</a></p>
 <p id="section-7.3-20"><a href="#Fig-Outer-Rules" class="xref">Figure 18</a> shows a possible set of Outer Rules to compress the Outer Header.<a href="#section-7.3-20" class="pilcrow">¶</a></p>
@@ -1781,11 +1792,11 @@ regular SCHC + COAP is about 10 bytes.<a href="#section-7.3-30" class="pilcrow">
       <h2 id="name-security-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security considerations</a>
       </h2>
-<p id="section-9-1">When applied on top of LPWAN, the Security Considerations of SCHC header compression <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> are valid for SCHC CoAP header compression. When using other technologies, an integrity protection mechanism MUST be defined to carry SCHC compressed packets. 
+<p id="section-9-1">When applied on top of LPWAN, the Security Considerations of SCHC header compression <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> are valid for SCHC CoAP header compression. When using other technologies, an integrity protection mechanism MUST be defined to carry SCHC compressed packets.
 When CoAP uses OSCORE, the security considerations defined in <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span> does not change when SCHC header compression is applied.<a href="#section-9-1" class="pilcrow">¶</a></p>
 <p id="section-9-2">The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is necessary to use a layer two security.<a href="#section-9-2" class="pilcrow">¶</a></p>
 <p id="section-9-3">DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause an excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.<a href="#section-9-3" class="pilcrow">¶</a></p>
-<p id="section-9-4">SCHC compression returns variable-length Residues for some CoAP fields. In the compressed header, 
+<p id="section-9-4">SCHC compression returns variable-length Compression Residues for some CoAP fields. In the compressed header, 
 the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drop the packet.<a href="#section-9-4" class="pilcrow">¶</a></p>
 <p id="section-9-5">OSCORE compression uses the same compression method described in <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. 
 However, OSCORE needs to carefully consider the size of the Initialisation Vector (IV) Compression Residue. 
