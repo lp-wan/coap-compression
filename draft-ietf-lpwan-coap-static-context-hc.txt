@@ -172,7 +172,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    the FID when these values differ in the transmission direction.  So a
    field may be described several times depending on the asymmetry of
-   its possible TVs. 
+   its possible TVs.
 
    A Matching Operator (MO) is associated with each header field
    description.  The Rule is selected if all the MOs fit the TVs for all
@@ -196,9 +196,9 @@ Internet-Draft           LPWAN CoAP compression             January 2021
 
    SCHC is a general mechanism applied to different protocols, the exact
    Rules to be used depending on the protocol and the Application.
-   Section 10 of the This document targets the CoAP header compression
-   using SCHC.[RFC8724] describes the compression scheme for IPv6 and
-   UDP headers.
+   Section 10 of the [RFC8724] describes the compression scheme for IPv6
+   and UDP headers.  This document targets the CoAP header compression
+   using SCHC.
 
 1.1.  Terminology
 
@@ -263,7 +263,7 @@ Internet-Draft           LPWAN CoAP compression             January 2021
    In the second example, Figure 2, the SCHC compression is applied in
    the CoAP layer, compressing the CoAP header independently of the
    other layers.  The RuleID, the Compression Residue, and CoAP payload
-   are encrypted using a mechanism such as DTLS.  Only the other end
+   are encryptedusing a mechanism such as DTLS.  Only the other end
    (App) can decipher the information.  If needed, layers below use SCHC
    to compress the header as defined in [RFC8724] (represented in dotted
    lines).
