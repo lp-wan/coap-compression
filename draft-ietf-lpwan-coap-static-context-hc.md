@@ -543,7 +543,7 @@ code, and the least significant bits of Message ID (9 bits in the example above)
 
 Note that a client located in an Application Server sending a request to a server 
 located in the Device, may not be compressed through
-this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxyplaced 
+this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy placed 
 before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.
 
 
