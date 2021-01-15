@@ -67,29 +67,18 @@ normative:
 
 # Introduction {#Introduction}
 
-CoAP {{RFC7252}} is a command/response protocol designed for micro- controllers with a small RAM and ROM and optimized for REST-based (Representative state transfer) services. Although CoAP was designed for constrained devices, a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks). SCHC header compression over CoAP header is required to increase performance or use CoAP over LPWAN technologies.
+CoAP {{RFC7252}} is a command/response protocol designed for micro- controllers with a small RAM and ROM and optimized for REST-based (Representative state transfer) services. Although CoAP was designed for constrained devices, a CoAP header's size is still too large for LPWAN (Low Power Wide Area Networks).
+SCHC header compression over CoAP header is required to increase performance or use CoAP over LPWAN technologies.
 
-The {{RFC8724}} defines SCHC, a header compression mechanism for the LPWAN network based on a static context. Section 5 of the {{RFC8724}}
-explains where compression and decompression take place in the architecture. The SCHC compression scheme assumes as a prerequisite that both end-points know the static context before transmission. The way the context is configured, provisioned, or exchanged is out of this document's scope.
+The {{RFC8724}} defines SCHC, a header compression mechanism for the LPWAN network based on a static context. Section 5 of the {{RFC8724}} explains where compression and decompression take place in the architecture. The SCHC compression scheme assumes as a prerequisite that both end-points know the static context before transmission. The way the context is configured, provisioned, or exchanged is out of this document's scope.
 
-CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances.	
-SCHC compression may apply at two different levels: at IP and UDP in the LPWAN network and another at the application level for CoAP.	
-These two compressions may be independent. Both follow the same principle described in {{RFC8724}}. 
-As different entities manage the CoAP compression at different levels, the SCHC rules driving the compression/decompression are also different.	The {{RFC8724}} describes how to use SCHC for IP and UDP headers.	This document specifies how to apply SCHC compression to CoAP headers.
+CoAP is an application protocol, so CoAP compression requires installing common rules between the two SCHC instances. SCHC compression may apply at two different levels: at IP and UDP in the LPWAN network and another at the application level for CoAP. These two compressions may be independent. Both follow the same principle described in {{RFC8724}}. As different entities manage the CoAP compression at different levels, the SCHC rules driving the compression/decompression are also different. The {{RFC8724}} describes how to use SCHC for IP and UDP headers.	This document specifies how to apply SCHC compression to CoAP headers.
 
-SCHC compresses and decompresses headers based on shared contexts between devices.  
-Each SCHC context consists of multiple Rules. Each Rule can match the header fields and specific values or ranges of values.  
-If a Rule matches, the matched header fields are replaced by the RuleID and the Compression Residue that contains the residual bits of the compression. 
-Thus, different Rules may correspond to different protocol headers in the packet that a device expects to send or receive.
+SCHC compresses and decompresses headers based on shared contexts between devices. Each SCHC context consists of multiple Rules. Each Rule can match the header fields and specific values or ranges of values. If a Rule matches, the matched header fields are replaced by the RuleID and the Compression Residue that contains the residual bits of the compression. Thus, different Rules may correspond to different protocol headers in the packet that a device expects to send or receive.
 
-A Rule describes the packets' entire header with an ordered list of fields descriptions; see section 7 of {{RFC8724}}. 
-Thereby each description contains the field ID (FID), its length (FL), and its position (FP), 
-a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). 
-The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. 
-So a field may be described several times depending on the asymmetry of its possible TVs. 
+A Rule describes the packets' entire header with an ordered list of fields descriptions; see section 7 of {{RFC8724}}. Thereby each description contains the field ID (FID), its length (FL), and its position (FP), a direction indicator (DI) (upstream, downstream, and bidirectional), and some associated Target Values (TV). The direction indicator is used for compression to give the best TV to the FID when these values differ in the transmission direction. So a field may be described several times depending on the asymmetry of its possible TVs.
 
-A Matching Operator (MO) is associated with each header field description.  
-The Rule is selected if all the MOs fit the TVs for all fields of the incoming header. 
+A Matching Operator (MO) is associated with each header field description. The Rule is selected if all the MOs fit the TVs for all fields of the incoming header.
 A rule cannot be selected if the message contains an unknown field to the SCHC compressor.
 
 In that case, a Compression/Decompression Action (CDA) associated with each field gives the method to compress and decompress each field. 
@@ -104,10 +93,8 @@ After applying the compression, there may be some bits to be sent.
 These values are called Compression Residue.
 
 
-SCHC is a general mechanism applied to different protocols, 
-the exact Rules to be used depending on the protocol and the Application.  
-Section 10 of the {{RFC8724}} describes the compression scheme for IPv6 and UDP headers.  
-This document targets the CoAP header compression using SCHC.
+SCHC is a general mechanism applied to different protocols, the exact Rules to be used depending on the protocol and the Application.  
+Section 10 of the {{RFC8724}} describes the compression scheme for IPv6 and UDP headers. This document targets the CoAP header compression using SCHC.
 
 ## Terminology
 
@@ -119,15 +106,9 @@ appear in all capitals, as shown here.
 
 # SCHC Applicability to CoAP 
  
-SCHC Compression for CoAP header MAY be done in conjunction with the
-lower layers (IPv6/UDP) or independently.  
-The SCHC adaptation layers, described in Section 5 of {{RFC8724}}, 
-may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}}, and {{Fig-SCHCCOAP3}}.
+SCHC Compression for CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently. The SCHC adaptation layers, described in Section 5 of {{RFC8724}}, may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}}, and {{Fig-SCHCCOAP3}}.
 
-In the first example, {{Fig-SCHCCOAP1}}, a Rule compresses the complete header
-stack from IPv6 to CoAP.  In this case, The Device and the NGW perform SCHC C/D (Static Context
-Header Compression Compressor/Decompressor).  The host communicating with the Device
-does not implement SCHC C/D.
+In the first example, {{Fig-SCHCCOAP1}}, a Rule compresses the complete header stack from IPv6 to CoAP.  In this case, The Device and the NGW perform SCHC C/D (Static Context Header Compression Compressor/Decompressor).  The host communicating with the Device does not implement SCHC C/D.
 
 
 ~~~~
@@ -149,22 +130,13 @@ does not implement SCHC C/D.
 ~~~~
 {: #Fig-SCHCCOAP1 title='Compression/Decompression at the LPWAN boundary.'}  
 
-{{Fig-SCHCCOAP1}} shows the use of SCHC header compression above layer 2 in the Device and the NGW.
-The SCHC layer received non-encrypted packets and can apply compression Rules to all the headers in the stack.
-On the other end, the NGW receives the SCHC packet and reconstructs the headers using the Rule and the Compression Residue.
-After the decompression, the NGW forwards the IPv6 packet toward the destination. 
-The same process applies in the other direction, when a non-encrypted packet arrives at the NGW.
-Thanks to the IP forwarding based on the IPv6 prefix, the NGW identifies the Device and compresses headers using the Device's Rules. 
+{{Fig-SCHCCOAP1}} shows the use of SCHC header compression above layer 2 in the Device and the NGW. The SCHC layer received non-encrypted packets and can apply compression Rules to all the headers in the stack. On the other end, the NGW receives the SCHC packet and reconstructs the headers using the Rule and the Compression Residue. After the decompression, the NGW forwards the IPv6 packet toward the destination. The same process applies in the other direction, when a non-encrypted packet arrives at the NGW. Thanks to the IP forwarding based on the IPv6 prefix, the NGW identifies the Device and compresses headers using the Device's Rules. 
 
-In the second example, {{Fig-SCHCCOAP2}}, the SCHC compression is applied in
-the CoAP layer, compressing the CoAP header independently of the
-other layers. The RuleID, the Compression Residue, and CoAP payload are encrypted
-using a mechanism such as DTLS.  Only the other end (App) can decipher the
-information.  If needed, layers below use SCHC to compress the header
-as defined in {{RFC8724}} (represented in dotted lines).
+In the second example, {{Fig-SCHCCOAP2}}, the SCHC compression is applied in the CoAP layer, compressing the CoAP header independently of the
+other layers. The RuleID, the Compression Residue, and CoAP payload are encryptedusing a mechanism such as DTLS.  Only the other end (App) can decipher the
+information. If needed, layers below use SCHC to compress the header as defined in {{RFC8724}} (represented in dotted lines).
 
-This use case needs an end-to-end context initialization between the Device and the Application.
-The context initialization is out of the scope of this document.
+This use case needs an end-to-end context initialization between the Device and the Application. The context initialization is out of the scope of this document.
 
 
 ~~~~
@@ -191,10 +163,8 @@ The context initialization is out of the scope of this document.
 {: #Fig-SCHCCOAP2 title='Standalone CoAP end-to-end Compression/Decompression'} 
 
 In the third example, {{Fig-SCHCCOAP3}}, shows the use of Object Security for Constrained
-RESTful Environments (OSCORE) {{RFC8613}}.  In this case, SCHC needs two
-rulesets to compress the CoAP header.  A first ruleset
-focused on the inner header. The result of this first compression is encrypted using the OSCORE mechanism. 
-Then a second ruleset compresses the outer header, including the OSCORE Options.
+RESTful Environments (OSCORE) {{RFC8613}}. In this case, SCHC needs two rulesets to compress the CoAP header. A first ruleset
+focused on the inner header. The result of this first compression is encrypted using the OSCORE mechanism. Then a second ruleset compresses the outer header, including the OSCORE Options.
 
 
 ~~~~
@@ -228,8 +198,7 @@ Then a second ruleset compresses the outer header, including the OSCORE Options.
 ~~~~
 {: #Fig-SCHCCOAP3 title='OSCORE compression/decompression.'} 
 
-In the case of several SCHC instances, as shown in {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}, 
-the rulesets may come from different provisioning domains.
+In the case of several SCHC instances, as shown in {{Fig-SCHCCOAP2}} and {{Fig-SCHCCOAP3}}, the rulesets may come from different provisioning domains.
 
 This document focuses on CoAP compression represented in the dashed boxes in the previous figures.
 
@@ -238,15 +207,11 @@ This document focuses on CoAP compression represented in the dashed boxes in the
 #  CoAP Headers compressed with SCHC
 
 The use of SCHC over the CoAP header uses the same description and compression/decompression techniques as the one for
-IP and UDP explained in the {{RFC8724}}. 
-For CoAP, the SCHC Rules description uses the direction information to optimize the compression
-by reducing the number of Rules needed to compress headers. The field description MAY define
-both request/response headers and target values in the same Rule, using the DI (direction
-indicator) to make the difference.
+IP and UDP explained in the {{RFC8724}}. For CoAP, the SCHC Rules description uses the direction information to optimize the compression
+by reducing the number of Rules needed to compress headers. The field description MAY define both request/response headers and target values in the same Rule, using the DI (direction indicator) to make the difference.
 
-As for other header compression protocols, when the compressor does not find a correct
-Rule to compress the header, the packet MUST be sent uncompressed
-using the RuleID dedicated to this purpose. Where the Compression Residue is the complete header of the packet.  See section 6 of {{RFC8724}}.
+As for other header compression protocols, when the compressor does not find a correct Rule to compress the header, the packet MUST be sent uncompressed
+using the RuleID dedicated to this purpose. Where the Compression Residue is the complete header of the packet. See section 6 of {{RFC8724}}.
 
 ## Differences between CoAP and UDP/IP Compression
 
@@ -292,7 +257,7 @@ CoAP compression differs from IPv6 and UDP compression in the following aspects:
   (FP) to identify the correct instance, thereby removing the matching operation's ambiguity.
 
 
-* Field lengths defined in the CoAP protocol can be too large regarding LPWAN traffic constraints.
+* Field lengths defined in the CoAP protocol can be too large regarding LPWAN traffic constraints. 
   For instance, this is particularly true for the Message-ID field and the Token field. SCHC uses different Matching operators (MO)
   to perform the compression. See section 7.4 of {{RFC8724}}. In this case, SCHC can apply the Most Significant Bits (MSB) MO 
   to reduce the information carried on LPWANs.
@@ -341,7 +306,7 @@ can be stored in the TV and elided during the transmission. Otherwise, SCHC will
 send the token length in the Compression Residue.
 
 For the Token Value, SCHC MUST NOT send it as a variable-length in the Compression Residue to avoid ambiguity with Token 
-Length. Therefore, SCHC MUST use the Token length value to define the size of the Compression Residue. 
+Length. Therefore, SCHC MUST use the Token length value to define the size of the Compression Residue.
 SCHC designates a specific function "tkl" that the Rule MUST use to complete the field description.
 During the decompression, this function returns the value contained in the Token Length field.
 
@@ -351,9 +316,9 @@ Numbers order; see {{RFC7252}}. Each Option instance in a message uses
 the format Delta-Type (D-T), Length (L), Value (V).
 The SCHC Rule builds the description of the option by using in the Field ID the Option
 Number built from D-T; in TV, the Option Value; and the Option Length
-uses section 7.4 of  {{RFC8724}}.  When the Option Length has a well-known
-size, the Rule may stock the length value.  Therefore, SCHC compression does
-not send it.  Otherwise, SCHC Compression carries the length of the
+uses section 7.4 of {{RFC8724}}. When the Option Length has a well-known
+size, the Rule may stock the length value. Therefore, SCHC compression does
+not send it. Otherwise, SCHC Compression carries the length of the
 Compression Residue, in addition to the Compression Residue value.
 
 CoAP requests and responses do not include the same options. So
