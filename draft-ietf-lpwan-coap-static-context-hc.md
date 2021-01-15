@@ -403,7 +403,7 @@ Otherwise, if the value is changing over time, the SCHC Rule will set the MO to 
 ## OSCORE
 {: #Sec-OSCORE}
 
-OSCORE {{RFC8613}} defines end-to-end protection for CoAP messages. 
+OSCORE {{RFC8613}} defines end-to-end protection for CoAP messages.
 This section describes how SCHC Rules can be applied to compress OSCORE-protected messages.
 
 ~~~~
@@ -426,22 +426,12 @@ This section describes how SCHC Rules can be applied to compress OSCORE-protecte
 ~~~~
 {: #Fig-OSCORE-Option title='OSCORE Option'} 
 
-The {{Fig-OSCORE-Option}} shows the OSCORE Option Value encoding defined in Section 6.1 of {{RFC8613}}, 
-where the first byte specifies the Content of the OSCORE options using flags. 
-The three most significant bits of this byte are reserved and always set to 0. 
-Bit h, when set, indicates the presence of the kid context field in the option. 
-Bit k, when set, indicates the presence of a kid field. 
-The three least significant bits n indicate the length of the piv (Partial Initialization Vector) field in bytes. 
-When n = 0, no piv is present.
+The {{Fig-OSCORE-Option}} shows the OSCORE Option Value encoding defined in Section 6.1 of {{RFC8613}}, where the first byte specifies the Content of the OSCORE options using flags. The three most significant bits of this byte are reserved and always set to 0. Bit h, when set, indicates the presence of the kid context field in the option. Bit k, when set, indicates the presence of a kid field. The three least significant bits n indicate the length of the piv (Partial Initialization Vector) field in bytes. When n = 0, no piv is present.
 
 The flag byte is followed by the piv field, kid context field, and kid field in this order, and if present, 
-the length of the kid context field is encoded in the first byte denoting by s the length of the kid context in bytes.
+the kid context field's length is encoded in the first byte denoting by 's' the length of the kid context in bytes.
 
-To better perform OSCORE SCHC compression, the Rule description needs to identify the OSCORE Option and the
-fields it contains. Conceptually, it discerns up to 4 distinct pieces
-of information within the OSCORE option: the flag bits, the piv, the
-kid context, and the kid.  The SCHC Rule splits into four field
-descriptions the OSCORE option to compress them:
+To better perform OSCORE SCHC compression, the Rule description needs to identify the OSCORE Option and the fields it contains. Conceptually, it discerns up to 4 distinct pieces of information within the OSCORE option: the flag bits, the piv, the kid context, and the kid.  The SCHC Rule splits into four field descriptions the OSCORE option to compress them:
 
 
 *  CoAP OSCORE_flags,
@@ -449,8 +439,8 @@ descriptions the OSCORE option to compress them:
 *  CoAP OSCORE_kidctx,
 *  CoAP OSCORE_kid.
 
-{{Fig-OSCORE-Option}} shows the OSCORE Option format with those four fields
-superimposed on it.  Note that the CoAP OSCORE_kidctx field directly includes the size octet s. 
+{{Fig-OSCORE-Option}} shows the OSCORE Option format with those four fields superimposed on it.
+Note that the CoAP OSCORE_kidctx field directly includes the size octet s. 
 
 # Examples of CoAP header compression
 
@@ -485,48 +475,31 @@ RuleID 1
 {: #Fig-CoAP-header-1 title='CoAP Context to compress header without Token'}
 
 
-SCHC compression in this example, elides the version and the Token Length fields. 
-The 26 method and response codes defined in {{RFC7252}} has been shrunk to 5 bits
-using a "match-mapping" MO. The Uri-Path contains a single element indicated in the 
-TV and elided with the CDA "not-sent."  
+In this example, SCHC compression elides the version and the Token Length fields. The 26 method and response codes defined in {{RFC7252}} has been shrunk to 5 bits using a "match-mapping" MO. The Uri-Path contains a single element indicated in the TV and elided with the CDA "not-sent."  
 
-SCHC Compression reduces the header sending only the Type, a mapped
-code, and the least significant bits of Message ID (9 bits in the example above). 
+SCHC Compression reduces the header sending only the Type, a mapped code, and the least significant bits of Message ID (9 bits in the example above). 
 
-Note that a client located in an Application Server sending a request to a server 
-located in the Device, may not be compressed through
-this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy placed 
-before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.
+Note that a client located in an Application Server sending a request to a server located in the Device may not be compressed through this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy placed before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.
 
 
 
 ## OSCORE Compression
 {: #Sec-OSCORE-Examples}
 
-OSCORE aims to solve the problem of end-to-end encryption for CoAP messages.
-Therefore, the goal is to hide as much of the message as possible
+OSCORE aims to solve the problem of end-to-end encryption for CoAP messages. Therefore, the goal is to hide as much as possible the message
 while still enabling proxy operation.
 
-Conceptually this is achieved by splitting the CoAP message into an Inner
-Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive
-information that is not necessary for proxy operation. However, it is 
-part of the message that can be encrypted until it
-reaches its end destination. The Outer Message acts as a shell matching the 
-regular CoAP message format and includes all Options and information 
-needed for proxy operation and caching.
-{{Fig-inner-outer}} illustrates this analysis.
+Conceptually this is achieved by splitting the CoAP message into an Inner Plaintext and Outer OSCORE Message. The Inner Plaintext contains sensitive information that is not necessary for proxy operation. However, it is part of the message that can be encrypted until it
+reaches its end destination. The Outer Message acts as a shell matching the regular CoAP message format and includes all Options and information 
+needed for proxy operation and caching. {{Fig-inner-outer}} illustrates this analysis.
 
-The CoAP protocol arranges the options into one of 3 classes; each granted a specific
-type of protection by the protocol:
+The CoAP protocol arranges the options into one of 3 classes; each granted a specific type of protection by the protocol:
 
  * Class E: Encrypted options moved to the Inner Plaintext,
- * Class I: Integrity-protected options included in the AAD for the encryption
- of the Plaintext but otherwise left untouched in the Outer Message,
+ * Class I: Integrity-protected options included in the AAD for the encryption of the Plaintext but otherwise left untouched in the Outer Message,
  * Class U: Unprotected options left untouched in the Outer Message.
 
-These classes point out that the Outer option contains the OSCORE Option and that the
-message is OSCORE protected; this option carries the information necessary to retrieve the Security Context. 
-The end-point will use this Security Context to decrypt the message correctly.
+These classes point out that the Outer option contains the OSCORE Option and that the message is OSCORE protected; this option carries the information necessary to retrieve the Security Context. The end-point will use this Security Context to decrypt the message correctly.
 
 ~~~~
  
@@ -566,28 +539,15 @@ The end-point will use this Security Context to decrypt the message correctly.
 ~~~~
 {: #Fig-inner-outer title='A CoAP packet is split into an OSCORE outer and plaintext'}
 
-{{Fig-inner-outer}} shows the packet format for the OSCORE Outer header and
-Plaintext. 
+{{Fig-inner-outer}} shows the packet format for the OSCORE Outer header and Plaintext. 
 
-In the Outer Header, the original header code is hidden and replaced by a default
-dummy value. As seen in Sections 4.1.3.5 and 4.2 of {{RFC8613}},
-the message code is replaced by POST for requests and Changed for responses when CoAP is not using the Observe option. 
-If CoAP uses Observe, the OSCORE message code is replaced by FETCH for requests and Content
-for responses.
+In the Outer Header, the original header code is hidden and replaced by a default dummy value. As seen in Sections 4.1.3.5 and 4.2 of {{RFC8613}}, the message code is replaced by POST for requests and Changed for responses when CoAP is not using the Observe option. If CoAP uses Observe, the OSCORE message code is replaced by FETCH for requests and Content for responses.
 
-The first byte of the Plaintext contains the original packet code, followed by the message code, 
-the class E options, and, if present, the original message Payload preceded by its payload marker.
+The first byte of the Plaintext contains the original packet code, followed by the message code, the class E options, and, if present, the original message Payload preceded by its payload marker.
 
-The Plaintext is now encrypted by an AEAD algorithm, this integrity protects the
-Security Context parameters and, eventually, any class I options from the
-Outer Header. Currently, no CoAP options are marked class I. The resulting
-Ciphertext becomes the new payload of the OSCORE message, as illustrated in
-{{Fig-full-oscore}}.
+An AEAD algorithm now encrypts the Plaintext. This integrity protects the Security Context parameters and, eventually, any class I options from the Outer Header. Currently, no CoAP options are marked class I. The resulting Ciphertext becomes the new payload of the OSCORE message, as illustrated in {{Fig-full-oscore}}.
 
-As defined in {{RFC5116}}, this Ciphertext is the encrypted Plaintext's concatenation of the
-authentication tag. Note that Inner Compression only affects the Plaintext before encryption.
-Thus only the first variable-length of the Ciphertext can be reduced. 
-The authentication tag is fixed in length and is considered part of the cost of protection.
+As defined in {{RFC5116}}, this Ciphertext is the encrypted Plaintext's concatenation of the authentication tag. Note that Inner Compression only affects the Plaintext before encryption. Thus only the first variable-length of the Ciphertext can be reduced. The authentication tag is fixed in length and is considered part of the cost of protection.
 
 ~~~~
  
@@ -614,15 +574,11 @@ The authentication tag is fixed in length and is considered part of the cost of 
 ~~~~
 {: #Fig-full-oscore title='OSCORE message'}
 
-The SCHC Compression scheme consists of compressing both the Plaintext before
-encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-Compression}}.
+The SCHC Compression scheme consists of compressing both the Plaintext before encryption and the resulting OSCORE message after encryption, see {{Fig-OSCORE-Compression}}.
 
-The OSCORE message translates into a segmented process where SCHC compression is applied independently in 
-2 stages, each with its corresponding set of Rules, with the Inner SCHC Rules and the Outer SCHC Rules. 
-This way, compression is applied to all fields of the original CoAP message.   
+The OSCORE message translates into a segmented process where SCHC compression is applied independently in 2 stages, each with its corresponding set of Rules, with the Inner SCHC Rules and the Outer SCHC Rules. This way, compression is applied to all fields of the original CoAP message.   
 
-Note that since the corresponding end-point can only decrypt the Inner part of the message,
-this end-point will also have to implement Inner SCHC Compression/Decompression.
+Note that since the corresponding end-point can only decrypt the Inner part of the message, this end-point will also have to implement Inner SCHC Compression/Decompression.
 
 ~~~~
      Outer Message                             OSCORE Plaintext
@@ -669,7 +625,7 @@ Compression. A dump of the results and a contrast between SCHC + OSCORE
 performance with SCHC + COAP performance is also listed. This example gives an approximation of the
 cost of security with SCHC-OSCORE.
 
-Our first CoAP message is the GET Request in {{Fig-GET-temp}}
+Our first CoAP message is the GET request in {{Fig-GET-temp}}.
 
 ~~~~
 Original message:
@@ -735,13 +691,10 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
 
-{{Fig-Inner-Compression-GET}} shows the Plaintext obtained for the example GET request and follows the process of Inner Compression and Encryption until the end up with the payload to be added in the outer OSCORE Message. 
+{{Fig-Inner-Compression-GET}} shows the Plaintext obtained for the example GET request. The packet follows the process of Inner Compression and Encryption until the payload. The outer OSCORE Message adds the result of the Inner process. 
 
-In this case, the original message has no payload, and its resulting Plaintext compressed up to only 1 byte 
-(size of the RuleID). The AEAD algorithm preserves this length in its first output and yields 
-a fixed-size tag. SCHC cannot compress the tag, and the OSCORE message must include it without compression; 
-this translates into an overhead in total message length, limiting the amount of compression 
-that can be achieved and plays into the cost of adding security to the exchange.
+In this case, the original message has no payload, and its resulting Plaintext compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output and yields a fixed-size tag. SCHC cannot compress the tag, and the OSCORE message must include it without compression.
+The use of integrity translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
 
 ~~~~
    ________________________________________________________
@@ -787,8 +740,8 @@ that can be achieved and plays into the cost of adding security to the exchange.
 {: #Fig-Inner-Compression-GET title='Plaintext compression and encryption for GET Request'}
 
 
-{{Fig-Inner-Compression-CONTENT}} shows the process is repeated for the example CONTENT Response. The Compression Residue is 1 bit long.
-Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even though it has not been compressed. The overhead for the tag bytes limits the SCHC's performance but brings security to the transmission.
+{{Fig-Inner-Compression-CONTENT}} shows the process for the example CONTENT Response. The Compression Residue is 1 bit long.
+Note that since SCHC adds padding after the payload, this misalignment causes the hexadecimal code from the payload to differ from the original, even if SCHC cannot compress the tag. The overhead for the tag bytes limits the SCHC's performance but brings security to the transmission.
 
 ~~~~
    ________________________________________________________
@@ -837,11 +790,7 @@ Note that since SCHC adds padding after the payload, this misalignment causes th
 ~~~~
 {: #Fig-Inner-Compression-CONTENT title='Plaintext compression and encryption for CONTENT Response'}
 
-The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options
-fields. {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} 
-show a dump of the OSCORE Messages generated from the example messages. They include 
-the Inner Compressed Ciphertext in the payload.
-These are the messages that have to be compressed by the Outer SCHC Compression.
+The Outer SCHC Rules ({{Fig-Outer-Rules}}) must process the OSCORE Options fields. {{Fig-Protected-Compressed-GET}} and {{Fig-Protected-Compressed-CONTENT}} shows a dump of the OSCORE Messages generated from the example messages. They include the Inner Compressed Ciphertext in the payload. These are the messages that have to be compressed by the Outer SCHC Compression.
 
 
 ~~~~
@@ -904,23 +853,17 @@ Payload:
 ~~~~
 {: #Fig-Protected-Compressed-CONTENT title='Protected and Inner SCHC Compressed CONTENT Response'}
 
-For the flag bits, some SCHC compression methods are
-useful, depending on the Application. The most straightforward alternative is to
+For the flag bits, some SCHC compression methods are useful, depending on the Application. The most straightforward alternative is to
 provide a fixed value for the flags, combining MO "equal" and CDA "not-sent." 
-This SCHC definition saves most bits but could prevent flexibility.
-Otherwise, SCHC could use a "match-mapping" MO to choose from several configurations for the exchange.
-If not, the SCHC description may use an "MSB" MO to mask off the three hard-coded most significant bits.
+This SCHC definition saves most bits but could prevent flexibility. Otherwise, SCHC could use a "match-mapping" MO to choose from several configurations for the exchange. If not, the SCHC description may use an "MSB" MO to mask off the three hard-coded most significant bits.
 
 Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on specific options.
 
-The piv field lends itself to having some bits masked off with "MSB" MO and "LSB" CDA.
-This SCHC description could be useful in applications where the message frequency is low such as LPWAN technologies. 
+The piv field lends itself to having some bits masked off with "MSB" MO and "LSB" CDA. This SCHC description could be useful in applications where the message frequency is low such as LPWAN technologies. 
 Note that compressing the sequence numbers may reduce the maximum number of sequence numbers used in an exchange. 
 Once the sequence number exceeds the maximum value, the OSCORE keys need to be re-established.
 
-The size s included in the kid context field MAY be masked off with "LSB" CDA.
-The rest of the field could have additional bits masked off or have the whole field fixed with MO "equal" and CDA "not-sent." 
-The same holds for the kid field.
+The size s included in the kid context field MAY be masked off with "LSB" CDA. The rest of the field could have additional bits masked off or have the whole field fixed with MO "equal" and CDA "not-sent." The same holds for the kid field.
 
 {{Fig-Outer-Rules}} shows a possible set of Outer Rules to compress the Outer Header. 
 
@@ -1065,18 +1008,31 @@ When CoAP uses OSCORE, the security considerations defined in {{RFC8613}} does n
 
 The definition of SCHC over CoAP header fields permits the compression of header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is necessary to use a layer two security.
 
-DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause an excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to the use of header compression.
+DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to header compression.
 
 SCHC compression returns variable-length Compression Residues for some CoAP fields. In the compressed header, 
-the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the one in the original header, SCHC decompression will detect an error and drop the packet.
+the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the original header, SCHC decompression will detect an error and drop the packet.
 
 OSCORE compression uses the same compression method described in {{RFC8724}}. 
 However, OSCORE needs to carefully consider the size of the Initialisation Vector (IV) Compression Residue. 
-A Compression Residue size obtained with a "LSB" CDA over the IV impacts the compression efficiency, 
-and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming. 
+A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming. 
 
-SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules in one side MUST trigger the OSCORE keys re-establishment. 
+SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. 
 
+##Another version for Security Considerations
+The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is necessary to use a layer two security.
+
+If LPWAN is the layer two technology, the use of SCHC over the CoAP protocol keeps valid the Security Considerations of SCHC header compression {{RFC8724}}.  When using another layer two, integrity protection is mandatory.
+
+The use of SCHC when CoAP uses OSCORE keeps valid the security considerations defined in {{RFC8613}}. 
+
+DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to header compression.
+
+SCHC compression returns variable-length Compression Residues for some CoAP fields. However, in the compressed header, the length sent is not the original header field length but the Compression Residue's length. So If a corrupted packet comes to the decompressor with a longer or shorter length than the original header, SCHC decompression will not detect the error all the time.
+
+Using SCHC over the OSCORE headers, OSCORE MUST consider the Initialisation Vector (IV) size carefully in the Compression Residue.  A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming. 
+
+SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. 
 
 # Acknowledgements
 
