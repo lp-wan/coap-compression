@@ -108,7 +108,7 @@ appear in all capitals, as shown here.
  
 SCHC Compression for CoAP header MAY be done in conjunction with the lower layers (IPv6/UDP) or independently. The SCHC adaptation layers, described in Section 5 of {{RFC8724}}, may be used as shown in {{Fig-SCHCCOAP1}}, {{Fig-SCHCCOAP2}}, and {{Fig-SCHCCOAP3}}.
 
-In the first example, {{Fig-SCHCCOAP1}}, a Rule compresses the complete header stack from IPv6 to CoAP.  In this case, the Device and the NGW perform SCHC C/D (Static Context Header Compression Compressor/Decompressor).  The host communicating with the Device does not implement SCHC C/D.
+In the first example, {{Fig-SCHCCOAP1}}, a Rule compresses the complete header stack from IPv6 to CoAP.  In this case, the Device and the NGW perform SCHC C/D (Static Context Header Compression Compressor/Decompressor).  The Application communicating with the Device does not implement SCHC C/D.
 
 
 ~~~~
