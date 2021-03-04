@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-ietf-lpwan-coap-static-context-hc-18
+docname: draft-ietf-lpwan-coap-static-context-hc-19
 cat: std
 pi:
   symrefs: 'yes'
@@ -286,8 +286,8 @@ SCHC processes the Token length as any header field. If the value does not chang
 For the Token Value, SCHC MUST NOT send it as a variable-length in the Compression Residue to avoid ambiguity with Token Length. Therefore, SCHC MUST use the Token length value to define the size of the Compression Residue. SCHC designates a specific function "tkl" that the Rule MUST use to complete the field description. During the decompression, this function returns the value contained in the Token Length field.
 
 # CoAP options
-CoAP defines options placed after the based header in Option Numbers order; see {{RFC7252}}. Each Option instance in a message uses
-the format Delta-Type (D-T), Length (L), Value (V). The SCHC Rule builds the description of the option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of {{RFC8724}}. When the Option Length has a well-known size, the Rule may stock the length value. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue, in addition to the Compression Residue value.
+CoAP defines options placed after the basic header in Option Numbers order; see {{RFC7252}}. Each Option instance in a message uses
+the format Delta-Type (D-T), Length (L), Value (V). The SCHC Rule builds the description of the option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of {{RFC8724}}. When the Option Length has a well-known size, the Rule may keep the length value. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue, in addition to the Compression Residue value.
 
 CoAP requests and responses do not include the same options. So Compression Rules may reflect this asymmetry by tagging the direction indicator.
 
@@ -395,7 +395,7 @@ Since the Observe option MAY use an RST message to inform a server that the clie
 
 ## No-Response
 
-The {{RFC7967}} defines a No-Response. Different behaviors exist while using this option to limit the responses made by a server to a request. If both ends know the value, then the SCHC Rule will describe a TV to this value, with a MO set to "equal" and CDA set to "not-sent."
+The {{RFC7967}} defines a No-Response option limiting the responses made by a server to a request. Different behaviors exist while using this option to limit the responses made by a server to a request. If both ends know the value, then the SCHC Rule will describe a TV to this value, with a MO set to "equal" and CDA set to "not-sent."
 
 Otherwise, if the value is changing over time, the SCHC Rule will set the MO to "ignore" and CDA to "value-sent." The Rule may also use a "match-mapping" to compress this option. 
 
@@ -458,12 +458,12 @@ RuleID 1
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version | 2| 1|bi|  01  |equal    |not-sent     ||            |
 |CoAP Type    | 2| 1|dw| CON  |equal    |not-sent     ||            |
-|CoAP Type    | 2| 1|up|[ACK, |         |             ||            |
-|             |  |  |  | RST] |match-map|matching-sent|| T          |
+|CoAP Type    | 2| 1|up|[ACK, |match-   |matching-    ||            |
+|             |  |  |  | RST] |mapping  |sent         || T          |
 |CoAP TKL     | 4| 1|bi| 0    |equal    |not-sent     ||            |
 |CoAP Code    | 8| 1|bi|[0.00,|         |             ||            |
-|             |  |  |  | ...  |         |             ||            |
-|             |  |  |  | 5.05]|match-map|matching-sent||  CC CCC    |
+|             |  |  |  | ...  |match-   |matching-    ||            |
+|             |  |  |  | 5.05]|mapping  |sent         ||  CC CCC    |
 |CoAP MID     |16| 1|bi| 0000 |MSB(7 )  |LSB          ||        M-ID|
 |CoAP Uri-Path|var 1|dw| path |equal 1  |not-sent     ||            |
 +-------------+--+--+--+------+---------+-------------++------------+
@@ -478,7 +478,7 @@ In this example, SCHC compression elides the version and the Token Length fields
 
 SCHC Compression reduces the header sending only the Type, a mapped code, and the least significant bits of Message ID (9 bits in the example above). 
 
-Note that a client located in an Application Server sending a request to a server located in the Device may not be compressed through this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy placed before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.
+Note that a client located in an Application Server sending a request to a server located in the Device may not be compressed through this Rule since the MID might not start with 7 bits equal to 0. A CoAP proxy placed before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.
 
 
 
@@ -685,7 +685,8 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 +--------------+--+--+--+-----------+---------+---------++------+
 |CoAP Code     | 8| 1|up| 1         |  equal  |not-sent ||      |
 |CoAP Code     | 8| 1|dw|[69,       |         |         ||      |
-|              |  |  |  |132]       |match-map|mapp-sent|| c    |
+|              |  |  |  |132]       |match-   |mapping- ||      |
+|              |  |  |  |           |mapping  |sent     || c    |
 |CoAP Uri-Path |88| 1|up|temperature|  equal  |not-sent ||      |
 +--------------+--+--+--+-----------+---------+---------++------+
 ~~~~
@@ -694,7 +695,7 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 {{Fig-Inner-Compression-GET}} shows the Plaintext obtained for the example GET request. The packet follows the process of Inner Compression and Encryption until the payload. The outer OSCORE Message adds the result of the Inner process. 
 
 In this case, the original message has no payload, and its resulting Plaintext compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output and yields a fixed-size tag. SCHC cannot compress the tag, and the OSCORE message must include it without compression.
-The use of integrity translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
+The use of integrity protection translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.
 
 ~~~~
    ________________________________________________________
@@ -860,7 +861,7 @@ This SCHC definition saves most bits but could prevent flexibility. Otherwise, S
 Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on specific options.
 
 The piv field lends itself to having some bits masked off with "MSB" MO and "LSB" CDA. This SCHC description could be useful in applications where the message frequency is low such as LPWAN technologies. 
-Note that compressing the sequence numbers may reduce the maximum number of sequence numbers used in an exchange. 
+Note that compressing the sequence numbers may reduce the maximum number of sequence numbers that can be used in an exchange. 
 Once the sequence number exceeds the maximum value, the OSCORE keys need to be re-established.
 
 The size s included in the kid context field MAY be masked off with "LSB" CDA. The rest of the field could have additional bits masked off or have the whole field fixed with MO "equal" and CDA "not-sent." The same holds for the kid field.
@@ -948,7 +949,8 @@ RuleID 1
 |CoAP Type      | 2| 1|dw|    2      |equal    |not-sent   ||       |
 |CoAP TKL       | 4| 1|bi|    1      |equal    |not-sent   ||       |
 |CoAP Code      | 8| 1|up|    2      |equal    |not-sent   ||       |
-|CoAP Code      | 8| 1|dw| [69,132]  |match-map|map-sent   ||C      |
+|CoAP Code      | 8| 1|dw| [69,132]  |match-   |mapping-   ||       |
+|               |  |  |  |           |mapping  |sent       ||C      |
 |CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM   |
 |CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT    |
 |CoAP Uri-Path  |88| 1|up|temperature|equal    |not-sent   ||       |
@@ -1003,7 +1005,57 @@ This document has no request to IANA.
 
 # Security considerations {#SecConsiderations}
 
-The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is necessary to use a layer two security.
+The use of SCHC header compression for CoAP header fields only affects
+the representation of the header information.  SCHC header compression
+itself does not increase or decrease the overall level of security of
+the communication.  When the connection does not use a security protocol
+(such as OSCORE, DTLS, etc.), it is necessary to use a layer-two
+security mechanism to protect the SCHC messages.
+
+If LPWAN is the layer-two technology, the SCHC security considerations
+of [RFC8724] continue to apply.  When using another layer-two protocol,
+use of a cryptographic integrity-protection mechanisms to protect the
+SCHC headers is REQUIRED.  Such cryptographic integrity protection is
+necessary in order to continue to provide the properties that [RFC8724]
+relies upon.
+
+When SCHC is used with OSCORE, the security considerations of [RFC8613]
+continue to apply.
+
+When SCHC is used with the OSCORE outer headers, the Initialization
+Vector (IV) size in the Compression Residue must be carefully selected.
+There is a tradeoff between compression efficiency (with a longer "MSB"
+MO prefix) and the frequency at which the Device must renew its key
+material (in order to prevent the IV from expanding to an uncompressable
+value).  The key renewal operation itself requires several message
+exchanges and requires energy-intensive computation, but the optimal
+tradeoff will depend on the specifics of the device and expected usage
+patterns.
+
+If an attacker can introduce a corrupted SCHC-compressed packet onto a
+link, DoS attacks are possible by causing excessive resource consumption
+at the decompressor.  However, an attacker able to inject packets at the
+link layer is also capable of other, potentially more damaging, attacks.
+
+SCHC compression emits variable-length Compression Residues for some
+CoAP fields.  In the compressed header representation, the length field
+that is sent is not the length of the original header field but rather
+the length of the Compression Residue that is being transmitted.  If a
+corrupted packet arrives at the decompressor with a longer or shorter
+length than the original compressed representation possessed, the SCHC
+decompression procedures will detect an error and drop the packet.
+
+SCHC header compression rules MUST remain tightly coupled between
+compressor and decompressor.  If the compression rules get out of sync,
+a Compression Residue might be decompressed differently at the receiver
+than the initial message submitted to compression procedures.
+Accordingly, any time the context Rules are updated on an OSCORE
+endpoint, that endpoint MUST trigger OSCORE key re-establishment.
+Similar procedures may be appropriate to signal Rule udpates when other
+message-protection mechanisms are in use.
+
+
+<<-! The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol (such as OSCORE, DTLS, etc.), it is necessary to use a layer two securitymechanis.
 
 If LPWAN is the layer two technology, the use of SCHC over the CoAP protocol keeps valid the Security Considerations of SCHC header compression {{RFC8724}}.  When using another layer two, integrity protection is mandatory.
 
@@ -1016,7 +1068,8 @@ the length sent is not the original header field length but the Compression Resi
 
 Using SCHC over the OSCORE headers, OSCORE MUST consider the Initialization Vector (IV) size carefully in the Compression Residue.  A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming. 
 
-SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. 
+SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. !->>
+
 
 # Acknowledgements
 
