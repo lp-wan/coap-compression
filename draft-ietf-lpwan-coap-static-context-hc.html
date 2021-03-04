@@ -19,16 +19,16 @@
    specification gives guidance on applying SCHC to flexible headers and how to leverage the asymmetry for more efficient compression Rules. 
     " name="description">
 <meta content="xml2rfc 3.5.0" name="generator">
-<meta content="draft-ietf-lpwan-coap-static-context-hc-18" name="ietf.draft">
+<meta content="draft-ietf-lpwan-coap-static-context-hc-19" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.5.0
     Python 3.6.3
     appdirs 1.4.4
-    ConfigArgParse 1.2.3
+    ConfigArgParse 1.3
     google-i18n-address 2.4.0
     html5lib 1.1
     intervaltree 3.1.0
-    Jinja2 2.11.2
+    Jinja2 2.11.3
     kitchen 1.2.6
     lxml 4.6.2
     pycountry 20.7.3
@@ -317,11 +317,11 @@ address {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">LPWAN CoAP compression</td>
-<td class="right">January 2021</td>
+<td class="right">March 2021</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Minaburo, et al.</td>
-<td class="center">Expires 25 July 2021</td>
+<td class="center">Expires 5 September 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -331,15 +331,15 @@ address {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">lpwan Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-lpwan-coap-static-context-hc-18</dd>
+<dd class="internet-draft">draft-ietf-lpwan-coap-static-context-hc-19</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-01-21" class="published">21 January 2021</time>
+<time datetime="2021-03-04" class="published">4 March 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-07-25">25 July 2021</time></dd>
+<dd class="expires"><time datetime="2021-09-05">5 September 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -388,7 +388,7 @@ address {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 July 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 September 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -416,118 +416,118 @@ address {
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.1">
+<nav class="toc"><ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.1.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-terminology" class="xref">Terminology</a><a href="#section-toc.1-1.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.2">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-schc-applicability-to-coap" class="xref">SCHC Applicability to CoAP</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.3">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-coap-headers-compressed-wit" class="xref">CoAP Headers compressed with SCHC</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-differences-between-coap-an" class="xref">Differences between CoAP and UDP/IP Compression</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.4">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-compression-of-coap-header-" class="xref">Compression of CoAP header fields</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.4.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-coap-version-field" class="xref">CoAP version field</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.2">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-coap-type-field" class="xref">CoAP type field</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.3">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-coap-code-field" class="xref">CoAP code field</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.4">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-coap-message-id-field" class="xref">CoAP Message ID field</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.5">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-coap-token-fields" class="xref">CoAP Token fields</a><a href="#section-toc.1-1.4.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.5">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-coap-options" class="xref">CoAP options</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.5.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-coap-content-and-accept-opt" class="xref">CoAP Content and Accept options.</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.2">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-coap-option-max-age-uri-hos" class="xref">CoAP option Max-Age, Uri-Host, and Uri-Port fields</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.3">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-coap-option-uri-path-and-ur" class="xref">CoAP option Uri-Path and Uri-Query fields</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.5.2.3.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.5.2.3.2.1">
                     <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="xref">5.3.1</a>.  <a href="#name-variable-length-uri-path-an" class="xref">Variable-length Uri-Path and Uri-Query</a><a href="#section-toc.1-1.5.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.3.2.2">
+                  <li class="toc ulEmpty compact" id="section-toc.1-1.5.2.3.2.2">
                     <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="xref">5.3.2</a>.  <a href="#name-variable-number-of-path-or-" class="xref">Variable number of Path or Query elements</a><a href="#section-toc.1-1.5.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.4">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.5.2.4">
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-coap-option-size1-size2-pro" class="xref">CoAP option Size1, Size2, Proxy-URI and Proxy-Scheme fields</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.5">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.5.2.5">
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-coap-option-etag-if-match-i" class="xref">CoAP option ETag, If-Match, If-None-Match, Location-Path, and Location-Query fields</a><a href="#section-toc.1-1.5.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.6">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-schc-compression-of-coap-ex" class="xref">SCHC compression of CoAP extension RFCs</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.6.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-block" class="xref">Block</a><a href="#section-toc.1-1.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.6.2.2">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.6.2.2">
                 <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-observe" class="xref">Observe</a><a href="#section-toc.1-1.6.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.6.2.3">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.6.2.3">
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-no-response" class="xref">No-Response</a><a href="#section-toc.1-1.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.6.2.4">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.6.2.4">
                 <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="xref">6.4</a>.  <a href="#name-oscore" class="xref">OSCORE</a><a href="#section-toc.1-1.6.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.7">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-examples-of-coap-header-com" class="xref">Examples of CoAP header compression</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.7.2.1">
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-mandatory-header-with-con-m" class="xref">Mandatory header with CON message</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.7.2.2">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-oscore-compression" class="xref">OSCORE Compression</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.7.2.3">
+              <li class="toc ulEmpty compact" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-example-oscore-compression" class="xref">Example OSCORE Compression</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.8">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.9">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-security-considerations" class="xref">Security considerations</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.10">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.11">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.11">
             <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="compact ulEmpty toc" id="section-toc.1-1.12">
+          <li class="toc ulEmpty compact" id="section-toc.1-1.12">
             <p id="section-toc.1-1.12.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -801,8 +801,8 @@ For the RST message, SCHC may use a dedicated Rule. For other usages, SCHC can u
       <h2 id="name-coap-options">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-coap-options" class="section-name selfRef">CoAP options</a>
       </h2>
-<p id="section-5-1">CoAP defines options placed after the based header in Option Numbers order; see <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>. Each Option instance in a message uses
-the format Delta-Type (D-T), Length (L), Value (V). The SCHC Rule builds the description of the option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. When the Option Length has a well-known size, the Rule may stock the length value. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue, in addition to the Compression Residue value.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">CoAP defines options placed after the basic header in Option Numbers order; see <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>. Each Option instance in a message uses
+the format Delta-Type (D-T), Length (L), Value (V). The SCHC Rule builds the description of the option by using in the Field ID the Option Number built from D-T; in TV, the Option Value; and the Option Length uses section 7.4 of <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>. When the Option Length has a well-known size, the Rule may keep the length value. Therefore, SCHC compression does not send it. Otherwise, SCHC Compression carries the length of the Compression Residue, in addition to the Compression Residue value.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">CoAP requests and responses do not include the same options. So Compression Rules may reflect this asymmetry by tagging the direction indicator.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Note that length coding differs between CoAP options and SCHC variable size Compression Residue.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">The following sections present how SCHC compresses some specific CoAP options.<a href="#section-5-4" class="pilcrow">¶</a></p>
@@ -948,7 +948,7 @@ Both fragmentation mechanisms are complementary, and the node may use them for t
         <h3 id="name-no-response">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-no-response" class="section-name selfRef">No-Response</a>
         </h3>
-<p id="section-6.3-1">The <span>[<a href="#RFC7967" class="xref">RFC7967</a>]</span> defines a No-Response. Different behaviors exist while using this option to limit the responses made by a server to a request. If both ends know the value, then the SCHC Rule will describe a TV to this value, with a MO set to "equal" and CDA set to "not-sent."<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-1">The <span>[<a href="#RFC7967" class="xref">RFC7967</a>]</span> defines a No-Response option limiting the responses made by a server to a request. Different behaviors exist while using this option to limit the responses made by a server to a request. If both ends know the value, then the SCHC Rule will describe a TV to this value, with a MO set to "equal" and CDA set to "not-sent."<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-2">Otherwise, if the value is changing over time, the SCHC Rule will set the MO to "ignore" and CDA to "value-sent." The Rule may also use a "match-mapping" to compress this option.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1028,12 +1028,12 @@ RuleID 1
 +-------------+--+--+--+------+---------+-------------++------------+
 |CoAP version | 2| 1|bi|  01  |equal    |not-sent     ||            |
 |CoAP Type    | 2| 1|dw| CON  |equal    |not-sent     ||            |
-|CoAP Type    | 2| 1|up|[ACK, |         |             ||            |
-|             |  |  |  | RST] |match-map|matching-sent|| T          |
+|CoAP Type    | 2| 1|up|[ACK, |match-   |matching-    ||            |
+|             |  |  |  | RST] |mapping  |sent         || T          |
 |CoAP TKL     | 4| 1|bi| 0    |equal    |not-sent     ||            |
 |CoAP Code    | 8| 1|bi|[0.00,|         |             ||            |
-|             |  |  |  | ...  |         |             ||            |
-|             |  |  |  | 5.05]|match-map|matching-sent||  CC CCC    |
+|             |  |  |  | ...  |match-   |matching-    ||            |
+|             |  |  |  | 5.05]|mapping  |sent         ||  CC CCC    |
 |CoAP MID     |16| 1|bi| 0000 |MSB(7 )  |LSB          ||        M-ID|
 |CoAP Uri-Path|var 1|dw| path |equal 1  |not-sent     ||            |
 +-------------+--+--+--+------+---------+-------------++------------+
@@ -1048,7 +1048,7 @@ RuleID 1
 </div>
 <p id="section-7.1-3">In this example, SCHC compression elides the version and the Token Length fields. The 26 method and response codes defined in <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span> has been shrunk to 5 bits using a "match-mapping" MO. The Uri-Path contains a single element indicated in the TV and elided with the CDA "not-sent."<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <p id="section-7.1-4">SCHC Compression reduces the header sending only the Type, a mapped code, and the least significant bits of Message ID (9 bits in the example above).<a href="#section-7.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.1-5">Note that a client located in an Application Server sending a request to a server located in the Device may not be compressed through this Rule since the MID will not start with 7 bits equal to 0. A CoAP proxy placed before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
+<p id="section-7.1-5">Note that a client located in an Application Server sending a request to a server located in the Device may not be compressed through this Rule since the MID might not start with 7 bits equal to 0. A CoAP proxy placed before the SCHC C/D can rewrite the message ID to fit the value and match the Rule.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="Sec-OSCORE-Examples">
@@ -1282,7 +1282,8 @@ Original msg length:   10
 +--------------+--+--+--+-----------+---------+---------++------+
 |CoAP Code     | 8| 1|up| 1         |  equal  |not-sent ||      |
 |CoAP Code     | 8| 1|dw|[69,       |         |         ||      |
-|              |  |  |  |132]       |match-map|mapp-sent|| c    |
+|              |  |  |  |132]       |match-   |mapping- ||      |
+|              |  |  |  |           |mapping  |sent     || c    |
 |CoAP Uri-Path |88| 1|up|temperature|  equal  |not-sent ||      |
 +--------------+--+--+--+-----------+---------+---------++------+
 </pre>
@@ -1293,7 +1294,7 @@ Original msg length:   10
 </div>
 <p id="section-7.3-8"><a href="#Fig-Inner-Compression-GET" class="xref">Figure 14</a> shows the Plaintext obtained for the example GET request. The packet follows the process of Inner Compression and Encryption until the payload. The outer OSCORE Message adds the result of the Inner process.<a href="#section-7.3-8" class="pilcrow">¶</a></p>
 <p id="section-7.3-9">In this case, the original message has no payload, and its resulting Plaintext compressed up to only 1 byte (size of the RuleID). The AEAD algorithm preserves this length in its first output and yields a fixed-size tag. SCHC cannot compress the tag, and the OSCORE message must include it without compression.
-The use of integrity translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.<a href="#section-7.3-9" class="pilcrow">¶</a></p>
+The use of integrity protection translates into an overhead in total message length, limiting the amount of compression that can be achieved and plays into the cost of adding security to the exchange.<a href="#section-7.3-9" class="pilcrow">¶</a></p>
 <span id="name-plaintext-compression-and-e"></span><div id="Fig-Inner-Compression-GET">
 <figure id="figure-14">
           <div class="artwork art-text alignLeft" id="section-7.3-10.1">
@@ -1475,7 +1476,7 @@ provide a fixed value for the flags, combining MO "equal" and CDA "not-sent."
 This SCHC definition saves most bits but could prevent flexibility. Otherwise, SCHC could use a "match-mapping" MO to choose from several configurations for the exchange. If not, the SCHC description may use an "MSB" MO to mask off the three hard-coded most significant bits.<a href="#section-7.3-16" class="pilcrow">¶</a></p>
 <p id="section-7.3-17">Note that fixing a flag bit will limit CoAP Options choice that can be used in the exchange since their values are dependent on specific options.<a href="#section-7.3-17" class="pilcrow">¶</a></p>
 <p id="section-7.3-18">The piv field lends itself to having some bits masked off with "MSB" MO and "LSB" CDA. This SCHC description could be useful in applications where the message frequency is low such as LPWAN technologies. 
-Note that compressing the sequence numbers may reduce the maximum number of sequence numbers used in an exchange. 
+Note that compressing the sequence numbers may reduce the maximum number of sequence numbers that can be used in an exchange. 
 Once the sequence number exceeds the maximum value, the OSCORE keys need to be re-established.<a href="#section-7.3-18" class="pilcrow">¶</a></p>
 <p id="section-7.3-19">The size s included in the kid context field MAY be masked off with "LSB" CDA. The rest of the field could have additional bits masked off or have the whole field fixed with MO "equal" and CDA "not-sent." The same holds for the kid field.<a href="#section-7.3-19" class="pilcrow">¶</a></p>
 <p id="section-7.3-20"><a href="#Fig-Outer-Rules" class="xref">Figure 18</a> shows a possible set of Outer Rules to compress the Outer Header.<a href="#section-7.3-20" class="pilcrow">¶</a></p>
@@ -1578,7 +1579,8 @@ RuleID 1
 |CoAP Type      | 2| 1|dw|    2      |equal    |not-sent   ||       |
 |CoAP TKL       | 4| 1|bi|    1      |equal    |not-sent   ||       |
 |CoAP Code      | 8| 1|up|    2      |equal    |not-sent   ||       |
-|CoAP Code      | 8| 1|dw| [69,132]  |match-map|map-sent   ||C      |
+|CoAP Code      | 8| 1|dw| [69,132]  |match-   |mapping-   ||       |
+|               |  |  |  |           |mapping  |sent       ||C      |
 |CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM   |
 |CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT    |
 |CoAP Uri-Path  |88| 1|up|temperature|equal    |not-sent   ||       |
@@ -1655,14 +1657,56 @@ regular SCHC + COAP is about 10 bytes.<a href="#section-7.3-30" class="pilcrow">
       <h2 id="name-security-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security considerations</a>
       </h2>
-<p id="section-9-1">The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol as OSCORE, DTLS, or other, it is necessary to use a layer two security.<a href="#section-9-1" class="pilcrow">¶</a></p>
-<p id="section-9-2">If LPWAN is the layer two technology, the use of SCHC over the CoAP protocol keeps valid the Security Considerations of SCHC header compression <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>.  When using another layer two, integrity protection is mandatory.<a href="#section-9-2" class="pilcrow">¶</a></p>
-<p id="section-9-3">The use of SCHC when CoAP uses OSCORE keeps valid the security considerations defined in <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>.<a href="#section-9-3" class="pilcrow">¶</a></p>
-<p id="section-9-4">DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to header compression.<a href="#section-9-4" class="pilcrow">¶</a></p>
-<p id="section-9-5">SCHC compression returns variable-length Compression Residues for some CoAP fields. In the compressed header, 
-the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the original header, SCHC decompression will detect an error and drop the packet.<a href="#section-9-5" class="pilcrow">¶</a></p>
-<p id="section-9-6">Using SCHC over the OSCORE headers, OSCORE MUST consider the Initialization Vector (IV) size carefully in the Compression Residue.  A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming.<a href="#section-9-6" class="pilcrow">¶</a></p>
-<p id="section-9-7">SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment.<a href="#section-9-7" class="pilcrow">¶</a></p>
+<p id="section-9-1">The use of SCHC header compression for CoAP header fields only affects
+the representation of the header information.  SCHC header compression
+itself does not increase or decrease the overall level of security of
+the communication.  When the connection does not use a security protocol
+(such as OSCORE, DTLS, etc.), it is necessary to use a layer-two
+security mechanism to protect the SCHC messages.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">If LPWAN is the layer-two technology, the SCHC security considerations
+of <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span> continue to apply.  When using another layer-two protocol,
+use of a cryptographic integrity-protection mechanisms to protect the
+SCHC headers is REQUIRED.  Such cryptographic integrity protection is
+necessary in order to continue to provide the properties that <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>
+relies upon.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<p id="section-9-3">When SCHC is used with OSCORE, the security considerations of <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>
+continue to apply.<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-4">When SCHC is used with the OSCORE outer headers, the Initialization
+Vector (IV) size in the Compression Residue must be carefully selected.
+There is a tradeoff between compression efficiency (with a longer "MSB"
+MO prefix) and the frequency at which the Device must renew its key
+material (in order to prevent the IV from expanding to an uncompressable
+value).  The key renewal operation itself requires several message
+exchanges and requires energy-intensive computation, but the optimal
+tradeoff will depend on the specifics of the device and expected usage
+patterns.<a href="#section-9-4" class="pilcrow">¶</a></p>
+<p id="section-9-5">If an attacker can introduce a corrupted SCHC-compressed packet onto a
+link, DoS attacks are possible by causing excessive resource consumption
+at the decompressor.  However, an attacker able to inject packets at the
+link layer is also capable of other, potentially more damaging, attacks.<a href="#section-9-5" class="pilcrow">¶</a></p>
+<p id="section-9-6">SCHC compression emits variable-length Compression Residues for some
+CoAP fields.  In the compressed header representation, the length field
+that is sent is not the length of the original header field but rather
+the length of the Compression Residue that is being transmitted.  If a
+corrupted packet arrives at the decompressor with a longer or shorter
+length than the original compressed representation possessed, the SCHC
+decompression procedures will detect an error and drop the packet.<a href="#section-9-6" class="pilcrow">¶</a></p>
+<p id="section-9-7">SCHC header compression rules MUST remain tightly coupled between
+compressor and decompressor.  If the compression rules get out of sync,
+a Compression Residue might be decompressed differently at the receiver
+than the initial message submitted to compression procedures.
+Accordingly, any time the context Rules are updated on an OSCORE
+endpoint, that endpoint MUST trigger OSCORE key re-establishment.
+Similar procedures may be appropriate to signal Rule udpates when other
+message-protection mechanisms are in use.<a href="#section-9-7" class="pilcrow">¶</a></p>
+<p id="section-9-8">&lt;&lt;-! The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol (such as OSCORE, DTLS, etc.), it is necessary to use a layer two securitymechanis.<a href="#section-9-8" class="pilcrow">¶</a></p>
+<p id="section-9-9">If LPWAN is the layer two technology, the use of SCHC over the CoAP protocol keeps valid the Security Considerations of SCHC header compression <span>[<a href="#RFC8724" class="xref">RFC8724</a>]</span>.  When using another layer two, integrity protection is mandatory.<a href="#section-9-9" class="pilcrow">¶</a></p>
+<p id="section-9-10">The use of SCHC when CoAP uses OSCORE keeps valid the security considerations defined in <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>.<a href="#section-9-10" class="pilcrow">¶</a></p>
+<p id="section-9-11">DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to header compression.<a href="#section-9-11" class="pilcrow">¶</a></p>
+<p id="section-9-12">SCHC compression returns variable-length Compression Residues for some CoAP fields. In the compressed header, 
+the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the original header, SCHC decompression will detect an error and drop the packet.<a href="#section-9-12" class="pilcrow">¶</a></p>
+<p id="section-9-13">Using SCHC over the OSCORE headers, OSCORE MUST consider the Initialization Vector (IV) size carefully in the Compression Residue.  A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming.<a href="#section-9-13" class="pilcrow">¶</a></p>
+<p id="section-9-14">SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. !-&gt;&gt;<a href="#section-9-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acknowledgements">
