@@ -334,10 +334,7 @@ In {{Fig--complex-path}}, SCHC can use a single bit in the Compression Residue t
 If regrouping were not allowed, 2 bits in the Compression Residue would be needed. SCHC sends the third path element as a variable size in the Compression Residue.
 
 
-### Variable-length Uri-Path and Uri-Query
-
-When SCHC creates the Rule, the length of URI-Path and URI-Query may be known. Nevertheless, SCHC MUST set the field length to variable, 
-and the unit to bytes. 
+The length of URI-Path and URI-Query may be known when the rule is defined. In any case, SCHC MUST set the field length to variable. The unit to indicate the Compression Residue size is in Byte. 
 
 SCHC compression can use the MSB MO to a Uri-Path or Uri-Query element. However, attention to the length is important because the MSB value is in bits, and the size MUST always be a multiple of 8 bits.
 
@@ -350,15 +347,15 @@ For instance, for a CORECONF path /c/X6?k="eth0" the Rule description can be:
    | Field       |FL |FP|DI| Target | Match   |     CDA     |
    |             |   |  |  | Value  | Opera.  |             |
    +-------------+---+--+--+--------+---------+-------------+
-   |Uri-Path     |  8| 1|up|"c"     |equal    |not-sent     |
+   |Uri-Path     |   | 1|up|"c"     |equal    |not-sent     |
    |Uri-Path     |var| 2|up|        |ignore   |value-sent   |
-   |Uri-Query    |var| 1|up|"k="    |MSB(16)  |LSB          |
+   |Uri-Query    |var| 1|up|"k=\""  |MSB(24)  |LSB          |
    +-------------+---+--+--+--------+---------+-------------+
 ~~~~~
 {: #Fig-CoMicompress title='CORECONF URI compression'}
 
 {{Fig-CoMicompress}} shows the Rule description for a URI-Path and a URI-Query. SCHC compresses the first part of the URI-Path with a "not-sent" CDA.
-SCHC will send the second element of the URI-Path with the length (i.e., 0x2 X 6) followed by the query option (i.e., 0x05 "eth0").
+SCHC will send the second element of the URI-Path with the length (i.e., 0x2 X 6) followed by the query option (i.e., 0x05 eth0").
 
 
 ### Variable number of Path or Query elements
@@ -687,7 +684,7 @@ The SCHC Rules for the Inner Compression include all fields already present in a
 |CoAP Code     | 8| 1|dw|[69,       |         |         ||      |
 |              |  |  |  |132]       |match-   |mapping- ||      |
 |              |  |  |  |           |mapping  |sent     || c    |
-|CoAP Uri-Path |88| 1|up|temperature|  equal  |not-sent ||      |
+|CoAP Uri-Path |  | 1|up|temperature|  equal  |not-sent ||      |
 +--------------+--+--+--+-----------+---------+---------++------+
 ~~~~
 {: #Fig-Inner-Rules title='Inner SCHC Rules'}
@@ -953,7 +950,7 @@ RuleID 1
 |               |  |  |  |           |mapping  |sent       ||C      |
 |CoAP MID       |16| 1|bi|   0000    |MSB(12)  |LSB        ||MMMM   |
 |CoAP Token     |tkl 1|bi|    0x80   |MSB(5)   |LSB        ||TTT    |
-|CoAP Uri-Path  |88| 1|up|temperature|equal    |not-sent   ||       |
+|CoAP Uri-Path  |  | 1|up|temperature|equal    |not-sent   ||       |
 +---------------+--+--+--+-----------+---------+-----------++-------+
 ~~~~
 {: #Fig-NoOsc-Rules title='SCHC-CoAP Rules (No OSCORE)'}
@@ -1054,21 +1051,6 @@ endpoint, that endpoint MUST trigger OSCORE key re-establishment.
 Similar procedures may be appropriate to signal Rule udpates when other
 message-protection mechanisms are in use.
 
-
-<<-! The use of SCHC header compression over CoAP header fields allow the compression of the header information only. The SCHC header compression itself does not increase or reduce the level of security in the communication. When the connection does not use any security protocol (such as OSCORE, DTLS, etc.), it is necessary to use a layer two securitymechanis.
-
-If LPWAN is the layer two technology, the use of SCHC over the CoAP protocol keeps valid the Security Considerations of SCHC header compression {{RFC8724}}.  When using another layer two, integrity protection is mandatory.
-
-The use of SCHC when CoAP uses OSCORE keeps valid the security considerations defined in {{RFC8613}}. 
-
-DoS attacks are possible if an intruder can introduce a corrupted SCHC compressed packet onto the link and cause excessive resource consumption at the decompressor. However, an intruder having the ability to add corrupted packets at the link layer raises additional security issues than those related to header compression.
-
-SCHC compression returns variable-length Compression Residues for some CoAP fields. In the compressed header, 
-the length sent is not the original header field length but the Compression Residue's length that is transmitted. So If a corrupted packet comes to the decompressor with a longer or shorter length than the original header, SCHC decompression will detect an error and drop the packet.
-
-Using SCHC over the OSCORE headers, OSCORE MUST consider the Initialization Vector (IV) size carefully in the Compression Residue.  A Compression Residue size obtained with an "LSB" CDA over the IV impacts the compression efficiency and the frequency that the Device will renew its key. This operation requires several exchanges and is energy-consuming. 
-
-SCHC header and compression Rules MUST remain tightly coupled. Otherwise, an encrypted Compression Residue may be decompressed differently by the receiver. Any update in the context Rules on one side MUST trigger the OSCORE keys re-establishment. !->>
 
 
 # Acknowledgements
